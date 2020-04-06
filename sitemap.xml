@@ -10,42 +10,28 @@
   
   <url>
     <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2017-08-30T01:37:56+08:00</lastmod>
+    <lastmod>2020-04-06T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://localhost:1313/post/</loc>
-    <lastmod>2017-08-30T01:37:56+08:00</lastmod>
+    <lastmod>2020-04-06T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://localhost:1313/tags/python/</loc>
-    <lastmod>2017-08-30T01:37:56+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/categories/python/</loc>
-    <lastmod>2017-08-30T01:37:56+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2017-08-30T01:37:56+08:00</lastmod>
+    <loc>http://localhost:1313/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2020-04-06T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://localhost:1313/post/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E8%87%AA%E5%AD%A6python/</loc>
-    <lastmod>2017-08-30T01:37:56+08:00</lastmod>
+    <lastmod>2020-04-06T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -53,6 +39,12 @@
   <url>
     <loc>http://localhost:1313/</loc>
     <lastmod>2017-08-28T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/tags/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
