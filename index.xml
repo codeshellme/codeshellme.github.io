@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Mon, 06 Apr 2020 01:37:56 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 20 Mar 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>关于</title>
+      <link>https://codeshellme.github.io/about/</link>
+      <pubDate>Fri, 20 Mar 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/about/</guid>
+      <description>本站用于分享编程知识，技术经验。</description>
+    </item>
     
     <item>
       <title>零基础如何自学Python</title>
