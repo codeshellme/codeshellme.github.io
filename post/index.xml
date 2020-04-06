@@ -13,6 +13,15 @@
     
     
     <item>
+      <title>如何用hugo 搭建博客</title>
+      <link>https://codeshellme.github.io/post/%E5%A6%82%E4%BD%95%E7%94%A8hugo_%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Mon, 06 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/post/%E5%A6%82%E4%BD%95%E7%94%A8hugo_%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
+      <description>1，Hugo 简介 搭建个人博客有很多开源的博客框架，我们要介绍的框架叫作Hugo。Hugo 是一个基于Go 语言的框架，可以快速方便的创建自己的博</description>
+    </item>
+    
+    <item>
       <title>零基础如何自学Python</title>
       <link>https://codeshellme.github.io/post/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%A6%82%E4%BD%95%E8%87%AA%E5%AD%A6python/</link>
       <pubDate>Mon, 06 Apr 2020 01:37:56 +0800</pubDate>
