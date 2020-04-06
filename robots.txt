@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://codeshellme.github.io/sitemap.xml
+Sitemap: http://localhost:1313/sitemap.xml
