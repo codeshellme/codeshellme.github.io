@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Mon, 06 Apr 2020 01:37:56 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 07 Apr 2020 01:37:56 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>一篇文章带你编写10种语言HelloWorld</title>
+      <link>https://codeshellme.github.io/post/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E7%BC%96%E5%86%9910%E7%A7%8D%E8%AF%AD%E8%A8%80helloworld/</link>
+      <pubDate>Tue, 07 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/post/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E5%B8%A6%E4%BD%A0%E7%BC%96%E5%86%9910%E7%A7%8D%E8%AF%AD%E8%A8%80helloworld/</guid>
+      <description>0，编程语言排行榜 计算机编程语言众多，世界上大概有600 多种编程语言，但是流行的也就几十种。我们来看下编程语言排行榜，下面介绍两种语言排行榜</description>
+    </item>
     
     <item>
       <title>如何用hugo 搭建博客</title>
