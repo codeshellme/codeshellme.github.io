@@ -528,7 +528,25 @@ git push origin master
     </footer>
   </article>
         </div>
-        
+        <div id="comments-gitment"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitment = new Gitment({
+        id: '2020-04-06 01:37:56 \x2b0800 DST',
+        title: '如何用hugo 搭建博客',
+        link: decodeURI(location.href),
+        desc: '1，Hugo 简介 搭建个人博客有很多开源的博客框架，我们要介绍的框架叫作Hugo。Hugo 是一个基于Go 语言的框架，可以快速方便的创建自己的博',
+        owner: 'codeshellme',
+        repo: 'codeshellme.github.io',
+        oauth: {
+          client_id: '0d219a16f1d7625a7e56',
+          client_secret: '2cd51884ec45a3cdc01a0ce2c08d80883cfc2977'
+        }
+      });
+      gitment.render('comments-gitment');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/imsun/gitment">comments powered by gitment.</a></noscript>
 
   
 

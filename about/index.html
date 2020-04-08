@@ -121,7 +121,25 @@
   </div>
 </article>
         </div>
-        
+        <div id="comments-gitment"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitment.browser.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitment = new Gitment({
+        id: '2020-03-20 21:38:52 \x2b0800 DST',
+        title: '关于',
+        link: decodeURI(location.href),
+        desc: '本站用于分享编程知识，技术经验。',
+        owner: 'codeshellme',
+        repo: 'codeshellme.github.io',
+        oauth: {
+          client_id: '0d219a16f1d7625a7e56',
+          client_secret: '2cd51884ec45a3cdc01a0ce2c08d80883cfc2977'
+        }
+      });
+      gitment.render('comments-gitment');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/imsun/gitment">comments powered by gitment.</a></noscript>
 
   
 
