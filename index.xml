@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>15个有趣好玩的linux shell命令</title>
+      <link>https://codeshellme.github.io/2020/04/funny-shell-cmd/</link>
+      <pubDate>Thu, 09 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/funny-shell-cmd/</guid>
+      <description>今天介绍一些有趣的linux shell命令，所有的命令都可以使用man + 命令名称 来查看完整的使用方法。 1，figlet 字符画 figlet 可以将英文字符</description>
+    </item>
+    
+    <item>
       <title>一篇文章带你编写10种语言HelloWorld</title>
       <link>https://codeshellme.github.io/2020/04/ten-lang-hellworld/</link>
       <pubDate>Tue, 07 Apr 2020 01:37:56 +0800</pubDate>
