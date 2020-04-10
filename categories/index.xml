@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 09 Apr 2020 01:37:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 Apr 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>music</title>
+      <link>https://codeshellme.github.io/categories/music/</link>
+      <pubDate>Thu, 09 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/categories/music/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>技术入门</title>

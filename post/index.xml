@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 09 Apr 2020 01:37:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 Apr 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>音乐</title>
+      <link>https://codeshellme.github.io/2020/04/love-music/</link>
+      <pubDate>Thu, 09 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
+      <description>这是一份歌单，排名不分先后，想起来或者遇到新的，都会加到里边。 国语 1. 暂无 粤语 1. 黄家驹 真的爱你 光辉岁月 海阔天空 灰色轨迹 遥望 喜欢你 不再犹豫 情人 冷</description>
+    </item>
     
     <item>
       <title>15个有趣好玩的linux shell命令</title>
