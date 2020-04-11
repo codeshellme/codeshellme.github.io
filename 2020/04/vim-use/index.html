@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何高效实用Vim - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Vim 是一款文本编辑器，被称为编辑器之神，非常适合在shell 中编辑代码，熟练的使用Vim，可以让你高效的编写代码。 Vim 是Vi 的增强版，所有的类U" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/04/vim-use/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何高效实用Vim" />
+<meta property="og:description" content="Vim 是一款文本编辑器，被称为编辑器之神，非常适合在shell 中编辑代码，熟练的使用Vim，可以让你高效的编写代码。 Vim 是Vi 的增强版，所有的类U" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/04/vim-use/" />
+<meta property="article:published_time" content="2020-04-11T01:37:56+08:00" />
+<meta property="article:modified_time" content="2020-04-11T01:37:56+08:00" />
+<meta itemprop="name" content="如何高效实用Vim">
+<meta itemprop="description" content="Vim 是一款文本编辑器，被称为编辑器之神，非常适合在shell 中编辑代码，熟练的使用Vim，可以让你高效的编写代码。 Vim 是Vi 的增强版，所有的类U">
+<meta itemprop="datePublished" content="2020-04-11T01:37:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-11T01:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="1981">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何高效实用Vim"/>
+<meta name="twitter:description" content="Vim 是一款文本编辑器，被称为编辑器之神，非常适合在shell 中编辑代码，熟练的使用Vim，可以让你高效的编写代码。 Vim 是Vi 的增强版，所有的类U"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何高效实用Vim</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-11 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 1981 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1vim-的三种模式">1，Vim 的三种模式</a></li>
+    <li><a href="#2普通模式">2，普通模式</a>
+      <ul>
+        <li><a href="#21如何进入编辑模式">2.1，如何进入编辑模式</a></li>
+        <li><a href="#22如何移动光标">2.2，如何移动光标</a></li>
+        <li><a href="#23如何删除复制粘贴">2.3，如何删除/复制/粘贴</a></li>
+        <li><a href="#24如何进行搜索">2.4，如何进行搜索</a></li>
+        <li><a href="#25如何进行分屏">2.5，如何进行分屏</a></li>
+        <li><a href="#26如何退出文件">2.6，如何退出文件</a></li>
+        <li><a href="#27如何进入可视模式">2.7，如何进入可视模式</a></li>
+        <li><a href="#28其它">2.8，其它</a></li>
+      </ul>
+    </li>
+    <li><a href="#3编辑模式">3，编辑模式</a></li>
+    <li><a href="#4行可视模式">4，行可视模式</a></li>
+    <li><a href="#5列可视模式">5，列可视模式</a></li>
+    <li><a href="#6vim-命令速查表">6，Vim 命令速查表</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Vim 是一款文本编辑器，被称为<code>编辑器之神</code>，非常适合在<code>shell</code> 中编辑代码，熟练的使用<code>Vim</code>，可以让你高效的编写代码。</p>
+<p>Vim 是Vi 的增强版，所有的类Unix 系统，都自带这两个工具，这两个工具中使用较多的也是<code>Vim</code>。</p>
+<p>Vim 中有很多命令，本文并不打算介绍所有的命令，只介绍<code>常用实用</code>的命令，熟练使用这些命令，就可以快速的编写代码。</p>
+<h2 id="1vim-的三种模式">1，Vim 的三种模式</h2>
+<p>vim 中有三种模式，分别是<code>普通模式</code>，<code>编辑模式</code>，<code>可视模式</code>。</p>
+<p>其实，还有一种模式是<code>命令模式</code>，这里我将<code>命令模式</code> 归入到了普通模式中，并没有单独将<code>命令模式</code>拿出来。其实<code>命令模式</code> 就是在<code>普通模式</code>下输入一个<code>冒号:</code>加一个<code>命令</code>。</p>
+<p>其中<code>可视模式</code> 又分为<code>行可视</code> 和<code>列可视</code>，如下：</p>
+<pre><code class="language-powershell">vim 模式
+   ├── 普通模式
+   ├── 编辑模式：可向文件中输入内容
+   └── 可视模式
+          ├── 行可视：按行选中某块区域
+          └── 列可视：按列选中某块区域	
+</code></pre>
+<p>它们之间的转换如下所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200410175147480.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><code>vim + 文件名</code> 打开文件进入<code>普通模式</code></li>
+<li><code>普通模式</code> 输入<code>i</code> 或 <code>o</code> 或 <code>a</code> 进入<code>编辑模式</code></li>
+<li><code>普通模式</code> 输入<code>Ctrl + v</code> 进入 <code>列可视</code></li>
+<li><code>普通模式</code> 输入<code>Shift +v</code> 进入 <code>行可视</code></li>
+<li>其它模式输入<code>Esc</code> 返回<code>普通模式</code></li>
+</ul>
+<p>下面介绍每个模式支持的<code>常用命令</code>。</p>
+<h2 id="2普通模式">2，普通模式</h2>
+<p>在普通模式下，可以使用下面这些命令，普通模式的命令最多。</p>
+<h3 id="21如何进入编辑模式">2.1，如何进入编辑模式</h3>
+<p>使用以下命令进入<code>编辑模式</code>：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code></td>
+<td>在当前<code>光标</code><strong>前位置</strong>进入<code>编辑模式</code></td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>在当前<code>光标</code><strong>后位置</strong>进入<code>编辑模式</code></td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>在当前<code>光标</code><strong>下一行</strong>进入<code>编辑模式</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="22如何移动光标">2.2，如何移动光标</h3>
+<p>使用以下命令移动光标：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k</code>或<code>方向键↑</code></td>
+<td>向上移动，建议使用<code>k</code></td>
+</tr>
+<tr>
+<td><code>j</code>或<code>方向键↓</code></td>
+<td>向下移动，建议使用<code>j</code></td>
+</tr>
+<tr>
+<td><code>h</code>或<code>方向键←</code></td>
+<td>向左移动，建议使用<code>h</code></td>
+</tr>
+<tr>
+<td><code>l</code>或<code>方向键→</code></td>
+<td>向右移动，建议使用<code>l</code></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>移动到当前行第一个可见字符</td>
+</tr>
+<tr>
+<td><code>0</code>或者<code>Home键</code></td>
+<td>移动到当前行开头</td>
+</tr>
+<tr>
+<td><code>$</code>或者<code>End键</code></td>
+<td>移动到当前行最后</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>在两个匹配的<code>{}[]()&lt;&gt;</code>之间移动</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>向后移动一个单词</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>向前移动一个单词</td>
+</tr>
+<tr>
+<td><code>gg</code></td>
+<td>移动到当前文件的第一行</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td>移动到当前文件的最后一行</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>移动到当前文件的中间一行</td>
+</tr>
+<tr>
+<td><code>:</code>+<code>数字N</code></td>
+<td>输入一个<code>:</code>，再输入一个<code>数字</code>，按回车，快速跳到某一行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23如何删除复制粘贴">2.3，如何删除/复制/粘贴</h3>
+<p>使用以下命令<code>删除</code>/<code>复制</code>/<code>粘贴</code>：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dd</code></td>
+<td>删除光标所在的行，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>yy</code></td>
+<td>复制光标所在的行，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>dw</code></td>
+<td>复制光标所在的单词，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>删除光标所在的一个字符，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>删除<code>光标</code>到行<code>末尾</code>所有的内容，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>粘贴剪切板的内容到光标处</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24如何进行搜索">2.4，如何进行搜索</h3>
+<p>使用以下命令在当前文件中<code>搜索</code>：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>光标停留在某个字符串时，<code>*</code>可以在当前文件中搜索这个<code>字符串</code></td>
+</tr>
+<tr>
+<td><code>/+字符串+回车</code></td>
+<td>在当前页面搜索这个<code>字符串</code></td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>锁定到下一个匹配的<code>字符串</code></td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>锁定到上一个匹配的<code>字符串</code></td>
+</tr>
+<tr>
+<td><code>:set hlsearch</code></td>
+<td>让所有匹配的<code>字符串</code>高亮</td>
+</tr>
+<tr>
+<td><code>:set noh</code></td>
+<td>取消<code>字符串</code>高亮</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25如何进行分屏">2.5，如何进行分屏</h3>
+<p>vim <code>分屏</code>：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:vsp + 文件名</code></td>
+<td>横向分屏</td>
+</tr>
+<tr>
+<td><code>:sp + 文件名</code></td>
+<td>竖向分屏</td>
+</tr>
+<tr>
+<td><code>Ctrl + ww</code></td>
+<td>锁定到下一个屏</td>
+</tr>
+<tr>
+<td><code>退出命令</code></td>
+<td>使用<code>退出命令</code>，退出当前屏</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26如何退出文件">2.6，如何退出文件</h3>
+<p><code>退出命令</code>如下：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:wq</code></td>
+<td><code>保存</code>并<code>退出</code>当前文件</td>
+</tr>
+<tr>
+<td><code>:w</code></td>
+<td><code>保存</code>当前文件</td>
+</tr>
+<tr>
+<td><code>:q</code></td>
+<td><code>退出</code>当前文件</td>
+</tr>
+<tr>
+<td><code>:qa</code></td>
+<td><code>退出</code>打开的所有文件</td>
+</tr>
+<tr>
+<td><code>:q!</code></td>
+<td><code>强制退出</code>（不保存）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="27如何进入可视模式">2.7，如何进入可视模式</h3>
+<p>进入<code>可视模式</code>：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Shift + v</code></td>
+<td>进入<code>行可视模式</code></td>
+</tr>
+<tr>
+<td><code>Ctrl + v</code></td>
+<td>进入<code>列可视模式</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="28其它">2.8，其它</h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>u</code></td>
+<td><code>撤销</code>上一次操作</td>
+</tr>
+<tr>
+<td><code>Ctrl + r</code></td>
+<td><code>反撤销</code>操作</td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>英文字符大小写转换</td>
+</tr>
+<tr>
+<td><code>:%s/x/y/g</code></td>
+<td>将当前文件中所有的<code>x</code>换成<code>y</code></td>
+</tr>
+<tr>
+<td><code>数字</code> + <code>==</code></td>
+<td>用于<code>格式化代码</code>，比如先输入一个<code>999</code>，再输入<code>==</code>，从当前行开始，以下<code>999</code> 行代码都会<code>格式化</code></td>
+</tr>
+<tr>
+<td><code>:set nu</code></td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td><code>:set nonu</code></td>
+<td>关闭行号</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3编辑模式">3，编辑模式</h2>
+<p>在编辑模式下可以使用下面命令。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl + n</code></td>
+<td>搜素下一个变量名，函数<code>自动补全</code></td>
+</tr>
+<tr>
+<td><code>Ctrl + p</code></td>
+<td>搜索上一个变量名，函数<code>自动补全</code></td>
+</tr>
+<tr>
+<td><code>Shift + Insert</code></td>
+<td>在当前光标插入<code>系统剪切板</code>的内容</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4行可视模式">4，行可视模式</h2>
+<p>在<code>行可视模式</code>下可以使用下面命令。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k</code>或<code>方向键↑</code></td>
+<td>向上选中多行</td>
+</tr>
+<tr>
+<td><code>j</code>或<code>方向键↓</code></td>
+<td>向下选中多行</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>删除</code>选中的区域内容，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td><code>复制</code>选中的区域内容，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td><code>粘贴</code>剪切板中的内容</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>将选中的区域<code>向右缩进</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>将选中的区域<code>向左缩进</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="5列可视模式">5，列可视模式</h2>
+<p>在<code>列可视模式</code>下可以使用下面命令。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k</code>或<code>方向键↑</code></td>
+<td>向上选中多行</td>
+</tr>
+<tr>
+<td><code>j</code>或<code>方向键↓</code></td>
+<td>向下选中多行</td>
+</tr>
+<tr>
+<td><code>h</code>或<code>方向键←</code></td>
+<td>向左选中多列</td>
+</tr>
+<tr>
+<td><code>l</code>或<code>方向键→</code></td>
+<td>向右选中多列</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td><code>删除</code>选中的区域内容，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td><code>复制</code>选中的区域内容，并且内容在剪切板</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td><code>粘贴</code>剪切板中的内容</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>将选中的区域<code>向右缩进</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>列可视模式下<code>不支持</code></td>
+</tr>
+</tbody>
+</table>
+<p>以上讲到的命令需要多使用才能熟练，所谓孰能生巧。</p>
+<p>如果你想<code>配置Vim 插件</code> 的话，建议不需要配置多么花哨复杂的插件，简单实用就好。</p>
+<p>注意，在使用<code>Vim</code> 的时候，<code>鼠标</code>基本是没有什么用的，所以这时可以忘记<code>鼠标</code>的存在，只有<code>键盘</code>。</p>
+<p>另外，<code>vimdiff</code> 命令可以对比多个文件的不同，如下所示，打开两个文件（也可打开多个文件）：</p>
+<pre><code class="language-shell">vimdiff 1.c 2.c
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20200411012925200.png" alt="在这里插入图片描述"></p>
+<p>这里还有一个Vim 小游戏 &mdash;&mdash;<a href="https://vim-adventures.com/">《Vim 大冒险》</a>，很有创意的一个小游戏，可以锻炼使用Vim，感兴趣的可以玩一下。</p>
+<h2 id="6vim-命令速查表">6，Vim 命令速查表</h2>
+<p>最后附上两张<code>Vim 命令速查表</code>，自行选择，各取所需。</p>
+<p><strong>图一：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200411002507904.gif#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>图二：</strong> PDF版在<a href="http://jrmiii.com/attachments/Vim.pdf">这里</a>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200411020012405.png" alt="在这里插入图片描述">
+（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-04-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/funny-shell-cmd/">
+            <span class="next-text nav-default">15个有趣好玩的linux shell命令</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/04/vim-use/" class="leancloud_visitors" data-flag-title="如何高效实用Vim">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

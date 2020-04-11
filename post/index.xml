@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 09 Apr 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2020 01:37:56 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,15 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1. 暂无 粤语 1. 黄家驹 真的爱你 光辉岁月 海阔天空 灰色轨迹 遥望 喜欢你 不再犹豫 情人 冷雨夜 谁伴我闯荡 曾是拥有 无尽空虚 大地</description>
+    </item>
+    
+    <item>
+      <title>如何高效实用Vim</title>
+      <link>https://codeshellme.github.io/2020/04/vim-use/</link>
+      <pubDate>Sat, 11 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/vim-use/</guid>
+      <description>Vim 是一款文本编辑器，被称为编辑器之神，非常适合在shell 中编辑代码，熟练的使用Vim，可以让你高效的编写代码。 Vim 是Vi 的增强版，所有的类U</description>
     </item>
     
     <item>

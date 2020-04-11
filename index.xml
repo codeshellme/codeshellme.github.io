@@ -31,6 +31,15 @@
     </item>
     
     <item>
+      <title>如何高效实用Vim</title>
+      <link>https://codeshellme.github.io/2020/04/vim-use/</link>
+      <pubDate>Sat, 11 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/vim-use/</guid>
+      <description>Vim 是一款文本编辑器，被称为编辑器之神，非常适合在shell 中编辑代码，熟练的使用Vim，可以让你高效的编写代码。 Vim 是Vi 的增强版，所有的类U</description>
+    </item>
+    
+    <item>
       <title>15个有趣好玩的linux shell命令</title>
       <link>https://codeshellme.github.io/2020/04/funny-shell-cmd/</link>
       <pubDate>Thu, 09 Apr 2020 01:37:56 +0800</pubDate>

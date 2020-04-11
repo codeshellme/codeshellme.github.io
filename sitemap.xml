@@ -17,7 +17,28 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2020-04-09T21:41:52+08:00</lastmod>
+    <lastmod>2020-04-11T01:37:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/post/</loc>
+    <lastmod>2020-04-11T01:37:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/04/vim-use/</loc>
+    <lastmod>2020-04-11T01:37:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2020-04-11T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30,21 +51,7 @@
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2020-04-09T21:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://codeshellme.github.io/2020/04/funny-shell-cmd/</loc>
-    <lastmod>2020-04-09T01:37:56+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2020-04-09T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
