@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>linux awk 命令实用手册 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="0，简介 Linux awk 是一个实用的文本处理工具，它不仅是一款工具软件，也是一门编程语言。awk 的名称来源于其三位作者的姓氏缩写，其作者分别是Alfre" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/04/linux-awk/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="linux awk 命令实用手册" />
+<meta property="og:description" content="0，简介 Linux awk 是一个实用的文本处理工具，它不仅是一款工具软件，也是一门编程语言。awk 的名称来源于其三位作者的姓氏缩写，其作者分别是Alfre" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/04/linux-awk/" />
+<meta property="article:published_time" content="2020-04-16T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-04-16T21:41:52+08:00" />
+<meta itemprop="name" content="linux awk 命令实用手册">
+<meta itemprop="description" content="0，简介 Linux awk 是一个实用的文本处理工具，它不仅是一款工具软件，也是一门编程语言。awk 的名称来源于其三位作者的姓氏缩写，其作者分别是Alfre">
+<meta itemprop="datePublished" content="2020-04-16T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-16T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3754">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="linux awk 命令实用手册"/>
+<meta name="twitter:description" content="0，简介 Linux awk 是一个实用的文本处理工具，它不仅是一款工具软件，也是一门编程语言。awk 的名称来源于其三位作者的姓氏缩写，其作者分别是Alfre"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">linux awk 命令实用手册</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-16 </span>
+        <div class="post-category">
+            <a href="/categories/linux-%E7%B3%BB%E7%BB%9F/"> Linux 系统 </a>
+            </div>
+          <span class="more-meta"> 3754 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0简介">0，简介</a></li>
+    <li><a href="#1基本概念">1，基本概念</a>
+      <ul>
+        <li><a href="#11参数">1.1，参数</a></li>
+        <li><a href="#12pattern">1.2，pattern</a></li>
+        <li><a href="#13action">1.3，action</a></li>
+      </ul>
+    </li>
+    <li><a href="#2awk-内置变量">2，awk 内置变量</a></li>
+    <li><a href="#3awk-内建函数">3，awk 内建函数</a></li>
+    <li><a href="#4awk-运算符">4，awk 运算符</a></li>
+    <li><a href="#5awk-使用案例">5，awk 使用案例</a>
+      <ul>
+        <li><a href="#51-使用-f">5.1 使用-F</a></li>
+        <li><a href="#52-使用内置变量">5.2 使用内置变量</a></li>
+        <li><a href="#53-如何连接字符串">5.3 如何连接字符串</a></li>
+        <li><a href="#53-使用内置函数">5.3 使用内置函数</a></li>
+        <li><a href="#54-使用pattern">5.4 使用pattern</a></li>
+        <li><a href="#55-使用逻辑非">5.5 使用逻辑非!</a></li>
+        <li><a href="#56-使用关系表达式">5.6 使用关系表达式</a></li>
+        <li><a href="#57-使用模式匹配表达式">5.7 使用模式匹配表达式</a></li>
+        <li><a href="#58-使用if-语句">5.8 使用if 语句</a></li>
+        <li><a href="#59-使用nr-输出基数行">5.9 使用NR 输出基数行</a></li>
+        <li><a href="#510-使用nf-输出倒数第一列">5.10 使用NF 输出倒数第一列</a></li>
+        <li><a href="#511-使用begin-块">5.11 使用BEGIN 块</a></li>
+        <li><a href="#512-使用end-块">5.12 使用END 块</a></li>
+        <li><a href="#513-使用范围模板">5.13 使用范围模板</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <div align="center">
+<img src="https://img-blog.csdnimg.cn/20200416095535854.png#pic_center" />
+</div>
+<h2 id="0简介">0，简介</h2>
+<p>Linux <code>awk</code> 是一个实用的<code>文本处理工具</code>，它不仅是一款工具软件，也是一门<code>编程语言</code>。<code>awk</code> 的名称来源于其三位作者的姓氏缩写，其作者分别是<code>Alfred Aho</code>，<code>Peter Weinberger</code> 和 <code>Brian Kernighan</code>。</p>
+<p>如果你在linux 系统中追踪<code>awk</code>，可以看到其最终指向的是<code>/usr/bin/gawk</code>，也就是<code>gawk</code> 命令。其<a href="https://www.gnu.org/software/gawk/manual/gawk.html">GNU官方手册</a> 权威且全面，但对于初学者并不是很友好，因为内容非常多，你可能不知从何看起。对于普通用户，一般也用不到非常复杂的功能。</p>
+<p>如果一个文件由<code>规则的多个列</code>组成，则非常适合使用<code>awk</code> 来处理。本文介绍<code>awk</code> 常用方法，对于普通使用者应该是足够了。</p>
+<h2 id="1基本概念">1，基本概念</h2>
+<p><code>awk</code> 命令会对<code>文本文件</code>的<code>每一行</code>进行处理，其语法格式如下：</p>
+<pre><code class="language-shell">awk `参数` `pattern {action}` `filename`
+</code></pre>
+<p><code>pattern</code> 是要匹配的规则，<code>action</code> 是要执行的动作，只有匹配了<code>pattern</code> 的<code>行</code>，才会执行动作<code>action</code>。</p>
+<p>这句命令的含义是：对于文件<code>filename</code> 的每一行，如果能够符合条件<code>pattern</code>，则执行动作<code>action</code>。如果不写<code>pattern</code>，则表示对于文件<code>filename</code>的每一行，都进行<code>action</code> 处理。</p>
+<h3 id="11参数">1.1，参数</h3>
+<p><code>awk</code>  最常使用的参数是<code>-F</code>，其后跟一个<code>分隔符</code>或者<code>正则表达式</code>，其表示的意思是以<code>怎样的规则</code>对每一行进行分割。 默认是<code>空格</code>或<code>Tab键</code>。</p>
+<h3 id="12pattern">1.2，pattern</h3>
+<p><code>pattern</code> 可以是下表中的任意一项：</p>
+<table>
+<thead>
+<tr>
+<th>pattern</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/正则表达式/</code></td>
+<td>正则写在两个<code>/</code> 之间</td>
+</tr>
+<tr>
+<td><code>关系表达式</code></td>
+<td>由<code>awk</code>	中支持的<code>关系运算符</code>组成</td>
+</tr>
+<tr>
+<td><code>模式匹配表达式</code></td>
+<td>由 <code>~</code>（匹配）和<code>!~</code>（不匹配）组成</td>
+</tr>
+<tr>
+<td><code>BEGIN{语句}</code></td>
+<td>在处理<code>第一行</code>文本之前，执行<code>BEGIN 块</code>中的语句，可以在这里进行一些变量初始化等操作</td>
+</tr>
+<tr>
+<td><code>END{语句}</code></td>
+<td>在处理完<code>最后一行</code>文本之后，执行<code>END 块</code>中的语句</td>
+</tr>
+<tr>
+<td><code>/规则1/,/规则2/</code></td>
+<td>这是一个<code>范围模板</code>，只处理<code>规则1</code>第一次出现与<code>规则2</code>第一次出现之间的行</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13action">1.3，action</h3>
+<p><code>action</code> 由<code>awk</code> 语句组成，比如<code>print</code>，用于输出。</p>
+<h2 id="2awk-内置变量">2，awk 内置变量</h2>
+<p><code>awk</code> 中内置了很多变量，来方便使用，这里介绍一些常用的：</p>
+<table>
+<thead>
+<tr>
+<th><code>awk</code> 内置变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FS</code></td>
+<td>表示<code>分隔符</code>，类似<code>-F</code> 参数的功能</td>
+</tr>
+<tr>
+<td><code>$0</code></td>
+<td>一行的完整内容</td>
+</tr>
+<tr>
+<td><code>$n</code></td>
+<td>用<code>分隔符</code>隔开的第<code>n</code>列，比如<code>$1</code> 表示第一列</td>
+</tr>
+<tr>
+<td><code>FILENAME</code></td>
+<td>当前文件名</td>
+</tr>
+<tr>
+<td><code>NR</code></td>
+<td>当前行数，即<code>当前行</code>是第几行</td>
+</tr>
+<tr>
+<td><code>NF</code></td>
+<td>当前行的列数，即<code>当前行</code>被<code>分割符</code>分成了几列</td>
+</tr>
+<tr>
+<td><code>IGNORECASE</code></td>
+<td>如果为真，表示忽略大小写进行匹配</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3awk-内建函数">3，awk 内建函数</h2>
+<p><code>awk</code> 常用函数如下：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tolower()</code></td>
+<td>字符串转小写</td>
+</tr>
+<tr>
+<td><code>toupper()</code></td>
+<td>字符串转大写</td>
+</tr>
+<tr>
+<td><code>length()</code></td>
+<td>计算字符串长度</td>
+</tr>
+<tr>
+<td><code>split()</code></td>
+<td>字符串分割</td>
+</tr>
+<tr>
+<td><code>systime()</code></td>
+<td>Unix 时间戳</td>
+</tr>
+<tr>
+<td><code>strftime()</code></td>
+<td>时间格式化，用法同<code>C语言</code>中的<code>strftime</code> 函数</td>
+</tr>
+<tr>
+<td><code>rand()</code></td>
+<td>随机数</td>
+</tr>
+<tr>
+<td><code>sin()</code></td>
+<td>正弦</td>
+</tr>
+<tr>
+<td><code>cos()</code></td>
+<td>余弦</td>
+</tr>
+<tr>
+<td><code>sqrt()</code></td>
+<td>平方根</td>
+</tr>
+<tr>
+<td><code>exp()</code></td>
+<td>求幂</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4awk-运算符">4，awk 运算符</h2>
+<p><code>awk</code> 支持如下常用<code>运算符</code>：</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+  - * / &amp;</code></td>
+<td><code>加，减，乘，除，求余</code></td>
+</tr>
+<tr>
+<td><code>=  +=  -=  *=  /=  %=  ^=  **=</code></td>
+<td><code>赋值</code>运算符</td>
+</tr>
+<tr>
+<td><code>&lt;  &lt;=  &gt;  &gt;=  !=  ==</code></td>
+<td><code>比较</code>运算符</td>
+</tr>
+<tr>
+<td><code>空格</code></td>
+<td>用于连接<code>字符串</code>，使用较多</td>
+</tr>
+<tr>
+<td><code>||</code></td>
+<td>逻辑<code>或</code></td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>逻辑<code>与</code></td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>逻辑<code>非</code></td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>匹配</td>
+</tr>
+<tr>
+<td><code>!~</code></td>
+<td>不匹配</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5awk-使用案例">5，awk 使用案例</h2>
+<p>假如，我们有如下文件，分别为<code>姓名</code>，<code>性别</code>，<code>年龄</code>，<code>成绩</code>，<code>等级</code>和<code>省份</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt 
+_________________
+小明,男,23,550^优秀---北京
+小丽,女,22,560^优秀---河北
+小磊,男,24,530^良好---河南
+小召,男,23,540^优良---山东
+小欣,女,23,545^优良---山西
+</code></pre>
+<h3 id="51-使用-f">5.1 使用-F</h3>
+<p>以逗号<code>,</code> 为<code>分隔符</code>，并将第1列，第2列和第3列输出，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F, '{print $1,$2,$3}' log.txt 
+______________________________________
+小明 男 23
+小丽 女 22
+小磊 男 24
+小召 男 23
+小欣 女 23
+</code></pre>
+<p>当<code>分隔符</code>只有<code>一个字符</code>时，<code>分割符</code>可以紧挨<code>-F</code>，还有如下几种写法：</p>
+<pre><code class="language-shell">awk -F , '{print $1,$2,$3}' log.txt		#`分隔符`与`-F`之间有一个空格
+awk -F',' '{print $1,$2,$3}' log.txt	#`分隔符`用单引号引住，并且紧挨`-F`
+awk -F&quot;,&quot; '{print $1,$2,$3}' log.txt	#`分隔符`用双引号引住，并且紧挨`-F`
+awk -F ',' '{print $1,$2,$3}' log.txt	#`分隔符`用单引号引住，与`-F`之间有空格
+awk -F &quot;,&quot; '{print $1,$2,$3}' log.txt	#`分隔符`用双引号引住，与`-F`之间有空格
+</code></pre>
+<p>当<code>分隔符</code>有<code>多个连续字符</code>时，必须用<code>双引号</code>或者<code>单引号</code>引住<code>分割符</code>，可以紧挨<code>-F</code>，也可以有<code>空格</code>：</p>
+<pre><code class="language-shell">awk -F '---' '{print $2}' log.txt	#`分隔符`用单引号引住，与`-F`之间有空格
+awk -F&quot;---&quot; '{print $5}' log.txt	#`分隔符`用双引号引住，与`-F`之间没有空格
+</code></pre>
+<p>以上两个命令输出的内容一样，此时<code>分隔符</code>为<code>---</code>，每一行都被分成了两列，如下：</p>
+<pre><code class="language-shell">小明,男,23,550^优秀 北京
+小丽,女,22,560^优秀 河北
+小磊,男,24,530^良好 河南
+小召,男,23,540^优良 山东
+小欣,女,23,545^优良 山西
+</code></pre>
+<p>当有多个<code>单独的分割符</code>时，将多个分隔符写在<code>中括号[]</code>中，如下，表示以<code>,</code> 或者以<code>---</code> 为分隔符：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F &quot;[,^]&quot; '{print $1, $2, $3, $4, $5}' log.txt 
+________________________
+小明 男 23 550 优秀---北京
+小丽 女 22 560 优秀---河北
+小磊 男 24 530 良好---河南
+小召 男 23 540 优良---山东
+小欣 女 23 545 优良---山西
+</code></pre>
+<h3 id="52-使用内置变量">5.2 使用内置变量</h3>
+<p>我们用变量<code>NR</code>输出<code>当前行号</code>，变量<code>NF</code>输出当前行的<code>列数</code>，变量<code>FILENAME</code>输出当前<code>文件名</code>，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F&quot;---&quot; '{print NR, $1, $2, NF, FILENAME}' log.txt
+__________________________________________________________
+1 小明,男,23,550^优秀 北京 2 log.txt
+2 小丽,女,22,560^优秀 河北 2 log.txt
+3 小磊,男,24,530^良好 河南 2 log.txt
+4 小召,男,23,540^优良 山东 2 log.txt
+5 小欣,女,23,545^优良 山西 2 log.txt
+</code></pre>
+<h3 id="53-如何连接字符串">5.3 如何连接字符串</h3>
+<p>我们将每一列使用竖线<code>|</code> 分割，方法是将<code>分隔符</code>用<code>双引号</code>引住，然后紧挨<code>变量</code>，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F&quot;---&quot; '{print NR&quot;|&quot;$1&quot;|&quot;$2&quot;|&quot;NF&quot;|&quot;FILENAME}' log.txt
+__________________________________
+1|小明,男,23,550^优秀|北京|2|log.txt
+2|小丽,女,22,560^优秀|河北|2|log.txt
+3|小磊,男,24,530^良好|河南|2|log.txt
+4|小召,男,23,540^优良|山东|2|log.txt
+5|小欣,女,23,545^优良|山西|2|log.txt
+</code></pre>
+<h3 id="53-使用内置函数">5.3 使用内置函数</h3>
+<p>使用内置函数<code>systime()</code> 输出时间戳，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F&quot;---&quot; '{print NR&quot;|&quot;$1&quot;|&quot;$2&quot;|&quot;NF&quot;|&quot;FILENAME&quot;|&quot;systime()}' log.txt
+—————————————————————————————————————————————
+1|小明,男,23,550^优秀|北京|2|log.txt|1587022443
+2|小丽,女,22,560^优秀|河北|2|log.txt|1587022443
+3|小磊,男,24,530^良好|河南|2|log.txt|1587022443
+4|小召,男,23,540^优良|山东|2|log.txt|1587022443
+5|小欣,女,23,545^优良|山西|2|log.txt|1587022443
+</code></pre>
+<p>使用<code>length</code> 输出<code>行长度</code>大于5 的行：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk 'length&gt;5' log.txt
+——————————————————————————
+小明,男,23,550^优秀---北京
+小丽,女,22,560^优秀---河北
+小磊,男,24,530^良好---河南
+小召,男,23,540^优良---山东
+小欣,女,23,545^优良---山西
+</code></pre>
+<h3 id="54-使用pattern">5.4 使用pattern</h3>
+<p>使用<code>pattern</code> 只输出<code>男</code> 同学信息，<code>$0</code> 表示每一行的原始内容，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk '/男/ {print NR&quot;|&quot;$0}' log.txt
+__________________________
+1|小明,男,23,550^优秀---北京
+3|小磊,男,24,530^良好---河南
+4|小召,男,23,540^优良---山东
+</code></pre>
+<h3 id="55-使用逻辑非">5.5 使用逻辑非!</h3>
+<p>使用逻辑非<code>!</code>，输出不为<code>男</code>的学生信息：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk '!/男/ {print NR&quot;|&quot;$0}' log.txt
+__________________________
+2|小丽,女,22,560^优秀---河北
+5|小欣,女,23,545^优良---山西
+</code></pre>
+<h3 id="56-使用关系表达式">5.6 使用关系表达式</h3>
+<p>使用<code>关系表达式</code>，输出年龄为23 的学生信息：</p>
+<pre><code class="language-shell"># 以逗号分割后的第三列为年龄
+&gt;&gt;&gt; awk -F, '$3==23 {print $3, $0}' log.txt
+____________________________
+23 小明,男,23,550^优秀---北京
+23 小召,男,23,540^优良---山东
+23 小欣,女,23,545^优良---山西
+</code></pre>
+<p>也可以写成如下方式，输出年龄为23或25 的学生信息：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F, '$3==23 || $3==25' log.txt
+________________________
+小明,男,23,550^优秀---北京
+小召,男,23,540^优良---山东
+小欣,女,23,545^优良---山西
+</code></pre>
+<h3 id="57-使用模式匹配表达式">5.7 使用模式匹配表达式</h3>
+<p>使用<code>模式匹配表达式</code>，输出年龄为24 的学生信息：</p>
+<pre><code class="language-shell">awk -F, '$3 ~/24/ {print $3, $0}' log.txt
+24 小磊,男,24,530^良好---河南
+</code></pre>
+<h3 id="58-使用if-语句">5.8 使用if 语句</h3>
+<p><code>awk</code> 也支持<code>if 语句</code>，输出年龄为22 的学生信息，<code>if 语句</code>写在<code>大括号{}</code>内：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F, '{if($3==22) print $3, $0}' log.txt
+___________________________
+22 小丽,女,22,560^优秀---河北
+</code></pre>
+<h3 id="59-使用nr-输出基数行">5.9 使用NR 输出基数行</h3>
+<pre><code class="language-shell"># `NR % 2 == 1` 为基数行
+&gt;&gt;&gt; awk -F, 'NR % 2 == 1 {print NR, $0}' log.txt
+——————————————————————————
+1 小明,男,23,550^优秀---北京
+3 小磊,男,24,530^良好---河南
+5 小欣,女,23,545^优良---山西
+</code></pre>
+<h3 id="510-使用nf-输出倒数第一列">5.10 使用NF 输出倒数第一列</h3>
+<p><code>$(NF)</code> 为倒数第1列，<code>$(NF-1)</code> 为倒数第2列，<code>$(NF-2)</code> 为倒数第3列，依次类推。</p>
+<p>如下输出倒数第1列：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F, '{print $(NF)}' log.txt
+______________
+550^优秀---北京
+560^优秀---河北
+530^良好---河南
+540^优良---山东
+545^优良---山西
+</code></pre>
+<h3 id="511-使用begin-块">5.11 使用BEGIN 块</h3>
+<p><code>BEGIN 块</code>中可以是任意多个合法的<code>awk 语句</code>。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F, 'BEGIN{print &quot;姓名&quot;, &quot;性别&quot;, &quot;年龄&quot;} {print $1, $2, $3}' log.txt 
+____________
+姓名 性别 年龄
+小明 男 23
+小丽 女 22
+小磊 男 24
+小召 男 23
+小欣 女 23
+</code></pre>
+<h3 id="512-使用end-块">5.12 使用END 块</h3>
+<p><code>END 块</code>中可以是任意多个合法的<code>awk 语句</code>，<code>BEGIN 块</code>与<code>END 块</code>可以一起使用。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk -F, 'BEGIN{print &quot;姓名&quot;, &quot;性别&quot;, &quot;年龄&quot;} {print $1, $2, $3} END{print &quot;共有&quot;NR&quot;行信息&quot;}' log.txt 
+____________
+姓名 性别 年龄
+小明 男 23
+小丽 女 22
+小磊 男 24
+小召 男 23
+小欣 女 23
+共有5行信息
+</code></pre>
+<h3 id="513-使用范围模板">5.13 使用范围模板</h3>
+<p>输出小丽和小欣之间的行数据：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; awk '/小丽/,/小欣/' log.txt 
+______________________________
+小丽,女,22,560^优秀---河北
+小磊,男,24,530^良好---河南
+小召,男,23,540^优良---山东
+小欣,女,23,545^优良---山西
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-04-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/linux-sort/">
+            <span class="next-text nav-default">linux sort 命令实用手册</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/04/linux-awk/" class="leancloud_visitors" data-flag-title="linux awk 命令实用手册">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

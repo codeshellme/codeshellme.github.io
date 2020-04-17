@@ -31,6 +31,42 @@
     </item>
     
     <item>
+      <title>linux awk 命令实用手册</title>
+      <link>https://codeshellme.github.io/2020/04/linux-awk/</link>
+      <pubDate>Thu, 16 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/linux-awk/</guid>
+      <description>0，简介 Linux awk 是一个实用的文本处理工具，它不仅是一款工具软件，也是一门编程语言。awk 的名称来源于其三位作者的姓氏缩写，其作者分别是Alfre</description>
+    </item>
+    
+    <item>
+      <title>linux sort 命令实用手册</title>
+      <link>https://codeshellme.github.io/2020/04/linux-sort/</link>
+      <pubDate>Thu, 16 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/linux-sort/</guid>
+      <description>Linux 中的sort 命令是一个很实用的工具，用于对文本内容以行为单位进行ASCII 码排序，默认按照升序进行排序（当然也可以按照降序）。 sort 命令的格式</description>
+    </item>
+    
+    <item>
+      <title>linux uniq 命令实用手册</title>
+      <link>https://codeshellme.github.io/2020/04/linux-uniq/</link>
+      <pubDate>Thu, 16 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/linux-uniq/</guid>
+      <description>Linux uniq 命令用于处理文本内容中的重复行。 这里我们只介绍其常用参数，其完整用法可参见man uniq。 例如，我们有如下文件内容： &amp;gt;&amp;gt;&amp;gt; cat log.txt _______________ hello HEllo world world hello 使</description>
+    </item>
+    
+    <item>
+      <title>实用的linux 命令（上）</title>
+      <link>https://codeshellme.github.io/2020/04/used-linux-cmd1/</link>
+      <pubDate>Thu, 16 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/used-linux-cmd1/</guid>
+      <description>今天介绍几个我常用的Linux 命令，每个命令这里只介绍其常用参数。 对于每个Linux 命令都可以使用man + 命令名称，查看其完整使用方法。 0，</description>
+    </item>
+    
+    <item>
       <title>如何高效使用Vim</title>
       <link>https://codeshellme.github.io/2020/04/vim-use/</link>
       <pubDate>Sat, 11 Apr 2020 01:37:56 +0800</pubDate>

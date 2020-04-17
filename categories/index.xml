@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sat, 11 Apr 2020 01:37:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 16 Apr 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux 系统</title>
+      <link>https://codeshellme.github.io/categories/linux-%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Thu, 16 Apr 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/categories/linux-%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>技术入门</title>

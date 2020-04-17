@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>实用的linux 命令（上） - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="今天介绍几个我常用的Linux 命令，每个命令这里只介绍其常用参数。 对于每个Linux 命令都可以使用man &#43; 命令名称，查看其完整使用方法。 0，" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/04/used-linux-cmd1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="实用的linux 命令（上）" />
+<meta property="og:description" content="今天介绍几个我常用的Linux 命令，每个命令这里只介绍其常用参数。 对于每个Linux 命令都可以使用man &#43; 命令名称，查看其完整使用方法。 0，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/04/used-linux-cmd1/" />
+<meta property="article:published_time" content="2020-04-16T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-04-16T21:41:52+08:00" />
+<meta itemprop="name" content="实用的linux 命令（上）">
+<meta itemprop="description" content="今天介绍几个我常用的Linux 命令，每个命令这里只介绍其常用参数。 对于每个Linux 命令都可以使用man &#43; 命令名称，查看其完整使用方法。 0，">
+<meta itemprop="datePublished" content="2020-04-16T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-16T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4374">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="实用的linux 命令（上）"/>
+<meta name="twitter:description" content="今天介绍几个我常用的Linux 命令，每个命令这里只介绍其常用参数。 对于每个Linux 命令都可以使用man &#43; 命令名称，查看其完整使用方法。 0，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">实用的linux 命令（上）</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-16 </span>
+        <div class="post-category">
+            <a href="/categories/linux-%E7%B3%BB%E7%BB%9F/"> Linux 系统 </a>
+            </div>
+          <span class="more-meta"> 4374 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0man">0，man</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#1cat">1，cat</a></li>
+    <li><a href="#2more">2，more</a></li>
+    <li><a href="#3less">3，less</a></li>
+    <li><a href="#4head">4，head</a></li>
+    <li><a href="#5tail">5，tail</a></li>
+    <li><a href="#6find">6，find</a>
+      <ul>
+        <li><a href="#61-目录可不写">6.1 目录(可不写)</a></li>
+        <li><a href="#62-条件必须写">6.2 条件(必须写)</a></li>
+        <li><a href="#63-操作可不写">6.3 操作(可不写)</a></li>
+        <li><a href="#64-例子">6.4 例子</a></li>
+      </ul>
+    </li>
+    <li><a href="#7chmod">7，chmod</a>
+      <ul>
+        <li><a href="#71-r参数可选">7.1 R参数(可选)</a></li>
+        <li><a href="#72-mode">7.2 mode</a></li>
+        <li><a href="#73-例子">7.3 例子</a></li>
+      </ul>
+    </li>
+    <li><a href="#8chown">8，chown</a></li>
+    <li><a href="#9scp">9，scp</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#10wc">10，wc</a></li>
+    <li><a href="#11grep">11，grep</a></li>
+    <li><a href="#12sort">12，sort</a></li>
+    <li><a href="#13uniq">13，uniq</a></li>
+    <li><a href="#14awk">14，awk</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>今天介绍几个我常用的Linux 命令，每个命令这里只介绍其常用参数。</p>
+<p>对于每个<code>Linux 命令</code>都可以使用<code>man + 命令名称</code>，查看其完整使用方法。</p>
+<h2 id="0man">0，man</h2>
+<p><code>man</code> 命令是一个非常有用的命令，当你不会使用某个<code>Linux</code> 命令时，可以使用<code>man</code> 来查看其帮助文档。<code>man</code> 命令查到的手册来源于目录<code> /usr/share/man/</code>，可以看到该目录下有9 个这样的目录：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ls /usr/share/man/| grep man
+______________________________
+man1
+man2
+man3
+man4
+man5
+man6
+man7
+man8
+man9
+</code></pre>
+<p><code>man</code> 手册分9 种，用数字<code>[1-9]</code> 来区分，分别代表的含义如下（可以用<code>man man</code> 命令来查看）：
+| 数字 | 含义 |
+|&ndash;|&ndash;|
+| <code>1</code> |  System commands 系统命令 |
+| <code>2</code> | System calls 系统函数 |
+| <code>3</code> | Library calls 库函数  |
+| <code>4</code> |  Special files 特殊文件|
+| <code>5</code> |  File formats 文件格式|
+| <code>6</code> |  Games 游戏和娱乐|
+| <code>7</code> |  Miscellaneous 杂项|
+| <code>8</code> | System administration commands 管理员<code>root</code> 命令 |
+| <code>9</code> | 其它 |</p>
+<p>可以通过设置不同的数字来查看不同的手册，如下：</p>
+<pre><code class="language-shell">man 1 系统命令名
+man 2 系统函数名
+man 3 库函数名
+</code></pre>
+<p>如果没有带这个数字，则会从<code>1</code> 查到<code>9</code>，直到查到第一个为止。</p>
+<h1 id="一文件管理">一，文件管理</h1>
+<h2 id="1cat">1，cat</h2>
+<p><code>cat</code> 命令用于查看文件内容，该命令会将文件的所有内容输出到<code>控制台</code>。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat hello.c
+______________________________________
+// 包含头文件
+#include &lt;stdio.h&gt;   
+
+// 程序入口，main 函数，返回值类型为int 类型
+int main() 
+{
+    // 打印字符串
+    printf(&quot;hello world .\n&quot;);
+
+    return 0;
+}
+</code></pre>
+<p><code>cat</code> 命令常用参数：
+|  参数| 含义 |
+|&ndash;|&ndash;|
+| -n | 对输出的内容加上行号 |
+|-b|对输出的内容加上行号，<code>空白行</code>不计入行号|
+|-s|将两个以上的<code>空白行</code>，显示为一个<code>空白行</code>|</p>
+<p><code>cat</code> 命令会将文件内容快速的输出到<code>控制台</code>，它并不能控制浏览文件的进度。如果想控制浏览文件的进度，可以使用<code>more</code> 或<code>less</code> 命令。</p>
+<h2 id="2more">2，more</h2>
+<p><code>more</code> 命令用于查看Linux 文件的内容，用<code>more filename</code> 打开一个文件后，可以控制<code>向上</code>或<code>向下</code>翻滚页面。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; more log.txt
+________________________________
+11111111111111111111111111111111
+11111111111111111111111111111111
+11111111111111111111111111111111
+11111111111111111111111111111111
+11111111111111111111111111111111
+11111111111111111111111111111111
+11111111111111111111111111111111
+11111111111111111111111111111111
+--More--(2%)  (`注`：这里显示浏览页面的`进度百分比`)
+</code></pre>
+<p><code>more</code> 命令常用操作：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Enter 键</code></td>
+<td><code>向下</code>翻滚<code>一行</code></td>
+</tr>
+<tr>
+<td><code>空格键</code></td>
+<td><code>向下</code>翻滚<code>一页</code>，<code>一页</code>的大小可以使用 <code>-N</code> 参数来设置</td>
+</tr>
+<tr>
+<td><code>Ctrl + B</code> （本操作并不是很方便 ）</td>
+<td><code>向上</code>翻滚<code>一页</code>，<code>一页</code>的大小可以使用 <code>-N</code> 参数来设置</td>
+</tr>
+</tbody>
+</table>
+<p>使用下面的方式将<code>一页</code> 的大小设置为10 行，这时每次<code>向上</code>或者<code>向下</code>翻页时，每次会滚动<code>10</code> 行：</p>
+<pre><code class="language-shell">more -10 log.txt
+</code></pre>
+<p><code>more 命令</code>可以与<code>cat 命令</code>来配合使用，比如用<code>cat</code>显示行号，然后用<code>more</code> 控制翻页，并且页的大小为10 行：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat -n log.txt| more -10
+——————————————————————————————————————————
+    56	1111111111111111111111111111111111
+    57	1111111111111111111111111111111111
+    58	1111111111111111111111111111111111
+    59	1111111111111111111111111111111111
+    60	1111111111111111111111111111111111
+    61	1111111111111111111111111111111111
+    62	1111111111111111111111111111111111
+--More--
+（`注`：第一列为行号，并且这时`进度百分比`消失了，而且`不能向上翻页`）
+</code></pre>
+<h2 id="3less">3，less</h2>
+<p><code>less 命令</code> 也是用来浏览文件内容，但与<code>more 命令</code> 有些不同，<code>less 命令</code>有更多的操作。</p>
+<p>用命令<code>less filename</code> 打开文件后的常用操作：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>b</code></td>
+<td>向上翻一页</td>
+</tr>
+<tr>
+<td><code>d</code>或者<code>空格键</code></td>
+<td>向下翻一页</td>
+</tr>
+<tr>
+<td><code>k</code>或者<code>方向键↑</code></td>
+<td>向上翻一行</td>
+</tr>
+<tr>
+<td><code>j</code>或者<code>方向键↓</code>或者<code>Enter 键</code></td>
+<td>向下翻一行</td>
+</tr>
+<tr>
+<td><code>/pattern</code></td>
+<td>在页面中搜索字符串<code>pattern</code>，匹配到的字符串会高亮显示，可以用<code>-i</code> 参数来忽略大小写</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>锁定<code>下一个</code>匹配到的字符串<code>pattern</code></td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>锁定<code>上一个</code>匹配到的字符串<code>pattern</code></td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>退出当前文件</td>
+</tr>
+</tbody>
+</table>
+<p><code>less</code> 命令常用参数：
+| 参数 | 含义 |
+|&ndash;|&ndash;|
+| <code>-i</code> | 忽略搜索<code>/pattern</code>时的大小写 |
+| <code>-m</code> | 显示类似<code>more 命令</code>的进度百分比 |
+| <code>-N</code> | 显示行号 |
+| <code>-s</code> | 连续<code>空白行</code>显示为一行 |</p>
+<p>如下命令，即显示<code>行号</code>又显示<code>进度百分比</code>：</p>
+<pre><code class="language-shell">less -mN README.md
+</code></pre>
+<p>效果如下：
+<img src="https://img-blog.csdnimg.cn/20200414092509273.png" alt="在这里插入图片描述"></p>
+<h2 id="4head">4，head</h2>
+<p><code>head</code> 命令用于从一个文件的开头处查看文件。常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n</code></td>
+<td>查看一个文件的前N行，默认为前10 行</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>查看一个文件的前N字节</td>
+</tr>
+</tbody>
+</table>
+<p>如下命令查看<code>hello.c</code> 文件的前5 行：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; head hello.c -n 5
+_______________________________________
+// 包含头文件
+#include &lt;stdio.h&gt;   
+
+// 程序入口，main 函数，返回值类型为int 类型
+int main()
+</code></pre>
+<p>如下命令查看<code>hello.c</code> 文件的前20 字节：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; head hello.c -c 20
+_______________________________________
+// 包含头文件
+#
+</code></pre>
+<h2 id="5tail">5，tail</h2>
+<p><code>tail</code> 命令的含义与<code>head</code> 恰好相反，<code>tail</code> 从一个文件的尾部开始查看，常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n</code></td>
+<td>查看一个文件的最后N行，默认为后10 行</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>查看一个文件的最后N字节</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>实时查看文件的内容，并输出到控制台，常用于查看<code>日志</code> 输出</td>
+</tr>
+</tbody>
+</table>
+<p>如下命令查看<code>hello.c</code> 文件的最后5 行：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; tail hello.c -n 5
+_______________________________
+    // 打印字符串
+    printf(&quot;hello world 1.\n&quot;);
+        
+    return 0;
+}
+</code></pre>
+<p>如下命令查看<code>hello.c</code> 文件的最后20 字节：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; tail hello.c -c 20
+_______________________________
+   
+    return 0;
+}
+</code></pre>
+<h2 id="6find">6，find</h2>
+<p><code>find</code> 命令用来查找<code>指定目录</code>下符合<code>指定条件</code>的文件，并进行<code>指定操作</code>，其语法如下：</p>
+<pre><code class="language-shell">find `目录` `条件` `操作`
+</code></pre>
+<h3 id="61-目录可不写">6.1 目录(可不写)</h3>
+<p><code>目录</code>表示在哪个<code>目录</code>下进行查找。例如<code>./</code> 代表当前目录，<code>/</code> 代表根目录。如果没有写目录，默认会在<code>当前目录及其子目录</code>下查找。</p>
+<h3 id="62-条件必须写">6.2 条件(必须写)</h3>
+<p>查找符合怎样<code> 条件</code>的内容，支持如下<code>常用条件</code>(这里并没有列出所有可用条件)：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-name</code></td>
+<td>按照<code>文件名称</code>查找，支持<code>*</code> 通配符</td>
+</tr>
+<tr>
+<td><code>-perm</code></td>
+<td>按照<code>文件权限</code>查找</td>
+</tr>
+<tr>
+<td><code>-user</code></td>
+<td>按照<code>文件属主</code>查找</td>
+</tr>
+<tr>
+<td><code>-group</code></td>
+<td>按照<code>文件所属的组</code>查找</td>
+</tr>
+<tr>
+<td><code>-prune </code></td>
+<td>忽略某个目录</td>
+</tr>
+<tr>
+<td><code>-mtime -n/+n</code></td>
+<td>按照<code>文件更改时间</code>来查找，<code>-n</code>表示n天之内，<code>+n</code>表示n天之前</td>
+</tr>
+<tr>
+<td><code>-atime -n/+n</code></td>
+<td>按照<code>文件访问时间</code>来查找</td>
+</tr>
+<tr>
+<td><code>-ctime -n/+n</code></td>
+<td>按照<code>文件创建时间</code>来查找</td>
+</tr>
+<tr>
+<td><code>-type</code></td>
+<td>按照<code>文件类型</code>查找</td>
+</tr>
+<tr>
+<td><code>-size N[bcwkMG] </code></td>
+<td>按照<code>文件大小</code>查找，<code>bcwkMG</code> 是可选的单位</td>
+</tr>
+<tr>
+<td><code>-depth</code></td>
+<td>使查找在进入子目录前先行查找完本目录</td>
+</tr>
+<tr>
+<td><code>-maxdepth</code></td>
+<td>设置查找目录的最大深度</td>
+</tr>
+<tr>
+<td><code>-mindepth</code></td>
+<td>设置查找目录的最小深度</td>
+</tr>
+</tbody>
+</table>
+<p>其中<code>-type</code> 支持的类型如下：
+| 类型 | 含义 |
+|&ndash;|&ndash;|
+|<code>f</code>|普通文件|
+| <code>d</code> | 目录 |
+| <code>l</code> | 符号链接文件 |
+|<code>s</code>|socket|
+| <code>b</code> | 块设备文件 |
+| <code>c</code> | 字符设备文件 |
+| <code>p</code> | 管道文件 |</p>
+<h3 id="63-操作可不写">6.3 操作(可不写)</h3>
+<p>对查找出来的文件进行怎样的<code>操作</code>，支持如下<code>操作</code>：
+| 操作 | 含义 |
+|&ndash;|&ndash;|
+| <code>-print</code> |  输出到<code>控制台</code>，不写的话，默认为此操作|
+|<code>-exec</code>|对查找到的文件执行shell命令|
+|<code>-ok</code>|对查找到的文件执行shell命令，在执行命令之前会先提示用户是否执行，比<code>-exec</code> 更安全|</p>
+<p><code>exec</code> 与 <code>-ok</code> 的格式为：</p>
+<pre><code class="language-shell">-exec/-ok command {} \;
+</code></pre>
+<p>其中可变的只有<code>command</code>，其它都是固定写法，不用改变，<code>command</code> 为<code>Linux</code> 命令，比如<code>ls</code>，<code>rm</code>。</p>
+<h3 id="64-例子">6.4 例子</h3>
+<pre><code class="language-shell">find . -name &quot;*.log&quot;	`在当前目录及其子目录查找，文件名以&quot;.log&quot; 结尾的文件，并输出`
+find . -perm 777		`在当前目录及其子目录查找，权限为&quot;777&quot; 的文件，并输出`
+find . -type d			`在当前目录及其子目录查找，文件类型为目录的文件，并输出`
+find . -name &quot;*.c&quot; -exec rm {} \; `在当前目录及其子目录查找，文件名以&quot;.c&quot; 结尾的文件，并删除`
+find . -size +100c		`在当前目录及其子目录查找，文件大小大于100字节的文件，并输出`
+find . -size -100c 		`在当前目录及其子目录查找，文件大小小于100字节的文件，并输出`
+find . -size 100c		`在当前目录及其子目录查找，文件大小等于100字节的文件，并输出`
+</code></pre>
+<h2 id="7chmod">7，chmod</h2>
+<p>在类<code>Unix</code> 系统中，文件的<code>调用权限</code>分三级，分别是：<code>文件拥有者</code>、<code>群组</code>、<code>其他</code>。文件的<code>操作权限</code> 分三种分别是：<code>可读</code>，<code>可写</code>，<code>可执行</code>。</p>
+<p><code>chmod</code> 命令用于修改文件的<code>调用权限</code>和<code>操作权限</code>，该命令的语法格式如下(这里只列出了<code>-R</code> 参数，还有其它)：</p>
+<pre><code class="language-shell">chmod [-R] `mode` `filename`
+</code></pre>
+<h3 id="71-r参数可选">7.1 R参数(可选)</h3>
+<p><code>-R</code> 参数表示，是否操作当前目录下的所有文件与子目录。</p>
+<h3 id="72-mode">7.2 mode</h3>
+<p><code>mode</code> 包含三部分：<code>[ugoa]</code>，<code>+-=</code>，<code>[rwx]</code>，它们的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th>字母</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>u</code></td>
+<td>该文件的<code>拥有者</code></td>
+</tr>
+<tr>
+<td><code>g</code></td>
+<td>与该文件所属<code>同一群组者 </code></td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>其它用户</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>所有用户，即<code>ugo</code> 三者皆是</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td><code>增加</code>权限</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>取消</code>权限</td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td><code>唯一设定</code>权限，即设置为只有一个权限</td>
+</tr>
+<tr>
+<td><code>r</code></td>
+<td><code>可读</code>权限</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td><code>可写</code>权限</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td><code>可执行</code>权限</td>
+</tr>
+</tbody>
+</table>
+<h3 id="73-例子">7.3 例子</h3>
+<pre><code class="language-shell">chmod ugo+r file			`将文件file 设为所有人皆可读`
+chmod a+w file				`将文件file 设为所有人皆可写`
+chmod ug+w,o-w file1 file2	`将文件file1 file2设为该文件拥有者，与其所属同一个群组者可写入，但其它用户不可写`
+chmod -R a+r dir/*			`将dir 目录下的所有文件与子目录设为所有人可读`
+</code></pre>
+<h2 id="8chown">8，chown</h2>
+<p><code>chown</code> 命令用于将文件的拥有者改为指定的用户或组。</p>
+<p>一般来说<code>chown</code> 命令由<code>root</code> 使用，因为普通用户没有权限改变他人文件的拥有者，也没有权限把自己的文件拥有者改设为他人。</p>
+<p><code>chown</code> 命令的语法格式如下：</p>
+<pre><code class="language-shell">chown [-R] user[:group] file_list
+</code></pre>
+<p><code>-R</code> 参数表示，是否操作当前目录下的所有文件与子目录。</p>
+<p>其它参数含义：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user</code></td>
+<td>新的文件拥有者</td>
+</tr>
+<tr>
+<td><code>group</code></td>
+<td>新的文件拥有者组</td>
+</tr>
+<tr>
+<td><code>file_list</code></td>
+<td>要修改的文件，可以是一个文件，也可以是一个文件列表</td>
+</tr>
+</tbody>
+</table>
+<p>例子：</p>
+<pre><code class="language-shell">chown runoob:runoobgroup file	`将文件file 的拥有者设为runoob，群组设为runoobgroup`
+chown -R root:root dir/*		`将dir/ 目录下的所有文件与子目录的拥有者设为runoob，群组设为runoobgroup`
+</code></pre>
+<h2 id="9scp">9，scp</h2>
+<p><code>scp</code> 命令用于远程复制目录或文件，它基于<code>ssh</code>，<code>scp</code>是 <code>secure copy</code> 的缩写。<code>scp</code> 命令是<code>rcp</code> 命令的加强版，<code>scp</code> 是加密传输，<code>rcp</code> 是非加密传输。</p>
+<p><code>scp</code> 的语法格式如下：</p>
+<pre><code class="language-shell">scp [可选参数] file_source file_target 
+</code></pre>
+<p>有如下常用<code>可选参数</code>：
+| 参数 | 协议 |
+|&ndash;|&ndash;|
+| <code>-1</code> | 使用协议ssh1 传输|
+| <code>-2</code> | 使用协议ssh2 传输|
+| <code>-4</code> | 使用IPv4协议寻址|
+| <code>-6</code> | 使用IPv6协议寻址|
+| <code>-C</code> | 使用压缩 |
+| <code>-r</code> |  递归复制整个目录 |
+|<code>-P</code>|指定传输端口|</p>
+<p>例子：</p>
+<pre><code class="language-shell">scp local_file remote_username@remote_ip:remote_folder	`指定了用户名，命令执行后需要再输入密码`
+scp local_file remote_ip:remote_folder	`没有指定用户名，命令执行后需要输入用户名和密码`
+
+scp -r local_folder remote_username@remote_ip:remote_folder	`复制目录`
+scp -r local_folder remote_ip:remote_folder					`复制目录`
+
+scp remote_username@remote_ip:remote_file local_folder		`从远程复制到本地`
+scp -r remote_username@remote_ip:remote_folder local_folder	`从远程复制到本地`
+</code></pre>
+<h1 id="二文档处理">二，文档处理</h1>
+<h2 id="10wc">10，wc</h2>
+<p><code>wc</code> 命令用于计算<code>行数</code>，<code>字数</code>和<code>文件大小</code>(以字节为单位)，其语法格式如下：</p>
+<pre><code class="language-shell">wc [-lcw] filename
+</code></pre>
+<p>其参数含义如下：
+|参数| 含义 |
+|&ndash;|&ndash;|
+| <code>-l</code> | 计算文件行数 |
+| <code>-c</code> | 计算文件大小 |
+| <code>-w</code> | 计算文件字数 |
+|<code>不带参数</code>|以上三者都会计算|</p>
+<h2 id="11grep">11，grep</h2>
+<p><code>grep</code> 命令用于查找文件中符合<code>特定条件</code>的字符串，其语法格式如下：</p>
+<pre><code class="language-shell">grep `[参数]` `匹配条件` `文件`
+</code></pre>
+<p>常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c</code></td>
+<td>计算符合<code>条件</code>的行数</td>
+</tr>
+<tr>
+<td><code>-e</code></td>
+<td>使用正则表达式，一个<code>-e</code> 后只能跟一个<code>pattern</code>，可以写多个<code>-e</code></td>
+</tr>
+<tr>
+<td><code>-E</code></td>
+<td>使用正则表达式，可以使用<code>|</code> 来分割多个<code>pattern</code> ，从而写多个<code>pattern</code></td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>忽略大小写</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>只列出符合<code>条件</code>  的<code>文件名</code></td>
+</tr>
+<tr>
+<td><code>-L</code></td>
+<td>只列出不符合<code>条件</code>  的<code>文件名</code></td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td><code>-o</code></td>
+<td>只显示匹配<code>pattern</code> 的部分，这个参数很有用</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>显示不符合<code>条件</code>的所有行</td>
+</tr>
+<tr>
+<td><code>-r</code></td>
+<td>递归目录查找</td>
+</tr>
+<tr>
+<td><code>--color</code></td>
+<td>使匹配到的字符串高亮显示</td>
+</tr>
+<tr>
+<td><code>-A&lt;行数N&gt;</code></td>
+<td>除了显示符合<code>条件</code>的那一行之外，还显示该行之后<code>N行</code>的内容</td>
+</tr>
+<tr>
+<td><code>-B&lt;行数N&gt;</code></td>
+<td>除了显示符合<code>条件</code>的那一行之外，还显示该行之前<code>N行</code>的内容</td>
+</tr>
+<tr>
+<td><code>-C&lt;行数N&gt;</code></td>
+<td>除了显示符合<code>条件</code>的那一行之外，还显示该行之前和之后<code>N行</code>的内容</td>
+</tr>
+</tbody>
+</table>
+<p>例子：</p>
+<pre><code class="language-shell">grep test *file    `在当前目录下，从所有的以&quot;file&quot; 为后缀的文件中，匹配字符串&quot;test&quot;`
+grep -r hello ./   `在当前目录下，递归所有的文件和目录，匹配字符串&quot;hello&quot;`
+grep -v hello *txt `在当前目录下，从所有的以&quot;txt&quot; 为后缀的文件中，显示所有不匹配字符串&quot;hello&quot; 的行`
+</code></pre>
+<p>下面三个命令<code>sort</code>，<code>uniq</code>，<code>awk</code> 相对来说较复杂，限于篇幅，所以不在本文中详细介绍，具体可点开相应链接查看。</p>
+<h2 id="12sort">12，sort</h2>
+<p><code>sort</code> 命令用于将文本内容进行排序，其以文本内容的<code>行</code>为单位，以ASCII 码的次序进行排列。</p>
+<p>详见<a href="https://blog.csdn.net/LUAOHAN/article/details/105538649">这里</a>。</p>
+<h2 id="13uniq">13，uniq</h2>
+<p><code>uniq</code> 命令用于检查及删除文本文件中重复出现的行列。</p>
+<p>详见<a href="https://blog.csdn.net/LUAOHAN/article/details/105540963">这里</a>。</p>
+<h2 id="14awk">14，awk</h2>
+<p><code>awk</code> 命令是一个强大的文本分析工具，它有着复杂的功能。</p>
+<p>详见<a href="https://blog.csdn.net/LUAOHAN/article/details/105551087">这里</a>。</p>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-04-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/linux-uniq/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">linux uniq 命令实用手册</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/vim-use/">
+            <span class="next-text nav-default">如何高效使用Vim</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/04/used-linux-cmd1/" class="leancloud_visitors" data-flag-title="实用的linux 命令（上）">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

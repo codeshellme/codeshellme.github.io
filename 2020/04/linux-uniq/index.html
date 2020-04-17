@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>linux uniq 命令实用手册 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Linux uniq 命令用于处理文本内容中的重复行。 这里我们只介绍其常用参数，其完整用法可参见man uniq。 例如，我们有如下文件内容： &amp;gt;&amp;gt;&amp;gt; cat log.txt _______________ hello HEllo world world hello 使" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/04/linux-uniq/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="linux uniq 命令实用手册" />
+<meta property="og:description" content="Linux uniq 命令用于处理文本内容中的重复行。 这里我们只介绍其常用参数，其完整用法可参见man uniq。 例如，我们有如下文件内容： &gt;&gt;&gt; cat log.txt _______________ hello HEllo world world hello 使" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/04/linux-uniq/" />
+<meta property="article:published_time" content="2020-04-16T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-04-16T21:41:52+08:00" />
+<meta itemprop="name" content="linux uniq 命令实用手册">
+<meta itemprop="description" content="Linux uniq 命令用于处理文本内容中的重复行。 这里我们只介绍其常用参数，其完整用法可参见man uniq。 例如，我们有如下文件内容： &gt;&gt;&gt; cat log.txt _______________ hello HEllo world world hello 使">
+<meta itemprop="datePublished" content="2020-04-16T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-16T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="591">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="linux uniq 命令实用手册"/>
+<meta name="twitter:description" content="Linux uniq 命令用于处理文本内容中的重复行。 这里我们只介绍其常用参数，其完整用法可参见man uniq。 例如，我们有如下文件内容： &gt;&gt;&gt; cat log.txt _______________ hello HEllo world world hello 使"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">linux uniq 命令实用手册</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-16 </span>
+        <div class="post-category">
+            <a href="/categories/linux-%E7%B3%BB%E7%BB%9F/"> Linux 系统 </a>
+            </div>
+          <span class="more-meta"> 591 字 </span>
+          <span class="more-meta"> 阅读约需 2 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Linux <code>uniq</code> 命令用于处理文本内容中的<code>重复行</code>。</p>
+<p>这里我们只介绍其常用参数，其完整用法可参见<code>man uniq</code>。</p>
+<p>例如，我们有如下文件内容：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt
+_______________
+hello
+HEllo
+world
+world
+hello
+</code></pre>
+<p>使用<code>uniq</code> 命令，不加任何参数处理，注意，这里的两行<code>hello</code> 并没有相邻，所以最终还是显示了两行<code>hello</code>，而两行<code>world</code> 是相邻的，所以去掉了其中一行<code>world</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; uniq log.txt 
+hello
+HEllo
+world
+hello
+</code></pre>
+<p>如果想将不相邻的相同内容也去重，一般需要与<code>sort</code> 命令配合使用，先排序，再去重，如下(这时所有的重复行都被去重了)：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt | sort| uniq
+____________________________
+HEllo
+hello
+world
+</code></pre>
+<p>使用<code>-s</code>参数，忽略前N 个字符（此处忽略了前2 个字符）：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt | sort| uniq -s 2
+_________________________________
+HEllo
+world
+</code></pre>
+<p>使用<code>-i</code> 参数，忽略大小写（最终只剩下了大写的）：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt | sort| uniq -i
+_______________________________
+HEllo
+world
+</code></pre>
+<p>使用<code>-d</code> 参数，只输出<code>重复的行</code>（<code>HEllo</code> 没有重复，所以没有输出）：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt | sort| uniq -d
+_______________________________
+hello
+world
+</code></pre>
+<p>使用<code>-u</code> 参数，与<code>-d</code> 参数相反，只输出<code>不重复的行</code>（<code>HEllo</code> 没有重复，所以输出）：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt | sort| uniq -u
+———————————————————————————————
+HEllo
+</code></pre>
+<p>使用<code>-c</code> 参数，计算重复行的次数，如下（第一列为出现的次数）：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; cat log.txt | sort| uniq -c
+_______________________________
+      1 HEllo
+      2 hello
+      2 world
+</code></pre>
+<p>按照<code>重复次数</code>进行<code>反向排序</code>：</p>
+<pre><code class="language-shell">cat log.txt | sort| uniq -c| sort -nr
+—————————————————————————————————————
+      2 world
+      2 hello
+      1 HEllo
+</code></pre>
+<p>下面总结以上介绍到的参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-s N</code></td>
+<td>忽略前N 的字符</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>忽略大小写</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>只输出重复的行</td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>只输出不重复的行</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>对重复的行进行计数</td>
+</tr>
+</tbody>
+</table>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-04-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/linux-sort/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">linux sort 命令实用手册</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/used-linux-cmd1/">
+            <span class="next-text nav-default">实用的linux 命令（上）</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/04/linux-uniq/" class="leancloud_visitors" data-flag-title="linux uniq 命令实用手册">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
