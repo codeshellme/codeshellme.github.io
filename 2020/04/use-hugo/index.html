@@ -48,7 +48,7 @@
 <meta itemprop="description" content="1，Hugo 简介 搭建个人博客有很多开源的博客框架，我们要介绍的框架叫作Hugo。Hugo 是一个基于Go 语言的框架，可以快速方便的创建自己的博">
 <meta itemprop="datePublished" content="2020-04-06T01:37:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-06T01:37:56&#43;08:00" />
-<meta itemprop="wordCount" content="5264">
+<meta itemprop="wordCount" content="5633">
 
 
 
@@ -135,8 +135,8 @@
         <div class="post-category">
             <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
             </div>
-          <span class="more-meta"> 5264 字 </span>
-          <span class="more-meta"> 阅读约需 11 分钟 </span>
+          <span class="more-meta"> 5633 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
         
 
       </div>
@@ -184,6 +184,7 @@
         <li><a href="#123修改配置文件">12.3，修改配置文件</a></li>
       </ul>
     </li>
+    <li><a href="#13如何让hugo-中的文章支持html-元素">13，如何让Hugo 中的文章支持HTML 元素</a></li>
   </ul>
 </nav>
   </div>
@@ -294,8 +295,8 @@ Press Ctrl+C to stop
 <p>可以看到服务默认会在占用1313 端口，在浏览器中访问<code>http://localhost:1313/</code> 地址。</p>
 <p>如果一切正常，我们会看到一个像<a href="https://themes.gohugo.io/theme/hugo-theme-bootstrap4-blog/">hugo 官网演示一样的页面</a>。</p>
 <h2 id="7编写博客文章">7，编写博客文章</h2>
-<p>你只需要按照Markdown 的格式编写自己的文章，让后将写好的文章放在<code>myblog/content/posts</code>，hugo 就会读取到这片文章，并将这片文章展示在比的博客中。</p>
-<p>与普通Markdown 文章不一样的地方是，你需要在文章的开头写入如下结构的内容，这些内容包含在三杠线之间，在三杠线下边就是Markdown 的正文了：</p>
+<p>你只需要按照Markdown 的格式编写自己的文章，然后将写好的文章放在<code>myblog/content/posts</code>，hugo 就会读取到这片文章，并将这片文章展示在比的博客中。</p>
+<p>与普通Markdown 文章不一样的地方是，你需要在文章的开头写入如下结构的内容，这些内容包含在<code>三杠线</code>之间，在<code>三杠线</code>下边就是Markdown 的正文了：</p>
 <pre><code class="language-shell">---
 文章属性内容
 ---
@@ -665,6 +666,33 @@ git push origin master
 <p>重启博客系统，访问博客中的文章，可见文章中就出现了<code>Valine 评论区</code>：</p>
 <p><img src="https://img-blog.csdnimg.cn/20200408232726339.png" alt=""></p>
 <p>到此为止，我们就在<code>Hugo</code> 博客中加入了评论功能。</p>
+<h2 id="13如何让hugo-中的文章支持html-元素">13，如何让Hugo 中的文章支持HTML 元素</h2>
+<p>考虑到安全性问题，如果你在<code>Markdown</code> 中加入<code>HTML</code> 元素，Hugo 是不支持这种情况的，Hugo 框架会将<code>Markdown</code> 中的<code>HTML</code> 元素转换成如下字符串作为<code>注释</code>：</p>
+<pre><code class="language-html">&lt;!-- raw HTML omitted --&gt;
+</code></pre>
+<p>比如我们写了一篇这样的文章，内容如下：</p>
+<pre><code class="language-shell">---
+title: &quot;test&quot; 
+date: 2020-04-09T21:38:52+08:00
+lastmod: 2020-04-09T21:41:52+08:00
+categories: [&quot;test&quot;]
+author: &quot;@码农加油站&quot; 
+weight: 40
+slug: &quot;test-md&quot;
+---
+
+这只是一个测试文章
+&lt;h1&gt;这里有一句话&lt;/h1&gt;
+</code></pre>
+<p>当你将它放在Hugo 中访问时，会发现<code>&lt;h1&gt;这里有一句话&lt;/h1&gt;</code> 这句话被替换成了<code>&lt;!-- raw HTML omitted --&gt;</code> 而没有显示出来。</p>
+<p>如果你想让你的文章支持<code>HTML</code> 元素，需要在Hugo 的配置文件<code>config.toml</code> 中加入配置：</p>
+<pre><code class="language-shell">[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            unsafe = true
+</code></pre>
+<p>这样，你的文章中的<code>HTML 内容</code>，将正常显示。</p>
+<p>Hugo 官方文档中也给出了这个问题的详细说明，详见<a href="https://gohugo.io/getting-started/configuration-markup#goldmark">这里</a>。</p>
 
     </div>
 
