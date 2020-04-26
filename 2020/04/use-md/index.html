@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何使用Markdown 编写文档 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Markdown 是一种轻量级标记语言，用来编写文本文档，一般后缀名为.md。该语言在 2004 由约翰·格鲁伯（John Gruber）创建。 由于Markdown 语法" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/04/use-md/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何使用Markdown 编写文档" />
+<meta property="og:description" content="Markdown 是一种轻量级标记语言，用来编写文本文档，一般后缀名为.md。该语言在 2004 由约翰·格鲁伯（John Gruber）创建。 由于Markdown 语法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/04/use-md/" />
+<meta property="article:published_time" content="2020-04-25T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-04-25T21:41:52+08:00" />
+<meta itemprop="name" content="如何使用Markdown 编写文档">
+<meta itemprop="description" content="Markdown 是一种轻量级标记语言，用来编写文本文档，一般后缀名为.md。该语言在 2004 由约翰·格鲁伯（John Gruber）创建。 由于Markdown 语法">
+<meta itemprop="datePublished" content="2020-04-25T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-25T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3273">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何使用Markdown 编写文档"/>
+<meta name="twitter:description" content="Markdown 是一种轻量级标记语言，用来编写文本文档，一般后缀名为.md。该语言在 2004 由约翰·格鲁伯（John Gruber）创建。 由于Markdown 语法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何使用Markdown 编写文档</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-25 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 3273 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0编辑工具">0，编辑工具</a></li>
+        <li><a href="#1标题">1，标题</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#二级标题">二级标题</a>
+      <ul>
+        <li><a href="#三级标题">三级标题</a></li>
+        <li><a href="#2目录">2，目录</a></li>
+        <li><a href="#3文字修饰">3，文字修饰</a></li>
+        <li><a href="#4分割线">4，分割线</a></li>
+        <li><a href="#5列表">5，列表</a></li>
+        <li><a href="#6引用">6，引用</a></li>
+        <li><a href="#7代码块">7，代码块</a></li>
+        <li><a href="#8表格">8，表格</a></li>
+        <li><a href="#9超级链接">9，超级链接</a></li>
+        <li><a href="#10图片">10，图片</a></li>
+        <li><a href="#11文字上标下标">11，文字上标下标</a></li>
+        <li><a href="#12文字缩写">12，文字缩写</a></li>
+        <li><a href="#13注脚">13，注脚</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL3d3Mi5zaW5haW1nLmNuL3NtYWxsLzZhZWU3ZGJiZ3cxZXN2a2oxOWJxbWoyMGU4MGU4NzR6LmpwZw?x-oss-process=image/format,png" alt=""></p>
+<p><code>Markdown</code> 是一种轻量级标记语言，用来编写文本文档，一般后缀名为<code>.md</code>。该语言在 2004 由约翰·格鲁伯（John Gruber）创建。</p>
+<p>由于<code>Markdown</code> 语法简单，易读易写，变得越来越通用。目前很多的博客类型的网站都支持<code>Markdown</code> 语法来编写文档，例如<code>CSDN</code>，<code>知乎</code>，<code>博客园</code>，<code>简书</code>等。</p>
+<p>使用<code>Markdown</code> 语法，可以将自己的文章很容易（基本无需修改）的迁移到其它网站（只要这个网站支持<code>Markdown</code> 语法）。</p>
+<h3 id="0编辑工具">0，编辑工具</h3>
+<p><a href="https://typora.io/">Typora</a> 是一款不错的<code>Markdown</code> 编辑工具，其展示风格优雅大方，阅读起来很舒适。</p>
+<p>另外，也有很多在线编辑工具，在线工具方便简单，一般都分为两部分，左边是<code>文档编辑区</code>，右边是<code>文档展示区</code>，可以实时检查自己编写的是否正确。</p>
+<p>你可以选择自己喜欢的，例如：</p>
+<ul>
+<li><a href="http://www.mdeditor.com/">MdEditor</a></li>
+<li><a href="http://mahua.jser.me/">MaHua</a></li>
+<li><a href="https://pandao.github.io/editor.md/">Editor</a></li>
+<li><a href="https://tool.lu/markdown/">Markdown 在线工具</a></li>
+</ul>
+<p>下面介绍<code>Markdown</code> 语法，其<code>标记</code>与<code>文字</code>之间一般要有一个空格，例如一级标题：<code># 这是一级标题</code>。</p>
+<h3 id="1标题">1，标题</h3>
+<p>就像<code>HTML</code> 标签一样，<code>Markdown</code> 也有6 级标题：</p>
+<pre><code class="language-shell"># 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+###### 六级标题
+</code></pre>
+<p>其效果如下：</p>
+<blockquote>
+<h1 id="一级标题">一级标题</h1>
+<h2 id="二级标题">二级标题</h2>
+<h3 id="三级标题">三级标题</h3>
+<h4 id="四级标题">四级标题</h4>
+<h5 id="五级标题">五级标题</h5>
+<h6 id="六级标题">六级标题</h6>
+</blockquote>
+<h3 id="2目录">2，目录</h3>
+<p><code>[TOC]</code> 会自动为当前文档生成<code>目录</code>，<code>目录</code>是根据当前文档中的<code>标题</code>来生成的。</p>
+<p><code>[TOC]</code>  写在文档的什么位置（一般是文档开头），目录就会插在文档的哪个位置。</p>
+<p>需要注意的是，有些网站可能不支持这个功能。</p>
+<h3 id="3文字修饰">3，文字修饰</h3>
+<p>在<code>Markdown</code> 文档中，可以为文字添加<code>加粗</code>，<code>斜体</code>，<code>删除线</code>，<code>下划线</code>，当然这些效果也是可以叠加的：</p>
+<pre><code class="language-shell">*文字斜体*
+**文字加粗**
+***文字斜体加粗***
+~~文字删除~~ 
+~~**文字加粗删除**~~ 
+~~*文字斜体删除*~~ 
+&lt;u&gt;文字下划线使用HTML u 标签&lt;/u&gt;
+</code></pre>
+<p>其效果如下：</p>
+<blockquote>
+<p><em>文字斜体</em></p>
+</blockquote>
+<blockquote>
+<p><strong>文字加粗</strong></p>
+</blockquote>
+<blockquote>
+<p><em><strong>文字斜体加粗</strong></em></p>
+</blockquote>
+<blockquote>
+<p><del>文字删除</del></p>
+</blockquote>
+<blockquote>
+<p><del><strong>文字加粗删除</strong></del></p>
+</blockquote>
+<blockquote>
+<p><del><em>文字斜体删除</em></del></p>
+</blockquote>
+<blockquote>
+<p><u>文字下划线使用HTML u 标签</u></p>
+</blockquote>
+<h3 id="4分割线">4，分割线</h3>
+<p>分割线使用三个连续的<code>*</code> 或<code>-</code>，如下：</p>
+<pre><code class="language-shell">***
+---
+</code></pre>
+<p>其效果如下：</p>
+<blockquote>
+<hr>
+<hr>
+</blockquote>
+<h3 id="5列表">5，列表</h3>
+<h4 id="51有序列表">5.1，有序列表</h4>
+<p><code>有序列表</code>使用<code>数字</code>和<code>点</code>表示：</p>
+<pre><code class="language-shell">1. 有序列表一
+2. 有序列表二
+3. 有序列表三
+</code></pre>
+<p>其效果如下：</p>
+<blockquote>
+<ol>
+<li>有序列表一</li>
+<li>有序列表二</li>
+<li>有序列表三</li>
+</ol>
+</blockquote>
+<h4 id="52无序列表">5.2，无序列表</h4>
+<p><code>无序列表</code>可以使用<code>+</code>或<code>-</code>或<code>*</code> 表示，使用任意一种均可：</p>
+<pre><code class="language-shell">+ 无序列表1
++ 无序列表2
++ 无序列表3
+
+- 无序列表1
+- 无序列表2
+- 无序列表3
+
+* 无序列表1
+* 无序列表2
+* 无序列表3
+</code></pre>
+<p>其效果如下：</p>
+<blockquote>
+<ul>
+<li>无序列表1</li>
+<li>无序列表2</li>
+<li>无序列表3</li>
+</ul>
+</blockquote>
+<h4 id="53待办列表">5.3，待办列表</h4>
+<p><code>待办列表</code> 可以表示任务的处理状态，<code>-[]</code>表示<code>待办</code>状态，<code>-[X]</code> 表示<code>已办</code>状态：</p>
+<pre><code class="language-shell"> - [ ] 待办任务1
+ - [ ] 待办任务2
+ - [x] 已办任务
+</code></pre>
+<p>其效果如下：</p>
+<blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 待办任务1</li>
+<li><input disabled="" type="checkbox"> 待办任务2</li>
+<li><input checked="" disabled="" type="checkbox"> 已办任务</li>
+</ul>
+</blockquote>
+<p>需要注意的是，有些网站可能不支持<code>待办列表</code>。</p>
+<h4 id="54列表嵌套">5.4，列表嵌套</h4>
+<p>需要<code>嵌套列表</code>时，在子列表之前添加<code>四个空格</code>即可：</p>
+<pre><code class="language-shell">- 无序列表
+    - 子列表是无序列表
+    - 子列表是无序列表
+
+1. 有序列表
+    1. 子列表是有序列表
+    2. 子列表是有序列表
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<ul>
+<li>无序列表
+<ul>
+<li>子列表是无序列表</li>
+<li>子列表是无序列表</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>有序列表
+<ol>
+<li>子列表是有序列表</li>
+<li>子列表是有序列表</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<h3 id="6引用">6，引用</h3>
+<p><code>引用</code>一段文字使用符号<code>&gt;</code>：</p>
+<pre><code class="language-shell">&gt; 这是一段引用
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p>这是一段引用</p>
+</blockquote>
+<p>引用还分多级，一个<code>&gt;</code> 表示一级：</p>
+<pre><code class="language-shell">&gt; 一级引用
+&gt;&gt; 二级引用
+&gt;&gt;&gt; 三级引用
+&gt;&gt;&gt;&gt; 四级引用
+&gt;&gt;&gt;&gt;&gt; 五级引用
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p>一级引用</p>
+<blockquote>
+<p>二级引用</p>
+<blockquote>
+<p>三级引用</p>
+<blockquote>
+<p>四级引用</p>
+<blockquote>
+<p>五级引用</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="7代码块">7，代码块</h3>
+<p><code>Markdown</code> 支持两种<code>代码块</code>，一种是<code>行内代码块</code>，一种是<code>多行代码块</code>。</p>
+<p><code>行内代码块</code>用反引号``(即Tab 键上边那个键)引住，会高亮显示。</p>
+<p><code>多行代码块</code>支持多种编程语言高亮：</p>
+<p>C 语言代码高亮：</p>
+<pre><code>```c
+// C语言代码
+```.
+</code></pre>
+<p>效果如下：</p>
+<pre><code class="language-c">// C语言代码
+int main() 
+{
+    printf(&quot;hello world.\n&quot;);
+    return 0;
+}
+</code></pre>
+<p>C++ 语言代码高亮：</p>
+<pre><code>```cpp
+// c++ 语言代码
+```.
+</code></pre>
+<p>效果如下：</p>
+<pre><code class="language-cpp">// c++ 语言代码
+int main()
+{
+    cout &lt;&lt; &quot;hello world.&quot; &lt;&lt; endl; 
+    return 0;
+}
+</code></pre>
+<p>Java 语言代码高亮：</p>
+<pre><code>```java
+// Java 代码
+```.
+</code></pre>
+<p>效果如下：</p>
+<pre><code class="language-java">// Java 代码
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println(&quot;hello world.&quot;);
+    }
+}
+</code></pre>
+<p>Python 语言代码高亮：</p>
+<pre><code>```python
+# python 语言代码
+```.
+</code></pre>
+<p>效果如下：</p>
+<pre><code class="language-python"># python 语言代码
+print &quot;hello world.&quot;
+</code></pre>
+<p>还支持其它语言代码，这里就不一一举例了。</p>
+<h3 id="8表格">8，表格</h3>
+<p><code>Markdown</code> 表格的书写方法非常简单，用<code>竖线|</code>来分隔不同的单元格，使用 <code>横线-</code> 来分隔表头和其他行。</p>
+<p>如下表示一个<code>三行三列</code>的表格：</p>
+<pre><code class="language-shell">|表头1  | 表头2 |表头3|
+|--|--|--|
+| 第1行第1列 | 第1行第2列 |第1行第3列|
+| 第2行第1列 | 第2行第2列 |第2行第3列|
+</code></pre>
+<p>效果如下：</p>
+<table>
+<thead>
+<tr>
+<th>表头1</th>
+<th>表头2</th>
+<th>表头3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1行第1列</td>
+<td>第1行第2列</td>
+<td>第1行第3列</td>
+</tr>
+<tr>
+<td>第2行第1列</td>
+<td>第2行第2列</td>
+<td>第2行第3列</td>
+</tr>
+</tbody>
+</table>
+<p>使用<code>冒号:</code> 来表示表格中内容的<code>对齐方式</code>：</p>
+<ul>
+<li>冒号在左边：表示左对齐</li>
+<li>冒号在右边：表示右对齐</li>
+<li>两边都有冒号：表示居中对齐</li>
+</ul>
+<pre><code class="language-shell">| 左对齐 | 右对齐 | 居中对齐 |
+| :--| --: | :--: |
+| 单元格 | 单元格 | 单元格 |
+| 单元格 | 单元格 | 单元格 |
+</code></pre>
+<p>效果如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">左对齐</th>
+<th align="right">右对齐</th>
+<th align="center">居中对齐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">单元格</td>
+<td align="right">单元格</td>
+<td align="center">单元格</td>
+</tr>
+<tr>
+<td align="left">单元格</td>
+<td align="right">单元格</td>
+<td align="center">单元格</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9超级链接">9，超级链接</h3>
+<h4 id="91超级链接">9.1，超级链接</h4>
+<p><code>超级链接</code>的表示方式如下：</p>
+<pre><code class="language-shell">[超级链接文字](网址)
+</code></pre>
+<p>使用<code>中括号</code>和<code>小括号</code>表示，<code>文字描述</code>写在<code>中括号</code>内，<code>网址</code>写在<code>小括号</code>内，例如：</p>
+<pre><code class="language-shell">[这是百度网址](https://www.baidu.com)
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p><a href="https://www.baidu.com">这是百度网址</a></p>
+</blockquote>
+<h4 id="92直接显示连接">9.2，直接显示连接</h4>
+<p>如果想要直接显示连接地址，也可以使用<code>&lt;&gt;</code> 符号将<code>连接地址</code>括住：</p>
+<pre><code class="language-shell">&lt;https://www.baidu.com&gt;
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p><a href="https://www.baidu.com">https://www.baidu.com</a></p>
+</blockquote>
+<h4 id="93使用锚点">9.3，使用锚点</h4>
+<p>使用<code>锚点</code>，首先是先<code>定义锚点</code>，然后再<code>引用锚点</code>。</p>
+<p><code>定义锚点</code>是在一个<code>标题</code> 的后边加上<code>{#锚点名称}</code>，如下：</p>
+<pre><code class="language-shell">### 这是一个锚点{#here}
+</code></pre>
+<p>然后使用如下格式<code>使用锚点</code>，<code>中括号</code>内是<code>锚点描述</code>，<code>小括号</code>内是<code>锚点名称</code>：</p>
+<pre><code class="language-shell">跳转到[锚点](#here)
+</code></pre>
+<h3 id="10图片">10，图片</h3>
+<p>插入图片有四种方式，分别是：</p>
+<ul>
+<li>插入本地图片</li>
+<li>插入网络图片</li>
+<li>把图片存入Markdown 文件</li>
+<li>使用HTML &lt;img&gt; 标签</li>
+</ul>
+<p>引入图片的基本格式是<code>![描述](路径)</code>，你可以选择适合自己的方式。</p>
+<h4 id="101插入本地图片">10.1，插入本地图片</h4>
+<p>语法如下（描述文字可不写）：</p>
+<pre><code class="language-shell">![描述图片的文字](图片本地路径)
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-shell">![这是一张本地图片](/home/picture/name.png)
+</code></pre>
+<h4 id="102插入网络图片">10.2，插入网络图片</h4>
+<p>插入网络图片，首先这张图片要在网上，并且能够正常访问，如果是自己的图片，则需要先将自己的图片传到网上。</p>
+<p>语法如下（描述文字可不写）：</p>
+<pre><code class="language-shell">![描述图片的文字](图片网络地址)
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-shell">![这是一张网络图片](http://ww2.sinaimg.cn/small/6aee7dbbgw1esvkj19bqmj20e80e874z.jpg)
+</code></pre>
+<h4 id="103把图片存入markdown-文件">10.3，把图片存入Markdown 文件</h4>
+<p>这种方式需要先将图片转换成<code>base64 编码</code> 格式，然后将图片内容放入<code>Markdown</code> 文档中（所以，如果图片很大的话，<code>Markdown</code> 文档也会变得很大），最后再引用图片。</p>
+<p>语法如下（描述文字可不写），<code>第一行</code>为图片的引用，<code>第二行</code>为图片的声明（一般可写在文档的最后）：</p>
+<pre><code class="language-shell">![描述图片的文字][图片声明]
+[图片声明]:图片base64 编码内容
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-shell">![描述][base64str]
+[base64str]:data:image/png;base64,iVBORw0......
+</code></pre>
+<h4 id="104使用html-img-标签">10.4，使用HTML &lt;img&gt; 标签</h4>
+<p><code>Markdown</code> 中支持<code>HTML &lt;img&gt; 标签</code> 来显示图片，当然也可以使用<code>HTML 属性</code>，来调节<code>图片大小</code>等：</p>
+<pre><code class="language-shell">&lt;img src=&quot;图片地址&quot;&gt;
+</code></pre>
+<h3 id="11文字上标下标">11，文字上标下标</h3>
+<p><code>上标</code>使用<code>&lt;sup&gt;</code>，下标使用<code>&lt;sub&gt;</code>，如下：</p>
+<pre><code class="language-shell">下标：X&lt;sub&gt;2&lt;/sub&gt;
+上标：Y&lt;sup&gt;2&lt;/sup&gt;
+下标文字: X&lt;sub&gt;上标文字&lt;/sub&gt;
+上标文字: Y&lt;sup&gt;上标文字&lt;/sup&gt;
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p>下标：X<sub>2</sub></p>
+</blockquote>
+<blockquote>
+<p>上标：Y<sup>2</sup></p>
+</blockquote>
+<blockquote>
+<p>下标文字: X<sub>上标文字</sub></p>
+</blockquote>
+<blockquote>
+<p>上标文字: Y<sup>上标文字</sup></p>
+</blockquote>
+<h3 id="12文字缩写">12，文字缩写</h3>
+<p><code>文字缩写</code>使用<code>HTML &lt;abbr&gt; 标签</code>，如下所示：</p>
+<pre><code class="language-html">&lt;abbr title=&quot;Hyper Text Markup Language&quot;&gt;HTML&lt;/abbr&gt; 是一种标记语言。
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p><abbr title="Hyper Text Markup Language">HTML</abbr> 是一种标记语言。</p>
+</blockquote>
+<h3 id="13注脚">13，注脚</h3>
+<p>使用注脚也是分两步，一是定义注脚，二是使用注脚。</p>
+<p>定义注脚的语法如下：</p>
+<pre><code class="language-shell">[^注脚名称]:注脚内容
+</code></pre>
+<p>中括号内有一个<code>上尖括号^</code>，后边紧跟<code>注脚名称</code>，中括号后边是一个<code>冒号:</code>，再后边是<code>注脚内容</code>。一般<code>注脚定义</code>会被显示在文档的最后，多个<code>注脚定义</code>不能写在同一行。</p>
+<p>使用注脚时，只需要在<code>需要注解的文字</code>后边加上<code>[^注脚名称]</code>即可，如下：</p>
+<pre><code class="language-shell">这是一个注脚示例[^注脚名称]
+</code></pre>
+<p>完整示例：</p>
+<pre><code class="language-shell">注脚示例[^note]
+注脚示例二[^note2]
+
+[^note]:这是注脚示例内容        
+[^note2]:这是注脚示例内容2
+</code></pre>
+<p>效果如下：</p>
+<blockquote>
+<p>注脚示例<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+</blockquote>
+<blockquote>
+<p>注脚示例二<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+</blockquote>
+<p>（完。）</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>这是注脚示例内容 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>这是注脚示例内容2 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-04-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/linux-awk/">
+            <span class="next-text nav-default">linux awk 命令实用手册</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/04/use-md/" class="leancloud_visitors" data-flag-title="如何使用Markdown 编写文档">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
