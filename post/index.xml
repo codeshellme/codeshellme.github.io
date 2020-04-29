@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sat, 25 Apr 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 28 Apr 2020 01:37:56 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,15 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
+    </item>
+    
+    <item>
+      <title>Git 简明手册</title>
+      <link>https://codeshellme.github.io/2020/04/git-use/</link>
+      <pubDate>Tue, 28 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/git-use/</guid>
+      <description>0，Git 是什么 Git 是一个VCS（Version Control System），即版本控制系统。 版本控制系统从字面意思来看，它的用途就是管理/控制文件的版本</description>
     </item>
     
     <item>

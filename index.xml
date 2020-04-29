@@ -31,6 +31,15 @@
     </item>
     
     <item>
+      <title>Git 简明手册</title>
+      <link>https://codeshellme.github.io/2020/04/git-use/</link>
+      <pubDate>Tue, 28 Apr 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/04/git-use/</guid>
+      <description>0，Git 是什么 Git 是一个VCS（Version Control System），即版本控制系统。 版本控制系统从字面意思来看，它的用途就是管理/控制文件的版本</description>
+    </item>
+    
+    <item>
       <title>如何使用Markdown 编写文档</title>
       <link>https://codeshellme.github.io/2020/04/use-md/</link>
       <pubDate>Sat, 25 Apr 2020 21:38:52 +0800</pubDate>

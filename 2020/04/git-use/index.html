@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Git 简明手册 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="0，Git 是什么 Git 是一个VCS（Version Control System），即版本控制系统。 版本控制系统从字面意思来看，它的用途就是管理/控制文件的版本" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/04/git-use/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Git 简明手册" />
+<meta property="og:description" content="0，Git 是什么 Git 是一个VCS（Version Control System），即版本控制系统。 版本控制系统从字面意思来看，它的用途就是管理/控制文件的版本" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/04/git-use/" />
+<meta property="article:published_time" content="2020-04-28T01:37:56+08:00" />
+<meta property="article:modified_time" content="2020-04-28T01:37:56+08:00" />
+<meta itemprop="name" content="Git 简明手册">
+<meta itemprop="description" content="0，Git 是什么 Git 是一个VCS（Version Control System），即版本控制系统。 版本控制系统从字面意思来看，它的用途就是管理/控制文件的版本">
+<meta itemprop="datePublished" content="2020-04-28T01:37:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-28T01:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="5741">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Git 简明手册"/>
+<meta name="twitter:description" content="0，Git 是什么 Git 是一个VCS（Version Control System），即版本控制系统。 版本控制系统从字面意思来看，它的用途就是管理/控制文件的版本"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Git 简明手册</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-28 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 5741 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0git-是什么">0，Git 是什么</a></li>
+        <li><a href="#1git-五种状态">1，Git 五种状态</a></li>
+        <li><a href="#2git-安装">2，Git 安装</a></li>
+        <li><a href="#3git-帮助手册">3，Git 帮助手册</a></li>
+        <li><a href="#4git-配置">4，Git 配置</a></li>
+        <li><a href="#5获取一个git-仓库">5，获取一个Git 仓库</a></li>
+        <li><a href="#6查看当前状态">6，查看当前状态</a></li>
+        <li><a href="#7跟踪新文件">7，跟踪新文件</a></li>
+        <li><a href="#8提交到本地仓库">8，提交到本地仓库</a></li>
+        <li><a href="#9查看文件的提交日志">9，查看文件的提交日志</a></li>
+        <li><a href="#10修改文件">10，修改文件</a></li>
+        <li><a href="#11查看文件修改内容">11，查看文件修改内容</a></li>
+        <li><a href="#12撤销修改">12，撤销修改</a></li>
+        <li><a href="#13删除文件">13，删除文件</a></li>
+        <li><a href="#14修改文件名">14，修改文件名</a></li>
+        <li><a href="#15关联到远程仓库">15，关联到远程仓库</a></li>
+        <li><a href="#16推送到远端">16，推送到远端</a></li>
+        <li><a href="#17获取远端信息">17，获取远端信息</a></li>
+        <li><a href="#18查看分支">18，查看分支</a></li>
+        <li><a href="#19合并分支">19，合并分支</a></li>
+        <li><a href="#20拉取且合并">20，拉取且合并</a></li>
+        <li><a href="#21创建分支">21，创建分支</a></li>
+        <li><a href="#22切换分支">22，切换分支</a></li>
+        <li><a href="#23命令别名">23，命令别名</a></li>
+        <li><a href="#24文件忽略">24，文件忽略</a></li>
+        <li><a href="#25命令总结">25，命令总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://img-blog.csdnimg.cn/20200429215746252.jpg?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="0git-是什么">0，Git 是什么</h3>
+<p><a href="https://git-scm.com/">Git</a> 是一个<code>VCS</code>（<code>Version Control System</code>），即<code>版本控制系统</code>。</p>
+<p><code>版本控制系统</code>从字面意思来看，它的用途就是<code>管理/控制</code>文件的<code>版本</code>。使用它，可以方便的知道<code>一个文件</code>在<code>什么时间</code>被<code>谁</code>修改了<code>哪些内容</code>。这样，如果文件被改动后出了什么问题，就可以快速的定位问题，从而解决问题。</p>
+<p><code>版本控制系统</code>中可以保存任何的文件，比如文档，代码等。</p>
+<p><code>版本控制系统</code>主要有如下优点：</p>
+<ol>
+<li>方便<code>多人协作</code>。</li>
+<li>方便<code>管理/控制/查看</code>历史版本信息。</li>
+</ol>
+<p>常见的版本控制系统有 Git，SVN等，Git 比 SVN 更强大，更流行。</p>
+<p>Git 诞生于2005年，由Linux 开源社区（主要是Linus Torvalds）开发而成，他们对Git 的设计理念是：</p>
+<ul>
+<li><code>速度</code>更快</li>
+<li><code>设计简单</code></li>
+<li>完全<code>分布式</code></li>
+<li>对<code>非线性开发模式</code>的强力支持，允许成千上万个<code>并行开发的分支</code></li>
+<li>可以高效管理类似<code>Linux 内核</code>这样的<code>超大项目</code></li>
+</ul>
+<p>今天我们就来介绍Git。</p>
+<h3 id="1git-五种状态">1，Git 五种状态</h3>
+<p><img src="https://img-blog.csdnimg.cn/20200427185646278.png#pic_center" alt="Git 五种状态"></p>
+<p>如上图所示，Git 的工作状态可分为五种，清楚的了解了这五种状态，有助于我们对Git  的整体理解：</p>
+<ul>
+<li>
+<p>状态 0【本地目录】：</p>
+<p>其实在这个状态时，还没有Git，这时只是本地系统的<code>普通文件/目录</code>。</p>
+</li>
+<li>
+<p>状态 1【Git 工作区】：只有在工作区的内容，才属于Git 的控制范围，才会被Git 管理。</p>
+<p>通过<code>git init</code> 可以将<code>本地系统</code>中的普通目录纳入<code>Git 工作区</code>。</p>
+<p>通过<code>git checkout</code> 可以将<code>Git 本地仓库</code>中的内容拉到<code>Git 工作区</code>。</p>
+<p>通过<code>git clone/fetch</code> 可以将<code>Git 远程仓库</code>中的内容拷贝到<code>Git 工作区</code>。</p>
+</li>
+<li>
+<p>状态 2【Git 暂存区】：暂存文件的改动情况。</p>
+<p>通过<code>git add</code> 可以将<code>Git 工作区</code>中的普通文件加入<code>Git 暂存区</code>。</p>
+</li>
+<li>
+<p>状态 3【Git 本地仓库】：只供本地当前用户可访问，只有本地仓库中的内容，才可以提交到远程仓库。</p>
+<p>通过<code>git commit</code> 可以将<code>Git 暂存区</code>中的内容<code>提交</code>到<code>Git 本地仓库</code>。</p>
+</li>
+<li>
+<p>状态 4【Git 远程仓库】：可供多用户访问，方便协同合作。</p>
+<p>通过<code>git push</code> 可以将<code>Git 本地仓库</code>中的内容<code>推送</code>到<code>Git 远程仓库</code>。</p>
+</li>
+</ul>
+<h3 id="2git-安装">2，Git 安装</h3>
+<p>你可以使用你系统(<code>Windows/Mac/Linux</code>) 中对应的包管理器来安装Git 工具。比如在<code>Ubuntu 系统</code>中可以使用如下命令来安装：</p>
+<pre><code class="language-shell">sudo apt install git-all
+</code></pre>
+<h3 id="3git-帮助手册">3，Git 帮助手册</h3>
+<p>Git 共支持100 多个命令，可用<code>man git</code> 查看其详细手册。</p>
+<p>使用<code>git help -a</code> 命令可列出Git 支持的所有<code>命令command</code>，使用<code>git help &lt;command&gt;</code> 可查看每个命令的详细手册，例如<code>git help init</code>。</p>
+<p>使用<code>git help -g</code> 可列出其它手册：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git help -g
+________________________________________________________________
+The common Git guides are:
+
+   attributes   Defining attributes per path
+   everyday     Everyday Git With 20 Commands Or So
+   glossary     A Git glossary
+   ignore       Specifies intentionally untracked files to ignore
+   modules      Defining submodule properties
+   revisions    Specifying revisions and ranges for Git
+   tutorial     A tutorial introduction to Git (for version 1.5.1 or newer)
+   workflows    An overview of recommended workflows with Git
+</code></pre>
+<p>使用<code>git help 手册</code> 可查看某个对应的手册，例如<code>git help tutorial</code>。</p>
+<h3 id="4git-配置">4，Git 配置</h3>
+<p>可以使用Git 配置文件来定制自己的Git 环境。</p>
+<h4 id="41git-配置文件">4.1，Git 配置文件</h4>
+<p>Git 有三种级别的配置文件，你可以通过<code>直接修改配置文件</code>的方式来修改Git 配置，也可以使用<code>git config</code> 命令来修改Git 配置。</p>
+<p>Git 的三个级别的配置文件如下：</p>
+<ul>
+<li><code>/etc/gitconfig</code> 文件：整个系统中的<code>所有用户</code>都适用。可使用<code>git config --system</code> 来修改该文件。</li>
+<li><code>~/.gitconfig</code>或<code>~/.config/git/config</code>文件：当前用户的配置文件，只适用于当前用户。可使用<code>git config --global</code> 来修改该文件。</li>
+<li><code>.git/config</code>：当前项目的配置文件，只适用于当前项目。可使用<code>git config --local</code> 来修改该文件。</li>
+</ul>
+<p>这三个级别的大小关系为：当前项目级别<code>&gt;</code>当前用户级别<code>&gt;</code>系统配置级别。</p>
+<p>可以用如下命令查看配置：</p>
+<pre><code class="language-shell">git config --list
+</code></pre>
+<p>可以用如下命令查看配置及其所在的配置文件：</p>
+<pre><code class="language-shell">git config --list --show-origin
+</code></pre>
+<h4 id="42配置用户名和邮件">4.2，配置用户名和邮件</h4>
+<p>一般在下载完Git 工具后，需要在<code>当前用户级别</code>设置Git 的账户信息：<code>用户名</code>和<code>邮件地址</code>。</p>
+<p>设置方法如下：</p>
+<pre><code class="language-shell">git config --global user.name &quot;example_name&quot;
+git config --global user.email &quot;example@email.com&quot;
+</code></pre>
+<p>下面配置可得到<code>彩色的git 输出</code>：</p>
+<pre><code class="language-shell">git config --global color.ui true
+</code></pre>
+<p>下面介绍Git 的基本使用。</p>
+<h3 id="5获取一个git-仓库">5，获取一个Git 仓库</h3>
+<p>使用Git 有两种方式，一种是使用<code>GUI 模式</code>，一种是使用<code>命令行模式</code>。</p>
+<p>一般推荐使用命令行模式，因为GUI 模式一般不会实现所有的Git 功能，而使用命令行，则可以使用所有的Git 功能。</p>
+<p>有两种方式可以获取一个Git 仓库：</p>
+<ul>
+<li>第一种：初始化(<code>init</code>)一个未被版本控制的本地目录。</li>
+<li>第二种：从远程克隆(<code>clone</code>)一个现成的Git 仓库。</li>
+</ul>
+<h4 id="51初始化本地目录">5.1，初始化本地目录</h4>
+<p>首先，进入到我们想要进行版本控制的目录，如下已处在项目目录：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; pwd
+~/hello_git
+</code></pre>
+<p>使用<code>git init</code> 初始化当前目录：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git init
+Initialized empty Git repository in ~/hello_git/.git/
+</code></pre>
+<p>也可以直接使用<code>git init &lt;dir&gt;</code>，来初始化一个新的Git 项目（然后再进入该目录）：</p>
+<pre><code class="language-shell">git init hello_git
+</code></pre>
+<p>可看到当前<code>hello_git</code> 目录多了一个<code>.git</code> 子目录：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ls -a
+.  ..  .git
+</code></pre>
+<p>这是Git 工具使用的一些必要文件，目前我们无需过多关注。</p>
+<p>到目前为止<code>hello_git</code> 目录，已经算是一个<code>Git 工作区</code>。</p>
+<h4 id="52克隆远程仓库">5.2，克隆远程仓库</h4>
+<p>可使用<code>git clone &lt;url&gt;</code> 命令从远程克隆一个现有的仓库，当然必须有这个项目的可读权限，才能克隆该项目。如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git clone https://github.com/codeshellme/codeshellme.github.io.git
+</code></pre>
+<p>以上命令会在当前目录下创建一个<code>codeshellme.github.io.git</code> 子目录，该目录就是一个<code>Git 工作区</code>，该项目的所有内容在这个目录中。</p>
+<p>我们也可以在克隆一个项目时，为这个子目录起一个新名字，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git clone &lt;url&gt; &lt;new_dir_name&gt;
+</code></pre>
+<h3 id="6查看当前状态">6，查看当前状态</h3>
+<p>当得到一个Git 仓库后，我们可以使用<code>git add</code> 将一个本地文件纳入Git 控制。</p>
+<p>在使用<code>git add</code> 之前，我们可以先使用<code>git status</code> 来查看当前目录的状态，比如我们已经在当前目录下创建了一个新的文件<code>README</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ls
+______
+README
+</code></pre>
+<p>使用<code>git status</code> 可以看到<code>README</code> 文件处于<code>未跟踪Untracked</code>状态：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git status
+_____________________________________________
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+
+	README
+
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+</code></pre>
+<p>并且可以看到<code>On branch master</code> 这行信息，这说明我们当前的<code>Git 分支</code>为<code>master</code>分支。</p>
+<p>如果觉得<code>git status</code> 输出的内容较多，可以使用<code>git status -s</code> 命令来输出<code>简短的状态</code>，<code>s</code> 是<code>short</code> 的意思。</p>
+<h3 id="7跟踪新文件">7，跟踪新文件</h3>
+<p>我们使用如下命令将这个文件纳入Git 控制：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git add README
+</code></pre>
+<p>此时再使用<code>git status</code>，可以看到<code>README</code> 文件已经被纳入跟踪，处于<code>可提交状态</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git status
+______________________________________________
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+
+	new file:   README
+</code></pre>
+<p><code>git add</code> 支持通配符<code>*</code>，如下：</p>
+<pre><code class="language-shell">git add *      `将当前目录中的所有内容加入跟踪`
+git add *.c    `将当前目录下的所有以&quot;.c&quot; 为后缀的文件加入跟踪`
+git add hello* `将当前目录下的所有以&quot;hello&quot; 为前缀的文件纳入跟踪`
+</code></pre>
+<p>另外<code>git add .</code> 与<code>git add  *</code> ，都可将当前目录中的所有内容加入跟踪。</p>
+<h3 id="8提交到本地仓库">8，提交到本地仓库</h3>
+<p>提交到本地仓库使用<code>git commit</code> 命令：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git commit README -m &quot;add README file&quot;
+________________________________________________
+[master (root-commit) 01c07e9] add README file
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 README
+</code></pre>
+<p><code>git commit</code> 命令后边紧跟<code>要提交的文件</code>，<code>-m</code> 参数后边可加一些本次提交的日志信息（比如本次对文件的改动情况），方便自己和他人查看。</p>
+<p>也可以使用<code>git commit .</code> 或 <code>git commit *</code> 来提交所有的文件。</p>
+<h3 id="9查看文件的提交日志">9，查看文件的提交日志</h3>
+<p>使用<code>git log</code> 可查看文件的提交日志：</p>
+<pre><code class="language-shell">git log				`查看当前目录的所有提交情况`
+git log &lt;filename&gt;  `只查看一个文件的提交情况`
+</code></pre>
+<h3 id="10修改文件">10，修改文件</h3>
+<p>如果我们修改了某个文件，如下，向<code>README</code> 文件中加入新的内容：</p>
+<pre><code class="language-shell">echo &quot;hello&quot; &gt; README
+</code></pre>
+<p>此时使用<code>git status</code>，可见<code>README</code> 文件处于<code>已修改modified</code> 状态：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git status
+_______________________________________
+On branch master
+Changes not staged for commit:
+  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+
+	modified:   README
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre>
+<h3 id="11查看文件修改内容">11，查看文件修改内容</h3>
+<p>此时可使用<code>git diff</code> 命令查看我们对文件进行了哪些修改：</p>
+<pre><code class="language-shell">git diff              `查看当前目录所有的改动情况`
+git diff &lt;filename&gt;   `只查看一个文件的改动情况`
+</code></pre>
+<h3 id="12撤销修改">12，撤销修改</h3>
+<p>如果发现本次修改的问题较大，可以使用如下命令，来放弃本次修改的所有内容：</p>
+<pre><code class="language-shell">git checkout -- &lt;file&gt;
+</code></pre>
+<p><code>git checkout</code> 后边是两个横杠<code>--</code>，再后边是<code>文件名</code>，执行该命令后，<code>&lt;file&gt;</code> 的内容将恢复到未修改之前（注意：已提交的内容，是无法使用该命令来撤销修改的）。</p>
+<p>如果本次修改没有问题，可使用<code>git commit</code> 来提交本次的修改。</p>
+<h3 id="13删除文件">13，删除文件</h3>
+<p>使用<code>git rm</code> 可以将某个文件从Git 中删除，Git 将不再跟踪该文件，例如：</p>
+<pre><code class="language-shell">git rm README
+</code></pre>
+<p>执行该命令后，<code>README</code> 文件即会从Git 项目中删除，也会从本地磁盘删除。</p>
+<p>如果你只想从Git 中将其删除，而不从磁盘删除，可使用<code>--cached</code> 参数：</p>
+<pre><code class="language-shell">git rm --cached README
+</code></pre>
+<p>如果在删除文件之前，你已经改动过这个文件，可以使用<code>-f</code> 强制删除：</p>
+<pre><code class="language-shell">git rm README -f
+</code></pre>
+<h3 id="14修改文件名">14，修改文件名</h3>
+<p>可以使用<code>git mv</code> 来修改Git 中的文件名，如下，我们将<code>README</code> 改为<code>readme</code>：</p>
+<pre><code class="language-shell">git mv README readme
+</code></pre>
+<p>此时再使用<code>git status</code>，可见<code>README</code> 已被重命名为<code>readme</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git status
+_____________________________________________
+On branch master
+Changes to be committed:
+  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+
+	renamed:    README -&gt; readme
+</code></pre>
+<p>也可以使用<code>git status -s</code>输出简短内容：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git status -s
+___________________
+R  README -&gt; readme
+</code></pre>
+<h3 id="15关联到远程仓库">15，关联到远程仓库</h3>
+<p>只有将<code>本地仓库</code>的内容推送到<code>远端仓库</code>，才有助于多人合作。</p>
+<p>如果你的<code>Git 工作区</code> 是由<code>git clone</code> 克隆而来，则它会自动关联到远端。</p>
+<p>如果你的<code>Git 工作区</code> 是由<code>git init</code> 初始化而来，则需要手动关联到远端。要想关联到远端仓库，则必须首先有一个远端仓库。</p>
+<p>比如，我们已经在GitHub 上创建了一个远程仓库，地址为<code>https://github.com/codeshellme/hello_git.git</code>。</p>
+<p>在<code>~/hello_git</code> 目录下，使用<code>git remote add</code>将本地仓库关联到远端，如下：</p>
+<pre><code class="language-shell">git remote add origin https://github.com/codeshellme/hello_git.git
+</code></pre>
+<p>其中，<code>origin</code> 相当于<code>https://github.com/codeshellme/hello_git.git</code> 的别名，<code>origin</code> 就代表了<code>https://github.com/codeshellme/hello_git.git</code>。</p>
+<p>使用<code>git remote -v</code>可查看关联信息：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; git remote -v
+_________________________________________
+origin	https://github.com/codeshellme/hello_git.git (fetch)
+origin	https://github.com/codeshellme/hello_git.git (push)
+</code></pre>
+<h4 id="151移除远程仓库">15.1，移除远程仓库</h4>
+<p>可使用如下命令，移除本地与远程的关联：</p>
+<pre><code class="language-shell">git remote rm &lt;remote&gt;
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-shell">git remote rm origin 
+</code></pre>
+<p>该命令将使得<code>本地仓库</code>与<code>远端仓库origin</code> 断开关联关系。</p>
+<h3 id="16推送到远端">16，推送到远端</h3>
+<p>如果一个本地仓库已经关联到了远端仓库，则可以使用<code>git push</code>，将本地仓库内容推送到远端，如下：</p>
+<pre><code class="language-shell">git push origin master
+</code></pre>
+<p>该命令的意思是将本地仓库推送到<code>远端origin</code> 的<code>master 分支</code>。</p>
+<p>注意，要想将本地仓库推送到远端，必须对远端仓库有可写权限。</p>
+<h3 id="17获取远端信息">17，获取远端信息</h3>
+<p>可以使用<code>git fetch  &lt;remote&gt;</code> 来获取远端的所有信息，如下：</p>
+<pre><code class="language-shell">git fetch origin
+</code></pre>
+<p>该命令的含义是将<code>远端origin</code> 的<code>所有分支</code>获取到本地仓库。</p>
+<h3 id="18查看分支">18，查看分支</h3>
+<p>当从远端获取所有分支后，我们可能需要查看分支信息。</p>
+<p>使用如下命令可查看所有<code>本地分支</code>：</p>
+<pre><code class="language-shell">git branch
+</code></pre>
+<p>使用如下命令可查看所有<code>远程分支</code>：</p>
+<pre><code class="language-shell">git branch -r
+</code></pre>
+<p>使用如下命令可以查看所有<code>本地分支</code>和<code>远程分支</code>：</p>
+<pre><code class="language-shell">git branch -a
+</code></pre>
+<h3 id="19合并分支">19，合并分支</h3>
+<p><code>git fetch</code> 将远端内容获取到本地之后，并没有进行合并，此时我们需要使用<code>git merge</code> 来合并分支，如下：</p>
+<pre><code class="language-shell">git merge &lt;branch_name&gt;
+</code></pre>
+<p>该命令的含义是将<code>branch_name</code> 分支合并到<code>当前分支</code>。</p>
+<h3 id="20拉取且合并">20，拉取且合并</h3>
+<p><code>git pull &lt;remote&gt; &lt;branch&gt;</code> 命令可以简单的认为是<code>git fetch &lt;remote&gt;</code> + <code>git merge &lt;branch&gt;</code>。如下：</p>
+<pre><code class="language-shell">git pull origin master
+</code></pre>
+<p>该命令的含义是，拉取<code>远端origin</code> 的<code>master 分支</code>，然后<code>合并到当前分支</code>。</p>
+<h3 id="21创建分支">21，创建分支</h3>
+<p><code>分支</code>是<code>版本控制系统</code>中的重要概念，尤其是在大型项目中，会经常用到分支。</p>
+<p>使用分支有助于我们在<code>开发新功能</code>的时候，避免对<code>当前可用的版本</code>造成不必要影响。当我们的项目有了一个可用的版本，这时我们要开发新的功能。这种情况下，一般会在这个可用的<code>主分支</code>上切出一个新的<code>开发分支</code>，专门用于开发新功能，当新功能开发完毕，则需要将这个开发分支再合并回原来的主分支。</p>
+<p>就像下图所表达的意思一样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200428211753819.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>使用<code>git branch  &lt;branch_name&gt;</code>，可以创建新的分支。</p>
+<p>使用<code>git branch -b &lt;branch_name&gt;</code>，创建分支，并切换到该分支。</p>
+<h3 id="22切换分支">22，切换分支</h3>
+<p>使用<code>git checkout &lt;branch_name&gt;</code>命令，可从当前分支切换到<code>&lt;branch_name&gt;</code> 分支。</p>
+<p>使用<code>git checkout -</code> 可切换到上一个分支。</p>
+<p><code>git branch -b</code> 的作用相当于<code>git branch</code> + <code>git checkout</code>。</p>
+<h3 id="23命令别名">23，命令别名</h3>
+<p>我们可以用<code>git config</code>给Git 常用命令指定其简写形式，以方便书写。常用别名如下：</p>
+<pre><code class="language-shell">git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+</code></pre>
+<p>执行以上配置后，<code>git co</code> 就相当于<code>git checkout</code>，其它类似。</p>
+<h3 id="24文件忽略">24，文件忽略</h3>
+<p>我们可以配置Git，使其忽略掉一些我们不关心的文件，比如一些中间文件和日志文件。</p>
+<p>我们可以在一个项目（比如<code>hello_git</code>）目录下创建<code>.gitignore</code> 文件，该文件中是一些规则，其告诉Git 应该忽略哪些文件。</p>
+<p>下面是一个例子：</p>
+<pre><code class="language-python"># 忽略所有的 .a 文件
+*.a
+
+# 但跟踪所有的 lib.a，即便你在前面忽略了 .a 文件
+!lib.a
+
+# 只忽略当前目录下的 TODO 文件，而不忽略 subdir/TODO
+/TODO
+
+# 忽略任何目录下名为 build 的文件夹
+build/
+
+# 忽略 doc/notes.txt，但不忽略 doc/server/arch.txt
+doc/*.txt
+
+# 忽略 doc/ 目录及其所有子目录下的 .pdf 文件
+doc/**/*.pdf
+</code></pre>
+<p>这里<a href="https://github.com/github/gitignore">https://github.com/github/gitignore</a> 还有很多适用于各种语言的配置。</p>
+<h3 id="25命令总结">25，命令总结</h3>
+<p>下面总结一下我们介绍到的Git 命令。</p>
+<h4 id="帮助手册">帮助手册</h4>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>man git</code></td>
+<td align="left">查看Git <code>详细手册</code></td>
+</tr>
+<tr>
+<td align="left"><code>git help -a</code></td>
+<td align="left">查看Git 支持的<code>所有命令</code></td>
+</tr>
+<tr>
+<td align="left"><code>git help -g</code></td>
+<td align="left">查看Git 支持的<code>其它手册</code></td>
+</tr>
+<tr>
+<td align="left"><code>git help &lt;命令/手册&gt;</code></td>
+<td align="left">查看某个<code>命令/手册</code>的内容</td>
+</tr>
+</tbody>
+</table>
+<h4 id="配置文件">配置文件</h4>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>git config --system</code></td>
+<td align="left">修改Git <code>系统级</code>配置</td>
+</tr>
+<tr>
+<td align="left"><code>git config --global</code></td>
+<td align="left">修改Git <code>当前用户级</code>配置</td>
+</tr>
+<tr>
+<td align="left"><code>git config --local</code></td>
+<td align="left">修改Git <code>当前项目级</code>配置</td>
+</tr>
+<tr>
+<td align="left"><code>git config --list</code></td>
+<td align="left">查看Git <code>所有配置</code></td>
+</tr>
+<tr>
+<td align="left"><code>git config --list --show-origin</code></td>
+<td align="left">查看Git <code>所有配置</code>及其<code>所在文件</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="基本操作">基本操作</h4>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>git init</code></td>
+<td align="left"><code>初始化</code>当前目录为Git 工作区</td>
+</tr>
+<tr>
+<td align="left"><code>git init &lt;dir&gt;</code></td>
+<td align="left">新建<code>dir</code>目录，并将其<code>初始化</code>Git 工作区</td>
+</tr>
+<tr>
+<td align="left"><code>git clone &lt;url&gt;</code></td>
+<td align="left">从远程<code>克隆</code>一个Git 项目</td>
+</tr>
+<tr>
+<td align="left"><code>git clone &lt;url&gt; &lt;dir&gt;</code></td>
+<td align="left">从远程<code>克隆</code>一个Git 项目，并将内容放在<code>dir</code> 目录中</td>
+</tr>
+<tr>
+<td align="left"><code>git status</code></td>
+<td align="left">查看<code>变化状态</code></td>
+</tr>
+<tr>
+<td align="left"><code>git status -s</code></td>
+<td align="left">查看<code>简短</code>变化状态</td>
+</tr>
+<tr>
+<td align="left"><code>git add</code></td>
+<td align="left"><code>添加</code>跟踪文件</td>
+</tr>
+<tr>
+<td align="left"><code>git commit</code></td>
+<td align="left"><code>提交</code>改动内容</td>
+</tr>
+<tr>
+<td align="left"><code>git log</code></td>
+<td align="left">查看<code>改动日志</code></td>
+</tr>
+<tr>
+<td align="left"><code>git diff</code></td>
+<td align="left">查看<code>改动内容</code></td>
+</tr>
+<tr>
+<td align="left"><code>git checkout -- &lt;file&gt;</code></td>
+<td align="left"><code>撤销</code>改动</td>
+</tr>
+<tr>
+<td align="left"><code>git rm &lt;file&gt;</code></td>
+<td align="left">将文件<code>移除</code>Git 跟踪，并<code>删除</code>本地文件</td>
+</tr>
+<tr>
+<td align="left"><code>git rm --cached &lt;file&gt;</code></td>
+<td align="left">将文件<code>移除</code>Git 跟踪，<code>不删除</code>本地文件</td>
+</tr>
+<tr>
+<td align="left"><code>git rm &lt;file&gt; -f</code></td>
+<td align="left"><code>强制</code>将文件移除Git 跟踪，并删除本地文件</td>
+</tr>
+<tr>
+<td align="left"><code>git mv</code></td>
+<td align="left"><code>重命名</code>文件</td>
+</tr>
+</tbody>
+</table>
+<h4 id="远程仓库">远程仓库</h4>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>git remote add</code></td>
+<td align="left">将本地仓库与远程仓库相<code>关联</code></td>
+</tr>
+<tr>
+<td align="left"><code>git remote -v</code></td>
+<td align="left">查看仓库<code>关联信息</code></td>
+</tr>
+<tr>
+<td align="left"><code>git remote rm &lt;remote&gt;</code></td>
+<td align="left">将本地仓库与远程仓库<code>断开关联</code></td>
+</tr>
+<tr>
+<td align="left"><code>git push &lt;remote&gt; &lt;branch&gt;</code></td>
+<td align="left">将本地仓库内容<code>推送</code>到远程</td>
+</tr>
+<tr>
+<td align="left"><code>git pull &lt;remote&gt; &lt;branch&gt;</code></td>
+<td align="left">将远程仓库分支<code>拉取</code>到本地并<code>合并分支</code></td>
+</tr>
+<tr>
+<td align="left"><code>git fetch &lt;remote&gt;</code></td>
+<td align="left">将远程仓库内容全部<code>拉取</code>到本地，<code>不进行合并</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="分支操作">分支操作</h4>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>git branch</code></td>
+<td align="left">查看所有<code>本地分支</code></td>
+</tr>
+<tr>
+<td align="left"><code>git branch -r</code></td>
+<td align="left">查看所有<code>远程分支</code></td>
+</tr>
+<tr>
+<td align="left"><code>git branch -a</code></td>
+<td align="left">查看所有<code>本地分支</code>和<code>远程分支</code></td>
+</tr>
+<tr>
+<td align="left"><code>git branch &lt;branch_name&gt;</code></td>
+<td align="left"><code>创建</code>分支 <code>&lt;branch_name&gt;</code></td>
+</tr>
+<tr>
+<td align="left"><code>git branch -b &lt;branch_name&gt;</code></td>
+<td align="left"><code>创建</code>并<code>切换</code>到分支 <code>&lt;branch_name&gt;</code></td>
+</tr>
+<tr>
+<td align="left"><code>git checkout &lt;branch_name&gt;</code></td>
+<td align="left">切换到<code>&lt;branch_name&gt;</code> 分支</td>
+</tr>
+<tr>
+<td align="left"><code>git checkout -</code></td>
+<td align="left">切换到<code>上一个分支</code></td>
+</tr>
+<tr>
+<td align="left"><code>git merge &lt;branch&gt;</code></td>
+<td align="left">将<code>&lt;branch&gt; 分支</code>合并到当前分支</td>
+</tr>
+</tbody>
+</table>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-04-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/use-md/">
+            <span class="next-text nav-default">如何使用Markdown 编写文档</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/04/git-use/" class="leancloud_visitors" data-flag-title="Git 简明手册">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
