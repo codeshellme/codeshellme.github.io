@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>实用的linux 命令（下） - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="三，磁盘管理 15，du Linux du 命令用于显示目录或文件所占的磁盘大小，其语法格式如下： du `参数` `目录或文件` 参数与目录或文件的位置也可以反过来：" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/used-linux-cmd2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="实用的linux 命令（下）" />
+<meta property="og:description" content="三，磁盘管理 15，du Linux du 命令用于显示目录或文件所占的磁盘大小，其语法格式如下： du `参数` `目录或文件` 参数与目录或文件的位置也可以反过来：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/used-linux-cmd2/" />
+<meta property="article:published_time" content="2020-05-01T01:37:56+08:00" />
+<meta property="article:modified_time" content="2020-05-01T01:37:56+08:00" />
+<meta itemprop="name" content="实用的linux 命令（下）">
+<meta itemprop="description" content="三，磁盘管理 15，du Linux du 命令用于显示目录或文件所占的磁盘大小，其语法格式如下： du `参数` `目录或文件` 参数与目录或文件的位置也可以反过来：">
+<meta itemprop="datePublished" content="2020-05-01T01:37:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-01T01:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="2016">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="实用的linux 命令（下）"/>
+<meta name="twitter:description" content="三，磁盘管理 15，du Linux du 命令用于显示目录或文件所占的磁盘大小，其语法格式如下： du `参数` `目录或文件` 参数与目录或文件的位置也可以反过来："/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">实用的linux 命令（下）</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-01 </span>
+        <div class="post-category">
+            <a href="/categories/linux-%E7%B3%BB%E7%BB%9F/"> Linux 系统 </a>
+            </div>
+          <span class="more-meta"> 2016 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#三磁盘管理">三，磁盘管理</a>
+      <ul>
+        <li><a href="#15du">15，du</a></li>
+        <li><a href="#16tree">16，tree</a></li>
+      </ul>
+    </li>
+    <li><a href="#四网络通信">四，网络通信</a>
+      <ul>
+        <li><a href="#17ping">17，ping</a></li>
+        <li><a href="#18netstat">18，netstat</a></li>
+        <li><a href="#19curl">19，curl</a></li>
+      </ul>
+    </li>
+    <li><a href="#五系统管理">五，系统管理</a>
+      <ul>
+        <li><a href="#20kill">20，kill</a></li>
+        <li><a href="#21ps">21，ps</a></li>
+        <li><a href="#22free">22，free</a></li>
+      </ul>
+    </li>
+    <li><a href="#六压缩文件">六，压缩文件</a>
+      <ul>
+        <li><a href="#23tar">23，tar</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="三磁盘管理">三，磁盘管理</h2>
+<h3 id="15du">15，du</h3>
+<p>Linux <code>du</code> 命令用于显示目录或文件所占的磁盘大小，其语法格式如下：</p>
+<pre><code class="language-shell">du `参数` `目录或文件`
+</code></pre>
+<p><code>参数</code>与<code>目录或文件</code>的位置也可以反过来：</p>
+<pre><code class="language-shell">du `目录或文件` `参数`
+</code></pre>
+<p>其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-a</code></td>
+<td>显示目录及子目录中<code>所有文件</code>的大小，包括<code>隐藏目录和文件</code></td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>在原来基础上，显示所有目录和文件的<code>总和</code></td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>仅显示<code>总和</code>大小</td>
+</tr>
+<tr>
+<td><code>-D</code></td>
+<td>如果文件是<code>符号连接</code>，则显示源文件大小</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td>以<code>K，M，G</code>为单位，提高可读性</td>
+</tr>
+<tr>
+<td><code>-b/-k/-m</code></td>
+<td>分别以<code>字节/K/M</code> 为单位显示目录或文件的大小</td>
+</tr>
+<tr>
+<td><code>-L &lt;符号链接&gt;</code></td>
+<td>显示指定<code>符号链接</code> 的源文件大小</td>
+</tr>
+<tr>
+<td><code>-x</code></td>
+<td><code>忽略</code>与当前文件系统不一样的文件系统</td>
+</tr>
+<tr>
+<td><code>--exclude=&lt;目录或文件&gt;</code></td>
+<td>忽略指定<code>目录或文件</code>的大小</td>
+</tr>
+<tr>
+<td><code>--max-depth=&lt;目录深度&gt; </code></td>
+<td>指定显示的<code>目录深度</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="16tree">16，tree</h3>
+<p>Linux <code>tree</code> 命令以<code>树形结构</code>列出目录及子目录的内容，其语法格式如下：</p>
+<pre><code class="language-shell">tree `参数` `目录或文件`
+</code></pre>
+<p><code>参数</code>与<code>目录或文件</code>的位置也可以反过来：</p>
+<pre><code class="language-shell">tree `目录或文件` `参数`
+</code></pre>
+<p>其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-C</code></td>
+<td>以不同的<code>颜色</code>，区分不同的文件类型</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>不使用颜色</td>
+</tr>
+<tr>
+<td><code>-a</code></td>
+<td>显示所有目录及子目录，包括<code>隐藏目录和文件</code></td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td>只显示<code>目录</code></td>
+</tr>
+<tr>
+<td><code>-D</code></td>
+<td>显示<code>目录/文件</code>的更改时间</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>以更改时间排序</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>显示完整的相对路径</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>显示<code>权限信息</code></td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>显示文件<code>所有者</code></td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>显示<code>文件/目录</code>大小</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td>在<code>可执行文件</code>，<code>目录</code>，<code>Socket</code>，<code>符号连接</code>，<code>管道</code>后边，各自加上<code>*</code>，<code>/</code>，<code>=</code>，<code>@</code>，<code>|</code>符号</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>不以树形结构显示</td>
+</tr>
+<tr>
+<td><code>-L 层级</code></td>
+<td>设置目录显示层级</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>如果文件是<code>符号连接</code>，则显示源文件内容</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td>以<code>K，M，G</code>为单位，提高可读性</td>
+</tr>
+</tbody>
+</table>
+<h2 id="四网络通信">四，网络通信</h2>
+<h3 id="17ping">17，ping</h3>
+<p><code>ping</code> 命令用于查看指定主机是否存在，其原理是<code>ICMP</code> 协议，其语法格式如下：</p>
+<pre><code class="language-shell">ping `参数` `主机名或IP`
+</code></pre>
+<p>其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c</code></td>
+<td>指定发送请求的次数</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>指定发送请求的间隔时间，单位秒</td>
+</tr>
+</tbody>
+</table>
+<h3 id="18netstat">18，netstat</h3>
+<p><code>netstat</code> 命令用于显示当前系统的网络状态。</p>
+<p>其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-a</code></td>
+<td>显示所有连接信息</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>持续不间断列出网络状态</td>
+</tr>
+<tr>
+<td><code>-i</code></td>
+<td>显示网络接口信息</td>
+</tr>
+<tr>
+<td><code>-n</code></td>
+<td>显示IP 地址，而不是主机名</td>
+</tr>
+<tr>
+<td><code>-p</code></td>
+<td>显示Socket 对应的程序名称</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>显示监听中的服务器Socket</td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td>只显示tcp 连接</td>
+</tr>
+<tr>
+<td><code>-u</code></td>
+<td>只显示udp 连接</td>
+</tr>
+<tr>
+<td><code>-w</code></td>
+<td>只显示raw 连接</td>
+</tr>
+</tbody>
+</table>
+<h3 id="19curl">19，curl</h3>
+<p><code>curl</code> 命令可以发送<code>HTTP(S)</code> 协议，可用<code>man curl</code> 查看其帮助手册。</p>
+<p>其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>--http1.0</code></td>
+<td align="left">使用<code>HTTP/1.0</code> 协议</td>
+</tr>
+<tr>
+<td align="left"><code>--http1.1</code></td>
+<td align="left">使用<code>HTTP/1.1</code> 协议</td>
+</tr>
+<tr>
+<td align="left"><code>--http2</code></td>
+<td align="left">使用<code>HTTP/2</code> 协议</td>
+</tr>
+<tr>
+<td align="left"><code>-I</code></td>
+<td align="left">只显示响应头信息</td>
+</tr>
+<tr>
+<td align="left"><code>-i</code></td>
+<td align="left">显示响应头和响应内容</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left">显示请求头，响应头和响应内容</td>
+</tr>
+<tr>
+<td align="left"><code>-H &lt;key:val&gt;</code></td>
+<td align="left">添加请求头，可以是多个</td>
+</tr>
+<tr>
+<td align="left"><code>--data</code></td>
+<td align="left">添加POST 请求数据，此时的请求为 POST 请求</td>
+</tr>
+<tr>
+<td align="left"><code>--connect-timeout &lt;seconds&gt;</code></td>
+<td align="left">设置连接超时时间，单位秒</td>
+</tr>
+<tr>
+<td align="left"><code>--compressed</code></td>
+<td align="left">要求服务器返回响应时，对响应进行压缩</td>
+</tr>
+</tbody>
+</table>
+<p>例如，我们访问<code>http://www.baidu.com</code>：</p>
+<pre><code class="language-shell">curl http://www.baidu.com -H &quot;User-Agent: curl&quot; -v --compressed
+&gt; GET / HTTP/1.1
+&gt; Host: www.baidu.com
+&gt; Accept: */*
+&gt; Accept-Encoding: deflate, gzip
+&gt; User-Agent: curl	`这里是我们自己设置的值`
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Cache-Control: private, no-cache, no-store, proxy-revalidate, no-transform
+&lt; Connection: keep-alive
+&lt; Content-Encoding: gzip
+&lt; Content-Type: text/html
+&lt; Date: Fri, 01 May 2020 09:39:03 GMT
+&lt; Last-Modified: Mon, 23 Jan 2017 13:27:36 GMT
+&lt; Pragma: no-cache
+&lt; Server: bfe/1.0.8.18
+&lt; Set-Cookie: BDORZ=27315; max-age=86400; domain=.baidu.com; path=/
+&lt; Transfer-Encoding: chunked
+&lt; 
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;`由于HTML 内容较多，这里省略了HTML 内容` &lt;/html&gt;
+</code></pre>
+<h2 id="五系统管理">五，系统管理</h2>
+<h3 id="20kill">20，kill</h3>
+<p>Linux <code>kill</code> 命令用于向正在运行中的程序发送信号，一般用于强制停止程序。</p>
+<p>其语法格式如下：</p>
+<pre><code class="language-shell">kill `参数` `程序名称/pid`
+</code></pre>
+<p><code>kill</code> 命令支持的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-s sig_name</code></td>
+<td>使用<code>信号名称</code>向程序发送信号</td>
+</tr>
+<tr>
+<td><code>-n sig_num</code></td>
+<td>使用<code>信号编号</code>向程序发送信号</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>列出所有的信号标识</td>
+</tr>
+</tbody>
+</table>
+<p>使用<code>kill -l</code> 命令列出Linux 系统支持的所有信号，用有64 个信号，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; kill -l
+_______________________________________________________________
+ 1) SIGHUP	    2) SIGINT	     3) SIGQUIT	    4) SIGILL	     5) SIGTRAP
+ 6) SIGABRT	    7) SIGBUS	     8) SIGFPE	    9) SIGKILL	    10) SIGUSR1
+11) SIGSEGV	    12) SIGUSR2	    13) SIGPIPE	    14) SIGALRM	    15) SIGTERM
+16) SIGSTKFLT	17) SIGCHLD	    18) SIGCONT	    19) SIGSTOP	    20) SIGTSTP
+21) SIGTTIN	    22) SIGTTOU	    23) SIGURG	    24) SIGXCPU	    25) SIGXFSZ
+26) SIGVTALRM	27) SIGPROF	    28) SIGWINCH	29) SIGIO	    30) SIGPWR
+31) SIGSYS	    34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+63) SIGRTMAX-1	64) SIGRTMAX
+`注：前边是编号，后边是名称
+    其中SIGKILL 信号无法捕捉，常用于强制杀死某进程`
+</code></pre>
+<h3 id="21ps">21，ps</h3>
+<p><code>ps</code> 命令全称为<code>Process Status</code>，用于列出当前系统中的进程状态。</p>
+<p>其语法格式如下：</p>
+<pre><code class="language-shell">ps `[参数]`
+</code></pre>
+<p><code>ps</code> 命令有非常多的参数，具体可参见<code>man ps</code>，其中有些参数只有细微差别，一般使用不用过度区分。这里只列出其常用组合方式：</p>
+<pre><code class="language-shell">ps aux  `用于列出当前系统所有的进程，及其详细信息`
+ps -ef  `用于列出当前系统所有的进程，及其详细信息`
+ps -axjf `以类似程序树的形式显示进程信息`
+ps -u u_name u `查看u_name 用户的所有进程`
+</code></pre>
+<p><code>ps</code> 与<code>grep</code> 配合使用较多，用于筛选自己关注的进程的信息。</p>
+<h3 id="22free">22，free</h3>
+<p>Linux <code>free</code>命令用于显示系统内存使用状况。其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-k</code></td>
+<td>以<code>K</code> 为单位输出</td>
+</tr>
+<tr>
+<td><code>-m</code></td>
+<td>以<code>M</code> 为单位输出</td>
+</tr>
+<tr>
+<td><code>-g</code></td>
+<td>以<code>G</code> 为单位输出</td>
+</tr>
+<tr>
+<td><code>-h</code></td>
+<td>以<code>K/M/G</code> 可读形式输出</td>
+</tr>
+<tr>
+<td><code>-s</code> &lt;秒数&gt;</td>
+<td>间隔几秒运行一次</td>
+</tr>
+</tbody>
+</table>
+<h2 id="六压缩文件">六，压缩文件</h2>
+<h3 id="23tar">23，tar</h3>
+<p>Linux <code>tar</code> 命令用于打包压缩文件/目录，其打包文件的后缀名一般为<code>.tar.gz</code>。其常用参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c</code></td>
+<td>生成打包文件</td>
+</tr>
+<tr>
+<td><code>-x</code></td>
+<td>打开打包文件</td>
+</tr>
+<tr>
+<td><code>-z</code></td>
+<td>以gzip 算法压缩</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td>显示命令执行过程</td>
+</tr>
+<tr>
+<td><code>-f &lt;打包文件&gt;</code></td>
+<td>指定打包文件</td>
+</tr>
+</tbody>
+</table>
+<p>常用组合方式如下：</p>
+<pre><code class="language-shell">tar -czvf `目标文件名.tar.gz` `源文件/目录`
+tar -xzvf `要打开的tar 文件` 
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/05/http/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">HTTP 协议图解</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/git-use/">
+            <span class="next-text nav-default">Git 简明手册</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/used-linux-cmd2/" class="leancloud_visitors" data-flag-title="实用的linux 命令（下）">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

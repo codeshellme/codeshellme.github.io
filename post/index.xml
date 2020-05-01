@@ -31,6 +31,15 @@
     </item>
     
     <item>
+      <title>实用的linux 命令（下）</title>
+      <link>https://codeshellme.github.io/2020/05/used-linux-cmd2/</link>
+      <pubDate>Fri, 01 May 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/used-linux-cmd2/</guid>
+      <description>三，磁盘管理 15，du Linux du 命令用于显示目录或文件所占的磁盘大小，其语法格式如下： du `参数` `目录或文件` 参数与目录或文件的位置也可以反过来：</description>
+    </item>
+    
+    <item>
       <title>Git 简明手册</title>
       <link>https://codeshellme.github.io/2020/04/git-use/</link>
       <pubDate>Tue, 28 Apr 2020 01:37:56 +0800</pubDate>
