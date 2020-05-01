@@ -31,6 +31,15 @@
     </item>
     
     <item>
+      <title>HTTP 协议图解</title>
+      <link>https://codeshellme.github.io/2020/05/http/</link>
+      <pubDate>Fri, 01 May 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/http/</guid>
+      <description>HTTP 协议是一个非常重要的网络协议，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是HTTP 协议。 0，什么是网络协议 互联网的目的是分享</description>
+    </item>
+    
+    <item>
       <title>Git 简明手册</title>
       <link>https://codeshellme.github.io/2020/04/git-use/</link>
       <pubDate>Tue, 28 Apr 2020 01:37:56 +0800</pubDate>

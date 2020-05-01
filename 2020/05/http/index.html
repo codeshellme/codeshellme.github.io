@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>HTTP 协议图解 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="HTTP 协议是一个非常重要的网络协议，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是HTTP 协议。 0，什么是网络协议 互联网的目的是分享" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/http/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="HTTP 协议图解" />
+<meta property="og:description" content="HTTP 协议是一个非常重要的网络协议，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是HTTP 协议。 0，什么是网络协议 互联网的目的是分享" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/http/" />
+<meta property="article:published_time" content="2020-05-01T01:37:56+08:00" />
+<meta property="article:modified_time" content="2020-05-01T01:37:56+08:00" />
+<meta itemprop="name" content="HTTP 协议图解">
+<meta itemprop="description" content="HTTP 协议是一个非常重要的网络协议，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是HTTP 协议。 0，什么是网络协议 互联网的目的是分享">
+<meta itemprop="datePublished" content="2020-05-01T01:37:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-01T01:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="3944">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTTP 协议图解"/>
+<meta name="twitter:description" content="HTTP 协议是一个非常重要的网络协议，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是HTTP 协议。 0，什么是网络协议 互联网的目的是分享"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">HTTP 协议图解</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-01 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 3944 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0什么是网络协议">0，什么是网络协议</a></li>
+        <li><a href="#1什么是http-协议">1，什么是HTTP 协议</a></li>
+        <li><a href="#2http-的发展历史">2，HTTP 的发展历史</a></li>
+        <li><a href="#3http-所在的网络层次">3，HTTP 所在的网络层次</a></li>
+        <li><a href="#4http-请求与响应">4，HTTP 请求与响应</a></li>
+        <li><a href="#5http-请求消息结构">5，HTTP 请求消息结构</a></li>
+        <li><a href="#6http-请求响应结构">6，HTTP 请求响应结构</a></li>
+        <li><a href="#7http-请求方法">7，HTTP 请求方法</a></li>
+        <li><a href="#8http-get-与post-方法">8，HTTP GET 与POST 方法</a></li>
+        <li><a href="#9http-请求头字段">9，HTTP 请求头字段</a></li>
+        <li><a href="#10http-响应头字段">10，HTTP 响应头字段</a></li>
+        <li><a href="#11http-响应状态码">11，HTTP 响应状态码</a></li>
+        <li><a href="#12用浏览器演示http">12，用浏览器演示HTTP</a></li>
+        <li><a href="#13用curl-命令演示http">13，用curl 命令演示HTTP</a></li>
+        <li><a href="#14什么是http2">14，什么是HTTP/2</a></li>
+        <li><a href="#15什么是https">15，什么是HTTPS</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://img-blog.csdnimg.cn/20200430170442729.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>HTTP 协议是一个非常重要的<code>网络协议</code>，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是<code>HTTP 协议</code>。</p>
+<h3 id="0什么是网络协议">0，什么是网络协议</h3>
+<p><img src="https://img-blog.csdnimg.cn/20200430171741179.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>互联网的目的是分享信息，网络协议是互联网的重要组成部分。</p>
+<p>在互联网诞生之前，计算机中的信息是无法跨机器传输的。为了更方便的分享信息，诞生了互联网。</p>
+<p>信息能够在不同的计算机之间快速传输，其基础技术就是<code>网络</code>。信息的<code>传输</code>，则涉及到信息的<code>发送</code>与<code>接收</code>，那我们就得知道<code>如何发送信息</code>与<code>如何接收信息</code>。</p>
+<p><code>协议</code>就是<code>约定</code>，<code>网络协议</code>就约定了信息在网络之间是<code>如何传输</code>的，即<code>如何发送</code>与<code>如何接收</code>。</p>
+<h4 id="协议分层">协议分层</h4>
+<p>网络协议不是一个协议，而是一堆协议。</p>
+<p>网络是分层的，分层的好处是，层与层之间分工明确，互不干预。其可分为<code>四层网络协议</code>或<code>五层网络协议</code>或<code>七层网络协议</code>，粗略一点可以分为四层，详细一点则可以分为五层或七层。</p>
+<p>每一层网络都有一组协议，被称为<code>协议簇</code>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200430173551637.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="1什么是http-协议">1，什么是HTTP 协议</h3>
+<p>HTTP 全称为<code>HyperText Transfer Protocol</code>，即<code>超文本传输协议</code>。从字面上理解，其作用就是传输<code>超文本</code>。<code>超文本</code>即<code>超级文本</code>，它用<code>超级链接</code>的方式，将互联网中无数的文档链接在一起。</p>
+<p>可以简单的将<code>超文本</code>理解为我们平时上网浏览的<code>网页</code>，所以可以认为HTTP 协议的作用就是<code>传输</code>网页。</p>
+<h3 id="2http-的发展历史">2，HTTP 的发展历史</h3>
+<p><img src="https://img-blog.csdnimg.cn/20200501180121435.jpg?#pic_center" alt="在这里插入图片描述"></p>
+<p>HTTP 协议由英国计算机科学家<code>蒂姆·伯纳斯</code>于1989年在欧洲发起，<code>蒂姆·伯纳斯</code> 作为HTTP 的发明者，对HTTP 的发展起到了至关重要的作用，他被称为<code>互联网之父</code>。2017年，他因<code>发明万维网、第一个浏览器和使万维网得以扩展的基本协议和算法</code>而获得2016年度的<code>图灵奖</code>。</p>
+<p>HTTP 协议标准由<code>W3C</code> 和<code>IETF</code> 共同制定，最终发布一系列的<code>RFC</code>。</p>
+<p>HTTP 协议重要的发展阶段如下：</p>
+<ul>
+<li>1989年，由<code>蒂姆·伯纳斯</code> 发起</li>
+<li>1991年，发布<code>HTTP/0.9</code>，这是HTTP 协议的第一个版本，也是最简单的版本，只支持一个<code>GET</code> 方法，并且只能传输简单的文本字符串。</li>
+<li>1996年，发布<code>HTTP/1.0</code>，其内容大大增加，可传输<code>图像</code>，<code>视频</code>，<code>二进制格式</code>等丰富的网页。支持<code>GET</code>，<code>POST</code>，<code>HEAD</code> 三种方法，增加了<code>HTTP Header</code>头信息，<code>状态码</code>，<code>内容编码</code>等功能。</li>
+<li>1997年，发布<code>HTTP1.1</code>，是较为完整的版本。在之前的基础上，其主要引入了<code>持久连接</code>，<code>分块传输</code>等功能。另外，增加了<code>OPTIONS</code>、<code>PUT</code>、<code>PATCH</code>、<code>DELETE</code>、<code>TRACE</code> 和 <code>CONNECT</code>方法。对于客户端，引入了重要的<code>Host</code> 头部字段，用来指定服务器的域名，使得一个<code>请求</code>可以发往同一台服务器上的不同网站，为虚拟主机的流行打下基础。</li>
+<li>2009年，谷歌公开了其自主研发的<code>SPDY 协议</code>，主要解决<code>HTTP1.1</code> 效率不高的问题。<code>SPDY 协议</code>的主要特性被引入了<code>HTTP/2</code> 中。</li>
+<li>2015年，发布<code>HTTP/2</code>，而不是<code>HTTP/2.0</code>，是因为标准委员会不打算再发布子版本，下一个新版本将直接是 <code>HTTP/3</code>。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">年份</th>
+<th align="left">事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1989年</td>
+<td align="left">由<code>蒂姆·伯纳斯</code> 发起</td>
+</tr>
+<tr>
+<td align="left">1991年</td>
+<td align="left">发布<code>HTTP/0.9</code></td>
+</tr>
+<tr>
+<td align="left">1996年</td>
+<td align="left">发布<code>HTTP/1.0</code></td>
+</tr>
+<tr>
+<td align="left">1997年</td>
+<td align="left">发布<code>HTTP/1.1</code></td>
+</tr>
+<tr>
+<td align="left">2009年</td>
+<td align="left">谷歌公布<code>SPDY</code></td>
+</tr>
+<tr>
+<td align="left">2015年</td>
+<td align="left">发布<code>HTTP/2</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3http-所在的网络层次">3，HTTP 所在的网络层次</h3>
+<p>HTTP 协议建立在<code>Tcp/Ip</code> 协议之上，HTTP 属于应用层协议。其协议层结构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200430181108651.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="4http-请求与响应">4，HTTP 请求与响应</h3>
+<p>HTTP 协议是一个<code>请求-响应</code>式协议，一般由<code>客户端</code>（比如浏览器）向<code>服务端</code>发起，服务端处理后，再向客户端返回信息。</p>
+<p>客户端发出的消息称为<code>HTTP 请求</code>（<code>Request</code>），服务端返回的消息称为<code>HTTP 响应</code>（<code>Response</code>）。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200430183223514.png#pic_center" alt="在这里插入图片描述"></p>
+<p>每种协议都有它的消息结构，有了消息结构，发送方就知道以怎样的结构发送消息，接收方就知道以怎样的结构接收消息。下面介绍HTTP 消息结构。</p>
+<h3 id="5http-请求消息结构">5，HTTP 请求消息结构</h3>
+<p><img src="https://img-blog.csdnimg.cn/20200430213324838.png?#pic_center" alt="在这里插入图片描述">
+由上图可看出，HTTP 请求由四部分组成：</p>
+<ul>
+<li>请求行：分别是<code>请求方法</code>+<code>空格</code>+<code>URL</code>+<code>空格</code>+<code>协议版本</code>+<code>\r\n</code></li>
+<li>请求头部：由多个请求头部<code>键值对</code>组成，中间以冒号<code>:</code>隔开，每个<code>键值对</code>最后是<code>\r\n</code></li>
+<li>空行：即<code>\r\n</code></li>
+<li>请求包体：包体部分</li>
+</ul>
+<p>例子：</p>
+<pre><code class="language-shell">GET / HTTP/1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5)
+Accept: */*
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>第1行是<code>请求行</code>，<code>GET</code> 为请求方法，<code>/</code> 为<code>URL</code>，<code>HTTP1.0</code> 为协议版本，中间以<code>空格</code>隔开。</li>
+<li>第2行与第3行是<code>请求头</code>。</li>
+<li>请求头下面的<code>空行</code>，这里没有显示。</li>
+<li>一般<code>GET</code> 请求不包含<code>请求体</code>，所以本请求中没有请求体。</li>
+</ul>
+<h3 id="6http-请求响应结构">6，HTTP 请求响应结构</h3>
+<p><img src="https://img-blog.csdnimg.cn/2020043021335833.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>由上图可看出，HTTP 响应由四部分组成：</p>
+<ul>
+<li>状态行：分别是<code>协议版本</code>+<code>空格</code>+<code>状态码</code>+<code>空格</code>+<code>状态码描述</code>+<code>\r\n</code></li>
+<li>响应头部：由多个响应头部<code>键值对</code>组成，中间以冒号<code>:</code>隔开，每个<code>键值对</code>最后是<code>\r\n</code></li>
+<li>空行：即<code>\r\n</code></li>
+<li>响应包体：包体部分</li>
+</ul>
+<p>例子：</p>
+<pre><code class="language-shell">HTTP/1.0 200 OK 
+Content-Type: text/plain
+Content-Length: 82
+Expires: Thu, 05 Dec 1997 16:00:00 GMT
+Last-Modified: Wed, 5 August 1996 15:55:28 GMT
+Server: Apache 0.84
+
+&lt;html&gt;
+  &lt;body&gt;Hello HTTP&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>第1行为响应<code>状态行</code>，<code>HTTP/1.0</code> 为协议版本，<code>200</code> 是响应<code>状态码</code>，<code>OK</code>是<code>状态码描述</code>，中间用<code>空格</code>隔开。</li>
+<li>第2行到第6行为<code>响应头</code>。</li>
+<li>第7行为<code>空行</code>。</li>
+<li>第8行到第10行为<code>响应内容</code>。</li>
+</ul>
+<h3 id="7http-请求方法">7，HTTP 请求方法</h3>
+<p>HTTP 协议支持9 种<code>请求方法</code>，最常用的是<code>GET</code> 和<code>POST</code> 方法。</p>
+<table>
+<thead>
+<tr>
+<th align="left">HTTP 方法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>GET</code></td>
+<td align="left">获取指定页面信息</td>
+</tr>
+<tr>
+<td align="left"><code>HEAD</code></td>
+<td align="left">类似<code>GET</code> 请求，但响应中没有具体内容，只有响应<code>Header</code></td>
+</tr>
+<tr>
+<td align="left"><code>POST</code></td>
+<td align="left">向指定URL 提交信息</td>
+</tr>
+<tr>
+<td align="left"><code>PUT</code></td>
+<td align="left">向服务器传送数据</td>
+</tr>
+<tr>
+<td align="left"><code>DELETE</code></td>
+<td align="left">请求服务器删除指定内容</td>
+</tr>
+<tr>
+<td align="left"><code>OPTIONS</code></td>
+<td align="left">查看服务器信息</td>
+</tr>
+<tr>
+<td align="left"><code>TRACE</code></td>
+<td align="left">回显服务器收到的请求，主要用于测试或诊断</td>
+</tr>
+<tr>
+<td align="left"><code>PATCH</code></td>
+<td align="left">是对<code>PUT</code> 方法的补充，用来对已知资源进行局部更新</td>
+</tr>
+<tr>
+<td align="left"><code>CONNECT</code></td>
+<td align="left"><code>HTTP/1.1</code> 协议中预留给能够将连接改为管道方式的代理服务器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8http-get-与post-方法">8，HTTP GET 与POST 方法</h3>
+<p><code>GET 方法</code>与<code>POST 方法</code>是最常用的两个HTTP 方法，来看下其异同点：</p>
+<ul>
+<li>请求内容存放位置不同：<code>GET 方法</code>一般没有请求体，其请求内容放在<code>URL 参数</code>中，<code>POST 方法</code>则将请求内容放在请求体中。</li>
+<li><code>POST 方法</code> 安全性更高：<code>GET 请求</code>一般是明文传输，不利于传输敏感数据。<code>POST 请求</code>内容在请求体中，更方便加密，提高安全性。</li>
+<li><code>POST 方法</code>传输的数据量更大：<code>GET 请求</code>内容在URL 中，因此有大小限制，而<code>POST 请求</code> 内容在请求体中，理论上没有大小限制。</li>
+</ul>
+<h3 id="9http-请求头字段">9，HTTP 请求头字段</h3>
+<p>这里介绍一些常用的HTTP 请求头字段：</p>
+<blockquote>
+<p><code>Host</code>：客户端端请求的域名。</p>
+<p><code>Connection</code>：告诉服务端，处理完本请求后，是否关闭连接。</p>
+<p><code>User-Agent</code>：客户端使用的浏览器或APP 类型/版本。</p>
+<p><code>Accept</code>：客户端支持哪些类型的文档。</p>
+<p><code>Accept-Encoding</code> ：客户端支持的编码类型。</p>
+<p><code>Accept-Language</code> ：客户端支持的语言类型。</p>
+<p><code>Referer</code> ：客户端从哪个网页过来的。</p>
+<p><code>Cache-Control</code>：指定缓存机制。</p>
+</blockquote>
+<h3 id="10http-响应头字段">10，HTTP 响应头字段</h3>
+<p>这里介绍一些常用的HTTP 响应头字段：</p>
+<blockquote>
+<p><code>Allow</code>：表明服务器支持哪些请求方法，如GET，POST 等。</p>
+<p><code>Content-Encoding</code>：响应内容编码方法。</p>
+<p><code>Content-Type</code>：响应内容属于什么MIME 类型。</p>
+<p><code>Content-Length</code>：响应内容的长度。</p>
+<p><code>Date</code>：当前GMT 时间。</p>
+<p><code>Expiress</code>：响应内容过期时间，过期后将不再缓存内容。</p>
+<p><code>Last-Modified</code>：文档的最后改动时间。</p>
+<p><code>Location</code>：告诉客户端到哪里获取文档，一般用于重定向。</p>
+<p><code>Refresh</code>：浏览器在多少秒后刷新文档。</p>
+<p><code>Server</code>：服务器名字。</p>
+<p><code>Set-Cookie</code>：设置和页面关联的Cookie。</p>
+<p><code>Date</code>：表示消息发送时间。</p>
+</blockquote>
+<h3 id="11http-响应状态码">11，HTTP 响应状态码</h3>
+<p>服务器在向客户端返回内容时，会带有一个<code>HTTP Status Code</code>（状态码），用于告诉客户端的返回状态。</p>
+<p>HTTP 状态码分为5 种类型，由三个十进制数字组成。第一个数字（<code>1-5</code>）代表状态码的分类，后两位是其含义。</p>
+<table>
+<thead>
+<tr>
+<th align="left">状态码类型</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>1xx</code></td>
+<td align="left">表明服务器已经收到请求</td>
+</tr>
+<tr>
+<td align="left"><code>2xx</code></td>
+<td align="left">表明服务器已经成功接收并处理请求</td>
+</tr>
+<tr>
+<td align="left"><code>3xx</code></td>
+<td align="left">表明请求的资源已重定向到其它地方</td>
+</tr>
+<tr>
+<td align="left"><code>4xx</code></td>
+<td align="left">表明客户端的请求有错误</td>
+</tr>
+<tr>
+<td align="left"><code>5xx</code></td>
+<td align="left">表明服务端出现错误</td>
+</tr>
+</tbody>
+</table>
+<p>常见状态码：</p>
+<table>
+<thead>
+<tr>
+<th align="left">常见状态码</th>
+<th align="left">状态码描述</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>100</code></td>
+<td align="left"><code>Continue</code></td>
+<td align="left">客户端应继续其请求</td>
+</tr>
+<tr>
+<td align="left"><code>200</code></td>
+<td align="left"><code>OK</code></td>
+<td align="left">请求成功，一般用于GET与POST请求</td>
+</tr>
+<tr>
+<td align="left"><code>301</code></td>
+<td align="left"><code>Moved Permanently</code></td>
+<td align="left">请求的资源已被<code>永久重定向</code>到新地址</td>
+</tr>
+<tr>
+<td align="left"><code>302</code></td>
+<td align="left"><code>Found</code></td>
+<td align="left">请求的资源已被<code>临时重定向</code>到新地址</td>
+</tr>
+<tr>
+<td align="left"><code>304</code></td>
+<td align="left"><code>Not Modified</code></td>
+<td align="left">客户端访问的内容未修改，应从缓存中获取内容</td>
+</tr>
+<tr>
+<td align="left"><code>400</code></td>
+<td align="left"><code>Bad Request</code></td>
+<td align="left">客户端的请求有误</td>
+</tr>
+<tr>
+<td align="left"><code>401</code></td>
+<td align="left"><code>Unauthorized</code></td>
+<td align="left">请求要求客户端进行身份认证</td>
+</tr>
+<tr>
+<td align="left"><code>403</code></td>
+<td align="left"><code>Forbidden</code></td>
+<td align="left">服务器拒绝客户端访问</td>
+</tr>
+<tr>
+<td align="left"><code>404</code></td>
+<td align="left"><code>Not Found</code></td>
+<td align="left">客户端请求的资源，服务端不存在</td>
+</tr>
+<tr>
+<td align="left"><code>405</code></td>
+<td align="left"><code>Method Not Allowed</code></td>
+<td align="left">客户端请求中的方法被禁止</td>
+</tr>
+<tr>
+<td align="left"><code>500</code></td>
+<td align="left"><code>	Internal Server Error</code></td>
+<td align="left">服务器内部错误</td>
+</tr>
+<tr>
+<td align="left"><code>501</code></td>
+<td align="left"><code>Not Implemented</code></td>
+<td align="left">服务器不支持该请求</td>
+</tr>
+<tr>
+<td align="left"><code>503</code></td>
+<td align="left"><code>Service Unavailable</code></td>
+<td align="left">服务器过载，暂时不可用</td>
+</tr>
+<tr>
+<td align="left"><code>505</code></td>
+<td align="left"><code>HTTP Version not supported</code></td>
+<td align="left">客户端使用的HTTP版本，服务端不支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12用浏览器演示http">12，用浏览器演示HTTP</h3>
+<p>下面通过一个例子实际感受以下HTTP 协议。</p>
+<p>在浏览器（我这里用的是Chrome）中访问新浪网<code>https://www.sina.com.cn/</code>，通过<code>F12</code>键，调出浏览器<code>开发者工具 </code>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200501153742518.png?#pic_center" alt="在这里插入图片描述"></p>
+<ol>
+<li>点击<code>Network</code>，可查看网络请求</li>
+<li>点击<code>某个请求</code>，可查看该请求信息</li>
+<li>点击<code>Response Header</code>，可查看响应头内容</li>
+<li>点击<code>Request Header</code>，可查看请求头信息</li>
+<li>点击<code>点击Response</code>，可查看响应内容</li>
+</ol>
+<h3 id="13用curl-命令演示http">13，用curl 命令演示HTTP</h3>
+<p><code>curl</code> 命令可以发送<code>HTTP(S)</code> 协议，<a href="https://blog.csdn.net/LUAOHAN/article/details/105602195">这里</a>有<code>curl</code> 命令的常用方法。</p>
+<p>我们使用 <code>curl -v 参数</code> 来显示详细的HTTP 协议包信息：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200501175653628.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="14什么是http2">14，什么是HTTP/2</h3>
+<p><code>HTTP/2 </code> 可看作是<code>HTTP1.x</code> 的增强版，其主要解决<code>HTTP1.x</code> 的效率等问题，其消息结构也已经发生了改变。</p>
+<p>我们来访问<code>https://http2.akamai.com/demo</code>，来感受下<code>HTTP2</code>的速度。<code>HTTP/1.1</code> 耗时15 秒多，<code>HTTP/2</code>耗时6 秒多。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200501160208730.gif#pic_center" alt="在这里插入图片描述"></p>
+<p><code>HTTP2</code> 有如下特点：</p>
+<ul>
+<li>HTTP2 是一个彻底的<code>二进制协议</code>，所有信息以二进制格式传输。</li>
+<li>HTTP2 支持多工(<code>Multiplexing</code>)，在一个TCP 链接中可同时处理多个HTTP 请求。</li>
+<li>HTTP2 中的<code>数据流</code>不是按照顺序发送的，是乱序的。</li>
+<li>HTTP2 支持<code>头信息压缩</code>。</li>
+<li>HTTP2 支持服务端主动向客户端发送信息。</li>
+</ul>
+<h3 id="15什么是https">15，什么是HTTPS</h3>
+<p><img src="https://img-blog.csdnimg.cn/20200501163847419.png#pic_center" alt="在这里插入图片描述"></p>
+<p><code>HTTPS</code> 中的<code>S</code> 是指<code>Security</code>，即是<code>安全</code>的意思，所以<code>HTTPS</code> 就是安全的<code>HTTP</code>。</p>
+<p><code>HTTPS</code> 在HTTP 协议的基础上加入了一层<code>SSL/TLS</code>，用于对HTTP 信息加密，其加密采用<code>非对称加密算法RSA 算法</code>。其协议层结构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200501163937902.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/04/git-use/">
+            <span class="next-text nav-default">Git 简明手册</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/http/" class="leancloud_visitors" data-flag-title="HTTP 协议图解">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

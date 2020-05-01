@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Tue, 28 Apr 2020 01:37:56 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 01 May 2020 01:37:56 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,15 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
+    </item>
+    
+    <item>
+      <title>HTTP 协议图解</title>
+      <link>https://codeshellme.github.io/2020/05/http/</link>
+      <pubDate>Fri, 01 May 2020 01:37:56 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/http/</guid>
+      <description>HTTP 协议是一个非常重要的网络协议，我们平时能够使用浏览器浏览网页，其中一个非常重要的条件就是HTTP 协议。 0，什么是网络协议 互联网的目的是分享</description>
     </item>
     
     <item>
