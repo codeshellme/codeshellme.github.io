@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Regex 正则表达式入门 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="0，什么是正则表达式 正则表达式（Regular Expression简写为Regex），又称为规则表达式，它是一种强大的文本匹配模式，其用于在" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/regex/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Regex 正则表达式入门" />
+<meta property="og:description" content="0，什么是正则表达式 正则表达式（Regular Expression简写为Regex），又称为规则表达式，它是一种强大的文本匹配模式，其用于在" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/regex/" />
+<meta property="article:published_time" content="2020-05-03T01:37:56+08:00" />
+<meta property="article:modified_time" content="2020-05-03T01:37:56+08:00" />
+<meta itemprop="name" content="Regex 正则表达式入门">
+<meta itemprop="description" content="0，什么是正则表达式 正则表达式（Regular Expression简写为Regex），又称为规则表达式，它是一种强大的文本匹配模式，其用于在">
+<meta itemprop="datePublished" content="2020-05-03T01:37:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-03T01:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="3456">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Regex 正则表达式入门"/>
+<meta name="twitter:description" content="0，什么是正则表达式 正则表达式（Regular Expression简写为Regex），又称为规则表达式，它是一种强大的文本匹配模式，其用于在"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Regex 正则表达式入门</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-03 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 3456 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0什么是正则表达式">0，什么是正则表达式</a></li>
+        <li><a href="#1正则表达式的由来">1，正则表达式的由来</a></li>
+        <li><a href="#2正则表达式工具">2，正则表达式工具</a></li>
+        <li><a href="#3正则表达式语法">3，正则表达式语法</a></li>
+        <li><a href="#4正则表达式示例">4，正则表达式示例</a></li>
+        <li><a href="#5贪婪与非贪婪模式">5，贪婪与非贪婪模式</a></li>
+        <li><a href="#6在python-中使用正则">6，在<code>Python</code> 中使用正则</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><img src="https://img-blog.csdnimg.cn/20200502170142100.jpg?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<h3 id="0什么是正则表达式">0，什么是正则表达式</h3>
+<p><code>正则表达式</code>（<code>Regular Expression</code>简写为<code>Regex</code>），又称为<code>规则表达式</code>，它是一种强大的文本匹配模式，其用于在字符串中<code>查找匹配</code>符合特定规则的子串。</p>
+<p>正则表达式是独立于<code>编程语言</code>而存在的，它并不依赖于某种编程语言。只要一种编程语言实现了<code>正则表达式引擎</code>，那么这种编程语言，就具备了正则表达式模式匹配的功能。每种<code>工具</code>或<code>编程语言</code>对正则表达式的实现，虽有细节上的不同，但基本的使用是相同的。</p>
+<p>正则表达式的基本工作原理如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200502171536552.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="1正则表达式的由来">1，正则表达式的由来</h3>
+<p>1956 年，美国数学家<code>Stephen Kleene</code> 在两位神经生理学家（<code>Warren McCulloch</code> 和 <code>Walter Pitts</code>）的早期工作的基础上，发表了一篇标题为<code>神经网事件的表示法</code>的论文，由此引入了正则表达式的概念。</p>
+<p>之后，Unix 之父<code>Ken Thompson</code>把这一成果应用于<code>计算搜索算法</code>的一些早期研究。随后，他将这一符号系统应用于<code>Unix 系统</code>中的 <code>qed 编辑器</code>，这是正则表达式的第一个实用程序。</p>
+<p>此后，正则表达式被广泛的应用于类Unix 系统的工具中，如 <code>grep</code>，<code>perl</code> 等。</p>
+<h3 id="2正则表达式工具">2，正则表达式工具</h3>
+<p><a href="http://www.regexbuddy.com/">RegexBuddy</a> 是一个很不错的软件。</p>
+<p><a href="https://regexr.com/">Regexr</a> 是一个在线工具。</p>
+<h3 id="3正则表达式语法">3，正则表达式语法</h3>
+<p>正则表达式由一些<code>普通字符</code>（比如英文字母，数字）和<code>元字符</code>（代表特定含义）组成。</p>
+<p>正则表达式作为一个字符模板，在字符串中匹配一个或多个符合特定规则的子串。</p>
+<h4 id="31元字符">3.1，元字符</h4>
+<p><code>元字符</code>就是包含特定含义的字符。如果想匹配这些<code>元字符</code>，需要使用转义字符<code>\</code> 进行转义。</p>
+<p>下表是一些常用的元字符：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>\</code> | 转义字符，常用于转义元字符 |</td>
+<td></td>
+</tr>
+<tr>
+<td align="left"><code>.</code></td>
+<td align="left">匹配除换行符<code>\n</code> 之外的任何单字符</td>
+</tr>
+<tr>
+<td align="left"><code>$</code></td>
+<td align="left">匹配字符串的<code>结尾位置</code></td>
+</tr>
+<tr>
+<td align="left"><code>^</code></td>
+<td align="left">匹配字符串的<code>开始位置</code>。当写在中括号<code>[]</code>内时，表示不匹配该<code>中括号</code>中的字符集合</td>
+</tr>
+<tr>
+<td align="left"><code>[^xy]</code></td>
+<td align="left">匹配<code>非x</code>，<code>非y</code>字符</td>
+</tr>
+<tr>
+<td align="left"><code>()</code></td>
+<td align="left">被小括号包含的多个字符，将作为一整个字符</td>
+</tr>
+<tr>
+<td align="left"><code>(pattern)</code></td>
+<td align="left">写在小括号<code>()</code>内的表达式，表示一个<code>分组</code>，用于提取内容</td>
+</tr>
+<tr>
+<td align="left"><code>(?:pattern)</code></td>
+<td align="left">只表示一个<code>分组</code>，不提取内容</td>
+</tr>
+<tr>
+<td align="left"><code>[]</code></td>
+<td align="left">被中括号包含的多个字符，这多个字符的关系是<code>逻辑或</code>的关系</td>
+</tr>
+<tr>
+<td align="left"><code>[xyz]</code></td>
+<td align="left">字符集合，匹配<code>x</code>或<code>y</code>或<code>z</code></td>
+</tr>
+<tr>
+<td align="left"><code>[0-9]</code></td>
+<td align="left">匹配<code>0</code>到<code>9</code>之间的数字</td>
+</tr>
+<tr>
+<td align="left"><code>[a-z]</code></td>
+<td align="left">匹配<code>a</code>到<code>z</code>之间的字符</td>
+</tr>
+<tr>
+<td align="left"><code>[^a-z]</code></td>
+<td align="left">匹配不在<code>a</code>到<code>z</code>范围内的任意字符</td>
+</tr>
+<tr>
+<td align="left"><code>|</code></td>
+<td align="left">写在两个字符之间，代表<code>逻辑或</code>的关系</td>
+</tr>
+<tr>
+<td align="left"><code>x|y</code></td>
+<td align="left">匹配<code>x</code> 或 <code>y</code></td>
+</tr>
+<tr>
+<td align="left"><code>\b</code></td>
+<td align="left">匹配一个单词边界</td>
+</tr>
+<tr>
+<td align="left"><code>\B</code></td>
+<td align="left">匹配非单词边界</td>
+</tr>
+<tr>
+<td align="left"><code>\d</code></td>
+<td align="left">匹配一个数字字符，等价于<code>[0-9]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\D</code></td>
+<td align="left">匹配一个非数字字符，等价于<code>[^0-9]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\s</code></td>
+<td align="left">匹配任何<code>空白字符</code>，包括<code>空格</code>、<code>制表符</code>等</td>
+</tr>
+<tr>
+<td align="left"><code>\S</code></td>
+<td align="left">匹配任何<code>非空白字符</code></td>
+</tr>
+<tr>
+<td align="left"><code>\w</code></td>
+<td align="left">匹配<code>字母</code>、<code>数字</code>、<code>下划线</code>，等价于<code>[A-Za-z0-9_]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\W</code></td>
+<td align="left">匹配<code>非字母</code>、<code>非数字</code>、<code>非下划线</code>，等价于<code>[^A-Za-z0-9_]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\f</code></td>
+<td align="left">匹配<code>换页符</code></td>
+</tr>
+<tr>
+<td align="left"><code>\n</code></td>
+<td align="left">匹配<code>换行符</code></td>
+</tr>
+<tr>
+<td align="left"><code>\r</code></td>
+<td align="left">匹配<code>回车符</code></td>
+</tr>
+<tr>
+<td align="left"><code>\t</code></td>
+<td align="left">匹配<code>制表符</code></td>
+</tr>
+<tr>
+<td align="left"><code>\v</code></td>
+<td align="left">匹配<code>垂直制表符</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="32限定符">3.2，限定符</h4>
+<p><code>限定符</code>也属于元字符，用来限定一个<code>子表达式</code>出现的次数。</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>*</code></td>
+<td align="left">匹配前面的子表达式<code>零次</code>或<code>多次</code></td>
+</tr>
+<tr>
+<td align="left"><code>+</code></td>
+<td align="left">匹配前面的子表达式<code>一次</code>或<code>多次</code></td>
+</tr>
+<tr>
+<td align="left"><code>?</code></td>
+<td align="left">匹配前面的子表达式<code>零次</code>或<code>一次</code></td>
+</tr>
+<tr>
+<td align="left"><code>{n}</code></td>
+<td align="left">匹配前面的子表达式<code>n次</code></td>
+</tr>
+<tr>
+<td align="left"><code>{n,}</code></td>
+<td align="left">匹配前面的子表达式<code>至少n次</code></td>
+</tr>
+<tr>
+<td align="left"><code>{n,m}</code></td>
+<td align="left">匹配前面的子表达式<code>n 到m 次</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="4正则表达式示例">4，正则表达式示例</h3>
+<p>我们逐个介绍一下每种元字符的使用方式，下面的例子我们都使用<code>RegexBuddy</code> 软件来演示。</p>
+<h4 id="41转义字符">4.1，转义字符<code>\</code></h4>
+<p>转义字符用来对一些元字符进行转义，使这些元字符失去其特定的含义，只表示一个普通的字符。</p>
+<p>比如我们想匹配字符串<code>aaa^bbb</code> 中的<code>a^b</code> 子串，我们需要用模式<code>a\^b</code> 来匹配，<code>^</code> 之前需要加一个转义字符<code>\</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503085630971.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="42元字符">4.2，元字符<code>.</code></h4>
+<p>元字符<code>.</code> 可匹配任意(除了换行符<code>\n</code>)的单字符，意思就是<code>.</code> 可以代表任意（除了换行符<code>\n</code>）的单字符。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503092015873.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="43开始位置与结束位置">4.3，开始位置<code>^</code>与结束位置<code>$</code></h4>
+<p>符号<code>^</code> 表示匹配的子串在<code>行首</code>，符号<code>$</code> 表示匹配的子串在<code>行尾</code>。</p>
+<hr />
+<p><strong>匹配行首</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200503094258394.png#pic_center" alt="在这里插入图片描述"></p>
+<hr />
+<p><strong>匹配行尾</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200503094324437.png#pic_center" alt="在这里插入图片描述"></p>
+<hr />
+<p><strong>行首行尾</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200503094551114.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="44逻辑或">4.4，逻辑或<code>|</code></h4>
+<p>符号<code>|</code> 写在两个<code>子表达式</code>之间表示<code>逻辑或</code>的意思。</p>
+<p>例如模式串<code>ab|cd</code>，匹配<code>ab</code> 或 <code>cd</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/2020050310260386.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="45限定符">4.5，限定符</h4>
+<p><code>限定符</code>用于限定一个<code>子表达式</code>出现的<code>次数</code>，一共6 种，这里给出一些示例。</p>
+<p><strong>符号<code>*</code></strong></p>
+<p>模式串<code>ab*c</code>，表示字符<code>a</code>和<code>c</code> 之间需要出现<code>0 次</code>或<code>多次</code>字符<code>b</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503103941257.png#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>符号<code>+</code></strong></p>
+<p>模式串<code>ab+c</code>，表示字符<code>a</code>和<code>c</code> 之间需要出现<code>1 次</code>或<code>多次</code>字符<code>b</code>，即至少出现<code>1次</code>字符<code>b</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503104331119.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>符号<code>?</code></strong></p>
+<p>模式串<code>ab?c</code>，表示字符<code>a</code>和<code>c</code> 之间需要出现<code>0 次</code>或<code>1次</code>字符<code>b</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503142539115.png#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>符号<code>{n}</code>和<code>{n,}</code>和<code>{n,m}</code></strong></p>
+<ul>
+<li><code>ab{3}c</code>：符号b 出现的次数必须是<code>3</code></li>
+<li><code>ab{3,}c</code>：符号b 出现的次数必须<code>大于等于3</code></li>
+<li><code>ab{3,5}c</code>：符号b 出现的次数必须在<code>3</code> 和<code>5 </code>之间，包括<code>3</code> 和 <code>5</code></li>
+</ul>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/202005031055103.png?#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="46字符簇">4.6，字符簇<code>[]</code></h4>
+<p>写在中括号<code>[]</code> 内的多个字符代表<code>逻辑或</code>的意思。</p>
+<p>模式串<code>a[bef]c</code>，表示<code>a</code>和<code>c</code>中间的字符必须是<code>b</code>或<code>e</code>或<code>f</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503095303616.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>当符号<code>^</code> 写在中括号<code>[]</code> 内时，表示<code>逻辑非</code>的意思。</p>
+<p>模式串<code>a[^bef]c</code>，表示<code>a</code>和<code>c</code>中间的字符不能是<code>b</code>或<code>e</code>或<code>f</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503100001586.png#pic_center" alt="在这里插入图片描述"></p>
+<p>符号<code>-</code> 写在中括号<code>[]</code>，表示<code>范围</code>的意思：</p>
+<table>
+<thead>
+<tr>
+<th align="left">示例</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>[a-z]</code></td>
+<td align="left">表示<code>a</code> 到<code>z</code> 之间的任意字符</td>
+</tr>
+<tr>
+<td align="left"><code>[A-Z]</code></td>
+<td align="left">表示<code>A</code> 到<code>Z</code> 之间的任意字符</td>
+</tr>
+<tr>
+<td align="left"><code>[0-9]</code></td>
+<td align="left">表示<code>0</code> 到<code>9</code> 之间的任意数字，含义同<code>\d</code></td>
+</tr>
+<tr>
+<td align="left"><code>[^0-9]</code></td>
+<td align="left">表示任意<code>非数字</code>，含义同<code>\D</code></td>
+</tr>
+<tr>
+<td align="left"><code>[A-Za-z0-9_]</code></td>
+<td align="left">表示任意<code>字母</code>，<code>数字</code>或<code>下划线 </code>，含义同<code>\w</code></td>
+</tr>
+<tr>
+<td align="left"><code>[^A-Za-z0-9_]</code></td>
+<td align="left">表示任意<code>非字母</code>，<code>非数字</code>，<code>非下划线 </code>，含义同<code>\W</code></td>
+</tr>
+<tr>
+<td align="left"><code>[ \f\r\t\n]</code></td>
+<td align="left">表示任意的<code>空白字符</code>，含义同<code>\s</code></td>
+</tr>
+<tr>
+<td align="left"><code>[^ \f\r\t\n]</code></td>
+<td align="left">表示任意的<code>非空白字符</code>，含义同<code>\S</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="47字符组合">4.7，字符组合()</h4>
+<p>写在小括号<code>()</code>中的多个字符，会被看成一个整体。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503133928362.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="48单词边界b与b">4.8，单词边界<code>\b</code>与<code>\B</code></h4>
+<p>符号<code>\b</code> 是指一个<code>单词边界</code>，比如空白字符和标点符号等。
+符号<code>\B</code> 表示<code>非单词边界</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503141020379.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="5贪婪与非贪婪模式">5，贪婪与非贪婪模式</h3>
+<p>正则表达式中<code>贪婪</code>的意思就是<code>贪多</code>，意思就是正则在匹配的过程中，总是去匹配<code>尽可能多</code>的字符，符号<code>?</code> 可以将<code>贪婪</code>转换为<code>非贪婪</code>。</p>
+<hr />
+<p><img src="https://img-blog.csdnimg.cn/20200503135129219.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="6在python-中使用正则">6，在<code>Python</code> 中使用正则</h3>
+<p>Python 中提供了<code>re</code> 模块，用于支持正则表达式功能。</p>
+<p>在<code>python</code> 中一般在表达式前加<code>r</code>，表示<code>原始字符</code>，不用考虑转义的问题。例如<code>r'abc'</code>。</p>
+<p>下面打开<code>python</code> 终端：</p>
+<ul>
+<li>首先引入模块，<code>import re</code></li>
+<li><code>help(re)</code> 可查看re 模块帮助手册</li>
+<li><code>dir(re)</code> 可查看其支持的属性和方法</li>
+</ul>
+<pre><code class="language-shell">&gt;&gt;&gt; python		`打开python 终端`
+_____________________________________________
+Python 2.7.17 (default, Nov  7 2019, 10:07:09) 
+[GCC 7.4.0] on linux2
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+
+&gt;&gt;&gt; import re   # 引入re 模块
+&gt;&gt;&gt; 
+&gt;&gt;&gt; help(re)	# 查看帮助手册
+&gt;&gt;&gt;
+&gt;&gt;&gt; dir(re)		# 查看re 支持的属性和方法
+</code></pre>
+<h4 id="61re-模块常用方法">6.1，re 模块常用方法</h4>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>match</code></td>
+<td align="left">用于匹配表达式</td>
+</tr>
+<tr>
+<td align="left"><code>search</code></td>
+<td align="left">查找匹配项</td>
+</tr>
+<tr>
+<td align="left"><code>findall</code></td>
+<td align="left">查找所有的匹配项</td>
+</tr>
+<tr>
+<td align="left"><code>compile</code></td>
+<td align="left">编译正则表达式</td>
+</tr>
+</tbody>
+</table>
+<p>详细解释：</p>
+<pre><code class="language-shell">match(pattern, string, flags=0)
+        Try to apply the pattern at the start of the string, returning
+        a match object, or None if no match was found.
+
+search(pattern, string, flags=0)
+        Scan through string looking for a match to the pattern, returning
+        a match object, or None if no match was found.
+        
+findall(pattern, string, flags=0)
+        Return a list of all non-overlapping matches in the string.
+        
+        If one or more groups are present in the pattern, return a
+        list of groups; this will be a list of tuples if the pattern
+        has more than one group.
+        
+        Empty matches are included in the result.
+
+compile(pattern, flags=0)
+        Compile a regular expression pattern, returning a pattern object.
+</code></pre>
+<p>可以看到，每个方法中都有一个<code>flag</code> 参数，它表示<code>匹配模式</code>，默认值为<code>0</code>，表示普通模式。</p>
+<p><code>flag</code> 参数的值有以下几种选择，可以使用符号<code>|</code> 连接多种选择：</p>
+<pre><code class="language-shell">`I/IGNORECASE`  Perform case-insensitive matching.
+`L/LOCALE`      Make \w, \W, \b, \B, dependent on the current locale.
+`M/MULTILINE`   &quot;^&quot; matches the beginning of lines (after a newline)
+                as well as the string.
+                &quot;$&quot; matches the end of lines (before a newline) as well
+                as the end of the string.
+`S/DOTALL`      &quot;.&quot; matches any character at all, including the newline.
+`X/VERBOSE`     Ignore whitespace and comments for nicer looking RE's.
+`U/UNICODE`     Make \w, \W, \b, \B, dependent on the Unicode locale.
+</code></pre>
+<h4 id="62match-方法">6.2，match 方法</h4>
+<p><code>re.match</code> 尝试从字符串的<code>起始位置</code>开始匹配：</p>
+<ul>
+<li>成功：返回<code>SRE_Match</code> 对象</li>
+<li>失败：返回<code>None</code></li>
+</ul>
+<pre><code class="language-shell">&gt;&gt;&gt; m = re.match(r'abc', 'abcde')
+&gt;&gt;&gt; print m  # 匹配成功
+&lt;_sre.SRE_Match object at 0x7f91544cff80&gt;	
+&gt;&gt;&gt; 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; m = re.match(r'abc', 'fabcde')
+&gt;&gt;&gt; print m  # `fabcde` 不是以`abc` 开头，匹配失败                  
+None                     
+&gt;&gt;&gt;
+</code></pre>
+<h4 id="63search-方法">6.3，search 方法</h4>
+<p><code>re.search</code> 扫描整个字符串，直到找到<code>第一个</code>成功的匹配：</p>
+<ul>
+<li>成功：返回<code>SRE_Match</code> 对象</li>
+<li>失败：返回<code>None</code></li>
+</ul>
+<pre><code class="language-shell">&gt;&gt;&gt; m = re.search(r'abc', 'abcde')
+&gt;&gt;&gt; print m  # 匹配成功
+&lt;_sre.SRE_Match object at 0x7f91544cff80&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; m = re.search(r'abc', 'fabcde')
+&gt;&gt;&gt; print m # 匹配成功
+&lt;_sre.SRE_Match object at 0x7f9154521b90&gt;
+</code></pre>
+<h4 id="64findall-方法">6.4，findall 方法</h4>
+<p><code>re.findall</code> 在字符串中查找<code>所有</code>匹配的子串：</p>
+<ul>
+<li>成功：返回一个列表</li>
+<li>失败：返回<code>空列表[]</code></li>
+</ul>
+<pre><code class="language-shell">&gt;&gt;&gt; re.findall(r'abc', 'fabcdeabc')
+['abc', 'abc']		# 找到两个`abc` 子串
+&gt;&gt;&gt; 
+&gt;&gt;&gt; re.findall(r'abce', 'fabcdeabc')
+[]                  # 没找到子串
+&gt;&gt;&gt; 
+</code></pre>
+<h4 id="65compile-方法">6.5，compile 方法</h4>
+<p>在使用正则时，<code>re</code> 模块会先将<code>正则表达式</code>进行<code>编译</code>，然后才会去字符串中匹配。</p>
+<p>如果一个<code>正则表达式</code>会使用很多次，我们可以使用<code>re.compile</code> 方法对表达式进行<code>预编译</code>，这样就不会在每次用到这个表达式时都进行编译，有助于提高效率。</p>
+<p>该方法返回一个<code>SRE_Pattern</code> 对象，该对象又包含<code>match</code>，<code>search</code>，<code>findall</code> 等方法，使用方法如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; reg =  re.compile(r'abc')      # 编译
+&gt;&gt;&gt; 
+&gt;&gt;&gt; type(reg)
+&lt;type '_sre.SRE_Pattern'&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; reg.findall('fabcdeabc')      # 找到两个
+['abc', 'abc']  
+&gt;&gt;&gt; 
+&gt;&gt;&gt; reg.match('fabcdeabc')        # 没有匹配上
+&gt;&gt;&gt; 
+&gt;&gt;&gt; reg.search('fabcdeabc')       # 匹配上
+&lt;_sre.SRE_Match object at 0x7f9154521b90&gt;
+</code></pre>
+<h4 id="66sre_match-对象">6.6，SRE_Match 对象</h4>
+<p><code>SRE_Match</code> 对象用于获取分组，写在小括号<code>()</code>内的表达式是一个分组。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; # 正则中包含两个分组
+&gt;&gt;&gt; m = re.match(r'(\d*)-(\w*)', '123-abc-')
+&gt;&gt;&gt; m
+&lt;_sre.SRE_Match object at 0x7f91544e0ae0&gt;
+&gt;&gt;&gt; m.group(0) # 获取整个匹配的串，同 m.group()
+'123-abc'
+&gt;&gt;&gt; m.group(1) # 获取第一个分组
+'123'
+&gt;&gt;&gt; m.group(2) # 获取第二个分组
+'abc'
+&gt;&gt;&gt;
+</code></pre>
+<h4 id="67matchsearchfindall-比较">6.7，match，search，findall 比较</h4>
+<p>我们来看下<code>match</code>，<code>search</code>，<code>findall</code> 三个方法的异同点：</p>
+<ul>
+<li>match：必须从字符串的开头匹配，只会有一个匹配项，返回结果是<code>SRE_Match</code> 对象</li>
+<li>search：扫描整个字符串，直到匹配到第一个为止，只会有一个匹配项，返回结果是<code>SRE_Match</code> 对象</li>
+<li>findall：扫描整个字符串，返回所有的匹配项，返回结果是一个字符串列表</li>
+</ul>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/http/">
+            <span class="next-text nav-default">HTTP 协议图解</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/regex/" class="leancloud_visitors" data-flag-title="Regex 正则表达式入门">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
