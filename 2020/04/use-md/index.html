@@ -48,7 +48,7 @@
 <meta itemprop="description" content="Markdown 是一种轻量级标记语言，用来编写文本文档，一般后缀名为.md。该语言在 2004 由约翰·格鲁伯（John Gruber）创建。 由于Markdown 语法">
 <meta itemprop="datePublished" content="2020-04-25T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-25T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="3273">
+<meta itemprop="wordCount" content="3640">
 
 
 
@@ -135,8 +135,8 @@
         <div class="post-category">
             <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
             </div>
-          <span class="more-meta"> 3273 字 </span>
-          <span class="more-meta"> 阅读约需 7 分钟 </span>
+          <span class="more-meta"> 3640 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
         
 
       </div>
@@ -171,6 +171,7 @@
         <li><a href="#11文字上标下标">11，文字上标下标</a></li>
         <li><a href="#12文字缩写">12，文字缩写</a></li>
         <li><a href="#13注脚">13，注脚</a></li>
+        <li><a href="#14markmap-思维导图">14，Markmap 思维导图</a></li>
       </ul>
     </li>
   </ul>
@@ -602,6 +603,65 @@ print &quot;hello world.&quot;
 <blockquote>
 <p>注脚示例二<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 </blockquote>
+<h3 id="14markmap-思维导图">14，Markmap 思维导图</h3>
+<p><a href="https://markmap.js.org/">Markmap</a> 是一个支持<code>Markdown</code>语法的思维导图工具，通过<code>Markmap</code>，你可以使用<code>Markdown</code> 语法来生成思维导图。</p>
+<p><code>Markmap</code> 开源免费，简单易用。你可以在<a href="https://markmap.js.org/repl"><strong>这里</strong></a> 将你写的<code>Markdown</code> 文档转换为思维导图。</p>
+<p>在<code>Markmap</code> 中支持的<code>Markdown</code> 符号有：</p>
+<ul>
+<li>标题符号<code>#</code></li>
+<li>无须列表符号<code>-</code></li>
+<li>分隔符<code>---</code></li>
+<li>超级链接符号<code>[]()</code> 和<code>&lt;&gt;</code></li>
+<li>文字修饰，例如<code>加粗</code>，<code>斜体</code>，<code>删除线</code></li>
+<li>代码块，包括<code>行内代码块</code>和<code>多行代码块</code></li>
+</ul>
+<p>你可以将如下<code>Markdown</code> 文档在<a href="https://markmap.js.org/repl"><strong>这里</strong></a> 转换为思维导图：</p>
+<pre><code class="language-shell"># Markmap 支持
+
+## 标题符号
+
+- 一级标题
+- 二级标题
+- 三级标题
+
+## 无序列表
+
+- 列表1
+- 列表2
+
+## 分隔符
+
+- 第一部分
+---
+- 第二部分
+--- 
+- 第三部分
+- 第四部分
+
+## 超级链接
+
+- &lt;https://www.google.com&gt;
+- [Google](https://www.google.com)
+
+## 文字修饰
+
+- *斜体*
+- **加粗**
+- ~~删除线~~
+
+## 代码块
+
+- `单行代码块`
+- 
+\```shell
+多行代码块1
+多行代码块2
+多行代码块3
+\```
+
+</code></pre>
+<p>其效果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200512180605852.png?#pic_center" alt="在这里插入图片描述"></p>
 <p>（完。）</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
