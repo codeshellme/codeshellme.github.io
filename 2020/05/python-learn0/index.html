@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 0，前言 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Life is short, you need Python! —— Bruce Eckel 0，关于本书 本书是一本P" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 0，前言" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Life is short, you need Python! —— Bruce Eckel 0，关于本书 本书是一本P" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn0/" />
+<meta property="article:published_time" content="2020-05-12T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-12T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 0，前言">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Life is short, you need Python! —— Bruce Eckel 0，关于本书 本书是一本P">
+<meta itemprop="datePublished" content="2020-05-12T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-12T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2397">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 0，前言"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Life is short, you need Python! —— Bruce Eckel 0，关于本书 本书是一本P"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 0，前言</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-12 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 2397 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0关于本书">0，关于本书</a></li>
+        <li><a href="#1什么是python">1，什么是Python</a></li>
+        <li><a href="#2python-的发展">2，Python 的发展</a></li>
+        <li><a href="#3python-特点">3，Python 特点</a></li>
+        <li><a href="#4python-的流行度">4，Python 的流行度</a></li>
+        <li><a href="#5关于本书读者">5，关于本书读者</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>Life is short, you need Python!</strong></p>
+<p>—— Bruce Eckel</p>
+</blockquote>
+<h3 id="0关于本书">0，关于本书</h3>
+<p>本书是一本Python 教程，力图简洁易懂。</p>
+<p>本书面向初学者，即使你没有任何编程经验，也可参照本教程学习。</p>
+<p>由于Python 官方已在<code>2020 年1 月 1日</code>停止对<code>Python 2.x</code> 的更新，所以本书的所有示例都将使用Python 3 来进行测试。</p>
+<blockquote>
+<p>注意：
+如果你之前已经学过<code>Python2.x</code>，你会发现，从<code>Python2.x</code> 转向<code>Python3.x</code> 只需要花费很少的时间。
+所以，对于初学者，并不需要刻意的纠结应该学习<code>Python2.x</code> 还是<code>Python3.x</code>。</p>
+</blockquote>
+<h3 id="1什么是python">1，什么是Python</h3>
+<p>Python 是一门编程语言，简单易学（对初学者友好），且功能强大。</p>
+<p><strong>简单易学</strong></p>
+<p>相对于其它编程语言，比如C 语言，C++，Java等，这三门语言称得上是大型语言，因为它们的语法结构庞大，有较多复杂的语言概念。</p>
+<p>而Python 的语法比较简单，不涉及较底层的计算机知识，它更偏向于解决实际问题，而不是晦涩难懂的理论知识。</p>
+<p>如果你没有编程基础，Python 非常适合作为你的入门语言。</p>
+<p><strong>功能强大</strong></p>
+<p>虽说Python 简单易学，但并不意味着它能做的事情就不多。恰恰相反，Python 有很多现成的，成熟的模块供你使用，可以让你高效快速的开发应用。在人工智能领域，Python的便利性使其成为用于机器学习和人工智能的最受欢迎的语言。</p>
+<p>你可以使用Python 做这些事情：</p>
+<ul>
+<li>编写自动化脚本，处理琐碎的工作。</li>
+<li>构建大型网站，比如国外的YouTube，国内的豆瓣。</li>
+<li>编写爬虫软件，采集收集有用的信息。</li>
+<li>做数据分析，从数据中挖掘价值。</li>
+<li>做机器学习，构建人工智能应用。</li>
+</ul>
+<h3 id="2python-的发展">2，Python 的发展</h3>
+<p>Python 语言是由荷兰程序员<code>Guido van Rossum</code>（俗称“龟叔”） 于1989 年发明，到现在已有30 年的历史。龟叔给Python 的定位是<code>优雅、明确、简单</code>。</p>
+<blockquote>
+<p>Python 是蟒蛇的意思，之所以叫这个名字，是因为<code>Guido van Rossum</code>  当时很喜欢看一部名叫《蟒蛇马戏团》英剧。</p>
+</blockquote>
+<p>从Python 诞生到现在，它经过了三个大的版本，分别是<code>Python 1.x</code>，<code>Python 2.x</code>，<code>Python 3.x</code>。</p>
+<p>其中<code>Python 2.7</code> 是一个广泛使用的版本，也是<code>Python2.x</code> 的最后一个版本。目前，最新的版本是<code>Python 3.8</code>。</p>
+<p><code>Python 3.x</code> 相比<code>Python 2.x</code> 有较大的改变，<code>Python 3.x</code> 为了解决一些历史遗留问题，并不向前兼容<code>Python 2.x</code>，但它们的基本语法并没有多大的改变。</p>
+<p>下表是Python 发展的几个重要的时间点：</p>
+<table>
+<thead>
+<tr>
+<th align="left">时间</th>
+<th align="left">版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1991 年</td>
+<td align="left">Python 0.9 发布，这是Python 的第一个发布版本</td>
+</tr>
+<tr>
+<td align="left">1994 年</td>
+<td align="left">Python 1.0 发布</td>
+</tr>
+<tr>
+<td align="left">2000 年</td>
+<td align="left">Python 2.0 发布</td>
+</tr>
+<tr>
+<td align="left">2008 年</td>
+<td align="left">Python 3.0 发布</td>
+</tr>
+<tr>
+<td align="left">2010 年</td>
+<td align="left">Python 2.7 发布</td>
+</tr>
+<tr>
+<td align="left">2019 年</td>
+<td align="left">Python 3.8 发布</td>
+</tr>
+<tr>
+<td align="left">2020 年</td>
+<td align="left">Python 官方停止对<code>Python 2.x</code> 的更新</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3python-特点">3，Python 特点</h3>
+<p>Python 有如下特点：</p>
+<ol>
+<li><strong>解释型语言</strong></li>
+</ol>
+<p>编程语言有<code>编译型语言</code>和<code>解释型语言</code>之分。</p>
+<p>编译型语言需要先将源代码，通过该语言的编译器转换成<code>二进制可执行程序</code>，才能运行，比如C 语言，C++，Java 等。</p>
+<p>解释型语言则不需要进行编译，直接通过其<code>虚拟机/解释器</code>运行源代码即可，比如Python 语言，在运行时直接使用<code>Python 解释器 </code> 运行源代码即可。</p>
+<p>需要注意的是，所有程序的运行都是通过CPU 来执行的，而CPU 只认识二进制（即0/1）。所以，任何语言编写的代码，都得变成二进制，才能被执行。</p>
+<p>因此，解释型语言并不是说没有经过编译阶段，只是对于使用者(程序员)来说，可以不关心编译阶段，因为解释器在处理代码时会实时快速的将代码转换成二进制，紧接着就会执行二进制代码。</p>
+<ol start="2">
+<li><strong>面向对象</strong></li>
+</ol>
+<p>使用Python 语言不仅可以<code>面向过程编程</code>，也可以<code>面向对象编程</code>（因为Python 中也有<code>类Class</code> 的概念）。这也是对初学者比较友好的一点，你可以使用自己喜欢，习惯的编程方式来编写Python 代码。</p>
+<ol start="3">
+<li><strong>交互模式</strong></li>
+</ol>
+<p>Python 解释器就是一个交互式终端，你输入一段代码，它可以实时的将结果反馈给你。这样，你就可以方便的使用它测试，验证你的想法。</p>
+<ol start="4">
+<li><strong>可移植</strong></li>
+</ol>
+<p>因为Python 语言建立在<code>Python 虚拟机/解释器</code>之上，所以，只要你在不同的平台安装了Python 解释器，那么你的Python 代码就可以在不同的平台上运行。</p>
+<ol start="5">
+<li><strong>可扩展</strong></li>
+</ol>
+<p>Python 俗称<code>胶水语言</code>，意思就是你可以很方便的，将Python 语言嵌入其它编程语言（反过来亦可）。这样可以利用不同语言的优点，更好的达到我们的目的。</p>
+<ol start="6">
+<li><strong>极其丰富的模块</strong></li>
+</ol>
+<p>Python 的功能强大性和方便性，一个很重要的原因是因为它有很多<code>便利强大</code>的模块，让你可以使用简单几行代码，实现复杂的功能。</p>
+<p>在后面的学习中，我们会介绍很多实用的模块。</p>
+<h3 id="4python-的流行度">4，Python 的流行度</h3>
+<p>根据<a href="https://www.tiobe.com/tiobe-index/">TIOBE 指数</a>，Python 在近几年的占比一直呈上升趋势，尤其是近一年来，一直稳居前三名。</p>
+<p>下图是<code>TIOBE 指数</code>统计的10 种流行的编程语言，在近20 年的变化趋势。</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20200507095610176.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<p>Python 能取得现在的成绩，跟它的<code>“简单，强大”</code> 的特点是分不开的。</p>
+<p>又由于近几年大数据和人工智能的不断发展，而Python 在这些领域的适用性，使得Python 的地位越来越不可替代。</p>
+<h3 id="5关于本书读者">5，关于本书读者</h3>
+<p>任何人都可以学习Python，但并不是谁都需要学习Python，如果你属于以下情况之一，那么你可能需要学习Python：</p>
+<ul>
+<li>你从事IT 行业（比如程序员），但之前没有学习过Python，那么学习Python 可以加大你技能的广度。</li>
+<li>你不是专业人士，但将来想从事编码工作，那么Python 可以作为你的入门语言。</li>
+<li>你不是专业人士，将来也不想从事编码工作，只是对它感兴趣，喜欢钻研体验新鲜事物，那你也可以学习Python，简单的学习也花费不了多少时间。</li>
+<li>你不是专业人士，将来也不想从事编码工作，但自己日常办公经常使用电脑和网络，并且你的工作有很多重复性，或者需要分析一些数据。那么你可以学习Python，自己写一些简单的脚本，来替你完成一些日常琐碎的工作。</li>
+</ul>
+<p>只要你属于以上情况之一，那么本教程适合你。</p>
+<p>接下来，就让我们愉快的学习Python 吧！</p>
+<p>（完。）</p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn1/">
+            <span class="next-text nav-default">Python 简明教程 --- 1，搭建Python 环境</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn0/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 0，前言">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

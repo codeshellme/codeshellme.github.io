@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="码农充电站" /><meta name="description" content="分享编程知识，免费教程" /><meta name="keywords" content="码农充电站, 编程, 编程语言" />
+<meta name="author" content="@码农充电站" /><meta name="description" content="分享编程知识，免费教程, 编程入门教程" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -41,14 +41,14 @@
 
 
 <meta property="og:title" content="码农充电站" />
-<meta property="og:description" content="分享编程知识，免费教程" />
+<meta property="og:description" content="分享编程知识，免费教程, 编程入门教程" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://codeshellme.github.io/" />
-<meta property="og:updated_time" content="2017-08-20T21:38:52+08:00" />
+<meta property="og:updated_time" content="2020-03-20T21:38:52+08:00" />
 <meta itemprop="name" content="码农充电站">
-<meta itemprop="description" content="分享编程知识，免费教程"><meta name="twitter:card" content="summary"/>
+<meta itemprop="description" content="分享编程知识，免费教程, 编程入门教程"><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="码农充电站"/>
-<meta name="twitter:description" content="分享编程知识，免费教程"/>
+<meta name="twitter:description" content="分享编程知识，免费教程, 编程入门教程"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -75,14 +75,16 @@
   <ul class="mobile-menu-list">
     <a href="/">
         <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
       </a><a href="/post/">
         <li class="mobile-menu-item">归档</li>
-      </a><a href="/tags/">
-        <li class="mobile-menu-item">标签</li>
       </a><a href="/categories/">
         <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
       </a><a href="/about/">
-        <li class="mobile-menu-item">关于我</li>
+        <li class="mobile-menu-item">关于</li>
       </a>
   </ul>
 </nav>
@@ -90,6 +92,12 @@
     <header id="header" class="header">
         <div class="logo-wrapper">
   <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
 </div>
 
 <nav class="site-navbar">
@@ -97,16 +105,19 @@
     <li class="menu-item">
         <a class="menu-item-link" href="/">首页</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/post/">归档</a>
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python简明教程</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/tags/">标签</a>
+        <a class="menu-item-link" href="/post/">归档</a>
       </li><li class="menu-item">
         <a class="menu-item-link" href="/categories/">分类</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/about/">关于我</a>
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
       </li>
   </ul>
 </nav>
+
     </header>
 
     <main id="main" class="main">
@@ -115,129 +126,92 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/js-flowchart-diagrams/">JS Flowchart Diagrams</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/2020/04/funny-shell-cmd/">15个有趣好玩的linux shell命令</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2015-03-04 </span>
-      
-        <span class="more-meta"> 306 words </span>
-        <span class="more-meta"> 2 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h2 id="usage">Usage</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">st=&gt;start: Start|past:&gt;http://www.google.com[blank]
-e=&gt;end: End:&gt;http://www.google.com
-op1=&gt;operation: My Operation|past
-op2=&gt;operation: Stuff|current
-sub1=&gt;subroutine: My Subroutine|invalid
-cond=&gt;condition: Yes
-or No?|approved:&gt;http://www.google.com
-c2=&gt;condition: Good idea|rejected
-io=&gt;inputoutput: catch something...|request
-
-st-&gt;op1(right)-&gt;cond
-cond(yes, right)-&gt;c2
-cond(no)-&gt;sub1(left)-&gt;op1
-c2(yes)-&gt;io-&gt;e
-c2(no)-&gt;op2-&gt;e
-</code></pre></td></tr></table>
-</div>
-</div>
-    </div>
-    <div class="read-more">
-      <a href="/post/js-flowchart-diagrams/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/js-sequence-diagrams/">JS Sequence Diagrams</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2015-03-04 </span>
-      
-        <span class="more-meta"> 283 words </span>
-        <span class="more-meta"> 2 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <h2 id="usage">Usage</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">Andrew-&gt;China: Says Hello
-Note right of China: China thinks\nabout it
-China--&gt;Andrew: How are you?
-Andrew-&gt;&gt;China: I am good thanks!
-</code></pre></td></tr></table>
-</div>
-</div>
-    </div>
-    <div class="read-more">
-      <a href="/post/js-sequence-diagrams/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/syntax-highlighting/">Syntax Highlighting</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2011-08-30 </span>
+      <span class="post-time"> 2020-04-09 </span>
       <div class="post-category">
-          <a href="/categories/syntax-highlighting/"> Syntax Highlighting </a>
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
           </div>
-        <span class="more-meta"> 282 words </span>
-        <span class="more-meta"> 2 mins read </span>
+        <span class="more-meta"> 1177 字 </span>
+        <span class="more-meta"> 阅读约需 3 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      <div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">helloWorld</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="s2">&#34;Hello, World!&#34;</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+      今天介绍一些有趣的linux shell命令，所有的命令都可以使用man + 命令名称 来查看完整的使用方法。 1，figlet 字符画 figlet 可以将英文字符
     </div>
     <div class="read-more">
-      <a href="/post/syntax-highlighting/" class="read-more-link">Read more...</a>
+      <a href="/2020/04/funny-shell-cmd/" class="read-more-link">阅读更多...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2020/04/ten-lang-hellworld/">一篇文章带你编写10种语言HelloWorld</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-04-07 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+          </div>
+        <span class="more-meta"> 3001 字 </span>
+        <span class="more-meta"> 阅读约需 6 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      0，编程语言排行榜 计算机编程语言众多，世界上大概有600 多种编程语言，但是流行的也就几十种。我们来看下编程语言排行榜，下面介绍两种语言排行榜
+    </div>
+    <div class="read-more">
+      <a href="/2020/04/ten-lang-hellworld/" class="read-more-link">阅读更多...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2020/04/use-hugo/">如何用hugo 搭建博客</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-04-06 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+          </div>
+        <span class="more-meta"> 5633 字 </span>
+        <span class="more-meta"> 阅读约需 12 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      1，Hugo 简介 搭建个人博客有很多开源的博客框架，我们要介绍的框架叫作Hugo。Hugo 是一个基于Go 语言的框架，可以快速方便的创建自己的博
+    </div>
+    <div class="read-more">
+      <a href="/2020/04/use-hugo/" class="read-more-link">阅读更多...</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2020/04/0-basics-py/">零基础如何自学Python</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-04-06 </span>
+      <div class="post-category">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+          </div>
+        <span class="more-meta"> 984 字 </span>
+        <span class="more-meta"> 阅读约需 2 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      1，什么是Python 人与人的交流需要人类语言，人与计算机交流（控制计算机）需要计算机语言。 Python 是众多计算机语言中的一种，每种计算机语言都有它
+    </div>
+    <div class="read-more">
+      <a href="/2020/04/0-basics-py/" class="read-more-link">阅读更多...</a>
     </div>
   </div>
 </article>
@@ -259,14 +233,28 @@ Andrew-&gt;&gt;China: I am good thanks!
 
     <footer id="footer" class="footer">
       <div class="social-links">
-  <a href="https://codeshellme.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
 </div>
 
 <div class="copyright">
-  
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
   <div class="busuanzi-footer">
-    
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
     
   </div>
 
@@ -279,6 +267,7 @@ Andrew-&gt;&gt;China: I am good thanks!
     <span class="author">@码农充电站</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
