@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Tue, 12 May 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,24 @@
       
       <guid>https://codeshellme.github.io/2020/05/python-learn/</guid>
       <description>这是一份Python 教程。 Python 简明教程 &amp;mdash; 0，前言 Python 简明教程 &amp;mdash; 1，搭建Python 环境 Python 简明教程 &amp;mdash; 2，第一个Python 程序 欢迎关注作者公众号，</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 3，Python 基础概念</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn3/</link>
+      <pubDate>Thu, 14 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn3/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 控制复杂性是计算机编程的本质。 —— Brian Kernighan 了解了</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 4，Python 变量与基本数据类型</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn4/</link>
+      <pubDate>Thu, 14 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn4/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有</description>
     </item>
     
     <item>

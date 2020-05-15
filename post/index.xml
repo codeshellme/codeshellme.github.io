@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Tue, 12 May 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -28,6 +28,24 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 3，Python 基础概念</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn3/</link>
+      <pubDate>Thu, 14 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn3/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 控制复杂性是计算机编程的本质。 —— Brian Kernighan 了解了</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 4，Python 变量与基本数据类型</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn4/</link>
+      <pubDate>Thu, 14 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn4/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有</description>
     </item>
     
     <item>

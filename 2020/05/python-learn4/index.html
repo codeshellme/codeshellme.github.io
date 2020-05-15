@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 4，Python 变量与基本数据类型 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 4，Python 变量与基本数据类型" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn4/" />
+<meta property="article:published_time" content="2020-05-14T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-14T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 4，Python 变量与基本数据类型">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有">
+<meta itemprop="datePublished" content="2020-05-14T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-14T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1869">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 4，Python 变量与基本数据类型"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 4，Python 变量与基本数据类型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-14 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 1869 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1什么是变量">1，什么是变量</a></li>
+        <li><a href="#2赋值运算">2，赋值运算</a></li>
+        <li><a href="#3关键字type">3，关键字<code>type</code></a></li>
+        <li><a href="#4字符串">4，字符串</a></li>
+        <li><a href="#5数字类型">5，数字类型</a></li>
+        <li><a href="#6布尔值">6，布尔值</a></li>
+        <li><a href="#7空值">7，空值</a></li>
+        <li><a href="#8关键字del">8，关键字<code>del</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>任何一个人都会写出能够让机器理解的代码，只有好的程序员才能写出人类可以理解的代码。</strong></p>
+<p>—— Martin Fowler</p>
+</blockquote>
+<h3 id="1什么是变量">1，什么是变量</h3>
+<p>计算机的本质是处理数据，数据可以存储在内存和磁盘，只有加载到内存的数据才能被处理。</p>
+<p>变量用于代指某块内存数据，比如数字<code>123</code>，字符串<code>abc</code>，如下：</p>
+<pre><code class="language-python">n = 123
+s = 'abc'
+</code></pre>
+<p>这里的<code>n</code> 和 <code>s</code> 就是变量。</p>
+<p>Python 是<code>动态类型语言</code>，所以，Python 中的变量没有<code>类型</code>之分，同一个变量即可以指向<code>字符串</code>，也可以指向<code>数字</code>，如下：</p>
+<pre><code class="language-python">i = 123		# 此时 i 的值是 123
+i = 'abc'	# 此时 i 的值是 'abc'
+</code></pre>
+<p><strong>变量命名规则</strong></p>
+<p>一个<code>变量名</code>就是一个标识符，所以变量名的命令规则与标识符的命名规则相同（可参见<a href="https://codeshellme.github.io/2020/05/python-learn3/">这里</a>）。</p>
+<h3 id="2赋值运算">2，赋值运算</h3>
+<p>每个变量在使用之前都必须被赋值，赋值运算符是等号<code>=</code>，比如：</p>
+<pre><code class="language-python">i = 123
+</code></pre>
+<p>等号<code>=</code> 左边是变量名，右边是赋予该变量的值。</p>
+<p>这句代码就是一个赋值运算，其执行结果是，为变量<code>i</code> 赋予了值<code>123</code>。</p>
+<p><strong>多个变量赋值</strong></p>
+<p>可以同时为<code>多个变量</code>赋予<code>同一个值</code>：</p>
+<pre><code class="language-python">x = y = z = 'abc'
+</code></pre>
+<p>上面这句话的执行结果是，变量<code>x</code>，<code>y</code>，<code>z</code> 值都是<code>abc</code>。</p>
+<p>这句话的执行顺序是<code>从右到左</code>，即先为<code>z</code> 赋予值 <code>abc</code>，再为<code>y</code> 赋予<code>z</code> 的值，再为<code>x</code> 赋予<code>y</code> 的值。</p>
+<p>也可以同时为<code>多个变量</code>赋予<code>不同的值</code>：</p>
+<pre><code class="language-python">x, y, z = 1, 'a', 'b'
+</code></pre>
+<p>上面这句话的执行结果是，分别为变量<code>x</code>，<code>y</code>，<code>z</code> 赋予了值<code>1</code>，<code>a</code>，<code>b</code>。</p>
+<h3 id="3关键字type">3，关键字<code>type</code></h3>
+<p>在Python 中，关键字<code>type</code> 实际上是一个<code>类</code>，可以在<code>交互式终端</code>，使用<code>help(type)</code> 查看，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514145557255.png#pic_center" alt="在这里插入图片描述"></p>
+<p>我们可以使用<code>type</code> 来查看一个<code>变量</code> 的类型，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type(123)
+&lt;class 'int'&gt;
+&gt;&gt;&gt; 
+&gt;&gt;&gt; type('abc')
+&lt;class 'str'&gt;
+</code></pre>
+<blockquote>
+<p>注意：更确切的说，<code>type</code>应该是查看一个<code>对象</code>的类型，后面的章节会介绍<code>对象</code>的概念。</p>
+</blockquote>
+<p>变量可以表示不同的<code>数据类型</code>的值，下面介绍Python 中的<code>基本数据类型</code>。</p>
+<h3 id="4字符串">4，字符串</h3>
+<p>Python 中的字符串是用<code>引号</code>引住的，引号可以是单引号<code>'</code>，双引号<code>&quot;</code>，三单引号<code>'''</code>和三双引号<code>&quot;&quot;&quot;</code>，如下：</p>
+<pre><code class="language-python"># 变量 s 的值是字符串`abc`
+s = 'abc'
+s = &quot;abc&quot;
+s = '''abc'''
+s = &quot;&quot;&quot;abc&quot;&quot;&quot;
+</code></pre>
+<p>单引号中的值可以有双引号，如下变量 <code>s</code> 的值为<code>I say &quot;hello&quot;</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = 'I say &quot;hello&quot;'
+&gt;&gt;&gt; print(s)
+I say &quot;hello&quot;
+</code></pre>
+<p>双引号中的值可以有单引号，如下变量 <code>s</code> 的值为<code>I'm Ok</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = &quot;I'm Ok&quot;
+&gt;&gt;&gt; print(s)
+I'm Ok
+</code></pre>
+<p>三引号<code>'''</code>和<code>&quot;&quot;&quot;</code> 一般用于多行字符串，三引号中的值可以包含单引号和双引号：</p>
+<pre><code class="language-python">s = '''这是第一行，
+这是第二行，
+这是第三行'''
+
+s = &quot;&quot;&quot;这是第一行，
+这是第二行，
+这是第三行&quot;&quot;&quot;
+
+s = '''字符串中有单引号'
+也有双引号&quot;
+'''
+</code></pre>
+<p><strong>转义字符<code>\</code></strong></p>
+<p>如果单引号中想有单引号，需要用到转义字符<code>\</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = 'I\'m ok'
+&gt;&gt;&gt; print(s)
+I'm ok
+</code></pre>
+<p>同样双引号中想有双引号，也需要用到转义字符<code>\</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = &quot;I say \&quot;hello\&quot;&quot;
+&gt;&gt;&gt; print(s)
+I say &quot;hello&quot;
+</code></pre>
+<p>如果想表示原始的斜杠<code>\</code>，需要用两个斜杠<code>\</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = '这是斜杠\\'  # 第一个斜杠代表转义
+&gt;&gt;&gt; print(s)
+这是斜杠\
+</code></pre>
+<p><strong>原始字符串</strong></p>
+<p>在单引号或双引号前边加上<code>r</code> 或<code>R</code>，表示原始字符串(<code>raw string</code>)，你写的是什么，就是什么，不需要转义：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = r'\r\n\t'
+&gt;&gt;&gt; print(s)
+\r\n\t
+</code></pre>
+<h3 id="5数字类型">5，数字类型</h3>
+<p>Python3 中支持三种数字类型，包括：</p>
+<ul>
+<li>整数 <code>int</code></li>
+<li>浮点数 <code>float</code></li>
+<li>复数 <code>complex</code></li>
+</ul>
+<blockquote>
+<p>注意：
+<strong>python2.x</strong> 中有<code>long</code> 类型，
+<strong>python3.x</strong> 将<code>long</code> 归属到了 <code>int</code> 中，
+<strong>python3.x</strong> 中不再有<code>long</code> 类型。</p>
+</blockquote>
+<p><strong>整数</strong></p>
+<p>Python3 中支持<code>任意大小</code>的整数，包括<code>正整数</code>和<code>负整数</code>，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; a = 123
+&gt;&gt;&gt; b = -456
+&gt;&gt;&gt; c = 99999999999999999999
+&gt;&gt;&gt; type(a), type(b), type(c)
+(&lt;class 'int'&gt;, &lt;class 'int'&gt;, &lt;class 'int'&gt;)
+</code></pre>
+<p><strong>浮点数</strong></p>
+<p>浮点数即是小数，也包括正数和负数。</p>
+<p>当小数的位数<code>大于等于5</code> 时，Python 就会用<code>科学计数法</code>来表示：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 0.001
+0.001
+&gt;&gt;&gt; -0.001
+-0.001
+&gt;&gt;&gt; 0.00001
+1e-05	    # 科学计数法
+&gt;&gt;&gt; type(0.001), type(-0.001), type(0.00001)
+(&lt;class 'float'&gt;, &lt;class 'float'&gt;, &lt;class 'float'&gt;)
+</code></pre>
+<p><strong>复数</strong></p>
+<p>复数由<code>实数部分</code>和<code>虚数部分</code>构成。</p>
+<p>在Python 中可以用<code>a + bj</code>或者<code>complex(a, b)</code> 来表示复数，<code>a</code> 为实部，<code>b</code>为虚部，<code>a</code> 和 <code>b</code> 都是<code>浮点数</code>。</p>
+<p>例如：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; n = -5+4j
+&gt;&gt;&gt; n
+(-5+4j)
+&gt;&gt;&gt; complex(-5, 4)
+(-5+4j)
+&gt;&gt;&gt; type(n)
+&lt;class 'complex'&gt;
+</code></pre>
+<h3 id="6布尔值">6，布尔值</h3>
+<p>布尔值只有两个，分别是：</p>
+<ul>
+<li><code>True</code>：代表<code>真</code></li>
+<li><code>False</code>：代表<code>假</code></li>
+</ul>
+<pre><code class="language-shell">&gt;&gt;&gt; type(True), type(False)
+(&lt;class 'bool'&gt;, &lt;class 'bool'&gt;)
+</code></pre>
+<p>布尔值经常用在<code>条件判断</code>中，例如：</p>
+<pre><code class="language-python">if flag:
+    print('flag is True')
+else:
+    print('flag is False')
+</code></pre>
+<h3 id="7空值">7，空值</h3>
+<p>Python 中的<code>空值</code>是一个特殊值，只有一个<code>None</code> 值，它的类型是<code>NoneType</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type(None)
+&lt;class 'NoneType'&gt;
+</code></pre>
+<p>空值经常用在<code>变量初始化</code>和<code>函数返回值</code>中。</p>
+<h3 id="8关键字del">8，关键字<code>del</code></h3>
+<p>一个变量被<code>赋值</code>以后，就是<code>已定义的</code>，可以被使用。</p>
+<p><code>del</code> 用于<code>删除</code>一个变量，被删除的变量是<code>未定义的</code>，将不能再被使用，其内存也会被释放。如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; a = 1
+&gt;&gt;&gt; print(a)
+1
+&gt;&gt;&gt; del a
+&gt;&gt;&gt; print(a)
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+NameError: name 'a' is not defined    # a 是未定义的
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn0/">Python 简明教程 &mdash; 0，前言</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn1/">Python 简明教程 &mdash; 1，搭建Python 环境</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn2/">Python 简明教程 &mdash; 2，第一个Python 程序</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn3/">Python 简明教程 &mdash; 3，Python 基础概念</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/05/python-learn3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 3，Python 基础概念</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn0/">
+            <span class="next-text nav-default">Python 简明教程 --- 0，前言</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn4/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 4，Python 变量与基本数据类型">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

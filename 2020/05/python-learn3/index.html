@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 3，Python 基础概念 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 控制复杂性是计算机编程的本质。 —— Brian Kernighan 了解了" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 3，Python 基础概念" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 控制复杂性是计算机编程的本质。 —— Brian Kernighan 了解了" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn3/" />
+<meta property="article:published_time" content="2020-05-14T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-14T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 3，Python 基础概念">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 控制复杂性是计算机编程的本质。 —— Brian Kernighan 了解了">
+<meta itemprop="datePublished" content="2020-05-14T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-14T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1299">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 3，Python 基础概念"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 控制复杂性是计算机编程的本质。 —— Brian Kernighan 了解了"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 3，Python 基础概念</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-14 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 1299 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1注释">1，注释</a></li>
+        <li><a href="#2标识符">2，标识符</a></li>
+        <li><a href="#3代码行">3，代码行</a></li>
+        <li><a href="#4代码块与缩进">4，代码块与缩进</a></li>
+        <li><a href="#5多行语句">5，多行语句</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>控制复杂性是计算机编程的本质。</strong></p>
+<p>—— Brian Kernighan</p>
+</blockquote>
+<p>了解了如何编写<a href="http://127.0.0.1:1313/2020/05/python-learn2/">第一个Python 程序</a>，接下来，我们来学习更多的Python 知识。</p>
+<p>本篇内容，我们来介绍一些<code>Python 基础概念</code>。</p>
+<h3 id="1注释">1，注释</h3>
+<p>每种编程语言中都有<code>注释</code>，代码注释的主要作用是解释某段代码的含义，以供其他维护人员参考。<code>Python 解释器</code>在遇到注释时，会将其忽略，而不会当做代码来执行。</p>
+<p>注释可分为<code>单行注释</code>和<code>多行注释</code>。</p>
+<p>Python 中使用符号<code>#</code> 进行单行注释，使用三单引号<code>'''</code> 或 三双引号<code>&quot;&quot;&quot;</code> 来进行多行注释。如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+# 这是单行注释
+# 这也是单行注释
+
+'''
+这是多行注释1
+这是多行注释2
+'''
+
+&quot;&quot;&quot;
+这是多行注释3
+这是多行注释4
+&quot;&quot;&quot;
+
+print('hello, python')
+</code></pre>
+<h3 id="2标识符">2，标识符</h3>
+<p>标识符就是标识某种东西的名字，例如<code>变量名</code>，<code>函数名</code>，<code>类名</code> 等都是标识符。</p>
+<p>标识符的不能随便命名，是有规定的：</p>
+<ul>
+<li>标识符的第一个字符必须是<code>英文字母</code>或<code>下划线_</code></li>
+<li>标识符除第一个字符外的其它字符可以是<code>英文字母</code>，<code>下划线_</code>，或<code>数字</code></li>
+<li>标识符对大小写敏感，例如<code>a</code> 和 <code>A</code> 不是同一个标识符</li>
+</ul>
+<blockquote>
+<p>注意：虽然 <strong>python3.x</strong> 支持中文作为标识符，但一般我们并不会这样做。</p>
+</blockquote>
+<p><strong>Python 保留字</strong></p>
+<p><code>Python 保留字</code>是Python 中内置的一些标识符，其代表特殊含义，我们不能使用这些保留字作为自己的标识符。</p>
+<p>Python3 中有33 个保留字，可以用<code>keyword</code> 模块来查看：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import keyword
+&gt;&gt;&gt; print(len(keyword.kwlist))
+33
+&gt;&gt;&gt; print(keyword.kwlist)
+['False', 'None', 'True', 'and', 'as', 'assert', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']
+&gt;&gt;&gt;
+</code></pre>
+<blockquote>
+<p>提示：<code>import</code> 关键字用于引入模块。</p>
+</blockquote>
+<h3 id="3代码行">3，代码行</h3>
+<p>在<code>C/C++</code>，<code>Java</code> 语言中，一句代码的结束必须以分号<code>;</code> 来作为结束标识。</p>
+<p>在Python 中，一行内也可以写多句代码，每句代码以分号<code>;</code> 结束，如下：</p>
+<pre><code class="language-python"># 最后一句后边的分号可写，可不写
+print(123); print(456); print(789)
+</code></pre>
+<p>一般情况下并不会在一行内写多句代码，我们推荐一行只写一句代码，这样有利于<code>代码维护</code>和<code>代码美观</code>，如下：</p>
+<pre><code class="language-python">print(123)
+print(456)
+print(789)
+</code></pre>
+<blockquote>
+<p>注意：
+在Python 代码中，如果一行内只有一句代码，在代码结尾可以不写分号<code>;</code>
+而且，这也是推荐的做法。</p>
+</blockquote>
+<h3 id="4代码块与缩进">4，代码块与缩进</h3>
+<p>在同一<code>代码块</code>中的语句，代表同一<code>层次</code>的代码<code>分组</code>，会从上到下依次执行。</p>
+<p>在<code>C/C++</code>，<code>Java</code> 语言中，写在大括号<code>{}</code> 内的代码，表示同一代码块，例如：</p>
+<pre><code class="language-c">if (i &gt; 5) {
+...
+} else {
+...
+}
+</code></pre>
+<p>而在Python 中，并不使用大括号<code>{}</code> 来表示代码块，而是使用<code>缩进</code> 来表示代码块，在同一缩进层次的多行代码，是同一代码块，这也是Python 的特色。</p>
+<p>缩进可以是<code>两个空格</code>或者<code>四个空格(Tab)</code>，在同一个Python 文件中，缩进必须是统一的，要么都是两个空格，要么都是四个空格，而不能混用。如下：</p>
+<pre><code class="language-python">if i &gt; 5:
+    print(123)
+    print(456)
+else:
+    print(789)
+</code></pre>
+<p>如果缩进不统一，将会报错，例如下面的代码：</p>
+<pre><code class="language-python">if i &gt; 5:
+    print(123)
+   print(456) # 这里是3 个空格
+else:
+    print(789)
+</code></pre>
+<p>会报如下错误：</p>
+<pre><code class="language-shell">IndentationError: unindent does not match any outer indentation level
+</code></pre>
+<blockquote>
+<p>建议：推荐使用四个空格的缩进。</p>
+</blockquote>
+<h3 id="5多行语句">5，多行语句</h3>
+<p>如果一句代码比较长，可以使用反斜杠<code>\</code>，将一句代码写在多行，如下：</p>
+<pre><code class="language-python">s = &quot;这个字符串很长，\
+被写在了多行&quot;
+
+i = 1
+j = 2
+y = 3
+
+n = i + \
+    j + \
+    y
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn0/">Python 简明教程 &mdash; 0，前言</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn1/">Python 简明教程 &mdash; 1，搭建Python 环境</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn2/">Python 简明教程 &mdash; 2，第一个Python 程序</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn4/">
+            <span class="next-text nav-default">Python 简明教程 --- 4，Python 变量与基本数据类型</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn3/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 3，Python 基础概念">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
