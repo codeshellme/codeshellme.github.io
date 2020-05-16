@@ -24,14 +24,35 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2020-05-14T21:41:52+08:00</lastmod>
+    <lastmod>2020-05-15T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2020-05-14T21:41:52+08:00</lastmod>
+    <lastmod>2020-05-15T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/05/python-learn5/</loc>
+    <lastmod>2020-05-15T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/05/python-learn6/</loc>
+    <lastmod>2020-05-15T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2020-05-15T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -45,13 +66,6 @@
   
   <url>
     <loc>https://codeshellme.github.io/2020/05/python-learn4/</loc>
-    <lastmod>2020-05-14T21:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2020-05-14T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
