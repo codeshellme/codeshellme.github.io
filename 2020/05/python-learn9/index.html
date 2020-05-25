@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 9，Python 编码 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn9/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 9，Python 编码" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn9/" />
+<meta property="article:published_time" content="2020-05-22T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-22T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 9，Python 编码">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术">
+<meta itemprop="datePublished" content="2020-05-22T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-22T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1899">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 9，Python 编码"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 9，Python 编码</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-22 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 1899 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1什么是计算机编码">1，什么是计算机编码</a></li>
+        <li><a href="#2python3-源文件编码">2，Python3 源文件编码</a></li>
+        <li><a href="#3python3-字符串与编码">3，Python3 字符串与编码</a></li>
+        <li><a href="#4ord-与-chr">4，<code>ord()</code> 与 <code>chr()</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>当你选择了一种语言，意味着你还选择了一组技术、一个社区。</strong></p>
+<p>—— Joshua Bloch</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200521190231886.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="1什么是计算机编码">1，什么是计算机编码</h3>
+<p><strong>编码</strong></p>
+<p><code>信息</code>从一种形式<code>转换</code>到另一种形式的过程，就叫做<code>编码</code>。说白了，编码就是信息的一种转换过程。</p>
+<p>比如，信息的<code>加密解密</code>，这就是信息的一种转换过程，它是信息的明文与密文之间的转换过程。</p>
+<p>还有不同国家文字的翻译，这是语言之间的一种转换过程。</p>
+<p>那么，<code>编码</code>也是一种信息的转换过程。</p>
+<p><strong>计算机编码</strong></p>
+<p><code>计算机编码</code>是信息的<code>人类可读</code>形式与<code>计算机可读</code>形式之间的一种转换过程。</p>
+<p>实际上，计算机是一种人造的，很“<code>笨</code>”的机器，它只认识<code>0</code>和<code>1</code> 这样的<code>二进制数据</code>，也称为<code>机器码</code>。</p>
+<blockquote>
+<p>提示：计算机优势在于它的计算速度很快。</p>
+</blockquote>
+<p>那么，计算机要想能够<code>存储/展现</code>我们人类可读的，丰富多彩的信息（比如文字，图片，音频，视频等），这就涉及到了<code>计算机编码</code>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200520230356107.png#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>ASCII 码</strong></p>
+<p><code>ASCII 码</code>(美国信息交换标准码)，是最早的，也是较为简单的一种计算机编码。其主要用于表示英文字符，数字和一些标点符号。</p>
+<p>比如，二进制数字<code>01000001</code> （十进制为<code>65</code>）就表示大写字母<code>A</code>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200520231750306.jpg?#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>GB2312</strong></p>
+<p><code>ASCII 码</code> 虽能表示英文，但是无法表示其它语言，比如中文，韩文等。</p>
+<p>为了表示中文，<code>中国国家标准总局</code>发布了<code>GB2312</code>（信息交换用汉字编码字符集），专门用于表示中文信息。</p>
+<p>比如，十六进制<code>D6D0</code> 表示汉字<code>中</code>。</p>
+<p><strong>Unicode 码</strong></p>
+<p>世界上有很多的国家，每个国家都需要表示自己的文字，这就有了各种各样的计算机编码。每个国家都有自己的编码，这就不方便统一，也没有通用性。</p>
+<p>为了统一不同国家的编码，表示不同国家的文字，诞生了<code>Unicode 码</code>，俗称<code>万国码</code>。<code>Unicode 码</code>为每种语言中的每个字符设定了统一且唯一的二进制编码。</p>
+<p>比如，十六进制<code>4E2D</code> 表示汉字<code>中</code>。</p>
+<p><strong>UTF8</strong></p>
+<p><code>Unicode 码</code> 实际上是一个<code>字符集</code>，它只规定了<code>二进制</code>与<code>各个字符</code>之间的对应关系，并没有规定如何在磁盘上存储（用几个<code>字节</code>来表示）。</p>
+<blockquote>
+<p>提示：<code>字节</code>是计算机存储的最小单位</p>
+<p>1024 字节为<code>1 K</code></p>
+<p>1024 K 为<code>1 M</code></p>
+<p>1024 M 为<code>1 G</code></p>
+</blockquote>
+<p><code>UTF32</code>是<code>Unicode 码</code> 的一种实现，一般用<code>4</code>个字节表示一个字符，这样比较浪费存储空间。因为，一个英文字符只用<code>1</code> 个字节就可表示，一个常用汉字用<code>2</code> 个字节就可表示。</p>
+<p>为了节省存储空间，<code>UTF8</code> 一般用<code>1 到4</code> 个字节表示一个字符，比如英文字符用<code>1</code> 个字节，常用汉字用<code>2</code> 个字节。</p>
+<blockquote>
+<p>注意：<code>UTF8</code> 是<code>Unicode 码</code>的一种实现，比较常用。<code>UTF8</code>使用<code>变长</code>字节来表示字符，意思就是，使用的<code>字节数</code>是可变的。</p>
+</blockquote>
+<h3 id="2python3-源文件编码">2，Python3 源文件编码</h3>
+<p>在<code>Python2.x</code> 中，Python 源代码文件默认以<code>ASCII 码</code>格式编码。因此，在<code>Python2.x</code>中，默认情况下，是不支持中文的。如果强制写中文，则会出现以下错误：</p>
+<pre><code class="language-shell">SyntaxError: Non-ASCII character ...
+</code></pre>
+<p>如果想在<code>Python2.x</code>源代码文件中输入中文字符，可以使用<code>UTF8</code>编码，需要在代码文件的开头添加：</p>
+<pre><code class="language-python"># -*- coding: UTF-8 -*-
+</code></pre>
+<p>或者：</p>
+<pre><code class="language-python"># coding=utf-8
+</code></pre>
+<p>在<code>Python3.x</code> 中，Python 源代码文件会统一采用<code>Unicode</code> 编码，默认以<code>UTF8</code>格式编码，就不需要在代码开头添加上面的代码。</p>
+<h3 id="3python3-字符串与编码">3，Python3 字符串与编码</h3>
+<p><strong><code>str</code> 类型</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn8/">上一节</a>介绍了<a href="https://codeshellme.github.io/2020/05/python-learn7/">Python 字符串</a>的相关操作，这里我们介绍一下Python 字符串与编码。</p>
+<p><code>Python3</code> 中的<code>字符串</code>类型<code>&lt;class 'str'&gt;</code>统一采用<code>Unicode</code> 编码，因此支持多种语言。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; print('中文')	    # 中文
+中文
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print('english')	# 英文
+english
+</code></pre>
+<p><strong><code>bytes</code> 类型</strong></p>
+<p>当<code>str</code> 类型需要<code>磁盘存储</code>或者<code>网络传输</code>时，就需要转换为<code>bytes</code> 类型。</p>
+<p><code>bytes</code> 是一个二进制类型，它需要在<code>str</code> 之前加上<code>b</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type(b'abc')
+&lt;class 'bytes'&gt;
+</code></pre>
+<p><code>bytes</code> 中只能包含<code>ASCII</code> 字符，若有非<code>ASCII</code> 字符，则会报错：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = b'中国'
+  File &quot;&lt;stdin&gt;&quot;, line 1
+SyntaxError: bytes can only contain ASCII literal characters.
+</code></pre>
+<p><strong><code>str</code> 转为 <code>bytes</code></strong></p>
+<p><code>str</code> 类型转换为<code>bytes</code> 类型，需要使用<code>str</code> 中的<code>encode</code> 方法，参数<code>utf8</code> 是编码格式：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = '中国'
+&gt;&gt;&gt; s.encode('utf8')
+b'\xe4\xb8\xad\xe5\x9b\xbd'
+</code></pre>
+<p><strong><code>bytes</code> 转为 <code>str</code></strong></p>
+<p><code>bytes</code> 类型转换为<code>str</code> 类型，需要使用<code>bytes</code> 中的<code>decode</code> 方法，参数<code>utf8</code> 是编码格式：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = b'\xe4\xb8\xad\xe5\x9b\xbd'
+&gt;&gt;&gt; s.decode('utf8')
+'中国'
+</code></pre>
+<blockquote>
+<p>注意：当<code>str</code> 类型与<code>bytes</code> 类型互转时，推荐使用<code>UTF8</code> 编码</p>
+</blockquote>
+<p><strong><code>str</code> 与<code>Unicode</code> 互转</strong></p>
+<p>将<code>str</code> 转换为<code>Unicode</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '中国'.encode('unicode-escape')
+b'\\u4e2d\\u56fd'
+</code></pre>
+<p>将<code>Unicode</code> 转换为<code>str</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; b'\\u4e2d\\u56fd'.decode('unicode-escape')
+'中国'
+</code></pre>
+<h3 id="4ord-与-chr">4，<code>ord()</code> 与 <code>chr()</code></h3>
+<p><code>ord()</code> 函数用于获取一个字符的十进制整数表示，<code>chr()</code>  是 <code>ord()</code> 的反操作：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ord('a')
+97
+&gt;&gt;&gt; chr(97)
+'a'
+&gt;&gt;&gt; ord('中')
+20013
+&gt;&gt;&gt; chr(20013)
+'中'
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn4/">Python 简明教程 &mdash; 4，Python 变量与基本数据类型</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn5/">Python 简明教程 &mdash; 5，Python 表达式与运算符</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn6/">Python 简明教程 &mdash; 6，Python 控制流</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn7/">Python 简明教程 &mdash; 7，Python 字符串</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn8/">Python 简明教程 &mdash; 8，Python 字符串函数</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn8/">
+            <span class="next-text nav-default">Python 简明教程 --- 8，Python 字符串函数</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn9/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 9，Python 编码">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

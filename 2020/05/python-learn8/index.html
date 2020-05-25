@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 8，Python 字符串函数 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 好代码本身就是最好的文档。当你需要添加一个注" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 8，Python 字符串函数" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 好代码本身就是最好的文档。当你需要添加一个注" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn8/" />
+<meta property="article:published_time" content="2020-05-21T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-21T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 8，Python 字符串函数">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 好代码本身就是最好的文档。当你需要添加一个注">
+<meta itemprop="datePublished" content="2020-05-21T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-21T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="6369">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 8，Python 字符串函数"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 好代码本身就是最好的文档。当你需要添加一个注"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 8，Python 字符串函数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-21 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 6369 字 </span>
+          <span class="more-meta"> 阅读约需 13 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1字符串查找">1，字符串查找</a></li>
+        <li><a href="#2字符大小写">2，字符大小写</a></li>
+        <li><a href="#3判断字母数字">3，判断字母数字</a></li>
+        <li><a href="#4字符串填充">4，字符串填充</a></li>
+        <li><a href="#5字符串格式化">5，字符串格式化</a></li>
+        <li><a href="#6字符串截断">6，字符串截断</a></li>
+        <li><a href="#7字符串分割">7，字符串分割</a></li>
+        <li><a href="#8其它方法">8，其它方法</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>好代码本身就是最好的文档。当你需要添加一个注释时，你应该考虑如何修改代码才能不需要注释。</strong></p>
+<p>—— Steve McConnell</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200525105025900.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>字符串有很多操作函数，所以，这里我们专门用一节来介绍这些函数。</p>
+<blockquote>
+<p>建议：</p>
+<p>由于字符串函数较多，对于新手来说，不必要一开就掌握所有的函数用法，可以先粗略的看一遍，有个大概印象，到真正用的着的时候，再来详细查看也可。用的次数多了，自然就记住了。</p>
+</blockquote>
+<p>我们可以通过<code>dir()</code> 函数来查看一个<code>对象</code>支持的<code>方法</code>和<code>属性</code>有哪些，通过<code>help()</code> 函数查看某个<code>方法</code>的详情。</p>
+<blockquote>
+<p>注意：</p>
+<p>1，<code>对象</code>的概念会在后续章节详细介绍</p>
+<p>2，这里我们无需过多的区分<code>函数</code>与<code>方法</code>的不同，暂时可以认为<code>函数</code>与<code>方法</code>相同</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">s = 'abc'	# s 是一个字符串
+&gt;&gt;&gt; dir(s)  # 查看字符串支持的方法
+['__add__', '__class__', '__contains__', 
+'__delattr__', '__dir__', '__doc__', 
+'__eq__', '__format__', '__ge__', 
+'__getattribute__', '__getitem__', 
+'__getnewargs__', '__gt__', '__hash__', 
+'__init__', '__init_subclass__', '__iter__', 
+'__le__', '__len__', '__lt__', '__mod__', 
+'__mul__', '__ne__', '__new__', '__reduce__', 
+'__reduce_ex__', '__repr__', '__rmod__', 
+'__rmul__', '__setattr__', '__sizeof__', 
+'__str__', '__subclasshook__', 
+'capitalize', 'casefold', 'center', 
+'count', 'encode', 'endswith', 'expandtabs', 
+'find', 'format', 'format_map', 'index', 
+'isalnum', 'isalpha', 'isdecimal', 'isdigit', 
+'isidentifier', 'islower', 'isnumeric', 
+'isprintable', 'isspace', 'istitle', 'isupper', 
+'join', 'ljust', 'lower', 'lstrip', 'maketrans', 
+'partition', 'replace', 'rfind', 'rindex', 
+'rjust', 'rpartition', 'rsplit', 'rstrip', 
+'split', 'splitlines', 'startswith', 'strip', 
+'swapcase', 'title', 'translate', 'upper', 'zfill']
+
+&gt;&gt;&gt; help(s.find)	# 查看字符串的find 方法详情
+Help on built-in function find:
+
+find(...) method of builtins.str instance
+    # 方法原型
+    # -&gt; 符号之前是参数
+    # -&gt; 符号之后时返回值类型
+    S.find(sub[, start[, end]]) -&gt; int		
+    
+    # 方法介绍
+    Return the lowest index in S where substring sub is found,
+    such that sub is contained within S[start:end].  Optional
+    arguments start and end are interpreted as in slice notation.
+    
+    # 方法返回值
+    Return -1 on failure.
+(END)
+</code></pre>
+<p>Python 中<code>双下划线</code> 样式的方法<code>__xxx__</code>，被称为<code>魔法方法</code>（这里不做详细介绍），这里我们主要关注<code>非魔法方法</code>。</p>
+<p>这里的<code>dir(s)</code> 显示的所有方法中，除了<code>魔法方法</code>外，还有44 个方法，我们可以粗略的将这些方法分为以下8 类：</p>
+<ol>
+<li>字符串查找</li>
+<li>字符大小写</li>
+<li>判断字母数字</li>
+<li>字符串填充</li>
+<li>字符串格式化</li>
+<li>字符串截断</li>
+<li>字符串分割</li>
+<li>其它方法</li>
+</ol>
+<p>下面我们逐一进行介绍。</p>
+<h3 id="1字符串查找">1，字符串查找</h3>
+<p><strong>1.<code>find</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从左开始查找，返回子串<code>sub</code> 在<code>S[start:end]</code> 中的第一个下标</p>
+<p><strong>原型</strong>：S.find(sub[, start[, end]]) -&gt; int</p>
+<p><strong>参数 sub</strong>：子字符串</p>
+<p><strong>参数 start</strong>：开始位置，可省，默认为 0</p>
+<p><strong>参数 end</strong>：结束位置，可省，默认为 len(S)</p>
+<p><strong>返回值</strong>：如果找到返回下标，否则返回 -1</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.find('ca')
+2      # 找到了，返回下标
+&gt;&gt;&gt; 'abcabcabc'.find('bbc')
+-1     # 没找到，返回 -1
+</code></pre>
+<p><strong>2.<code>rfind</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从右开始查找，返回子串<code>sub</code> 在<code>S[start:end]</code> 中的第一个下标</p>
+<p><strong>原型</strong>：S.rfind(sub[, start[, end]]) -&gt; int</p>
+<p><strong>参数</strong>：同 <code>find</code> 方法</p>
+<p><strong>返回值</strong>：如果找到返回下标，否则返回 -1</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.rfind('ca')
+5
+&gt;&gt;&gt; 'abcabcabc'.rfind('bbc')
+-1
+</code></pre>
+<p><strong>3.<code>index</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从左开始查找，返回子串<code>sub</code> 在<code>S[start:end]</code> 中的第一个下标</p>
+<p><strong>原型</strong>：S.index(sub[, start[, end]]) -&gt; int</p>
+<p><strong>参数 sub</strong>：子字符串</p>
+<p><strong>参数 start</strong>：开始位置，可省，默认为 0</p>
+<p><strong>参数 end</strong>：结束位置，可省，默认为 len(S)</p>
+<p><strong>返回值</strong>：如果找到返回下标，否则抛出<code>ValueError</code> 异常</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.index('ca')
+2
+&gt;&gt;&gt; 'abcabcabc'.index('bbc')
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ValueError: substring not found    # ValueError 异常
+</code></pre>
+<blockquote>
+<p>关于Python <code>异常</code>，将在后续章节详细介绍</p>
+</blockquote>
+<p><strong>4.<code>rindex</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从右开始查找，返回子串<code>sub</code> 在<code>S[start:end]</code> 中的第一个下标</p>
+<p><strong>原型</strong>：S.rindex(sub[, start[, end]]) -&gt; int</p>
+<p><strong>参数</strong>：同<code>index</code> 方法</p>
+<p><strong>返回值</strong>：如果找到返回下标，否则抛出<code>ValueError</code> 异常</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.rindex('ca')
+5
+&gt;&gt;&gt; 'abcabcabc'.rindex('bbc')
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ValueError: substring not found
+</code></pre>
+<p><strong>5.<code>count</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：统计子串<code>sub</code>在<code>S[start:end]</code> 中出现的次数</p>
+<p><strong>原型</strong>：S.count(sub[, start[, end]]) -&gt; int</p>
+<p><strong>参数 sub</strong>：子字符串</p>
+<p><strong>参数 start</strong>：开始位置，可省，默认为 0</p>
+<p><strong>参数 end</strong>：结束位置，可省，默认为 len(S)</p>
+<p><strong>返回值</strong>：子串出现的次数</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.count('bc')
+3
+</code></pre>
+<h3 id="2字符大小写">2，字符大小写</h3>
+<p><strong>6.<code>capitalize</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将字符串<code>S</code>的首字符变为大写，其余字符变为小写，对中文无效</p>
+<p><strong>原型</strong>：S.capitalize() -&gt; str</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'AbCdE'.capitalize()
+'Abcde'
+</code></pre>
+<p><strong>7.<code>casefold</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将字符串<code>S</code>中的所有字符变为小写，对中文无效</p>
+<p><strong>原型</strong>：S.casefold() -&gt; str</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'AbCdE'.casefold()
+'abcde'
+</code></pre>
+<p><strong>8.<code>swapcase</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将字符串<code>S</code> 中的大写字符转为小写，小写字符转为大写，对中文无效</p>
+<p><strong>原型</strong>：S.swapcase() -&gt; str</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'AbCdE中国'.swapcase()
+'aBcDe中国'
+</code></pre>
+<p><strong>9.<code>istitle</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中的单词，是否全都首字母大写，且其它字符小写</p>
+<p><strong>原型</strong>：S.istitle() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'Abc De fj'.istitle()
+False
+&gt;&gt;&gt; 'Abc De Fj'.istitle()
+True
+&gt;&gt;&gt; 'Abc De Fj 中国'.istitle() # 可以有中文
+True
+&gt;&gt;&gt; '中国'.istitle()           # 不能只有中文
+False
+</code></pre>
+<p><strong>10.<code>title</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将每个非字母后的第一个字母变为大写</p>
+<p><strong>原型</strong>：S.title() -&gt; str</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a3bc-abc abc'.title()
+'A3Bc-Abc Abc'
+</code></pre>
+<p><strong>11.<code>islower</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中的字符是否全是小写字符</p>
+<p><strong>原型</strong>：S.islower() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.islower()
+True
+&gt;&gt;&gt; 'aBc'.islower()      # 有大写字符，返回 False
+False
+&gt;&gt;&gt; 'abc中国'.islower()  # 英文字符全是小写，且包含中文，返回 True
+True
+&gt;&gt;&gt; '中国'.islower()     # 只有中文，返回 False
+False
+&gt;&gt;&gt; ''.islower()
+False
+</code></pre>
+<p><strong>12.<code>isupper</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中的字符是否全是大写字符</p>
+<p><strong>原型</strong>：S.isupper() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'ABC'.isupper()		# 所有字符全是大写，返回 True
+True
+&gt;&gt;&gt; 'Abc'.isupper()     # 有大写，有小写，返回 False
+False
+&gt;&gt;&gt; 'ABC中国'.isupper() # 所有字符全是大写，并包含中文，返回 True
+True
+&gt;&gt;&gt; '中国'.isupper()    # 只有中文，返回 False
+False
+&gt;&gt;&gt; ''.isupper()       # 空字符串，返回 False
+False
+</code></pre>
+<p><strong>13.<code>lower</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将<code>S</code> 中的所有大写字符转为小写</p>
+<p><strong>原型</strong>：S.lower() -&gt; str</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'AbC'.lower()
+'abc'
+</code></pre>
+<p><strong>14.<code>upper</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将<code>S</code> 中的所有小写字符转为大写</p>
+<p><strong>原型</strong>：S.upper() -&gt; str</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'AbC'.upper()
+'ABC'
+</code></pre>
+<h3 id="3判断字母数字">3，判断字母数字</h3>
+<p><strong>15.<code>isalnum</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中所有的字符是否都是字母或数字</p>
+<p><strong>原型</strong>：S.isalnum() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.isalnum()       # 英文字符，返回 True
+True
+&gt;&gt;&gt; 'abc123'.isalnum()	  # 英文字符或数字，返回 True
+True
+&gt;&gt;&gt; 'abc中国'.isalnum()	  # 英文字符或汉字，返回 True
+True
+&gt;&gt;&gt; 'abc;'.isalnum()      # 有符号';' 返回 False
+False
+&gt;&gt;&gt; 'abc-'.isalnum()	  # 有符号'-' 返回 False
+False
+&gt;&gt;&gt; ''.isalnum()          # 空字符串，返回 False
+False
+</code></pre>
+<p><strong>16.<code>isalpha</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中所有的字符是否都是字母</p>
+<p><strong>原型</strong>：S.isalpha() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.isalpha()			# 都是英文字符，返回 True
+True
+&gt;&gt;&gt; 'abc中国'.isalpha()     # 英文字符和汉字，返回 True
+True
+&gt;&gt;&gt; 'abc中国123'.isalpha()	# 有数字，返回 False
+False
+&gt;&gt;&gt; 'abc中国-'.isalpha()    # 有符号，返回 False
+False
+&gt;&gt;&gt; ''.isalpha()            # 空字符串，返回 False
+False
+</code></pre>
+<p><strong>17.<code>isdecimal</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中是否只包含十进制字符</p>
+<p><strong>原型</strong>：S.isdecimal() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.isdecimal()     # 不包含数字，返回 False
+False
+&gt;&gt;&gt; 'abc123'.isdecimal()  # 除了数字，还有英文字符，返回 False
+False
+&gt;&gt;&gt; '123'.isdecimal()     # 只有数字，返回 True
+True
+&gt;&gt;&gt; '123-'.isdecimal()    # 除了数字，还有符号，返回 False
+False
+&gt;&gt;&gt; ''.isdecimal()        # 空字符串，返回 False
+False
+&gt;&gt;&gt; '一二三'.isdecimal()
+False
+</code></pre>
+<p><strong>18.<code>isdigit</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中是否只包含数字</p>
+<p><strong>原型</strong>：S.isdigit() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '123'.isdigit()
+True
+&gt;&gt;&gt; '123e'.isdigit()
+False
+</code></pre>
+<p><strong>19.<code>isnumeric</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code>是否只由数字组成，数字可以是罗马数字，汉字数字等</p>
+<p><strong>原型</strong>：S.isnumeric() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '一二三'.isnumeric()
+True
+&gt;&gt;&gt; '壹贰叁'.isnumeric()
+True
+&gt;&gt;&gt; '123'.isnumeric()
+True
+&gt;&gt;&gt; 'abc'.isnumeric()
+False
+</code></pre>
+<p><strong>20.<code>isidentifier</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 是否是有效的Python 标识符</p>
+<p><strong>原型</strong>：S.isidentifier() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.isidentifier()
+True
+&gt;&gt;&gt; '5abc'.isidentifier()	# 不能以数字开头
+False
+&gt;&gt;&gt; '_5abc'.isidentifier()
+True
+&gt;&gt;&gt; ' _5abc'.isidentifier() # 不能以空格开头
+False
+&gt;&gt;&gt; '_5abc;'.isidentifier() # 不能有标点符号
+False
+</code></pre>
+<p><strong>21.<code>isprintable</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中的字符，是否全部可打印</p>
+<p><strong>原型</strong>：S.isprintable() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc中国'.isprintable()
+True
+&gt;&gt;&gt; 'abc\n'.isprintable()  # 换行符不可见
+False
+&gt;&gt;&gt; 'abc\t'.isprintable()  # 制表符不可见
+False
+&gt;&gt;&gt; 'abc\r'.isprintable()  # 回车符不可见
+False
+</code></pre>
+<p><strong>22.<code>isspace</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断<code>S</code> 中是否全是空白字符</p>
+<p><strong>原型</strong>：S.isspace() -&gt; bool</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '\r\n\t '.isspace()
+True
+&gt;&gt;&gt; 'abc\r\n\t '.isspace()
+False
+</code></pre>
+<h3 id="4字符串填充">4，字符串填充</h3>
+<p><strong>23.<code>center</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：返回一个总长度为<code>width</code> 的字符串，<code>S</code> 居中，其它字符以<code>fillchar</code> 填充</p>
+<p><strong>原型</strong>：S.center(width[, fillchar]) -&gt; str</p>
+<p><strong>参数 width</strong>：新的字符串的总长度，当 <code>width</code> 小于 <code>S</code> 的长度时，直接返回 <code>S</code></p>
+<p><strong>参数 fillchar</strong>：填充字符，可省，默认为空格</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'AbCdE'.center(20, '*')
+'*******AbCdE********'
+</code></pre>
+<p><strong>24.<code>ljust</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：以<code>S</code> 左对齐，返回一个长度为<code>width</code> 的新字符串，当<code>len(S)</code> 小于<code>width</code> 时，用<code>fillchar</code> 字符填充</p>
+<p><strong>原型</strong>：S.ljust(width[, fillchar]) -&gt; str</p>
+<p><strong>参数</strong>：同 <code>center</code> 方法</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.ljust(5, '*')
+'abc**'
+&gt;&gt;&gt; 'abc'.ljust(3, '*')
+'abc'
+</code></pre>
+<p><strong>25.<code>rjust</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：类似<code>ljust</code> 方法，本方法为右对齐</p>
+<p><strong>原型</strong>：S.rjust(width[, fillchar]) -&gt; str</p>
+<p><strong>参数</strong>：同 <code>center</code> 方法</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.rjust(5, '*')
+'**abc'
+&gt;&gt;&gt; 'abc'.rjust(3, '*')
+'abc'
+</code></pre>
+<p><strong>26.<code>zfill</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：效果同 <code>rjust(width,'0')</code></p>
+<p><strong>原型</strong>：S.zfill(width) -&gt; str</p>
+<p><strong>参数</strong>：<code>width</code> 为新的字符串的总长度</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc'.zfill(5)
+'00abc'
+&gt;&gt;&gt; 'abc'.rjust(5, '0')
+'00abc'
+</code></pre>
+<h3 id="5字符串格式化">5，字符串格式化</h3>
+<p><strong>27.<code>format</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：用于格式化字符串，用<code>format</code> 方法中的参数依次替代<code>S</code> 中的大括号<code>{}</code></p>
+<p><strong>原型</strong>：S.format(*args, **kwargs) -&gt; str</p>
+<p><strong>参数</strong>：任意参数列表</p>
+<p><strong>返回值</strong>：返回格式化后的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '{} {} {}'.format('hello', 'python', 123)    # {} 中不写下标
+'hello python 123'
+&gt;&gt;&gt; '{2} {0} {1}'.format('hello', 'python', 123) # {} 中写下标
+'123 hello python'							
+</code></pre>
+<p><strong>28.<code>format_map</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：类似<code>format</code> 方法的作用，只是接受的参数类型不同，大括号<code>{}</code> 中必须是<code>字典</code>对象的<code>键</code></p>
+<p><strong>原型</strong>：S.format_map(mapping) -&gt; str</p>
+<p><strong>参数</strong>：一个字典类型的对象</p>
+<p><strong>返回值</strong>：返回格式化后的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '{a} {b}'.format_map({'a':1, 'b':2})
+'1 2'
+</code></pre>
+<blockquote>
+<p>关于<code>字典</code>类型，将在后续章节详细介绍</p>
+</blockquote>
+<h3 id="6字符串截断">6，字符串截断</h3>
+<p><strong>29.<code>lstrip</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从左开始，截去字符串<code>S</code> 中的字符<code>chars</code>，直到第一个不是<code>chars</code> 的字符</p>
+<p><strong>原型</strong>：S.lstrip([chars]) -&gt; str</p>
+<p><strong>参数</strong>：<code>chars</code> 可以是任意长度的字符串，每个包含在<code>chars</code> 中的字符，都会被截去。可省，默认为空格</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.lstrip('b')
+'abcabcabc'
+&gt;&gt;&gt; 'abcabcabc'.lstrip('a')
+'bcabcabc'
+&gt;&gt;&gt; 'abcabcabc'.lstrip('ab')
+'cabcabc'
+&gt;&gt;&gt; 'abcabcabc'.lstrip('abc')
+''
+</code></pre>
+<p><strong>30.<code>rstrip</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从右开始，截去字符串<code>S</code> 中的字符<code>chars</code>，直到第一个不是<code>chars</code> 的字符</p>
+<p><strong>原型</strong>：S.rstrip([chars]) -&gt; str</p>
+<p><strong>参数</strong>：同 <code>lstrip</code></p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.rstrip('b')
+'abcabcabc'
+&gt;&gt;&gt; 'abcabcabc'.rstrip('c')
+'abcabcab'
+&gt;&gt;&gt; 'abcabcabc'.rstrip('bc')
+'abcabca'
+&gt;&gt;&gt; 'abcabcabc'.rstrip('abc')
+''
+</code></pre>
+<p><strong>31.<code>strip</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：先执行<code>lstrip</code> 再执行 <code>rstrip</code></p>
+<p><strong>原型</strong>：S.strip([chars]) -&gt; str</p>
+<p><strong>参数</strong>：同 <code>lstrip</code></p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.strip('b')
+'abcabcabc'
+&gt;&gt;&gt; 'abcabcabc'.strip('ba')
+'cabcabc'
+&gt;&gt;&gt; 'abcabcabc'.strip('bac')
+''
+</code></pre>
+<h3 id="7字符串分割">7，字符串分割</h3>
+<p><strong>32.<code>strip</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从左到右，以字符串<code>sep</code> 来分割字符串<code>S</code>，最多分割<code>maxsplit</code> 次</p>
+<p><strong>原型</strong>：S.split(sep=None, maxsplit=-1) -&gt; list of strings</p>
+<p><strong>参数 sep</strong>：<code>sep</code> 可以是任意长度的字符串，默认为任意空白符</p>
+<p><strong>参数 maxsplit</strong>：分割的最大次数，默认不限次数</p>
+<p><strong>返回值</strong>：字符串列表</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.split()
+['a3bc-abc-ab', 'ef', 'hh', 'mn'] 
+&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.split(maxsplit=2)
+['a3bc-abc-ab', 'ef', 'hh\nmn']
+&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.split('a')
+['', '3bc-', 'bc-', 'b ef\thh\nmn']
+&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.split('bc')
+['a3', '-a', '-ab ef\thh\nmn']
+</code></pre>
+<p><strong>33.<code>rsplit</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从右到左，以字符串<code>sep</code> 来分割字符串<code>S</code>，最多分割<code>maxsplit</code> 次</p>
+<p><strong>原型</strong>：S.rsplit(sep=None, maxsplit=-1) -&gt; list of strings</p>
+<p><strong>参数</strong>：同<code>strip</code> 方法</p>
+<p><strong>返回值</strong>：字符串列表</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.rsplit()
+['a3bc-abc-ab', 'ef', 'hh', 'mn']
+&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.rsplit(maxsplit=2)
+['a3bc-abc-ab ef', 'hh', 'mn']
+&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.rsplit('bc')
+['a3', '-a', '-ab ef\thh\nmn']
+</code></pre>
+<p><strong>34.<code>splitlines</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：对字符串<code>S</code> 进行<code>行分割</code>，换行符为<code>\r</code>，<code>\n</code>，<code>\r\n</code></p>
+<p><strong>原型</strong>：S.splitlines([keepends]) -&gt; list of strings</p>
+<p><strong>参数</strong>：<code>keepends</code> 为<code>True</code> 或 <code>False</code>，为True 时保留换行符，为False 时不保留换行符，默认为False</p>
+<p><strong>返回值</strong>：字符串列表</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.splitlines()
+['a3bc-abc-ab ef\thh', 'mn'] 
+&gt;&gt;&gt; 'a3bc-abc-ab ef\thh\nmn'.splitlines(True)
+['a3bc-abc-ab ef\thh\n', 'mn']
+</code></pre>
+<h3 id="8其它方法">8，其它方法</h3>
+<p><strong>35.<code>encode</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：对<code>S</code> 以<code>encoding</code>指定的编码格式进行编码</p>
+<p><strong>原型</strong>：S.encode(encoding='utf-8&rsquo;, errors='strict&rsquo;) -&gt; bytes</p>
+<p><strong>参数 encoding</strong>：以什么编码格式进行编码，默认是<code>utf-8</code></p>
+<p><strong>参数 errors</strong>：发生错误时的处理方式，默认为<code>strict</code>，其它可选值有<code>ignore</code>，<code>replace</code>，<code>xmlcharrefreplace</code></p>
+<p><strong>返回值</strong>：<code>S</code> 的字节形式值</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = '中国'
+&gt;&gt;&gt; s.encode('utf8')
+b'\xe4\xb8\xad\xe5\x9b\xbd'
+</code></pre>
+<p><strong>36.<code>join</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：用于连接迭代器<code>iterable</code> 中的所有元素，分隔符为<code>S</code></p>
+<p><strong>原型</strong>：S.join(iterable) -&gt; str</p>
+<p><strong>参数</strong>：可迭代类型数据</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ','.join('abc')
+'a,b,c' 
+&gt;&gt;&gt; '|'.join('abc')
+'a|b|c'
+</code></pre>
+<blockquote>
+<p>关于<code>可迭代</code>类型，将在后续章节详细介绍，这里只需要知道字符串就是一种可迭代类型</p>
+</blockquote>
+<p><strong>37.<code>startswith</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断字符串<code>S[start:end]</code> 是否以子串<code>prefix</code> 开头</p>
+<p><strong>原型</strong>：S.startswith(prefix[, start[, end]]) -&gt; bool</p>
+<p><strong>参数 prefix</strong>：子字符串</p>
+<p><strong>参数 start</strong>：开始位置，可省，默认为 0</p>
+<p><strong>参数 end</strong>：结束位置，可省，默认为 len(S)</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.startswith('abc')
+True
+&gt;&gt;&gt; 'abcabcabc'.startswith('bc')
+False
+</code></pre>
+<p><strong>38.<code>endswith</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：判断字符串<code>S[start:end]</code> 是否以子串<code>suffix</code> 结尾</p>
+<p><strong>原型</strong>：S.endswith(suffix[, start[, end]]) -&gt; bool</p>
+<p><strong>参数 suffix</strong>：子字符串</p>
+<p><strong>参数 start</strong>：开始位置，可省，默认为 0</p>
+<p><strong>参数 end</strong>：结束位置，可省，默认为 len(S)</p>
+<p><strong>返回值</strong>：<code>True</code> 或 <code>False</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.endswith('bc')
+True
+&gt;&gt;&gt; 'abcabcabc'.endswith('bcd')
+False
+</code></pre>
+<p><strong>39.<code>replace</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从左到右，将<code>S</code> 中的 <code>old</code> 转换成 <code>new</code>，最多转换 <code>count</code> 次</p>
+<p><strong>原型</strong>：S.replace(old, new[, count]) -&gt; str</p>
+<p><strong>参数 old</strong>：源字符串，可以是任意长度</p>
+<p><strong>参数 new</strong>：目标字符串，可以是任意长度</p>
+<p><strong>参数 count</strong>：最多转换 <code>count</code> 次</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.replace('a', '1')
+'1bc1bc1bc'
+&gt;&gt;&gt; 'abcabcabc'.replace('a', '111')
+'111bc111bc111bc'
+&gt;&gt;&gt; 'abcabcabc'.replace('ab', '1')
+'1c1c1c'
+&gt;&gt;&gt; 'abcabcabc'.replace('a', '1', 2)
+'1bc1bcabc'
+</code></pre>
+<p><strong>40.<code>expandtabs</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将<code>S</code> 中的<code>tab</code> 转为空格，<code>tab</code> 即<code>\t</code></p>
+<p><strong>原型</strong>：S.expandtabs(tabsize=8) -&gt; str</p>
+<p><strong>参数 tabsize</strong>：一个<code>tab</code> 转为空格的个数与<code>tab</code> 之前的子串长度之和为<code>tabsize</code>，默认为 8</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a\tbca\tbca\tbc'.expandtabs(4)
+'a   bca bca bc'
+&gt;&gt;&gt; 'a\tbca\tbca\tbc'.expandtabs(4).replace(' ', '-')
+'a---bca-bca-bc'	         # 为了方便显示空格的个数，将空格替换为横线
+&gt;&gt;&gt; 'a\tbca\tbca\tbc'.expandtabs(8)
+'a       bca     bca     bc'
+&gt;&gt;&gt; 'a\tbca\tbca\tbc'.expandtabs(8).replace(' ', '-')
+'a-------bca-----bca-----bc' # 为了方便显示空格的个数，将空格替换为横线
+</code></pre>
+<p>通过下图可以更好的理解<code>expandtabs()</code>的含义：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200523183927771.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>41.<code>maketrans</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：用于创建一个字符映射，常与 <code>translate</code> 方法配合使用</p>
+<p><strong>原型</strong>：maketrans(x, y=None, z=None, /)</p>
+<p><strong>参数</strong>：当只有1 个参数时，必须是一个字典。当有2 个参数时，是两个字符串，且这两个字符串的长度必须相同</p>
+<p><strong>返回值</strong>：一个字典类型的数据</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; str.maketrans({'a':'1', 'b':'2', 'c':'3', 'd':'好'})
+{97: '1', 98: '2', 99: '3', 100: '好'}
+&gt;&gt;&gt; str.maketrans('abcd', '123好')
+{97: 49, 98: 50, 99: 51, 100: 22909}
+</code></pre>
+<p><strong>42.<code>translate</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将字符串<code>S</code> 使用<code>table</code> 进行替换</p>
+<p><strong>原型</strong>：S.translate(table) -&gt; str</p>
+<p><strong>参数</strong>：是一个字典类型</p>
+<p><strong>返回值</strong>：新的字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; x = str.maketrans('abc', '123')
+&gt;&gt;&gt; x
+{97: '1', 98: '2', 99: '3', 100: '好'}
+&gt;&gt;&gt; 'axxxbxxxcxxx'.translate(x) # a-&gt;1 b-&gt;2 c-&gt;3
+'1xxx2xxx3xxx'
+</code></pre>
+<p><strong>43.<code>partition</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从左边开始，将字符串<code>S</code> 用<code>sep</code> 进行分隔，只会进行一次分隔</p>
+<p><strong>原型</strong>：S.partition(sep) -&gt; (head, sep, tail)</p>
+<p><strong>参数</strong>：<code>sep</code> 可以是任意长度的字符串</p>
+<p><strong>返回值</strong>：返回一个三元组(head, sep, tail)，<code>head</code> 是分隔后的前半部分，<code>tail</code> 是后半部分，<code>sep</code> 是分隔符</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.partition('c')
+('ab', 'c', 'abcabc')
+&gt;&gt;&gt; 'abcabcabc'.partition('bc')
+('a', 'bc', 'abcabc')
+&gt;&gt;&gt; 'abcabcabc'.partition('abc')
+('', 'abc', 'abcabc')
+</code></pre>
+<p><strong>44.<code>rpartition</code>方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从右边开始，将字符串<code>S</code> 用<code>sep</code> 进行分隔，只会进行一次分隔</p>
+<p><strong>原型</strong>：S.rpartition(sep) -&gt; (head, sep, tail)</p>
+<p><strong>参数</strong>：同 <code>partition</code> 方法</p>
+<p><strong>返回值</strong>：同 <code>partition</code> 方法</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abcabcabc'.rpartition('c')
+('abcabcab', 'c', '')
+&gt;&gt;&gt; 'abcabcabc'.rpartition('bc')
+('abcabca', 'bc', '')
+&gt;&gt;&gt; 'abcabcabc'.rpartition('abc')
+('abcabc', 'abc', '')
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn3/">Python 简明教程 &mdash; 3，Python 基础概念</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn4/">Python 简明教程 &mdash; 4，Python 变量与基本数据类型</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn5/">Python 简明教程 &mdash; 5，Python 表达式与运算符</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn6/">Python 简明教程 &mdash; 6，Python 控制流</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn7/">Python 简明教程 &mdash; 7，Python 字符串</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/05/python-learn9/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 9，Python 编码</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn7/">
+            <span class="next-text nav-default">Python 简明教程 --- 7，Python 字符串</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn8/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 8，Python 字符串函数">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -15,7 +15,7 @@
     <item>
       <title>Python 简明教程</title>
       <link>https://codeshellme.github.io/2020/05/python-learn/</link>
-      <pubDate>Tue, 12 May 2020 21:38:52 +0800</pubDate>
+      <pubDate>Sun, 10 May 2020 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/2020/05/python-learn/</guid>
       <description>这是一份Python 教程。 Python 简明教程 &amp;mdash; 0，前言 Python 简明教程 &amp;mdash; 1，搭建Python 环境 Python 简明教程 &amp;mdash; 2，第一个Python 程序 Python 简明教程 &amp;mdash; 3，Py</description>
@@ -40,21 +40,57 @@
     </item>
     
     <item>
+      <title>Python 简明教程 --- 9，Python 编码</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn9/</link>
+      <pubDate>Fri, 22 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn9/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 8，Python 字符串函数</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn8/</link>
+      <pubDate>Thu, 21 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn8/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 好代码本身就是最好的文档。当你需要添加一个注</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 7，Python 字符串</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn7/</link>
+      <pubDate>Wed, 20 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn7/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 过早的优化代码是罪恶之源。 —— Donald Knuth 目录 无论哪</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 6，Python 控制流</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn6/</link>
+      <pubDate>Sun, 17 May 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/05/python-learn6/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Talk is cheap, show me the code. —— Linus Torvalds 控制流用来控制程序的处</description>
+    </item>
+    
+    <item>
       <title>Python 简明教程 --- 5，Python 表达式与运算符</title>
       <link>https://codeshellme.github.io/2020/05/python-learn5/</link>
-      <pubDate>Fri, 15 May 2020 21:38:52 +0800</pubDate>
+      <pubDate>Sat, 16 May 2020 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/2020/05/python-learn5/</guid>
       <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 靠代码行数来衡量开发进度，就像是凭重量来衡量</description>
     </item>
     
     <item>
-      <title>Python 简明教程 --- 6，Python 控制流</title>
-      <link>https://codeshellme.github.io/2020/05/python-learn6/</link>
+      <title>Python 简明教程 --- 4，Python 变量与基本数据类型</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn4/</link>
       <pubDate>Fri, 15 May 2020 21:38:52 +0800</pubDate>
       
-      <guid>https://codeshellme.github.io/2020/05/python-learn6/</guid>
-      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Talk is cheap, show me the code. —— Linus Torvalds 控制流用来控制程序的处</description>
+      <guid>https://codeshellme.github.io/2020/05/python-learn4/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有</description>
     </item>
     
     <item>
@@ -67,21 +103,12 @@
     </item>
     
     <item>
-      <title>Python 简明教程 --- 4，Python 变量与基本数据类型</title>
-      <link>https://codeshellme.github.io/2020/05/python-learn4/</link>
-      <pubDate>Thu, 14 May 2020 21:38:52 +0800</pubDate>
+      <title>Python 简明教程 --- 2，第一个Python 程序</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn2/</link>
+      <pubDate>Wed, 13 May 2020 21:38:52 +0800</pubDate>
       
-      <guid>https://codeshellme.github.io/2020/05/python-learn4/</guid>
-      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 任何一个人都会写出能够让机器理解的代码，只有</description>
-    </item>
-    
-    <item>
-      <title>Python 简明教程 --- 0，前言</title>
-      <link>https://codeshellme.github.io/2020/05/python-learn0/</link>
-      <pubDate>Tue, 12 May 2020 21:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/2020/05/python-learn0/</guid>
-      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Life is short, you need Python! —— Bruce Eckel 0，关于本书 本书是一本P</description>
+      <guid>https://codeshellme.github.io/2020/05/python-learn2/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那你肯定是用错方法了</description>
     </item>
     
     <item>
@@ -94,12 +121,12 @@
     </item>
     
     <item>
-      <title>Python 简明教程 --- 2，第一个Python 程序</title>
-      <link>https://codeshellme.github.io/2020/05/python-learn2/</link>
-      <pubDate>Tue, 12 May 2020 21:38:52 +0800</pubDate>
+      <title>Python 简明教程 --- 0，前言</title>
+      <link>https://codeshellme.github.io/2020/05/python-learn0/</link>
+      <pubDate>Mon, 11 May 2020 21:38:52 +0800</pubDate>
       
-      <guid>https://codeshellme.github.io/2020/05/python-learn2/</guid>
-      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那你肯定是用错方法了</description>
+      <guid>https://codeshellme.github.io/2020/05/python-learn0/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io Life is short, you need Python! —— Bruce Eckel 0，关于本书 本书是一本P</description>
     </item>
     
     <item>

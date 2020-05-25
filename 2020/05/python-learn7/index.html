@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 7，Python 字符串 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 过早的优化代码是罪恶之源。 —— Donald Knuth 目录 无论哪" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn7/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 7，Python 字符串" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 过早的优化代码是罪恶之源。 —— Donald Knuth 目录 无论哪" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn7/" />
+<meta property="article:published_time" content="2020-05-20T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-20T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 7，Python 字符串">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 过早的优化代码是罪恶之源。 —— Donald Knuth 目录 无论哪">
+<meta itemprop="datePublished" content="2020-05-20T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-20T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1964">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 7，Python 字符串"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 过早的优化代码是罪恶之源。 —— Donald Knuth 目录 无论哪"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 7，Python 字符串</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-20 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 1964 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1python-字符串">1，Python 字符串</a></li>
+        <li><a href="#2常用转义字符">2，常用转义字符</a></li>
+        <li><a href="#3字符串长度">3，字符串长度</a></li>
+        <li><a href="#4截取字符串">4，截取字符串</a></li>
+        <li><a href="#5字符串连接">5，字符串连接</a></li>
+        <li><a href="#6重复字符串">6，重复字符串</a></li>
+        <li><a href="#7字符串包含">7，字符串包含</a></li>
+        <li><a href="#8字符串格式化">8，字符串格式化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>过早的优化代码是罪恶之源。</strong></p>
+<p>—— Donald Knuth</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200524110703410.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>无论哪种编程语言，<code>字符串</code>处理都是最重要的内容之一。当然，Python 也不例外。</p>
+<h3 id="1python-字符串">1，Python 字符串</h3>
+<p>在<a href="https://blog.csdn.net/LUAOHAN/article/details/106112603">这节</a>内容中，我们已经知道了Python 字符串是用以下<code>引号</code>引住的一串字符：</p>
+<ul>
+<li>单引号<code>''</code></li>
+<li>双引号<code>&quot;&quot;</code></li>
+<li>三单引号<code>'''</code></li>
+<li>三双引号<code>&quot;&quot;&quot;</code></li>
+</ul>
+<p><code>Python3</code> 中的<code>字符串</code>类型统一采用<code>Unicode</code> 编码，因此支持多种语言。</p>
+<p>我们这里介绍的<code>字符串</code>类型，指的是<code>&lt;class 'str'&gt;</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type('中国')
+&lt;class 'str'&gt;
+&gt;&gt;&gt; type('abc')
+&lt;class 'str'&gt;
+</code></pre>
+<h3 id="2常用转义字符">2，常用转义字符</h3>
+<p>在用到某些特殊字符时，需要用到转义字符&mdash;-<code>反斜杠\</code>。</p>
+<p>下表是Python 中的一些常用转义字符：</p>
+<table>
+<thead>
+<tr>
+<th align="left">转义字符</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>\\</code></td>
+<td align="left">反斜杠</td>
+</tr>
+<tr>
+<td align="left"><code>\'</code></td>
+<td align="left">单引号</td>
+</tr>
+<tr>
+<td align="left"><code>\&quot;</code></td>
+<td align="left">双引号</td>
+</tr>
+<tr>
+<td align="left"><code>\n</code></td>
+<td align="left">换行</td>
+</tr>
+<tr>
+<td align="left"><code>\r</code></td>
+<td align="left">回车</td>
+</tr>
+<tr>
+<td align="left"><code>\t</code></td>
+<td align="left">横向制表符</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3字符串长度">3，字符串长度</h3>
+<p>使用<code>len()</code> 函数可以获取字符串的<code>长度</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; len('Hello') # 一个英文字符的长度是 1
+5
+&gt;&gt;&gt; len('Hi')
+2
+&gt;&gt;&gt; len('Python')
+6
+&gt;&gt;&gt; len('中国')	# 一个中文字符的长度是 1
+2
+</code></pre>
+<h3 id="4截取字符串">4，截取字符串</h3>
+<p>在Python 中可以用中括号<code>[]</code>来截取字符串内容。</p>
+<p><strong>获取单个字符</strong></p>
+<p>通过<code>下标</code>获取字符串中的单个字符，语法格式如下：</p>
+<pre><code class="language-python">s[n]
+</code></pre>
+<p>其中<code>s</code> 是一个字符串变量，<code>n</code> 为下标，是一个整数，其取值范围为：</p>
+<pre><code class="language-shell">-len(s)&lt;=n&lt;=len(s)-1
+</code></pre>
+<ul>
+<li><code>-len(s)&lt;=n&lt;0</code>：从右往左数，取第<code>n</code> 个字符</li>
+<li><code>0&lt;=n&lt;=len(s)-1</code>：从左往右数，取第<code>n+1</code> 个字符</li>
+</ul>
+<p>图解：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200521225229717.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = 'Hello' # 字符换变量 s
+&gt;&gt;&gt; len(s)		# s 的长度
+5			# 下标n 的范围为 -5&lt;=n&lt;=4
+&gt;&gt;&gt; s[-6]		# 超出取值范围，报错
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: string index out of range
+&gt;&gt;&gt; s[-5]		# 取倒数第5 个字符
+'H'
+&gt;&gt;&gt; s[-1]		# 取倒数第1 个字符
+'o'
+&gt;&gt;&gt; s[0]		# 取第1 个字符
+'H'
+&gt;&gt;&gt; s[4]		# 取最后一个字符
+'o'
+&gt;&gt;&gt; s[5]		# 超出取值范围，报错
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: string index out of range
+</code></pre>
+<p><strong>获取部分字符</strong></p>
+<p>获取部分字符串的语法格式如下：</p>
+<pre><code class="language-python">s[m:n]
+</code></pre>
+<p>其中<code>s</code> 是一个字符串变量，<code>m</code> 和 <code>n</code> 可以是任意的整数。</p>
+<p><code>s[m:n]</code> 代表的含义是：获取字符串<code>s</code> 下标<code>m</code> 到 <code>n</code> 之间的子串，子串的值包含<code>s[m]</code>，而不包含<code>s[n]</code>，即遵循<code>左闭右开</code>原则。</p>
+<p>图解：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200521224514371.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = 'Hello'
+&gt;&gt;&gt; s[-5:1]	
+'H'
+&gt;&gt;&gt; s[-7:2]
+'He'
+&gt;&gt;&gt; s[-3:2]
+''
+&gt;&gt;&gt; s[0:3]
+'Hel'
+&gt;&gt;&gt; s[3:1]
+''
+&gt;&gt;&gt; s[3:-1]
+'l'
+</code></pre>
+<p><strong>m 和 n 都可不写</strong></p>
+<ul>
+<li>如果不写<code>m</code>，代表从<code>最左</code>边开始</li>
+<li>如果不写<code>n</code>，代表到<code>最右</code>边结束</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = 'Hello'
+&gt;&gt;&gt; s[:]	# m 和 n 都不写代表整个字符串
+'Hello'  
+&gt;&gt;&gt; s[:3]       # 不写 m，代表从最左边开始，直到下标 n
+'Hel'
+&gt;&gt;&gt; s[2:]       # 不写 n，代表从下标 m开始，直到最右边
+'llo'
+</code></pre>
+<h3 id="5字符串连接">5，字符串连接</h3>
+<p>加号<code>+</code> 运算符可以连接两个<code>字符串</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'abc' + '123'
+'abc123'
+&gt;&gt;&gt; 'Hi' + '你好'
+'Hi你好'
+</code></pre>
+<h3 id="6重复字符串">6，重复字符串</h3>
+<p>一个<code>字符串</code> 乘一个整数<code>n</code>，相当于<code>n</code> 个字符串相连：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a' * 5
+'aaaaa'
+&gt;&gt;&gt; 'abc' * 3
+'abcabcabc'
+&gt;&gt;&gt; '你好' * 2
+'你好你好'
+</code></pre>
+<h3 id="7字符串包含">7，字符串包含</h3>
+<p><strong>运算符<code>in</code></strong></p>
+<p><code>in</code> 在Python 中是一个<code>运算符</code>，可用于判断一个<code>子串</code>是否<code>包含</code>在一个<code>字符串</code>中：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a' in 'abc'
+True
+&gt;&gt;&gt; 'ab' in 'abc'
+True
+&gt;&gt;&gt; 'ad' in 'abc'
+False
+</code></pre>
+<p><strong>运算符<code>not in</code></strong></p>
+<p><code>not in</code> 是<code>in</code> 的反义，用于判断一个<code>子串</code>是否<code>不包含</code>在一个<code>字符串</code>中：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a' not in 'abc'
+False
+&gt;&gt;&gt; 'ab' not in 'abc'
+False
+&gt;&gt;&gt; 'ad' not in 'abc'
+True
+</code></pre>
+<h3 id="8字符串格式化">8，字符串格式化</h3>
+<p>Python 字符串支持多种数据类型的格式化，<code>字符串格式化符号</code>见下表：</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>%c</code></td>
+<td align="left">格式化字符</td>
+</tr>
+<tr>
+<td align="left"><code>%s</code></td>
+<td align="left">格式化字符串</td>
+</tr>
+<tr>
+<td align="left"><code>%d</code></td>
+<td align="left">格式化整数</td>
+</tr>
+<tr>
+<td align="left"><code>%o</code></td>
+<td align="left">格式化八进制数</td>
+</tr>
+<tr>
+<td align="left"><code>%x/%X</code></td>
+<td align="left">格式化十六进制数，后者为大写</td>
+</tr>
+<tr>
+<td align="left"><code>%f</code></td>
+<td align="left">格式化浮点数</td>
+</tr>
+<tr>
+<td align="left"><code>%e</code></td>
+<td align="left">用科学计数法格式化浮点数</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '%c' % 'a'	# 格式化字符
+'a'
+&gt;&gt;&gt; '%c' % 'B'  # 格式化字符
+'B'
+&gt;&gt;&gt; '%s' % '中国' # 格式化字符串
+'中国' 
+&gt;&gt;&gt; '%s' % 'abc' # 格式化字符串
+'abc'
+&gt;&gt;&gt; '%s' % 123	 # 数字类型也可格式化为字符串
+'123'
+&gt;&gt;&gt; '%d' % 12345 # 格式化数字
+'12345'
+&gt;&gt;&gt; '%o' % 8	 # 格式化八进制数字
+'10'
+&gt;&gt;&gt; '%o' % 9     # 格式化八进制数字
+'11'
+&gt;&gt;&gt; '%x' % 10  	 # 格式化十六进制数字，小写
+'a'
+&gt;&gt;&gt; '%x' % 11    # 格式化十六进制数字，小写
+'b'
+&gt;&gt;&gt; '%X' % 10    # 格式化十六进制数字，大写
+'A' 
+&gt;&gt;&gt; '%X' % 11    # 格式化十六进制数字，大写
+'B'
+&gt;&gt;&gt; '%f' % 123.123 # 格式化浮点数
+'123.123000'
+&gt;&gt;&gt; '%e' % 123.123 # 科学计数法格式化浮点数
+'1.231230e+02'
+</code></pre>
+<p><strong>宽度与小数点位数</strong></p>
+<p>每种格式化符号之前都可以添加<code>m.n</code>：</p>
+<ul>
+<li><code>m</code> 与 <code>n</code> 都是正整数</li>
+<li><code>m</code> 表示格式化的宽度，对于浮点数无效</li>
+<li><code>n</code> 表示小数点后的位数，只对浮点数有效</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '%4s' % 'abc'	# 总宽度为 4
+' abc'                  # 'abc' 之前有 1 个空格
+&gt;&gt;&gt; '%5s' % 'abc'	# 总宽度为 5
+'  abc'                 # 'abc' 之前有 2 个空格
+&gt;&gt;&gt; '%5d' % 100		# 总宽度为 5
+'  100'		        # 100 之前有 2 个空格
+&gt;&gt;&gt; '%.5d' % 100        # 总宽度为 5，注意 5 之前有个点
+'00100'			# 宽度不够用 0 补齐，所以 100 之前有 2 个 0
+&gt;&gt;&gt; '%.2f' % 100.123	# 小数点后保留 2 位，多余位数舍弃
+'100.12'
+&gt;&gt;&gt; '%.5f' % 100.123	# 小数点后保留 5 位，位数不够，用 0 补齐
+'100.12300'
+</code></pre>
+<p><strong>左对齐与右对齐</strong></p>
+<p>默认情况下，<code>宽度</code> 不够时，会在左边加空格，这是<code>右对齐</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '%5s' % 'abc'  # 宽度为 5，不够用空格补齐，右对齐
+'  abc'
+</code></pre>
+<p>可在数字<code>5</code> 之前添加一个负号<code>-</code>，<code>宽度</code> 不够时，会在右边加空格，这是<code>左对齐</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; '%-5s' % 'abc' # 宽度为 5，不够用空格补齐，左对齐
+'abc  '
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn2/">Python 简明教程 &mdash; 2，第一个Python 程序</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn3/">Python 简明教程 &mdash; 3，Python 基础概念</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn4/">Python 简明教程 &mdash; 4，Python 变量与基本数据类型</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn5/">Python 简明教程 &mdash; 5，Python 表达式与运算符</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn6/">Python 简明教程 &mdash; 6，Python 控制流</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/05/python-learn8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 8，Python 字符串函数</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn6/">
+            <span class="next-text nav-default">Python 简明教程 --- 6，Python 控制流</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn7/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 7，Python 字符串">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
