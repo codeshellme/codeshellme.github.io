@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 11，Python 元组 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 软件工程的目标是控制复杂度，而不是增加复杂性" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn11/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 11，Python 元组" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 软件工程的目标是控制复杂度，而不是增加复杂性" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn11/" />
+<meta property="article:published_time" content="2020-05-24T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-24T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 11，Python 元组">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 软件工程的目标是控制复杂度，而不是增加复杂性">
+<meta itemprop="datePublished" content="2020-05-24T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-24T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1436">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 11，Python 元组"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 软件工程的目标是控制复杂度，而不是增加复杂性"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 11，Python 元组</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-24 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 1436 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1python-元组">1，Python 元组</a></li>
+        <li><a href="#2定义元组">2，定义元组</a></li>
+        <li><a href="#3元组的大小">3，元组的大小</a></li>
+        <li><a href="#4访问元组">4，访问元组</a></li>
+        <li><a href="#5元组不可修改">5，元组不可修改</a></li>
+        <li><a href="#6元组运算">6，元组运算</a></li>
+        <li><a href="#7元组函数">7，元组函数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>软件工程的目标是控制复杂度，而不是增加复杂性。</strong></p>
+<p>—— Dr. Pamela Zave</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200527102524863.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>我们在<a href="https://blog.csdn.net/LUAOHAN/article/details/106342514">上一节</a>介绍了Python 列表<code>list</code> 数据结构，本节来介绍一下元组<code>tuple</code>。</p>
+<h3 id="1python-元组">1，Python 元组</h3>
+<p>元组与列表有些相似，它们之间最显著的不同是，元组一旦定义了以后，就不能再修改(<code>增加/删除</code>其中的元素)，而列表可以被任意的改。</p>
+<p>Python 元组有如下特点：</p>
+<ul>
+<li>元组中的元素可以是任意类型的数据</li>
+<li>可使用下标和切片访问元组内容</li>
+<li>元组一点定义，不能再被修改</li>
+</ul>
+<h3 id="2定义元组">2，定义元组</h3>
+<p>我们已经知道了定义列表使用中括号<code>[]</code>，而定义元组使用小括号<code>()</code> 表示：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ()  # 一个空的元组
+&gt;&gt;&gt; t
+()
+&gt;&gt;&gt; t = ('a', 1, 3.5, True)  # 元组中可以存放任意类型
+&gt;&gt;&gt; t
+('a', 1, 3.5, True)
+</code></pre>
+<p><strong>只有一个元素的元组</strong></p>
+<p>当定义的元组中只有一个元素时，需要在元素后边加个逗号：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = (1,) 
+&gt;&gt;&gt; t      
+(1,)
+</code></pre>
+<p>如果没带逗号，则这个小括号<code>()</code>将不会被认为是元组符号：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = (1)   # 相当于没有带小括号
+&gt;&gt;&gt; t
+1
+&gt;&gt;&gt; t = ('abc')
+&gt;&gt;&gt; t
+'abc'
+</code></pre>
+<h3 id="3元组的大小">3，元组的大小</h3>
+<p>可以使用<code>len()</code> 来查看一个元组的大小：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ('a', 'b', 'c')
+&gt;&gt;&gt; len(t)	# 长度为 3
+3
+&gt;&gt;&gt; t = (1, 3)
+&gt;&gt;&gt; len(t)  # 长度为 2
+2
+</code></pre>
+<h3 id="4访问元组">4，访问元组</h3>
+<p>可以像访问列表一样，使用<code>下标</code>，<code>切片</code>，和 <code>for 循环</code>来访问元组。</p>
+<p><strong>使用下标访问元组</strong></p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ('a', 'b', 'c')
+&gt;&gt;&gt; t[0]	# 访问第一个元素
+'a'
+&gt;&gt;&gt; t[3]    # 下标越界
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: tuple index out of range
+&gt;&gt;&gt; t[-1]   # 访问倒数第一个元素
+'c'
+&gt;&gt;&gt; t[-3]   # 访问倒数第三个元素
+'a'
+&gt;&gt;&gt; t[-4]   # 下标越界
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: tuple index out of range
+</code></pre>
+<p><strong>使用切片访问元组</strong></p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ('a', 'b', 'c')
+&gt;&gt;&gt; t[1:3]
+('b', 'c')
+&gt;&gt;&gt; t[2:]
+('c',)
+&gt;&gt;&gt; t[:3]
+('a', 'b', 'c')
+&gt;&gt;&gt; t[:]
+('a', 'b', 'c')
+</code></pre>
+<p><strong>遍历元组</strong></p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ('a', 'b', 'c')
+&gt;&gt;&gt; for i in t:
+...     print(i)
+... 
+a
+b
+c
+</code></pre>
+<h3 id="5元组不可修改">5，元组不可修改</h3>
+<p>元组是<code>不可变</code>类型，不能对一个<code>已定义的元组</code>进行以下操作，否则会抛出异常：</p>
+<ul>
+<li>添加元素</li>
+<li>修改元素</li>
+<li>删除元素</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ('a', 'b', 'c')
+&gt;&gt;&gt; # 没有对于元组的添加操作，所以也不用演示 
+&gt;&gt;&gt;
+&gt;&gt;&gt; t[0] = 1  # 修改元素，抛出异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: 'tuple' object does not support item assignment
+&gt;&gt;&gt;
+&gt;&gt;&gt; del t[1]  # 删除元素，抛出异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: 'tuple' object doesn't support item deletion
+</code></pre>
+<h3 id="6元组运算">6，元组运算</h3>
+<p>像列表一样，元组也可以进行<code>加运算</code>，<code>乘运算</code>，<code>in 运算</code>。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ('a', 'b') + (1, 2)  # 加运算，得到一个新的元素
+('a', 'b', 1, 2)
+&gt;&gt;&gt;
+&gt;&gt;&gt; ('a', 'b') * 2       # 乘运算，相当于 n 个元素相加
+('a', 'b', 'a', 'b')   
+&gt;&gt;&gt;
+&gt;&gt;&gt; ('a', 'b') * -1      # n 小于等于 0 时，得到一个空元组
+()
+&gt;&gt;&gt; 'a' in ('a', 'b')    # in 运算，判断一个元素是否包含在元组中
+True
+&gt;&gt;&gt; 'a' not in ('a', 'b') 
+False
+</code></pre>
+<h3 id="7元组函数">7，元组函数</h3>
+<p>通过<code>dir(tuple)</code> 查看元组支持的方法：</p>
+<pre><code class="language-shell">['__add__', '__class__', '__contains__', 
+'__delattr__', '__dir__', '__doc__', 
+'__eq__', '__format__', '__ge__', 
+'__getattribute__', '__getitem__', 
+'__getnewargs__', '__gt__', '__hash__', 
+'__init__', '__init_subclass__', 
+'__iter__', '__le__', '__len__', 
+'__lt__', '__mul__', '__ne__', 
+'__new__', '__reduce__', '__reduce_ex__', 
+'__repr__', '__rmul__', '__setattr__', 
+'__sizeof__', '__str__', '__subclasshook__', 
+'count', 'index']
+</code></pre>
+<p>可以看到处了<code>魔法方法</code>，元组类型仅支持两个方法：</p>
+<ul>
+<li><code>count</code> 方法</li>
+<li><code>index</code> 方法</li>
+</ul>
+<p>且没有任意一个方法用于修改元组。</p>
+<p><strong>1.<code>count</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：计算元组<code>T</code> 中值为<code>value</code> 的个数</p>
+<p><strong>原型</strong>：T.count(value) -&gt; integer</p>
+<p><strong>参数</strong>：要计算的元素的值</p>
+<p><strong>返回值</strong>：个数</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ['a', 'b', 'c', 'a']
+&gt;&gt;&gt; t.count('a')
+2
+&gt;&gt;&gt; t.count('b')
+1
+&gt;&gt;&gt; t.count('d')
+0
+</code></pre>
+<p><strong>2.<code>index</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从元组<code>T[start:stip]</code> 中查找第一个值为<code>value</code> 的元素</p>
+<p><strong>原型</strong>：T.index(value, [start, [stop]]) -&gt; integer</p>
+<p><strong>参数 value</strong>：查找值为<code>value</code> 的元素</p>
+<p><strong>参数 start</strong>：元组<code>T</code> 的起始下标</p>
+<p><strong>参数 stop</strong>：元组<code>T</code> 的终止下标</p>
+<p><strong>返回值</strong>：若能找到，则返回该元素的<code>下标</code>，否则，抛出<code>ValueError</code> 异常</p>
+</blockquote>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ['a', 'b', 'c']
+&gt;&gt;&gt; t.index('b')   # 找到了，返回下标
+1
+&gt;&gt;&gt; l.index('d')   # 没找到，抛出 ValueError 异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ValueError: 'd' is not in list
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn6/">Python 简明教程 &mdash; 6，Python 控制流</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn7/">Python 简明教程 &mdash; 7，Python 字符串</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn8/">Python 简明教程 &mdash; 8，Python 字符串函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn9/">Python 简明教程 &mdash; 9，Python 编码</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn10/">Python 简明教程 &mdash;10，Python 列表</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/05/python-learn12/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 12，Python 字典</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn10/">
+            <span class="next-text nav-default">Python 简明教程 --- 10，Python 列表</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn11/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 11，Python 元组">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

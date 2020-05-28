@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 10，Python 列表 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序 = 算法 &#43; 数据结构。 —— Nicklaus Wirth 目录 从这句话程" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn10/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 10，Python 列表" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序 = 算法 &#43; 数据结构。 —— Nicklaus Wirth 目录 从这句话程" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn10/" />
+<meta property="article:published_time" content="2020-05-23T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-23T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 10，Python 列表">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序 = 算法 &#43; 数据结构。 —— Nicklaus Wirth 目录 从这句话程">
+<meta itemprop="datePublished" content="2020-05-23T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-23T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3078">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 10，Python 列表"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序 = 算法 &#43; 数据结构。 —— Nicklaus Wirth 目录 从这句话程"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 10，Python 列表</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-23 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 3078 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1python-列表">1，Python 列表</a></li>
+        <li><a href="#2声明列表">2，声明列表</a></li>
+        <li><a href="#3列表元素个数">3，列表元素个数</a></li>
+        <li><a href="#4访问列表元素">4，访问列表元素</a></li>
+        <li><a href="#5列表部分元素">5，列表部分元素</a></li>
+        <li><a href="#6遍历列表">6，遍历列表</a></li>
+        <li><a href="#7修改和删除元素">7，修改和删除元素</a></li>
+        <li><a href="#8列表运算">8，列表运算</a></li>
+        <li><a href="#9列表函数">9，列表函数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>程序 = 算法 + 数据结构。</strong></p>
+<p>—— Nicklaus Wirth</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200526182436537.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>从这句话<code>程序 = 算法 + 数据结构</code> 可以看出<code>数据结构</code>对于编程的重要性。数据结构就是数据的<code>组织/存储</code>方式。</p>
+<p>从本节开始我们将介绍Python 中的数据结构：</p>
+<ul>
+<li>列表 <code>list</code></li>
+<li>元组 <code>tuple</code></li>
+<li>字典 <code>dict</code></li>
+<li>集合 <code>set</code></li>
+</ul>
+<p>这些数据结构在<code>Python3.x</code> 中都是一个<code>类class</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; list
+&lt;class 'list'&gt;
+&gt;&gt;&gt; tuple
+&lt;class 'tuple'&gt;
+&gt;&gt;&gt; dict
+&lt;class 'dict'&gt;
+&gt;&gt;&gt; set
+&lt;class 'set'&gt;
+</code></pre>
+<blockquote>
+<p>提示：</p>
+<p>这几个类名<code>list</code>，<code>tuple</code>，<code>dict</code>，<code>set</code> 并不是Python 中的保留字，</p>
+<p>你可以使用它们作为变量名，但一般并不建议这样做。</p>
+<p>可使用<code>keyword</code> 模块来查看Python 中的保留字。</p>
+</blockquote>
+<p>Python 中数据结构非常易用，且语法简单。我们将介绍这些数据结构的使用方法。</p>
+<p>本节我们介绍Python 中的列表 <code>list</code>。</p>
+<h3 id="1python-列表">1，Python 列表</h3>
+<p>大部分编程语言中都有<code>数组</code>的概念，数组中元素的类型必须相同。</p>
+<p>Python 中没有数组的概念，Python 列表可看作是一种增强版的数组。</p>
+<p>Python 列表有如下特点：</p>
+<ul>
+<li>列表中的元素可以是<code>任意类型</code>的数据</li>
+<li>可使用<code>下标</code>和<code>切片</code>访问列表内容</li>
+<li>可在列表的任意位置<code>插入</code>和<code>删除</code>元素</li>
+<li>使用列表时，无须关注列表的<code>容量</code>问题，Python 会在需要的时候自动<code>扩容</code>和<code>缩容</code></li>
+</ul>
+<h3 id="2声明列表">2，声明列表</h3>
+<p>Python 中的列表使用中括号<code>[]</code> 表示：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = []       # 一个空列表
+&gt;&gt;&gt; l = ['a', 'bc', 1, 2.5, True] # 列表元素可以是任意类型
+&gt;&gt;&gt; type(l)      
+&lt;class 'list'&gt;
+</code></pre>
+<h3 id="3列表元素个数">3，列表元素个数</h3>
+<p>使用<code>len()</code> 函数可查看列表中的元素个数：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'bc', 1, 2.5, True]
+&gt;&gt;&gt; len(l)
+5
+</code></pre>
+<h3 id="4访问列表元素">4，访问列表元素</h3>
+<p>可以像访问<code>字符串</code>一样，使用<code>下标</code>来访问列表元素：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'bc', 1, 2.5, True]
+&gt;&gt;&gt; l[0]	# 访问第 1 个元素
+'a'
+&gt;&gt;&gt; l[4]	# 访问第 5 个元素
+True
+&gt;&gt;&gt; l[5]        # 超出范围，抛出异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: list index out of range
+&gt;&gt;&gt; l[-1]	# 访问倒数第 1 个元素
+True
+&gt;&gt;&gt; l[-5]       # 访问倒数第 5 个元素
+'a'
+&gt;&gt;&gt; l[-6]       # 超出范围，抛出异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: list index out of range
+</code></pre>
+<h3 id="5列表部分元素">5，列表部分元素</h3>
+<p>同样可以向截取<code>字符串</code> 一样来截取部分列表元素：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'bc', 1, 2.5, True]
+&gt;&gt;&gt; l[1:3]
+['bc', 1]
+&gt;&gt;&gt; l[1:]
+['bc', 1, 2.5, True]
+&gt;&gt;&gt; l[:4]
+['a', 'bc', 1, 2.5]
+&gt;&gt;&gt; l[:]
+['a', 'bc', 1, 2.5, True]
+</code></pre>
+<h3 id="6遍历列表">6，遍历列表</h3>
+<p>可使用 <code>for</code> 循环来遍历列表：</p>
+<pre><code class="language-python">l = ['a', 'bc', 1, 2.5, True]
+for item in l:
+    print(item)
+</code></pre>
+<p>以上代码的输出如下：</p>
+<pre><code class="language-shell">a
+bc
+1
+2.5
+True
+</code></pre>
+<h3 id="7修改和删除元素">7，修改和删除元素</h3>
+<p><strong>修改列表元素</strong></p>
+<p>我们可以使用<code>下标</code>和<code>赋值语句</code> 来修改列表元素：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'bc', 1, 2.5, True]
+&gt;&gt;&gt; l[0] = 'x'      # 第 1 个元素改为 ‘x’
+&gt;&gt;&gt; l[3] = 5        # 第 4 个元素改为 5
+&gt;&gt;&gt; l               # 修改后的列表
+['x', 'bc', 1, 5, True]
+</code></pre>
+<p><strong>删除列表元素</strong></p>
+<p>可以使用<code>下标</code>和<code>del</code> 关键字来删除列表元素：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'bc', 1, 2.5, True]
+&gt;&gt;&gt; del l[1]	# 删除第 2 个元素
+&gt;&gt;&gt; del l[3]    # 删除第 4 个元素
+&gt;&gt;&gt; l           # 删除元素后的列表
+['a', 1, 2.5]
+</code></pre>
+<h3 id="8列表运算">8，列表运算</h3>
+<p>Python 列表可以进行<code>加运算</code>，<code>乘运算</code>，<code>in 运算</code>。</p>
+<p><strong>列表加运算</strong></p>
+<p>一个列表和另一个列表可以相加，得到一个新的列表：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l1 = ['a', 'b', 'c']
+&gt;&gt;&gt; l2 = [1, 2, 3]
+&gt;&gt;&gt; l3 = l1 + l2
+&gt;&gt;&gt; l3 # 新的列表
+['a', 'b', 'c', 1, 2, 3]
+</code></pre>
+<p>一个列表可以乘以一个整数<code>n</code>：</p>
+<ul>
+<li>当 <code>n &lt;= 0</code> 时，得到一个空列表<code>[]</code></li>
+<li>当 <code>n &gt; 0</code> 时，相当于 <code>n</code> 个列表相加</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; ['a', 'b'] * -1
+[]
+&gt;&gt;&gt; ['a', 'b'] * 0
+[]
+&gt;&gt;&gt; ['a', 'b'] * 2
+['a', 'b', 'a', 'b']
+</code></pre>
+<p><strong>列表in 运算</strong></p>
+<p>可以通过 <code>in</code> 运算来查看一个元素是否存在于列表中，返回一个 <code>bool</code> 类型：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 'a' in ['a', 'b']
+True
+&gt;&gt;&gt; 'a' not in ['a', 'b']
+False
+</code></pre>
+<h3 id="9列表函数">9，列表函数</h3>
+<p>Python 中的<code>list</code> 是一个 <code>class</code>，可通过<code>type(列表对象)</code>来查看：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type([])     # 空列表
+&lt;class 'list'&gt;
+</code></pre>
+<p>可通过<code>dir(list)</code> 或 <code>dir(列表对象)</code> 来查看Python <code>list</code> 支持的方法：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir(list)
+['__add__', '__class__', '__contains__', 
+'__delattr__', '__delitem__', '__dir__', 
+'__doc__', '__eq__', '__format__', 
+'__ge__', '__getattribute__', 
+'__getitem__', '__gt__', '__hash__', 
+'__iadd__', '__imul__', '__init__', 
+'__init_subclass__', '__iter__', 
+'__le__', '__len__', '__lt__', '__mul__', 
+'__ne__', '__new__', '__reduce__', 
+'__reduce_ex__', '__repr__', '__reversed__', 
+'__rmul__', '__setattr__', '__setitem__', 
+'__sizeof__', '__str__', '__subclasshook__', 
+'append', 'clear', 'copy', 'count', 
+'extend', 'index', 'insert', 
+'pop', 'remove', 'reverse', 'sort']
+</code></pre>
+<p>这里我们依然只关注<code>非魔法方法</code>，共11 个。</p>
+<p><strong>1.<code>append</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：在列表<code>L</code> 的尾部追加元素</p>
+<p><strong>原型</strong>：L.append(object) -&gt; None</p>
+<p><strong>参数</strong>：要追加的元素，可以是任意类型</p>
+<p><strong>返回值</strong>：总是返回 <code>None</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = [1]        # 初始化一个列表
+&gt;&gt;&gt; l.append(2)    # 在尾部追加 2
+&gt;&gt;&gt; l
+[1, 2]
+&gt;&gt;&gt; l.append(3)    # 在尾部追加 3
+&gt;&gt;&gt; l
+[1, 2, 3]
+</code></pre>
+<p><strong>2.<code>insert</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：在列表<code>L</code> 的 <code>index</code> 下标之前插入元素<code>object</code></p>
+<p><strong>原型</strong>：L.insert(index, object)</p>
+<p><strong>参数 index</strong>：插入元素的位置</p>
+<p><strong>参数 object</strong>：要插入的元素</p>
+<p><strong>返回值</strong>：无返回值</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c']	     # 初始化一个列表
+&gt;&gt;&gt; l.insert(1, 'xx')        # 在列表的下标 1 处插入 'xx' 
+&gt;&gt;&gt; l
+['a', 'xx', 'b', 'c']        # 插入后，'xx' 下标为 1
+&gt;&gt;&gt; l.insert(3, 'yy')        # 在列表的下标 3 处插入 'yy'
+&gt;&gt;&gt; l
+['a', 'xx', 'b', 'yy', 'c']  # 插入后，'yy' 的下标为 3
+</code></pre>
+<p><strong>3.<code>remove</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从表头开始，删除列表<code>L</code> 中<code>第一个</code>值为<code>value</code> 的元素，如果值为<code>value</code> 的元素不存在，则抛出<code>ValueError</code> 异常</p>
+<p><strong>原型</strong>：L.remove(value) -&gt; None</p>
+<p><strong>参数</strong>：要删除的元素的值</p>
+<p><strong>返回值</strong>：总是返回 <code>None</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'b', 'c']
+&gt;&gt;&gt; l.remove('b')  # 删除第一个值为 'b' 的元素
+&gt;&gt;&gt; l
+['a', 'b', 'c']
+&gt;&gt;&gt; l.remove('c')  # 删除第一个值为 'c' 的元素
+&gt;&gt;&gt; l
+['a', 'b']
+&gt;&gt;&gt; l.remove('c')  # 已经不存在值为 'c' 的元素，抛出 ValueError 异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ValueError: list.remove(x): x not in list
+</code></pre>
+<p><strong>4.<code>pop</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：移除并返回下标为 <code>index</code> 的元素，下标不存在时，抛出<code>IndexError</code> 异常</p>
+<p><strong>原型</strong>：L.pop([index]) -&gt; item</p>
+<p><strong>参数</strong>：要移除的元素的下标，可省，默认为最后一个</p>
+<p><strong>返回值</strong>：移除的元素</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c']
+&gt;&gt;&gt; item = l.pop()   # 移除最后一个元素
+&gt;&gt;&gt; item
+'c'
+&gt;&gt;&gt; l
+['a', 'b']
+&gt;&gt;&gt; l.pop(3)   # 不存在下标为 3 的元素，抛出异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+IndexError: pop index out of range
+</code></pre>
+<p><strong>5.<code>clear</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：清空列表<code>L</code></p>
+<p><strong>原型</strong>：L.clear() -&gt; None</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：总是返回 <code>None</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c']
+&gt;&gt;&gt; l.clear()
+&gt;&gt;&gt; l   # 列表被清空
+[]
+</code></pre>
+<p><strong>6.<code>count</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：计算列表<code>L</code> 中值为<code>value</code> 的个数</p>
+<p><strong>原型</strong>：L.count(value) -&gt; integer</p>
+<p><strong>参数</strong>：要计算的元素的值</p>
+<p><strong>返回值</strong>：个数</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c', 'a']
+&gt;&gt;&gt; l.count('a')
+2
+&gt;&gt;&gt; l.count('b')
+1
+&gt;&gt;&gt; l.count('d')
+0
+</code></pre>
+<p><strong>7.<code>copy</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：浅拷贝列表<code>L</code>，相当于<code>L[:]</code></p>
+<p><strong>原型</strong>：L.copy() -&gt; list</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：一个列表</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c']
+&gt;&gt;&gt; l2 = l.copy()
+&gt;&gt;&gt; l2
+['a', 'b', 'c']
+</code></pre>
+<p><strong>8.<code>extend</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：在列表<code>L</code> 尾部追加一个序列<code>iterable</code></p>
+<p><strong>原型</strong>：L.extend(iterable) -&gt; None</p>
+<p><strong>参数</strong>：<code>iterable</code> 可以是任意一种<code>序列</code>类型</p>
+<p><strong>返回值</strong>：总是返回 <code>None</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l1 = ['a', 'b', 'c']
+&gt;&gt;&gt; l2 = ['1', '2', '3']
+&gt;&gt;&gt; l1.extend(l2)
+&gt;&gt;&gt; l1
+['a', 'b', 'c', '1', '2', '3']
+</code></pre>
+<p><strong>9.<code>reverse</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将列表<code>L</code> 翻转</p>
+<p><strong>原型</strong>：L.reverse()</p>
+<p><strong>参数</strong>：无</p>
+<p><strong>返回值</strong>：无返回值</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c']
+&gt;&gt;&gt; l.reverse()
+&gt;&gt;&gt; l
+['c', 'b', 'a']
+</code></pre>
+<p><strong>10.<code>sort</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：对列表<code>L</code> 进行排序</p>
+<p><strong>原型</strong>：L.sort(key=None, reverse=False) -&gt; None</p>
+<p><strong>参数 key</strong>：</p>
+<blockquote>
+<p><code>key</code> 是一个函数类型的参数，该函数接收一个参数<code>item1</code>，并返回一个值<code>item2</code>。</p>
+<p><code>sort</code> 方法根据<code>item2</code> 进行排序，<code>item1</code> 是<code>L</code> 中的每个元素 。</p>
+<p><code>key</code> 可省，默认为<code>None</code>，表示直接使用<code>L</code> 中的元素进行排序。</p>
+</blockquote>
+<p><strong>参数 reverse</strong>：</p>
+<blockquote>
+<p><code>reverse</code> 为<code>True</code> 表示按照降序排序。</p>
+<p><code>reverse</code> 为<code>False</code> 表示按照升序排序。</p>
+<p><code>reverse</code> 可省，默认为 <code>False</code>。</p>
+</blockquote>
+<p><strong>返回值</strong>：总是返回 <code>None</code></p>
+</blockquote>
+<p>示例，<code>key</code> 为 <code>None</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['b', 'a', 'd', 'c'] # 一个乱序的列表
+&gt;&gt;&gt; l.sort()                 # 升序排序
+&gt;&gt;&gt; l
+['a', 'b', 'c', 'd']
+&gt;&gt;&gt; l.sort(reverse=True)     # 降序排序
+&gt;&gt;&gt; l
+['d', 'c', 'b', 'a']
+</code></pre>
+<p>示例，<code>key</code> 不为 <code>None</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = [('c', 1), ('b', 2), ('a', 3)] # 列表中的元素是元组类型
+&gt;&gt;&gt; def key(item): return item[0]      # 该函数返回元组的第一个元素
+&gt;&gt;&gt; l.sort(key=key)                    # 以元组的第一个元素进行排序
+&gt;&gt;&gt; l
+[('a', 3), ('b', 2), ('c', 1)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; l = [('c', 1), ('b', 2), ('a', 3)] 
+&gt;&gt;&gt; def key(item): return item[1]      # 该函数返回元组的第二个元素
+&gt;&gt;&gt; l.sort(key=key)                    # 以元组的第二个元素进行排序
+&gt;&gt;&gt; l
+[('c', 1), ('b', 2), ('a', 3)]
+</code></pre>
+<blockquote>
+<p><strong>提示：</strong></p>
+<p>一个<code>函数</code>也可以作为<code>参数</code>传递给<code>另一个函数</code>，后续讲到函数的概念时，会详细讲解。</p>
+</blockquote>
+<p><strong>11.<code>index</code> 方法</strong></p>
+<blockquote>
+<p><strong>作用</strong>：从列表<code>L[start:stip]</code> 的<code>表头</code>查找<code>第一个</code>值为<code>value</code> 的元素</p>
+<p><strong>原型</strong>：L.index(value, [start, [stop]]) -&gt; integer</p>
+<p><strong>参数 value</strong>：查找值为<code>value</code> 的元素</p>
+<p><strong>参数 start</strong>：列表<code>L</code> 的起始下标</p>
+<p><strong>参数 stop</strong>：列表<code>L</code> 的终止下标</p>
+<p><strong>返回值</strong>：若能找到，则返回该元素的<code>下标</code>，否则，抛出<code>ValueError</code> 异常</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = ['a', 'b', 'c']
+&gt;&gt;&gt; l.index('b')   # 找到了，返回下标
+1
+&gt;&gt;&gt; l.index('d')   # 没找到，抛出 ValueError 异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ValueError: 'd' is not in list
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn5/">Python 简明教程 &mdash; 5，Python 表达式与运算符</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn6/">Python 简明教程 &mdash; 6，Python 控制流</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn7/">Python 简明教程 &mdash; 7，Python 字符串</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn8/">Python 简明教程 &mdash; 8，Python 字符串函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn9/">Python 简明教程 &mdash; 9，Python 编码</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/05/python-learn11/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 11，Python 元组</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn9/">
+            <span class="next-text nav-default">Python 简明教程 --- 9，Python 编码</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn10/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 10，Python 列表">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
