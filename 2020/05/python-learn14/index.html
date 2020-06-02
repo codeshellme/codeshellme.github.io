@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 14，Python 数据结构进阶 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那很可能是用错算法了" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn14/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 14，Python 数据结构进阶" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那很可能是用错算法了" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn14/" />
+<meta property="article:published_time" content="2020-05-29T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-05-29T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 14，Python 数据结构进阶">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那很可能是用错算法了">
+<meta itemprop="datePublished" content="2020-05-29T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-29T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5325">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 14，Python 数据结构进阶"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那很可能是用错算法了"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 14，Python 数据结构进阶</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-29 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 5325 字 </span>
+          <span class="more-meta"> 阅读约需 11 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1序列">1，序列</a></li>
+        <li><a href="#2迭代器">2，迭代器</a></li>
+        <li><a href="#3列表生成式">3，列表生成式</a></li>
+        <li><a href="#4生成器">4，生成器</a></li>
+        <li><a href="#5强制类型转换">5，强制类型转换</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>如果你发现特殊情况太多，那很可能是用错算法了。</strong></p>
+<p>—— Carig Zerouni</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200601214335967.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>前几节我们介绍了Python 中四种数据结构的特性和基本用法，本节介绍与数据结构相关的高级特性。</p>
+<ul>
+<li>序列</li>
+<li>迭代器</li>
+<li>列表生成式</li>
+<li>生成器</li>
+<li>强制类型转换</li>
+</ul>
+<h3 id="1序列">1，序列</h3>
+<p>Python  序列是指，其中存放的元素是<code>有序排列</code>的，可用下标访问，<code>字符串</code>，<code>列表</code>，<code>元组</code>都是序列。</p>
+<p>而<code>字典</code>与<code>集合</code>中的元素是无序排列的，因此一般不归在<code>序列</code>中。</p>
+<p>Python 序列有如下特点：</p>
+<ul>
+<li>序列中的元素是<code>不可变</code>类型</li>
+<li>序列中的元素可用<code>下标</code>访问，下标可正可负</li>
+<li>可通过<code>切片</code>访问部分<code>连续</code>元素</li>
+<li>可进行<code>相加</code>，<code>相乘</code>，<code>in 运算</code></li>
+<li>可通过<code>for 循环</code>遍历所有元素</li>
+</ul>
+<p>可以使用<code>collections</code> 模块中的<code>Sequence</code> 类来查看一个对象是否是一个序列：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; isinstance('', collections.Sequence) # 字符串是序列
+True
+&gt;&gt;&gt; isinstance([], collections.Sequence) # 列表是序列
+True
+&gt;&gt;&gt; isinstance((), collections.Sequence) # 元组是序列
+True
+&gt;&gt;&gt; isinstance({}, collections.Sequence) # 字典不是序列
+False
+&gt;&gt;&gt; isinstance(set(), collections.Sequence) # 集合不是序列
+False
+</code></pre>
+<blockquote>
+<p><strong>提示：</strong></p>
+<p>1，<code>isinstance</code> 函数用于查看一个对象属于某个类</p>
+<p>2，在使用<code>模块</code>时，要先<code>import</code> 该模块</p>
+</blockquote>
+<h3 id="2迭代器">2，迭代器</h3>
+<p><strong>可迭代类型</strong></p>
+<p>我们知道<code>str</code>，<code>list</code>，<code>tuple</code>，<code>dict</code>，<code>set</code>  都可用<code>for 循环</code>来遍历，这个遍历的过程就是一个<code>迭代</code>过程，这些类型都是<code>可迭代</code>类型。</p>
+<p>可迭代的类型，都实现了<code>__iter__</code> 方法，我们通过<code>dir(可迭代对象)</code>，可以看到，可迭代对象的<code>魔法方法</code>中都有一个<code>__iter__</code> 方法。</p>
+<p>我们也可以通过<code>collections</code> 模块中的<code>Iterable</code> 类型来查看一个对象是不是可迭代对象：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; isinstance('', collections.Iterable)
+True
+&gt;&gt;&gt; isinstance([], collections.Iterable)
+True
+&gt;&gt;&gt; isinstance((), collections.Iterable)
+True
+&gt;&gt;&gt; isinstance({}, collections.Iterable)
+True
+&gt;&gt;&gt; isinstance(set(), collections.Iterable)
+True
+</code></pre>
+<p><strong>迭代器</strong></p>
+<p><code>迭代器</code>是一种<code>可迭代</code>的对象。</p>
+<p>迭代器一定是可迭代的，可迭代的对象不一定是迭代器。</p>
+<p>迭代器要实现两个魔法方法：<code>__iter__</code> 和 <code>__next__</code>。</p>
+<p>通过<code>collections</code> 模块中的<code>Iterator</code> 类型来查看这两个方法：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir(collections.Iterator)
+</code></pre>
+<p>判断一个对象是不是迭代器：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; isinstance('', collections.Iterator) # 字符串不是迭代器
+False
+&gt;&gt;&gt; isinstance([], collections.Iterator) # 列表不是迭代器
+False
+&gt;&gt;&gt; isinstance((), collections.Iterator) # 元组不是迭代器
+False
+&gt;&gt;&gt; isinstance({}, collections.Iterator) # 字典不是迭代器
+False
+&gt;&gt;&gt; isinstance(set(), collections.Iterator) # 集合不是迭代器
+False
+</code></pre>
+<h4 id="迭代器通用函数">迭代器通用函数</h4>
+<p>迭代器有一些通用函数，下面我们介绍一些常用的。</p>
+<p><strong>1.<code>enumerate</code> 函数</strong></p>
+<p>在Python3 中，<code>enumerate</code> 实际上是一个<code>类</code>，可通过<code>help(enumerate)</code> 查看，也可以把它当做函数来使用。</p>
+<p>其经常被用在<code>for 循环</code>中，即可遍历下标，又能遍历数据。</p>
+<blockquote>
+<p><strong>作用：</strong> 用于给一个<code>可迭代</code>的对象，添加<code>下标</code></p>
+<p><strong>原型：</strong> enumerate(iterable[, start]) -&gt; iterator</p>
+<p><strong>参数 iterable：</strong> 一个可迭代的对象</p>
+<p><strong>参数 start：</strong> 下标起始位置</p>
+<p><strong>返回值：</strong> 一个<code>enumerate</code> 对象，同时也是一个<code>迭代器</code></p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = enumerate(['a', 'c', 'b']) # 参数是一个列表
+&gt;&gt;&gt; type(l)
+&lt;class 'enumerate'&gt;
+&gt;&gt;&gt; isinstance(l, collections.Iterator) # 是一个迭代器
+True
+&gt;&gt;&gt; for index, item in l:           # for 循环遍历，能遍历出下标
+...     print(index, item)
+... 
+0 a
+1 c
+2 b
+</code></pre>
+<p><strong>2.<code>iter</code> 函数</strong></p>
+<blockquote>
+<p><strong>作用</strong>：将一个可迭代的序列<code>iterable</code> 转换成<code>迭代器</code></p>
+<p><strong>原型</strong>：iter(iterable) -&gt; iterator</p>
+<p><strong>参数</strong>：iterable 是一个可迭代的<code>序列</code></p>
+<p><strong>返回值</strong>：一个迭代器</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; iter('123')            # 参数是字符串
+&lt;str_iterator object at 0x7fcb7dd320b8&gt;     # str 迭代器
+&gt;&gt;&gt; iter([1, 2, 3])        # 参数是列表
+&lt;list_iterator object at 0x7fcb7dd4a0b8&gt;    # list 迭代器
+&gt;&gt;&gt; iter((1, 2, 3))        # 参数是元组
+&lt;tuple_iterator object at 0x7fcb7dd4a0b8&gt;   # tuple 迭代器
+&gt;&gt;&gt; iter(set([1, 2, 3]))   # 参数是集合
+&lt;set_iterator object at 0x7fcb7d2c5e10&gt;     # set 迭代器
+&gt;&gt;&gt; iter({'a':1, 'b':2})   # 参数是字典
+&lt;dict_keyiterator object at 0x7fcb7f467098&gt; # dict 迭代器
+</code></pre>
+<p><strong>3.<code>next</code> 函数</strong></p>
+<blockquote>
+<p><strong>作用</strong>：返回迭代器的下一个元素</p>
+<p><strong>原型</strong>：next(iterator[, default])  -&gt; item</p>
+<p><strong>参数 iterator</strong>：是一个迭代器类型</p>
+<p><strong>参数 default</strong>：任意类型数据，可省</p>
+<p><strong>返回值</strong>：</p>
+<blockquote>
+<p>当<code>迭代器中有元素</code>时：返回迭代器中的下一个元素</p>
+<p>当<code>迭代器中没有元素</code>且<code>没有default 参数</code>时：抛出<code>StopIteration</code> 异常</p>
+<p>当<code>迭代器中没有元素</code>且<code>有default 参数</code>时：返回<code>default</code></p>
+</blockquote>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; i = iter([1, 3, 5])  # i 是一个迭代器
+&gt;&gt;&gt; next(i)              # 返回 1
+1
+&gt;&gt;&gt; next(i)              # 返回 3
+3
+&gt;&gt;&gt; next(i)              # 返回 5
+5
+&gt;&gt;&gt; next(i)              # i 中没有元素，抛出异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+StopIteration
+&gt;&gt;&gt; 
+&gt;&gt;&gt; next(i, 7)           # i 中没有元素，返回第二个参数 7
+7
+</code></pre>
+<p><strong>4.<code>len</code> 函数</strong></p>
+<blockquote>
+<p><strong>作用</strong>：用于计算一个对象<code>obj</code>中的元素的个数</p>
+<p><strong>原型</strong>：len(obj, /)</p>
+<p><strong>参数</strong>：一般<code>obj</code> 是一个可迭代类型对象，实际上，只要实现了<code>__len__</code> 方法的对象，都可以使用该函数</p>
+<p><strong>返回值</strong>：一个整数</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; len('abc')
+3
+&gt;&gt;&gt; len([1, 2, 3])
+3
+</code></pre>
+<p><strong>5.<code>max</code> 函数</strong></p>
+<blockquote>
+<p><strong>作用</strong>：返回可迭代对象<code>iterable</code> 中的最大元素</p>
+<p><strong>原型</strong>：max(iterable)</p>
+<p><strong>参数</strong>：<code>iterable</code> 是一个可迭代的对象，并且<code>iterable</code> 中的元素可比较</p>
+<p><strong>返回值</strong>：最大值</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; max([1, 2])
+2
+&gt;&gt;&gt; max([1, 2, 3])
+3
+&gt;&gt;&gt; max('b', 'a')
+'b'
+&gt;&gt;&gt; max('abc')
+'c'
+&gt;&gt;&gt; max(1, 'a')     # 整数与字符串不是同类型，不可比较
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: '&gt;' not supported between instances of 'str' and 'int'
+</code></pre>
+<p><strong>6.<code>min</code> 函数</strong></p>
+<blockquote>
+<p><strong>作用</strong>：返回可迭代对象<code>iterable</code> 中的最小元素</p>
+<p><strong>原型</strong>：min(iterable)</p>
+<p><strong>参数</strong>：<code>iterable</code> 是一个可迭代的对象，并且<code>iterable</code> 中的元素可比较</p>
+<p><strong>返回值</strong>：最小值</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; min([1, 2])
+1
+&gt;&gt;&gt; min([2, 3])
+2
+&gt;&gt;&gt; min('abc')
+'a'
+&gt;&gt;&gt; min('b', 'c')
+'b'
+&gt;&gt;&gt; min('b', 2)  # 整数与字符串不是同类型，不可比较
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: '&lt;' not supported between instances of 'int' and 'str'
+</code></pre>
+<p><strong>7.<code>sum</code> 函数</strong></p>
+<blockquote>
+<p><strong>作用</strong>：计算可迭代对象<code>iterable</code> 中的数据之和，最后在加上 <code>start</code></p>
+<p><strong>原型</strong>：sum(iterable, start=0, /)</p>
+<p><strong>参数</strong>：<code>iterable</code> 是一个可迭代对象，其中的元素是数字类型</p>
+<p><strong>返回值</strong>：所有元素之和</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; sum([1, 2, 3])     # 计算 1，2，3 之和
+6
+&gt;&gt;&gt; sum([1, 2, 3], 5)  # 计算 1，2，3 之和，再加上 5
+11
+</code></pre>
+<p><strong>8.<code>reversed</code> 函数</strong></p>
+<p><code>reversed</code> 实际上是一个类，可用<code>help(reversed)</code> 查看。</p>
+<blockquote>
+<p><strong>作用</strong>：将一个序列<code>sequence</code> 反转</p>
+<p><strong>原型</strong>：reversed(sequence)</p>
+<p><strong>参数</strong>：<code>sequence</code> 是一个序列类型</p>
+<p><strong>返回值</strong>：一个<code>reversed</code> 对象，该对象也是一个<code>迭代器</code>，可被迭代</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; r = reversed('abcde')
+&gt;&gt;&gt; r                                    # 一个 reversed 对象
+&lt;reversed object at 0x7fcb79970518&gt;
+&gt;&gt;&gt; isinstance(r, collections.Iterator)  # 也是一个迭代器
+True
+&gt;&gt;&gt; [i for i in r]                  # 转换成列表，查看其中的元素
+['e', 'd', 'c', 'b', 'a']
+&gt;&gt;&gt;
+&gt;&gt;&gt; r = reversed([1, 3, 5, 7])
+&gt;&gt;&gt; [i for i in r]
+[7, 5, 3, 1]
+</code></pre>
+<h3 id="3列表生成式">3，列表生成式</h3>
+<p><code>列表生成式</code>，又叫<code>列表推导式</code>，用于从一个<code>可迭代对象</code>生成一个<code>列表</code>，它是一种代码简写形式，其优点是代码简洁优雅。</p>
+<p>比如，我们有一个列表 <code>[1, 3, 5]</code>，想求其中每个元素的平方，再将结果放入列表中，最终的结果是<code>[1, 9, 25]</code>。</p>
+<p>如果是一般的方式，我们写出来的代码是这样的：</p>
+<pre><code class="language-python">l = [1, 3, 5]
+
+l2 = []
+for i in l:
+    item = i * i 
+    l2.append(item)
+
+print(l2)   
+</code></pre>
+<p>如果用列表生成式的方式，代码是这样的：</p>
+<pre><code class="language-shell">l = [1, 3, 5]
+
+l2 = [i * i for i in l]
+
+print(l2)
+</code></pre>
+<p>可以看到列表生成式比普通的形式要简洁许多。</p>
+<p><strong>列表生成式语法</strong></p>
+<p>最简单的列表生成式的语法，就像上面的代码一样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200531162532890.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><code>列表生成式</code>由三部分组成：</p>
+<ul>
+<li>列表符号：中括号<code>[]</code></li>
+<li>表达式：用于生成新列表中的每个元素，一般与<code>item</code> 有关，也可无关</li>
+<li>for 循环：用于迭代原始<code>可迭代对象</code></li>
+</ul>
+<p><strong>列表生成式中的<code>if</code> 判断</strong></p>
+<p>列表生成式中也可以有<code>if</code> 判断，当<code>判断条件</code>成立时，才会执行表达式，并将该表达式的结果<code>append</code> 到新的列表中。</p>
+<p>这里的<code>if</code> 判断没有<code>else</code> 部分，<code>判断条件</code>一般与<code>item</code> 有关。</p>
+<p>如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200531164859505.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-shell">l = [1, 3, 5]
+
+# 只有当 l 中的元素大于 1 时，才算平方
+l2 = [i * i for i in l if i &gt; 1]
+
+print(l2)
+</code></pre>
+<p><strong><code>range</code> 函数</strong></p>
+<p>在<code>Python2.x 中</code>，<code>range</code> 是一个<code>函数</code>。</p>
+<p>在<code>Python3.x</code> 中，<code>range</code> 是一个<code>类</code>，可用<code>help(range)</code> 查看其手册。</p>
+<pre><code class="language-shell">&gt;&gt;&gt; range
+&lt;class 'range'&gt;
+</code></pre>
+<p>下面介绍<code>Python3.x</code> 中<code>range</code> 的用法，有两种参数形式：</p>
+<blockquote>
+<p><strong>作用</strong>：生成一个从<code>start</code> 到<code>stop</code> 的，步长为<code>step</code> 的，可迭代的整数序列，该序列包含<code>start</code>，不包含<code>stop</code>，即遵循<code>左开右闭</code>原则</p>
+<p><strong>原型</strong>：</p>
+<blockquote>
+<p>range(stop) -&gt; range object</p>
+<p>range(start, stop[, step]) -&gt; range object</p>
+</blockquote>
+<p><strong>参数</strong>：</p>
+<blockquote>
+<p>当只有<code>stop</code> 参数时，该序列从<code>0</code> 开始到<code>stop</code>，步长为<code>1</code></p>
+<p>当有<code>start</code> 和<code>stop</code> 参数时，该序列从<code>start</code> 开始到<code>stop</code>，步长为<code>1</code></p>
+<p>当有<code>step</code> 参数时，步长为<code>step</code></p>
+</blockquote>
+<p><strong>返回值</strong>：一个<code>range</code> 对象</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; range(5)
+range(0, 5)
+&gt;&gt;&gt; range(1, 5)
+range(1, 5)
+&gt;&gt;&gt; range(1, 5, 2)
+range(1, 5, 2)
+</code></pre>
+<p><code>range</code> 对象是一个序列，而不是一个迭代器：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; isinstance(range(5), collections.Sequence)
+True
+&gt;&gt;&gt; isinstance(range(5), collections.Iterator)
+False
+</code></pre>
+<p>可以使用<code>列表生成式</code>来查看<code>range</code> 中的内容：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; [i for i in range(5)]       # 从 0 到 5
+[0, 1, 2, 3, 4]
+&gt;&gt;&gt; [i for i in range(1, 5)]    # 从 1 到 5
+[1, 2, 3, 4]
+&gt;&gt;&gt; [i for i in range(1, 5, 2)] # 步长为 2
+[1, 3]
+</code></pre>
+<h3 id="4生成器">4，生成器</h3>
+<p>生成器也是一个<code>迭代器</code>。生成器跟列表有点像，但优点是比列表<code>节省内存</code>。</p>
+<p>对于列表，Python 会为列表中的每个元素都分配实实在在的内存空间，如果列表中的元素很多，那么列表将消耗大量内存。</p>
+<p>而对于生成器，Python 并不会为其中的每个元素都分配内存。</p>
+<p>生成器记录的是一种算法，是如何生成数据的算法，在每次用到数据时，才会去生成数据，而不会一开始就将所有的数据准备好。</p>
+<p>因此，对于相同的功能，<code>生成器</code>和<code>列表</code>都能完成，而生成器可以节省大量的内存。</p>
+<p>创建生成器有两种方式：</p>
+<ul>
+<li>将<code>列表生成式</code>中的中括号<code>[]</code>改为小括号<code>()</code></li>
+<li>在函数中使用<code>yield</code> 关键字</li>
+</ul>
+<p><strong>使用列表生成式</strong></p>
+<p>如下代码可以生成一个列表：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; [i for i in range(5)]
+[0, 1, 2, 3, 4]
+</code></pre>
+<p>将中括号<code>[]</code> 改为小括号<code>()</code>，就是一个生成器：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = (i for i in range(5))
+&gt;&gt;&gt; l
+&lt;generator object &lt;genexpr&gt; at 0x7f3433d2d9e8&gt;
+&gt;&gt;&gt; type(l)
+&lt;class 'generator'&gt;
+&gt;&gt;&gt; isinstance(l, collections.Iterator) # 生成器也是一个迭代器
+True
+</code></pre>
+<p>其中的<code>generator</code> 就是生成器的意思，它也是一个<code>类</code>。</p>
+<p><strong>使用<code>yield</code> 关键字</strong></p>
+<p>比如，我们想计算列表<code>[1, 3, 5]</code> 中每个元素的平方，使用<code>yield</code> 关键字，代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+def test():
+    print('test...')
+    l = [1, 3, 5]
+
+    for i in l:
+        tmp = i * i 
+        print('yield tmp:%s' % tmp)
+        yield tmp 
+
+t = test()
+print(t)       # &lt;generator object test at 0x7fde1cdaa3b8&gt; 
+print(type(t)) # &lt;class'generator'&gt;
+</code></pre>
+<p>注意，我们定义了一个函数，这里我们只是为了演示如何使用<code>yield</code> 来创建生成器，而不用过多关注如何定义函数。</p>
+<blockquote>
+<p><code>函数</code>的概念我们会在后续章节详细介绍。</p>
+</blockquote>
+<p>执行以上代码，输出如下：</p>
+<pre><code class="language-shell">&lt;generator object test at 0x7fde1cdaa3b8&gt; 
+&lt;class'generator'&gt;
+</code></pre>
+<p>你会发现，字符串<code>test...</code>并没有被打印出来。</p>
+<p>你可能会有疑问，既然代码<code>t = test()</code> 已经执行了，那整个<code>test()</code> 函数中的代码都应该执行完了才对，那字符串<code>test...</code> 怎么会没有打印呢？</p>
+<p>那是因为，<code>生成器</code>中代码的执行是<code>惰性</code>的。当执行<code>t = test()</code> 这行代码时，<code>test()</code> 函数并没有被执行。</p>
+<p>前边我们说过，生成器记录的是一个<code>算法</code>，而不是真正的数据，数据只有当使用到的时候，才会去生成。</p>
+<p>所以，变量 <code>t</code> 中只是一个算法，而没有数据。</p>
+<p>因为，生成器也是一个迭代器，所以生成器可以使用<code>next()</code> 函数来访问其中的数据：</p>
+<pre><code class="language-shell">i = next(t)
+print('i value is', i) 
+</code></pre>
+<p>执行上面这行代码后，程序会输出：</p>
+<pre><code class="language-shell">test...
+yield tmp:1
+i value is 1
+</code></pre>
+<p>字符串<code>test...</code> 被打印，说明<code>test()</code> 执行了。</p>
+<p>当代码执行到<code>yield</code> 时，变量<code>i</code> 会接收到<code>yield</code> 返回的数据，此时，代码会从<code>yield</code> 处跳出<code>test()</code> 函数。</p>
+<p>如果接下来，不再遍历变量<code>t</code> 中的数据，那么整个代码就执行结束了。</p>
+<p>如果我们再次执行代码：</p>
+<pre><code class="language-shell">j = next(t)
+print('j value is', j) 
+</code></pre>
+<p>程序会输出：</p>
+<pre><code class="language-shell">yield tmp:9
+j value is 9
+</code></pre>
+<p>可见代码会在上次<code>yield</code> 的地方，再次向下执行。</p>
+<p>我们再次执行代码：</p>
+<pre><code class="language-shell">k = next(t)
+print('k value is', k) 
+</code></pre>
+<p>程序会输出：</p>
+<pre><code class="language-shell">yield tmp:25
+k value is 25
+</code></pre>
+<p>当<code>t</code> 中的元素被遍历完后，如果再次执行<code>next(t)</code>，则会抛出<code>StopIteration</code> 异常。</p>
+<p>使用<code>next()</code> 函数来遍历生成器中的所有元素是很麻烦的，我们可以像遍历列表一样，用<code>for 循环</code>来遍历生成器中的元素：</p>
+<pre><code class="language-python">for i in t:
+    print(i) 
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-shell">test...
+yield tmp:1
+1
+yield tmp:9
+9
+yield tmp:25
+25
+</code></pre>
+<p>整个遍历过程中，字符串<code>test...</code> 只被输出了一次，并没有被输出三次。</p>
+<p>说明当代码执行到<code>yield</code> 时，并没有从函数<code>test()</code> 中返回，代码只是暂停在了<code>yield</code> 处，等下次需要数据时，会接着从上次的<code>yield</code> 处接着执行。</p>
+<p><strong>生成器比列表节省内存</strong></p>
+<p>如果我们想生成一个从<code>0</code> 到<code>9999</code> 的数字序列，用列表的话，是这样的：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = [i for i in range(10000)]
+&gt;&gt;&gt; sys.getsizeof(l)  # 内存占用 87624 字节
+87624
+</code></pre>
+<p><code>sys</code> 模块的<code>getsizeof</code> 方法可以查看一个对象的大小，单位是<code>字节</code>。</p>
+<p>用生成器来实现的话，是这样的：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l = (i for i in range(10000))
+&gt;&gt;&gt; sys.getsizeof(l)  # 内存占用 88 字节
+88
+</code></pre>
+<p>可以看到<code>0</code> 到<code>9999</code> 这样的整数序列，使用列表的话，占用 <code>87624</code> 字节；使用生成器的话，只占用 <code>88</code> 字节</p>
+<h3 id="5强制类型转换">5，强制类型转换</h3>
+<p>我们已经知道了，Python3 中的<code>str</code>，<code>list</code>，<code>tuple</code>，<code>dict</code>，<code>set</code> 都是一个类：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type('')
+&lt;class 'str'&gt;
+&gt;&gt;&gt; type([])
+&lt;class 'list'&gt;
+&gt;&gt;&gt; type(())
+&lt;class 'tuple'&gt;
+&gt;&gt;&gt; type({})
+&lt;class 'dict'&gt;
+&gt;&gt;&gt; type(set())
+&lt;class 'set'&gt;
+</code></pre>
+<p>每个类都有<code>构造方法</code>，这些构造方法可以将其它类型的数据，<code>转换</code>成该类型数据，我们也可以将这种转换称为<code>强制类型转换</code>。</p>
+<blockquote>
+<p><strong>提示：</strong></p>
+<p><code>构造方法</code>是一个<code>类</code>的初始化方法，就是用什么样的数据去构造一个特定类的对象。</p>
+<p>当介绍到<code>类与对象</code>时，我们会详细介绍。</p>
+</blockquote>
+<p><strong><code>str</code>强制转换</strong></p>
+<blockquote>
+<p><strong>作用：</strong> 将其它类型数据转换成字符串</p>
+<p><strong>原型：</strong> str(object=&rsquo;') -&gt; str</p>
+<p><strong>参数：</strong> 任意类型数据</p>
+<p><strong>返回值：</strong> 字符串</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; str(1)        # 将数字转换成字符串
+'1'
+&gt;&gt;&gt; str([1, 2])   # 将列表转换成字符串
+'[1, 2]'
+&gt;&gt;&gt; str((1, 2))   # 将元组转换成字符串
+'(1, 2)'
+</code></pre>
+<p><strong><code>list</code>强制转换</strong></p>
+<blockquote>
+<p><strong>作用：</strong> 将一个可迭代类型转成列表</p>
+<p><strong>原型：</strong> list(iterable) -&gt; list</p>
+<p><strong>参数：</strong> 任意可迭代类型数据</p>
+<p><strong>返回值：</strong> 列表</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; list((1, 2))   # 将一个元组转成列表
+[1, 2]
+&gt;&gt;&gt; list(range(3)) # 将一个 range 对象转成列表
+[0, 1, 2]
+</code></pre>
+<p><strong><code>tuple</code>强制转换</strong></p>
+<blockquote>
+<p><strong>作用：</strong> 将一个可迭代类型转成元组</p>
+<p><strong>原型：</strong> tuple(iterable) -&gt; tuple</p>
+<p><strong>参数：</strong> 任意可迭代类型数据</p>
+<p><strong>返回值：</strong> 元组</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; tuple([1, 2])    # 将一个列表转成元组
+(1, 2)
+&gt;&gt;&gt; tuple(range(3))  # 将一个 range 对象转成元组
+(0, 1, 2)
+
+</code></pre>
+<p><strong><code>dict</code>强制转换</strong></p>
+<blockquote>
+<p><strong>作用：</strong> 将一个可迭代类型数据转成字典</p>
+<p><strong>原型：</strong> dict(iterable) -&gt; dict</p>
+<p><strong>参数：</strong> <code>iterable</code> 是一个可迭代对象，并且该对象中的元素是<code>元组</code></p>
+<p><strong>返回值：</strong> 字典</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; t = ((1, 2), (2, 3))  # t 是一个元组，其中的元素也是元组
+&gt;&gt;&gt; dict(t)
+{1: 2, 2: 3}
+&gt;&gt;&gt; 
+&gt;&gt;&gt; l = [(1, 2), (2, 3)] # l 是一个列表，其中的元素是元组
+&gt;&gt;&gt; dict(l)
+{1: 2, 2: 3}
+</code></pre>
+<p><strong><code>set</code>强制转换</strong></p>
+<blockquote>
+<p><strong>作用：</strong> 将一个可迭代类型数据转成集合</p>
+<p><strong>原型：</strong> set(iterable) -&gt; set</p>
+<p><strong>参数：</strong> 一个可迭代对象</p>
+<p><strong>返回值：</strong> 集合</p>
+</blockquote>
+<p>其实，我们在介绍<code>集合</code>时，都是用的这种方式来声明的集合，示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; set('abc')      # 将一个字符串转成集合
+{'b', 'c', 'a'}
+&gt;&gt;&gt; set([0, 1])     # 将一个列表转成集合
+{0, 1}
+&gt;&gt;&gt; set((0, 1))     # 将一个元组转成集合
+{0, 1}
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn9/">Python 简明教程 &mdash; 9，Python 编码</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn10/">Python 简明教程 &mdash; 10，Python 列表</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn11/">Python 简明教程 &mdash; 11，Python 元组</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn12/">Python 简明教程 &mdash; 12，Python 字典</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn13/">Python 简明教程 &mdash; 13，Python 集合</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-05-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn13/">
+            <span class="next-text nav-default">Python 简明教程 --- 13，Python 集合</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/05/python-learn14/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 14，Python 数据结构进阶">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
