@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Fri, 29 May 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jun 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -28,6 +28,33 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 17，Python 模块与包</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn17/</link>
+      <pubDate>Mon, 15 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn17/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 正确的判断来源于经验，然而经验来源于错误的判</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 16，Python 高阶函数</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn16/</link>
+      <pubDate>Fri, 12 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn16/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 对于那些快速算法，我们总是可以拿一些速度差不</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 15，Python 函数</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn15/</link>
+      <pubDate>Wed, 10 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn15/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 测试只能证明程序有错误，而不能证明程序没有错</description>
     </item>
     
     <item>

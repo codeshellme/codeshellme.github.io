@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Fri, 29 May 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jun 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,33 @@
       
       <guid>https://codeshellme.github.io/2020/05/python-learn/</guid>
       <description>这是一份Python 教程。 Python 简明教程 &amp;mdash; 0，前言 Python 基础 Python 简明教程 &amp;mdash; 1，搭建Python 环境 Python 简明教程 &amp;mdash; 2，第一个Python 程序 Python 简明教程 &amp;mdash; 3</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 17，Python 模块与包</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn17/</link>
+      <pubDate>Mon, 15 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn17/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 正确的判断来源于经验，然而经验来源于错误的判</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 16，Python 高阶函数</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn16/</link>
+      <pubDate>Fri, 12 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn16/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 对于那些快速算法，我们总是可以拿一些速度差不</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 15，Python 函数</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn15/</link>
+      <pubDate>Wed, 10 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn15/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 测试只能证明程序有错误，而不能证明程序没有错</description>
     </item>
     
     <item>

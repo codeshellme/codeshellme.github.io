@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Python 简明教程 - 码农充电站</title>
+  <title>Python 简明教程 --- 16，Python 高阶函数 - 码农充电站</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="@码农加油站" /><meta name="description" content="这是一份Python 教程。 Python 简明教程 &amp;mdash; 0，前言 Python 基础 Python 简明教程 &amp;mdash; 1，搭建Python 环境 Python 简明教程 &amp;mdash; 2，第一个Python 程序 Python 简明教程 &amp;mdash; 3" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 对于那些快速算法，我们总是可以拿一些速度差不" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
-<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn/" />
+<link rel="canonical" href="https://codeshellme.github.io/2020/06/python-learn16/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -38,23 +38,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Python 简明教程" />
-<meta property="og:description" content="这是一份Python 教程。 Python 简明教程 &mdash; 0，前言 Python 基础 Python 简明教程 &mdash; 1，搭建Python 环境 Python 简明教程 &mdash; 2，第一个Python 程序 Python 简明教程 &mdash; 3" />
+<meta property="og:title" content="Python 简明教程 --- 16，Python 高阶函数" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 对于那些快速算法，我们总是可以拿一些速度差不" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn/" />
-<meta property="article:published_time" content="2020-05-10T21:38:52+08:00" />
-<meta property="article:modified_time" content="2020-05-10T21:41:52+08:00" />
-<meta itemprop="name" content="Python 简明教程">
-<meta itemprop="description" content="这是一份Python 教程。 Python 简明教程 &mdash; 0，前言 Python 基础 Python 简明教程 &mdash; 1，搭建Python 环境 Python 简明教程 &mdash; 2，第一个Python 程序 Python 简明教程 &mdash; 3">
-<meta itemprop="datePublished" content="2020-05-10T21:38:52&#43;08:00" />
-<meta itemprop="dateModified" content="2020-05-10T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="365">
+<meta property="og:url" content="https://codeshellme.github.io/2020/06/python-learn16/" />
+<meta property="article:published_time" content="2020-06-12T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-06-12T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 16，Python 高阶函数">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 对于那些快速算法，我们总是可以拿一些速度差不">
+<meta itemprop="datePublished" content="2020-06-12T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-12T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1395">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Python 简明教程"/>
-<meta name="twitter:description" content="这是一份Python 教程。 Python 简明教程 &mdash; 0，前言 Python 基础 Python 简明教程 &mdash; 1，搭建Python 环境 Python 简明教程 &mdash; 2，第一个Python 程序 Python 简明教程 &mdash; 3"/>
+<meta name="twitter:title" content="Python 简明教程 --- 16，Python 高阶函数"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 对于那些快速算法，我们总是可以拿一些速度差不"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,15 +132,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Python 简明教程</h1>
+      <h1 class="post-title">Python 简明教程 --- 16，Python 高阶函数</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2020-05-10 </span>
+        <span class="post-time"> 2020-06-12 </span>
         <div class="post-category">
             <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
             </div>
-          <span class="more-meta"> 365 字 </span>
-          <span class="more-meta"> 阅读约需 1 分钟 </span>
+          <span class="more-meta"> 1395 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
         
 
       </div>
@@ -149,40 +149,125 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents"></nav>
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1map-函数">1，map 函数</a></li>
+        <li><a href="#2reduce-函数">2，reduce 函数</a></li>
+        <li><a href="#3filter-函数">3，filter 函数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
   </div>
 </div>
     <div class="post-content">
       <blockquote>
-<p><strong>这是一份Python 教程。</strong></p>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
 </blockquote>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn0/">Python 简明教程 &mdash; 0，前言</a></p>
 <blockquote>
-<p><strong>Python 基础</strong></p>
+<p><strong>对于那些快速算法，我们总是可以拿一些速度差不多但是更容易理解的算法来替代它们。</strong></p>
+<p>—— Douglas Jones</p>
 </blockquote>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn1/">Python 简明教程 &mdash; 1，搭建Python 环境</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn2/">Python 简明教程 &mdash; 2，第一个Python 程序</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn3/">Python 简明教程 &mdash; 3，Python 基础概念</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn4/">Python 简明教程 &mdash; 4，Python 变量与基本数据类型</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn5/">Python 简明教程 &mdash; 5，Python 表达式与运算符</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn6/">Python 简明教程 &mdash; 6，Python 控制流</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn7/">Python 简明教程 &mdash; 7，Python 字符串</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn8/">Python 简明教程 &mdash; 8，Python 字符串函数</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn9/">Python 简明教程 &mdash; 9，Python 编码</a></p>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200609163006183.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><code>高阶函数</code>一般以函数为参数。</p>
+<p>本节我们介绍Python 中三个方便的高阶函数，分别是：</p>
+<ul>
+<li>map</li>
+<li>reduce</li>
+<li>filter</li>
+</ul>
+<p>如果你了解过<strong>分布式系统框架</strong>&mdash;<a href="http://hadoop.apache.org/"><code>Hadoop</code></a>，你应该知道<code>map/reduce</code> 的概念。</p>
+<p>Python 中的<code>map/reduce</code> 函数与<code>Hadoop</code> 中的<code>map/reduce</code> 基本类似。</p>
+<h3 id="1map-函数">1，map 函数</h3>
+<p>在<code>Python2</code> 中，<code>map</code> 是一个函数。在<code>Python3</code> 中，<code>map</code> 是一个类：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; map
+&lt;class 'map'&gt;
+</code></pre>
 <blockquote>
-<p><strong>Python 数据结构</strong></p>
+<p><strong>作用</strong>：将函数<code>func</code> 作用于可迭代对象<code>iterable</code> 中的每一个元素</p>
+<p><strong>原型</strong>：map(func, iterable) -&gt; map object</p>
+<p><strong>参数 func</strong>：一个函数类型的参数，该函数接收一个参数，并返回一个值</p>
+<p><strong>参数 iterable</strong>：一个可迭代的对象</p>
+<p><strong>返回值</strong>：一个<code>map</code> 对象，同时一个迭代器</p>
 </blockquote>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn10/">Python 简明教程 &mdash; 10，Python 列表</a></p>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; m = map(lambda x: x * x, [1, 3, 5])
+&gt;&gt;&gt; m
+&lt;map object at 0x7fe60bb1bf98&gt;
+&gt;&gt;&gt; l = [i for i in m]
+&gt;&gt;&gt; l
+[1, 9, 25]
+</code></pre>
+<p>参数<code>func</code> 可以是普通函数，也可以是<code>匿名函数</code>，我们这里使用了匿名函数<code>lambda x: x * x</code>，该函数接收一个参数，并返回该参数的平方。</p>
+<p>可迭代对象是一个列表<code>[1, 3, 5]</code>，列表中的每个元素，都将传递到匿名函数中，并对每一个元素计算平方后，将结果存储到一个<code>map</code> 对象<code>m</code> 中。</p>
+<p>为了查看<code>m</code> 中的值，我们使用<code>列表推导式</code>生成了一个列表<code>l</code>，可看到列表<code>l</code> 就是<code>[1, 9, 25]</code>，就是<code>[1, 3, 5]</code> 中每个元素的平方。</p>
+<p>这就是python3 中<code>map</code> 的基本使用方法。</p>
+<h3 id="2reduce-函数">2，reduce 函数</h3>
+<p>在Python3 中，<code>reduce</code> 函数被放在<code>functools</code> 模块，使用时，要先从<code>functools</code> 模块引入：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from functools import reduce
+</code></pre>
+<blockquote>
+<p><strong>作用</strong>：将函数<code>func</code> 作用于序列<code>seq</code> 中的元素，进行一系列的计算</p>
+<p><strong>原型</strong>：reduce(func, seq[, initial]) -&gt; value</p>
+<p><strong>参数 func</strong>：这是一个函数类型的参数，该函数接收两个参数，并返回一个值</p>
+<p><strong>参数 seq</strong>：一个序列</p>
+<p><strong>参数 initial</strong>：</p>
+<blockquote>
+<p>当<code>initial</code> 存在时：<code>reduce(func, [x1, x2, x3], initial) = func(func(func(initial, x1), x2), x3)</code></p>
+<p>当<code>initial</code> 不存在时：<code>reduce(func, [x1, x2, x3]) = func(func(x1, x2), x3)</code></p>
+</blockquote>
+<p><strong>返回值</strong>：返回计算结果</p>
+</blockquote>
+<p>示例，当<code>initial</code> 存在时：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; reduce(lambda x, y : x * y, [1, 3, 5], 6)
+90
+#   reduce(func, [1, 3, 5], 6)
+# = func(func(func(6, 1), 3), 5)
+# = ((6 * 1) * 3) * 5
+# = 90
+</code></pre>
+<p>示例，当<code>initial</code> 不存在时：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; reduce(lambda x, y : x * y, [1, 3, 5])
+15
+#   reduce(func, [1, 3, 5])
+# = func(func(1, 3), 5)
+# = (1 * 3) * 5
+# = 15
+</code></pre>
+<h3 id="3filter-函数">3，filter 函数</h3>
+<p>在Python3 中，<code>filter</code> 是一个类：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; filter 
+&lt;class 'filter'&gt;
+</code></pre>
+<blockquote>
+<p><strong>作用</strong>：filter 用于对<code>可迭代</code>对象<code>iterable</code> 进行过滤，<code>iterable</code> 中的每一个元素会作为一个参数，传递到<code>func</code> 中</p>
+<p><strong>原型</strong>：filter(func, iterable) &ndash;&gt; filter object</p>
+<p><strong>参数 func</strong>：这是一个函数类型的参数，该函数接受一个参数，返回一个<code>bool</code> 值</p>
+<blockquote>
+<p>当<code>func</code> 返回<code>True</code> 时：对应的<code>iterable</code> 中的元素，会放在结果集中</p>
+<p>当<code>func</code> 返回<code>False</code> 时：对应的<code>iterable</code> 中的元素，不会放在结果集中</p>
+</blockquote>
+<p><strong>返回值</strong>：一个<code>filter</code> 对象，同时也是一个迭代器</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; f = filter(lambda x: len(x) == 2, ['dsf', 'df', 'ad', 'dfas', 'as'])
+&gt;&gt;&gt; f # 一个 filter 对象
+&lt;filter object at 0x7f4dff484748&gt;
+&gt;&gt;&gt; list(f)  # 转化为列表，方便查看
+['df', 'ad', 'as']
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
 <p><a href="https://codeshellme.github.io/2020/05/python-learn11/">Python 简明教程 &mdash; 11，Python 元组</a></p>
 <p><a href="https://codeshellme.github.io/2020/05/python-learn12/">Python 简明教程 &mdash; 12，Python 字典</a></p>
 <p><a href="https://codeshellme.github.io/2020/05/python-learn13/">Python 简明教程 &mdash; 13，Python 集合</a></p>
 <p><a href="https://codeshellme.github.io/2020/05/python-learn14/">Python 简明教程 &mdash; 14，Python 数据结构进阶</a></p>
-<blockquote>
-<p><strong>Python 进阶</strong></p>
-</blockquote>
 <p><a href="https://codeshellme.github.io/2020/05/python-learn15/">Python 简明教程 &mdash; 15，Python 函数</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn16/">Python 简明教程 &mdash; 16，Python 高阶函数</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn17/">Python 简明教程 &mdash; 17，Python 模块与包</a></p>
 <hr>
 <p>欢迎关注作者公众号，获取更多技术干货。</p>
 <p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
@@ -197,7 +282,7 @@
   <p class="copyright-item">
     <span class="item-title">上次更改</span>
     <span class="item-content">
-        2020-05-10
+        2020-06-12
         
     </span>
   </p>
@@ -207,9 +292,13 @@
 <footer class="post-footer">
       
       <nav class="post-nav">
-        
-        <a class="next" href="/2020/04/love-music/">
-            <span class="next-text nav-default">音乐</span>
+        <a class="prev" href="/2020/06/python-learn17/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 17，Python 模块与包</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/06/python-learn15/">
+            <span class="next-text nav-default">Python 简明教程 --- 15，Python 函数</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>
@@ -219,7 +308,7 @@
         </div>
         
 
-  <span id="/2020/05/python-learn/" class="leancloud_visitors" data-flag-title="Python 简明教程">
+  <span id="/2020/06/python-learn16/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 16，Python 高阶函数">
 		<span class="post-meta-item-text">文章阅读量 </span>
 		<span class="leancloud-visitors-count">0</span>
 		<p></p>

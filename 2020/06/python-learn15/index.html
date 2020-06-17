@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 15，Python 函数 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 测试只能证明程序有错误，而不能证明程序没有错" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/06/python-learn15/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 15，Python 函数" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 测试只能证明程序有错误，而不能证明程序没有错" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/06/python-learn15/" />
+<meta property="article:published_time" content="2020-06-10T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-06-10T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 15，Python 函数">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 测试只能证明程序有错误，而不能证明程序没有错">
+<meta itemprop="datePublished" content="2020-06-10T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-10T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3620">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 15，Python 函数"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 测试只能证明程序有错误，而不能证明程序没有错"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 15，Python 函数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-10 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 3620 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1函数的定义">1，函数的定义</a></li>
+        <li><a href="#2调用函数">2，调用函数</a></li>
+        <li><a href="#3函数参数">3，函数参数</a></li>
+        <li><a href="#4默认参数">4，默认参数</a></li>
+        <li><a href="#5不定长参数">5，不定长参数</a></li>
+        <li><a href="#6函数作为参数">6，函数作为参数</a></li>
+        <li><a href="#7函数返回值">7，函数返回值</a></li>
+        <li><a href="#8匿名函数">8，匿名函数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>测试只能证明程序有错误，而不能证明程序没有错误。</strong></p>
+<p>—— Edsger Dijkstra</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200603173350205.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>本节我们来介绍<code>函数</code>，在前边的章节我们已经接触了挺多函数了，比如<code>print()</code>，<code>len()</code> 等。</p>
+<p>函数是编程语言中非常重要的概念，函数是一段<code>可重复利用</code>的，提供<code>特定功能</code>的代码段。</p>
+<p>函数是一种<code>模块化</code>的手段，可提高代码的利用率，避免重复代码，便于使用，便于维护。</p>
+<p>Python 中，不仅提供了许多现成可用的<code>内建函数</code>，用户还可以根据自己的需求，定义<code>自己的函数</code>。</p>
+<p>在Python 中，内建函数用<code>builtin_function_or_method</code> 表示，自定义函数用<code>function</code> 表示。</p>
+<p>函数也属于一种数据类型，可用<code>type()</code> 查看：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type(len)         # len() 是内建函数
+&lt;class 'builtin_function_or_method'&gt;
+&gt;&gt;&gt; 
+&gt;&gt;&gt; type(print)       # print() 是内建函数
+&lt;class 'builtin_function_or_method'&gt;
+&gt;&gt;&gt; 
+&gt;&gt;&gt; def test(): pass  # 自定义函数 test()，并没有实质功能
+... 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; type(test)        # test() 是自定义函数
+&lt;class 'function'&gt;
+</code></pre>
+<blockquote>
+<p><strong>提示：</strong></p>
+<p><code>内建函数</code>就是Python 原生支持，自带的函数（比如<code>print()</code>），用于区分<code>用户自定函数</code>。</p>
+</blockquote>
+<h3 id="1函数的定义">1，函数的定义</h3>
+<p>函数定义的格式如下：</p>
+<pre><code class="language-python">def fun_name(参数列表...):
+    # 函数体
+    ...
+</code></pre>
+<p>首先，定义函数需要用到<code>def</code> 关键字，后跟<code>函数名</code>，然后是<code>参数列表</code>，参数列表写在小括号<code>()</code>内，再往后是一个冒号<code>:</code>，<code>函数体</code>一般写在下一行，注意要有<code>缩进</code>。</p>
+<p>例如，我们定义一个简单的函数：</p>
+<pre><code class="language-python">def hello_python():
+    print('hello python.')
+</code></pre>
+<p>该函数值输出一个字符串<code>hello python.</code>，其中：</p>
+<ul>
+<li><code>hello_python</code> 为函数名</li>
+<li>参数列表为空，调用该函数时，不需要任何参数</li>
+<li>函数体只有一句代码<code>print('hello python.')</code></li>
+</ul>
+<p><strong>文档字符串</strong></p>
+<p>我们可以在函数体的第一行，写一段该函数的说明，此说明用三引号<code>'''</code> 或 <code>&quot;&quot;&quot;</code> 引住，这被称为<code>文档字符串</code>。如下：</p>
+<pre><code class="language-python">def hello_python():
+    '''这是函数的一段说明'''
+    print('hello python.')
+</code></pre>
+<p>要想查看这段说明，可以使用格式<code>函数名.__doc__</code> 来访问，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; hello_python.__doc__
+'这是函数的一段说明'
+</code></pre>
+<p>我们也可以访问内建函数的文档字符串，比如<code>len()</code> 函数：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; len.__doc__
+'Return the number of items in a container.'
+</code></pre>
+<h3 id="2调用函数">2，调用函数</h3>
+<p>调用函数时，只需要用<code>函数名</code>和<code>参数列表</code>就行，比如上面的函数，调用如下：</p>
+<pre><code class="language-python">hello_python()  # 输出 hello python.
+</code></pre>
+<p>其实，在Python 中，<code>函数</code>也是一种类型，<code>函数名</code>就是一个<code>函数类型</code>的变量。</p>
+<p>因此，可以将一个函数名赋值给一个变量，如下：</p>
+<pre><code class="language-python">abc = hello_python
+print(type(abc))      # 输出 &lt;class 'function'&gt;
+abc()                 # 就像调用 hello_python() 一样
+</code></pre>
+<h3 id="3函数参数">3，函数参数</h3>
+<p>定义函数时，可以传给函数一些数据，这些数据叫做<code>函数参数</code>。</p>
+<p>定义一个带参数的函数，如下：</p>
+<pre><code class="language-python">def hello(string):
+    print('hello %s.' % string)
+</code></pre>
+<p>其中的<code>string</code> 就是函数参数，函数参数可以有多个，这里我们只写了一个参数。</p>
+<p>此时，调用该函数时，就需要给函数传递参数了，如下：</p>
+<pre><code class="language-python">hello('python')  # 输出 hello python.
+hello('java')    # 输出 hello java.
+hello('html')    # 输出 hello html.
+</code></pre>
+<p>如果参数传递出现错误，则会出现<code>TypeError</code> 异常，参数传递错误包括：</p>
+<ul>
+<li>参数个数不对</li>
+<li>参数类型不适用</li>
+</ul>
+<h3 id="4默认参数">4，默认参数</h3>
+<p>定义参数时，可以包含<code>默认参数</code>，默认参数可以有多个。</p>
+<p>默认参数就是，这个参数可以传递，也可以不传递：</p>
+<ul>
+<li>传递时，该参数就是你传递的值</li>
+<li>不传递时，该参数有默认值</li>
+</ul>
+<p>如下，我们定义了一个带有默认参数的函数：</p>
+<pre><code class="language-python">def sum(a, b=0, c=1):
+    n = a + b + c
+    print(n)
+</code></pre>
+<p>默认参数必须写在普通参数的后边，默认参数后边不能再有普通参数。</p>
+<p>其中，参数<code>a</code> 是普通参数，参数<code>b</code> 和<code>c</code>都是默认参数，用<code>赋值语句</code> 赋予了它们默认值。</p>
+<p>参数<code>b</code>的默认值是<code>0</code>，参数<code>c</code> 的默认值是<code>1</code> 。</p>
+<p>当没有传递<code>b</code> 时，<code>b</code> 为<code>0</code>，当没有传递<code>c</code> 时，<code>c</code> 为 <code>1</code>。</p>
+<p>我们可以这样调用<code>sum</code> 函数：</p>
+<pre><code class="language-shell">sum(2)              # 只传递了 a，b 和 c 都是默认值
+sum(2, 3)           # 传递了 a 和 b，c 是默认值
+sum(2, 3, 5)        # a，b，c 都传递了
+sum(a=2, b=5)       # 传递参数时，普通参数和默认参数都可以加上参数名
+sum(2, c=7)         # 传递了a 和 c，b 是默认值
+sum(2, b=2, c=7)    # 传递默认参数时，可以加上参数名
+sum(c=2, a=2, b=7)  # 传递参数时，如果有参数名，参数的顺序可以随意
+</code></pre>
+<p>需要注意的是：</p>
+<ul>
+<li>传递参数时，普通参数和默认参数都可以加上参数名</li>
+<li>传递参数时，如果有写参数名，参数的顺序可以随意</li>
+<li>传递参数时，如果没有写参数名，参数的顺序必须按照函数定义的顺序来写</li>
+</ul>
+<p><strong>默认参数不要是可变类型</strong></p>
+<p>默认参数可以是任意类型的数据，但是建议不要是可变类型数据，否则容易出现不可预料的结果。</p>
+<p>比如代码：</p>
+<pre><code class="language-python">def test(l=[]):
+    l.append(1)
+    return l
+</code></pre>
+<p>当调用该函数时，如果传递了参数，这种情况下一般不会出现什么问题：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; test([])
+[1]
+&gt;&gt;&gt; test([2])
+[2, 1]
+</code></pre>
+<p>但是，如果没有传递参数，而是使用的默认参数，结果可能不是你想象的：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; test()
+[1]
+&gt;&gt;&gt; test()
+[1, 1]
+&gt;&gt;&gt; test()
+[1, 1, 1]
+</code></pre>
+<p>如上代码，我们连续调用了三次<code>test()</code>，都使用的是默认参数。</p>
+<p>第一次调用似乎还是正常的，但后两次的结果显示，函数返回的结果，应该是累计了前边调用。</p>
+<p>这是因为，当使用默认参数时，函数记录了默认参数的一开始的<code>变量地址</code>，这个变量地址始终是不会改变的，但是如果这个变量类型是<code>可变类型</code>的数据（比如例子中的列表类型），那么其中的值是有可能改变的。</p>
+<p>这就是出现以上情况的原因，所以，建议在使用默认参数时，不要使用可变类型的参数，容易出问题。</p>
+<h3 id="5不定长参数">5，不定长参数</h3>
+<p>当你不知道函数的参数有几个的时候，你可以使用不定长参数。</p>
+<p>不定长参数的格式，是在普通参数之前加一个星号<code>*</code>，如下：</p>
+<pre><code class="language-python">def print_num(*num):
+    print(num)
+</code></pre>
+<p>此时，在函数内部，<code>num</code> 实际上是一个<code>元组</code>类型。所以，我们以元组的方式来操作<code>num</code> 即可。</p>
+<p>我们可以给该函数传递<code>不同个数</code>的参数：</p>
+<pre><code class="language-python">print_num(1)        # 传递了 1 个参数，num = (1)
+print_num(1, 2)     # 传递了 2 个参数，num = (1, 2)
+print_num(1, 2, 3)  # 传递了 3 个参数，num = (1, 2, 3)
+</code></pre>
+<p><strong>有名参数</strong></p>
+<p>不定长的<code>有名参数</code>，是在普通参数之前加两个星号<code>**</code>，如下：、</p>
+<pre><code class="language-python">def print_num(**num):
+    print(num)
+</code></pre>
+<p>此时，在函数内部，<code>num</code> 实际上是一个<code>字典</code>类型。所以，我们以字典的方式来操作<code>num</code> 即可。</p>
+<p>我们可以给该函数传递<code>不同个数</code>的<code>有名参数</code>，<code>参数名</code>被解析成了字符串类型：</p>
+<pre><code class="language-python">print_num(a=1)        # 传递了 1 个参数，num = {'a': 1}
+print_num(a=1, b=2)   # 传递了 2 个参数，num = {'a': 1, 'b': 2}
+</code></pre>
+<p><strong>各种参数的顺序</strong></p>
+<p>如果一个函数中各种参数都有的话，它们的顺序是有要求的：如下：</p>
+<pre><code class="language-python">def 函数名(普通参数，默认参数，不定长参数，不定长有名参数):
+    # 函数体
+    ...
+</code></pre>
+<blockquote>
+<p><strong>建议：</strong></p>
+<p>不要使用太多的参数组合，不便于理解</p>
+</blockquote>
+<h3 id="6函数作为参数">6，函数作为参数</h3>
+<p>由于<code>函数</code> 也是一种数据类型，所以函数也可以作为<code>函数参数</code>传递给函数，然后在函数内部，再调用该函数。</p>
+<pre><code class="language-python">def sum(a, b): 
+    return a + b 
+
+def test(fun):
+    n = fun(1, 2)
+    print(n)
+
+test(sum)
+</code></pre>
+<p>上面代码中，<code>sum</code> 与 <code>test</code> 都是函数。</p>
+<p><code>sum()</code> 函数，计算两个参数之和，并将结果返回。</p>
+<p><code>test()</code> 函数，接收一个参数 <code>fun</code>，该参数是一个函数类型。在函数体内，用代码<code>n = fun(1, 2)</code> 进行调用。</p>
+<p>代码<code>test(sum)</code>，将函数<code>sum</code> 作为参数传递给<code>test()</code>。</p>
+<p>以上就是<code>函数</code>作为<code>函数参数</code>的用法。</p>
+<h3 id="7函数返回值">7，函数返回值</h3>
+<p>函数可以有返回值，也可以没有返回值。</p>
+<p>函数的返回值，需要用到<code>return</code> 关键字，当函数的执行遇到<code>return</code> 时，函数的执行就会结束，并且返回一个值。</p>
+<p>如果一个函数没有调用<code>return</code>，那么在函数执行完毕后，会默认返回<code>None</code>：</p>
+<pre><code class="language-python">def test():
+    print('hello python.')
+    # 没有使用 return
+
+ret = test() # ret 为 None
+</code></pre>
+<p>如果一个函数调用了<code>return</code>，但是<code>return</code> 后边没有值，那么此时的含义是，表示函数立马返回，且返回值为<code>None</code>：</p>
+<pre><code class="language-python">def test():
+    print('hello python.')
+    return 
+    # return 后边的语句永远不会被执行到
+    print('hello java.')
+
+ret = test() # ret 为 None
+</code></pre>
+<p>你可以在<code>return</code> 后边跟一个任意类型的值，作为函数的返回值：</p>
+<pre><code class="language-python">def test(flag):
+    if flag:
+        return True  # 返回 True
+    else:
+        return False # 返回 False
+
+ret = test(True)     # ret 为 True 
+ret = test(False)    # ret 为 False
+</code></pre>
+<p><strong>函数返回多个值</strong></p>
+<p>函数不仅可以返回一个值，也可以返回多个值：</p>
+<pre><code class="language-python">def test(a, b, c):
+    return a, b, c
+</code></pre>
+<p>实际上这个时候，<code>a, b, c</code> 被自动<code>打包</code>到了一个元组里边，我们用一个变量去接收返回值：</p>
+<pre><code class="language-python">ret = test(1, 2, 3)
+print(ret)             # ret 为 (1, 2, 3)
+print(type(ret))       # &lt;class 'tuple'&gt;
+</code></pre>
+<p>我们也可以用三个变量去接收这个返回值，这时返回值会被自动<code>解包</code>：</p>
+<pre><code class="language-python">a, b, c = test(1, 2, 3)
+# a 为 1
+# b 为 2
+# c 为 3
+</code></pre>
+<p>自动解包时，如果变量的个数与返回值的个数不同，会抛出<code>ValueError</code>异常：</p>
+<pre><code class="language-python">a, b = test(1, 2, 3)        # 变量少于返回值，抛出异常
+a, b, c, d = test(1, 2, 3)  # 变量多于返回值，抛出异常
+</code></pre>
+<h3 id="8匿名函数">8，匿名函数</h3>
+<p>Python 中的匿名函数使用 <code>lambda</code> 关键字，也称为<code>lambda</code> 表达式。</p>
+<p><code>lambda</code> 表达式虽然也是<code>函数</code>，但是一般只包含简单的逻辑，它是普通函数的一种简写形式。一般常作为函数参数，传递给函数。</p>
+<p>格式如下：</p>
+<pre><code class="language-python">lambda 参数列表 : 表达式
+</code></pre>
+<p><code>lambda</code> 后跟一个参数列表，然后是一个冒号<code>:</code>，最后是一个表达式，表达式的计算结果会作为匿名函数的<code>返回值</code>（不需要用<code>return</code>）。</p>
+<p>可以将<code>lambda</code> 表达式赋值给一个变量，格式如下：</p>
+<pre><code class="language-python">变量名 = lambda 参数列表 : 表达式
+</code></pre>
+<p>示例：</p>
+<pre><code class="language-python">sum = lambda x, y : x + y
+</code></pre>
+<p>该匿名函数接收两个参数<code>x</code>，<code>y</code>，然后计算结果 <code>x + y</code>，并将结果返回。</p>
+<p>通过<code>type(sum)</code> 查看其类型：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type(sum)
+&lt;class 'function'&gt;
+</code></pre>
+<p>上面这个<code>lambda</code> 表达式就相当于如下函数：</p>
+<pre><code class="language-python">def sum(x, y):
+    return x + y
+</code></pre>
+<p>我们可以像调用普通函数一样，调用该<code>lambda</code> 表达式：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; sum(1, 2)  # 返回 1 + 2
+3
+&gt;&gt;&gt; sum(2, 3)  # 返回 2 + 3
+5
+</code></pre>
+<p><strong>匿名函数的应用场景</strong></p>
+<p>在介绍<a href="https://blog.csdn.net/LUAOHAN/article/details/106342514">Python 列表</a>的时候，我们介绍过一个<code>L.sort()</code> 函数，该函数的原型如下：</p>
+<pre><code class="language-python">L.sort(key=None, reverse=False) -&gt; None
+</code></pre>
+<p>其中的<code>key</code> 参数就是一个函数类型参数，这种情况下就可以使用匿名函数。如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; l.sort(key = lambda x: x[0])
+&gt;&gt;&gt; l
+[('a', 3), ('b', 2), ('c', 1)]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; l.sort(key = lambda x: x[1])
+&gt;&gt;&gt; l
+[('c', 1), ('b', 2), ('a', 3)]
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn10/">Python 简明教程 &mdash; 10，Python 列表</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn11/">Python 简明教程 &mdash; 11，Python 元组</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn12/">Python 简明教程 &mdash; 12，Python 字典</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn13/">Python 简明教程 &mdash; 13，Python 集合</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn14/">Python 简明教程 &mdash; 14，Python 数据结构进阶</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-06-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/06/python-learn16/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 16，Python 高阶函数</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/05/python-learn14/">
+            <span class="next-text nav-default">Python 简明教程 --- 14，Python 数据结构进阶</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/06/python-learn15/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 15，Python 函数">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

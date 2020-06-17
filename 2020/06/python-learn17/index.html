@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 17，Python 模块与包 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 正确的判断来源于经验，然而经验来源于错误的判" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/06/python-learn17/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 17，Python 模块与包" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 正确的判断来源于经验，然而经验来源于错误的判" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/06/python-learn17/" />
+<meta property="article:published_time" content="2020-06-15T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-06-15T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 17，Python 模块与包">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 正确的判断来源于经验，然而经验来源于错误的判">
+<meta itemprop="datePublished" content="2020-06-15T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-15T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3639">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 17，Python 模块与包"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 正确的判断来源于经验，然而经验来源于错误的判"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 17，Python 模块与包</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-15 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 3639 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1定义模块">1，定义模块</a></li>
+        <li><a href="#2使用模块">2，使用模块</a></li>
+        <li><a href="#3模块文档注释">3，模块文档注释</a></li>
+        <li><a href="#4私有变量和私有函数">4，私有变量和私有函数</a></li>
+        <li><a href="#5__name__-属性">5，<code>__name__</code> 属性</a></li>
+        <li><a href="#6python-包">6，Python 包</a></li>
+        <li><a href="#7模块的导入路径">7，模块的导入路径</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>正确的判断来源于经验，然而经验来源于错误的判断。</strong></p>
+<p>—— Fred Brooks</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200617174619278.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>我们已经知道<code>函数</code>是一种重复利用代码的机制。</p>
+<p>本节我们来介绍<code>模块</code>，Python 中的模块，也是一种重复利用代码的机制。我们可以将有<code>特定功能</code>的代码（比如<code>函数</code>，<code>类</code>等）写在模块中，供他人使用，便于重复利用，便于维护。</p>
+<p>在前面的章节中，我们也接触过模块。Python 功能强大的一个重要的原因，就是它有各种方便使用的模块。</p>
+<p>Python 中的模块可以分为两种：</p>
+<ul>
+<li>内建模块：Python 自带的模块，安装好Python 解释器后，内建模块就已经安装好了，直接<code>import</code> 就可使用</li>
+<li>第三方模块：由个人，公司或组织开发的模块，使用之前需要先安装，再<code>import</code></li>
+</ul>
+<h3 id="1定义模块">1，定义模块</h3>
+<p>我们写的Python 代码都是以<code>.py</code> 为后缀，Python 模块也是以<code>.py</code> 为后缀，其实每个Python 代码文件，都可以看做是一个Python 模块。</p>
+<p>我们编写如下代码：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+# 定义一个字符串
+PY = 'Hi Python.'
+
+# 定义一个函数
+def hello_py():
+    print('Hello Python.') 
+</code></pre>
+<p>将该代码写在一个名为<code>hello.py</code> 的文件中，该文件就是一个<code>hello</code> 模块，将该文件放在<code>~/hi</code> 目录中。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>在定义模块时，要避免与已有的模块起相同的名字，会引起冲突</p>
+</blockquote>
+<h3 id="2使用模块">2，使用模块</h3>
+<p>我们进入<code>~/hi</code> 目录，打开<code>python3</code> 交互式环境。</p>
+<p><strong><code>dir()</code> 函数</strong></p>
+<p>在引入模块之前，我们先使用<code>dir()</code> 函数，来查看当前环境可用的<code>函数/变量</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__']
+</code></pre>
+<p>可以看到，除了几个<code>魔法方法</code>外，没有任何其他可用的<code>函数/变量</code>。</p>
+<p>我们定义一个变量<code>s</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; s = 'abc'
+</code></pre>
+<p>再用<code>dir()</code> 函数查看，可以看到多了一个<code>s</code> 变量：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 's']
+</code></pre>
+<p><strong><code>import</code> 模块</strong></p>
+<p>在使用模块时，需要先引入模块。引入模块，需要使用<code>import</code> 关键字。</p>
+<p>我们输入如下代码将<code>hello</code> 模块引入：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import hello
+</code></pre>
+<p>再用<code>dir()</code> 函数，来查看当前环境可用的<code>函数/变量</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 'hello', 's']
+</code></pre>
+<p>可以看到，多了一个<code>hello</code>。这是因为引入的模块会使用<code>模块名</code>来作为可用的标识符。</p>
+<p>我们可以用<code>dir(hello)</code> 来查看<code>hello</code> 模块支持的<code>函数/变量</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir(hello)
+['__builtins__', '__cached__', '__doc__', 
+'__file__', '__loader__', '__name__', 
+'__package__', '__spec__', 'PY', 'hello_py']
+</code></pre>
+<p>可以看到，有两个标识符<code>PY</code> 和 <code>hello_py</code> 可以使用，但并不能看出<code>PY</code> 和<code>hello_py</code> 是一个函数，还是一个变量。</p>
+<p>可以通过<code>type(hello.标识符)</code> 来查看标识符的类型：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; type(hello.PY)               # 字符串
+&lt;class 'str'&gt;
+&gt;&gt;&gt; type(hello.hello_py)         # 函数
+&lt;class 'function'&gt;
+</code></pre>
+<p>可见<code>PY</code> 是一个字符串， <code>hello_py</code> 是一个函数。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>引用一个模块中的<code>标识符</code>，使用的是点<code>.</code> 操作符</p>
+<p>比如这里的<code>hello.PY</code>和<code>hello.hello_py</code></p>
+</blockquote>
+<p>我们可以这样来调用一个模块中的<code>函数/变量</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; hello.PY
+'Hi Python.'
+&gt;&gt;&gt; hello.hello_py()
+hello python.
+</code></pre>
+<h3 id="3模块文档注释">3，模块文档注释</h3>
+<p>我们知道编写函数时可以有文档注释，同样模块中也可以有<code>文档注释</code>，任何模块的第一个字符串将作为该模块的文档注释，如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+'''这是hello 模块的说明文档'''
+
+# 定义一个字符串
+PY = 'Hi Python.'
+
+# 定义一个函数
+def hello_py():
+    print('Hello Python.') 
+</code></pre>
+<p>可以用魔法方法<code>__doc__</code> 来访问文档字符串：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; hello.__doc__
+'这是hello 模块的说明文档'
+</code></pre>
+<h3 id="4私有变量和私有函数">4，私有变量和私有函数</h3>
+<p>在Python 模块中，规定以单下划线<code>_</code>  和双下划线<code>__</code> 开头的<code>函数/变量</code>，被称为<code>私有函数/变量</code>（private），不应该被外部模块使用。</p>
+<p>不以<code>_</code> 和<code>__</code> 开头的<code>函数/变量</code>，被称为<code>共有函数/变量</code>	（public），可被外部使用。</p>
+<p>如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+'''这是hello 模块的说明文档'''
+
+PY = 'Hi Python.'
+
+def _hello(s):
+    print('hello %s.' % s)
+
+def hello_py():
+    _hello('python')
+
+def hello_java():
+    _hello('java')
+</code></pre>
+<p>在该模块中，<code>hello_py</code> ，<code>hello_java</code> 和 <code>PY</code> 是提供给外部使用的，而<code>_hello</code> 只建议在模块内部使用。</p>
+<p>其实在Python 中的这种<code>访问权限</code>的控制，实际上是“假的”，因为从技术上来说，这种方式，并不能完全的禁止外部调用，只是相当于一种<code>编程规范</code>。</p>
+<p>如果我们非要使用这种以<code>下划线</code>开头的函数，从技术上来说也是行得通的，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import hello
+&gt;&gt;&gt; hello._hello('python')
+hello python.
+</code></pre>
+<p>但一般我们并不建议这样做。</p>
+<h3 id="5__name__-属性">5，<code>__name__</code> 属性</h3>
+<p>每个模块中都自带一个<code>__name__</code> 属性，运行当前模块时，该属性的值为<code>__main__</code>，这经常与<code>if 语句</code>一起，被用来<code>测试代码</code>使用，这类似其它编程语言中的<code>main()</code> 函数。</p>
+<p>如下，文件名为<code>hello.py</code>：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+'''这是hello 模块的说明文档'''
+
+PY = 'Hi Python.'
+
+def hello_py():
+    print('hello python.')
+
+if __name__ == '__main__':
+    hello_py()
+</code></pre>
+<p>当我们在命令行执行<code>python3 hello.py</code> 时，<code>if __name__ == '__main__':</code> 内的代码块都会被执行。</p>
+<p>但当在其它模块引入<code>hello</code> 模块时，<code>if __name__ == '__main__':</code> 内的代码块并不会被执行。</p>
+<h3 id="6python-包">6，Python 包</h3>
+<p>Python 包是比模块更高层的概念，一个Python 包中可以包含一个或多个模块。</p>
+<p>一个包含多个模块的Python 包结构如下：</p>
+<pre><code class="language-shell">my_abc/
+├── __init__.py
+├── a.py
+├── b.py
+└── c/
+    ├── __init__.py
+    └── d.py
+</code></pre>
+<p><code>my_abc</code> 是顶层包名，<code>my_abc</code> 目录中有一个<code>__init__.py</code> 文件，拥有这个<code>__init__.py</code> 文件的目录才会被认为是一个Python 包，否则，只是一个普通的目录。</p>
+<p><code>__init__.py</code> 文件可以为空，也可以有Python 代码，<code>my_abc/c/</code> 目录中的<code>__init__.py</code> 文件也是同样的道理。</p>
+<p>向<code>my_abc/__init__.py</code> 文件中写入如下内容：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+print('这是my_abc 模块中的 __init__ 文件')
+</code></pre>
+<p>向<code>my_abc/c/__init__.py</code> 文件中写入如下内容：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+print('这是my_abc.c 模块中的 __init__ 文件')
+</code></pre>
+<p>我们在<code>my_abc</code> 同级目录下运行<code>python3</code> 解释器，当我们引入<code>my_abc</code> 包时，<code>my_abc/__init__.py</code> 文件中的代码就会被执行：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import my_abc  # 第一次引入
+这是my_abc 模块中的 __init__ 文件
+&gt;&gt;&gt; import my_abc  # 第二次引入
+</code></pre>
+<p>可以看到当输入<code>import my_abc</code> 代码时，字符串<code>这是my_abc 模块中的 __init__ 文件</code> 被输出，说明<code>my_abc/__init__.py</code> 文件中的内容被执行了。</p>
+<p>紧接着再次输入<code>import my_abc</code> 代码时，并没有任何输出，说明某个模块中的<code>__init__.py</code> 文件中的内容，只有在第一次导入该模块时，才会执行。</p>
+<p>此时，当前环境中多了一个可用的<code>my_abc</code> 标识符：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 'my_abc']
+</code></pre>
+<p>同样，当我们引入<code>my_abc.c</code> 包时，<code>my_abc/c/__init__.py</code> 文件中的代码就会被执行：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import my_abc.c
+这是my_abc.c 模块中的 __init__ 文件
+</code></pre>
+<p><strong><code>from ... import ...</code> 语法</strong></p>
+<p>我们可以使用<code>from... import...</code> 语法来引入一个包中的模块，比如我们引入<code>my_abc</code> 包中的<code>a</code> 模块，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from my_abc import a
+这是my_abc 模块中的 __init__ 文件
+&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 'a']
+</code></pre>
+<p>可以看到，使用该语法引入<code>a</code> 模块时，<code>my_abc/__init__.py</code> 文件中的内容也执行了，此时，当前环境中多了一个可用的<code>a</code> 标识符。</p>
+<p><strong><code>from ... import ... as...</code> 语法</strong></p>
+<p>可以使用<code>as</code> 关键字为模块重命名，例如将<code>a</code> 模块重命名为<code>a_test</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from my_abc import a as a_test
+这是my_abc 模块中的 __init__ 文件
+&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 'a_test']
+</code></pre>
+<p>可以看到本次导入时，没有<code>a</code> 标识符，取而代之的<code>a_test</code>。</p>
+<p><strong><code>from ... import  * </code> 语法</strong></p>
+<p><code>from ... import  * </code> 语法会导入某个包中<code>__init__.py</code> 文件内的<code>__all__ </code> 列表的所有内容，当<code>__all__</code> 列表不存在时，该语法将导入<code>__init__.py</code> 文件中的所有可用标识符。</p>
+<p>例如，<code>my_abc/__init__.py</code> 文件中内容如下，没有<code>__all__</code> 列表：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+print('这是my_abc 模块中的 __init__ 文件')
+
+i = 1
+j = 2
+
+def hello():
+    print('hello')
+</code></pre>
+<p>使用<code>from ... import  * </code> 语法，将导入<code>__init__.py</code> 文件中所有可用的标识符：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from my_abc import *
+这是my_abc 模块中的 __init__ 文件
+&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 
+'hello', 'i', 'j']
+</code></pre>
+<p>可见<code>__init__.py</code> 文件中的所有可用标识符，都被导入到了当前环境中。</p>
+<p>如果在<code>__init__.py</code> 文件中声明一个<code>__all__</code> 列表，如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+print('这是my_abc 模块中的 __init__ 文件')
+
+__all__ = ['i', 'hello']
+
+i = 1
+j = 2
+
+def hello():
+    print('hello') 
+</code></pre>
+<p><code>from ... import *</code> 语法将只会导入<code>__all__</code> 列表中的内容，如下</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from my_abc import *
+这是my_abc 模块中的 __init__ 文件
+&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 
+'hello', 'i']
+</code></pre>
+<p>因为<code>__all__</code> 列表中只有<code>i</code>, <code>hello</code> 两个元素，所以只导入了这两个标识符。</p>
+<h3 id="7模块的导入路径">7，模块的导入路径</h3>
+<p>从内建模块<code>sys</code> 中的<code>path</code> 标识符可查看导入模块的路径：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import sys
+&gt;&gt;&gt; sys.path
+['', 
+'/usr/lib/python36.zip', 
+'/usr/lib/python3.6', 
+'/usr/lib/python3.6/lib-dynload', 
+'/usr/local/lib/python3.6/dist-packages', 
+'/usr/lib/python3/dist-packages']
+</code></pre>
+<p>其中，第一个<code>''</code> 表示从<code>当前目录</code>中导入，其它的目录是系统中的标准<code>包路径</code>。</p>
+<p>Python 会按照该列表，从前往后依次从这些路径中导入你想<code>import</code> 的模块，先从当前目录中尝试导入你想导入的模块，如果没有找到，会依次从后边的路径去查找，如果都没有找到，最后会抛出异常。</p>
+<p>比如，现在有一个<code>test</code> 目录，该目录下有一个<code>a.py</code> 文件：</p>
+<pre><code class="language-shell">test/
+└── a.py
+</code></pre>
+<p>如果在<code>test</code> 同级目录下导入<code>a.py</code>，将出现异常，因为无法从<code>sys.path</code> 中找到<code>a.py</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import a
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ModuleNotFoundError: No module named 'a'
+</code></pre>
+<p>此时，可以将<code>./test</code>  目录<code>append</code> 到<code>sys.path</code> 中，然后再<code>import</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; import sys
+&gt;&gt;&gt; sys.path.append('./test')
+&gt;&gt;&gt; import a  # 没有出现异常，说明导入成功
+&gt;&gt;&gt; dir()
+['__annotations__', '__builtins__', 
+'__doc__', '__loader__', '__name__', 
+'__package__', '__spec__', 
+'a', 'sys']    # a 模块被成功导入
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn12/">Python 简明教程 &mdash; 12，Python 字典</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn13/">Python 简明教程 &mdash; 13，Python 集合</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn14/">Python 简明教程 &mdash; 14，Python 数据结构进阶</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn15/">Python 简明教程 &mdash; 15，Python 函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn16/">Python 简明教程 &mdash; 16，Python 高阶函数</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-06-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/06/python-learn16/">
+            <span class="next-text nav-default">Python 简明教程 --- 16，Python 高阶函数</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/06/python-learn17/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 17，Python 模块与包">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
