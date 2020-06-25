@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 18，Python 面向对象 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 代码能借用就借用。 —— Tom Duff 目录 编程可分为面向" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/06/python-learn18/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 18，Python 面向对象" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 代码能借用就借用。 —— Tom Duff 目录 编程可分为面向" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/06/python-learn18/" />
+<meta property="article:published_time" content="2020-06-17T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-06-17T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 18，Python 面向对象">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 代码能借用就借用。 —— Tom Duff 目录 编程可分为面向">
+<meta itemprop="datePublished" content="2020-06-17T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-17T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1978">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 18，Python 面向对象"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 代码能借用就借用。 —— Tom Duff 目录 编程可分为面向"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 18，Python 面向对象</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-17 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 1978 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1面向过程编程">1，面向过程编程</a></li>
+        <li><a href="#2面向对象编程">2，面向对象编程</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>代码能借用就借用。</strong></p>
+<p>—— Tom Duff</p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200622094630258.png#pic_center" alt="在这里插入图片描述"></p>
+<p>编程可分为<code>面向过程编程</code>和<code>面向对象编程</code>，它们是两种不同的编程方式，当然背后的思维方式也是不同的。面向过程编程是一种传统的编程方式，面向对象编程是一个更高级的编程方式。</p>
+<h3 id="1面向过程编程">1，面向过程编程</h3>
+<p>面向过程编程（<code>POP</code>）的重点在于<code>过程</code>二字。</p>
+<p>面向过程比较好理解，就是按照人们通常的思维方式，在做一件事情的时候，将这件事情划分为多个步骤，一步一步来做。</p>
+<p>面向过程编程，就是在进行一个项目时，将这个项目分为多个小的步骤，一个步骤就是一个过程，将这些过程全部组织起来，就形成了完整的项目。</p>
+<blockquote>
+<p>C 语言是典型的面向过程编程语言</p>
+</blockquote>
+<p>比如，我们可以将<code>我要去北京</code>这件事情分为以下四个步骤：</p>
+<ol>
+<li>去高铁站</li>
+<li>购买高铁票</li>
+<li>持票上高铁</li>
+<li>坐高铁到北京</li>
+</ol>
+<p>这里的每个步骤相当于一个过程，我们将这些<code>过程</code>封装成<code>函数</code>，然后，从前到后将这些<code>函数</code>组织起来，就完成了<code>我要去北京</code>这件事情。</p>
+<p>我们将这个过程用简单的代码实现如下，将该代码保存在<code>to_beijing.py</code> 文件中：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+def to_high_station():
+    print('我到了高铁站')
+
+def buy_rail_tickets():
+    print('我买了高铁票')
+
+def geton_high_rail():
+    print('我坐上了高铁')
+
+def to_beijing():
+    print('我到了北京')
+
+if __name__ == '__main__':
+
+    to_high_station()
+    buy_rail_tickets()
+    geton_high_rail()
+    to_beijing()
+</code></pre>
+<p>在控制台执行命令，如下：</p>
+<pre><code class="language-shell">$ python3 to_beijing.py 
+我到了高铁站
+我买了高铁票
+我坐上了高铁
+我到了北京
+</code></pre>
+<h3 id="2面向对象编程">2，面向对象编程</h3>
+<p><strong>面向对象思想</strong></p>
+<p>面向对象编程（<code>OOP</code>）的重点在与<code>对象</code>二字，主要的编程思想是围绕<code>对象</code>展开。</p>
+<p>在思考一个项目的时候，将项目中的<code>重要点/关键点</code>都设计成一个个的<code>类</code>，每个类承担着不同的工作，不同的功能被归纳到不同的类中。然后，由类产生出对象，这些对象之间的相互作用，最终组成了一个完整的项目。</p>
+<p><strong>类与对象</strong></p>
+<p>面向对象编程中的两个非常重要概念是<code>类</code>与<code>对象</code>，<code>类</code>也是代码复用的一种机制。</p>
+<blockquote>
+<p>前面我们讲到过，<code>函数</code>和<code>模块</code>都是代码复用的机制。</p>
+</blockquote>
+<p><code>类</code>代表一类有着<code>相同特征</code>事物，是一个抽象的概念。由同一个类产生的对象，有着相同的特性。比如<code>人类</code>都会行走，会使用工具，需要呼吸和喝水，这都是人类的共性。</p>
+<p><code>对象</code>由<code>类</code>产生，是一个类的<code>实例</code>，创建对象的过程，叫做<code>类的实例化</code>。对象是具体的，而不是抽象的。同一类的不同对象，也有不同的属性。比如<code>人类</code>，有不同的性别，姓名和年龄等，这都是人类的不同属性。</p>
+<p><code>设计模式</code>是对<code>面向对象编程</code>的宝贵经验的归纳总结，让我们可以更方便的运用<code>面向对象</code>的思想来进行编程工作。</p>
+<p><strong>面向对象语言</strong></p>
+<p>Java 语言是<code>完全的面向对象</code>编程语言，因为所有的步骤都在<code>类</code>中进行。</p>
+<p>C++  语言是<code>半面向对象</code>编程语言，它被称为<code>带类的 C</code>，即支持面向过程编程，又支持面向对象编程。</p>
+<p>Python 语言是一门<code>脚本语言</code>，以<code>简单优雅</code>为设计理念，即可以面向过程编程，也可以面向对象编程，但不像C++ 语言那样有太多的复杂枯燥的概念，Python 语言更注重实用性。</p>
+<p><strong>面向对象三大特征</strong></p>
+<p><code>封装</code>，<code>继承</code>和<code>多态</code>是面向对象的三大特征，这三种特征都是<code>面向对象</code>编程语言自身提供的机制，可以让我们更方便的进行面向对象程序设计：</p>
+<ul>
+<li>封装：让用户可以访问需要的方法，禁止访问不必要的方法，屏蔽了类内部的复杂性。</li>
+<li>继承：使得子类可以继承父类的代码，也是一种代码复用手段，增强了类与类之间的逻辑结果关系。同时，<code>继承</code>也是<code>多态</code>的必要条件。</li>
+<li>多态：一个事物（对象）可以表现多种<code>形态</code>，多态是面向对象编程中，一个非常强大的特性。</li>
+</ul>
+<p><strong>面向对象编程</strong></p>
+<p>我们仍然以<code>我要去北京</code>这件事来说明，用<code>面向对象编程</code>是如何实现的。</p>
+<p>面向对象编程的重点在于<code>类的设计</code>，如何将一个大的项目，拆分为不同的，必要的类。类的功能是单一的，而不是将不同的功能糅杂到一个类中。</p>
+<p>首先，我们需要设计出一个<code>类</code>，比如<code>类名</code>叫作<code>SomeOne</code>，这个<code>类</code>至少需要有四项功能：</p>
+<ul>
+<li>去高铁站</li>
+<li>购买高铁票</li>
+<li>持票上高铁</li>
+<li>坐高铁到北京</li>
+</ul>
+<p>我们需要将这四项功能，写成四个<code>方法</code>，放在类<code>SomeOne</code> 中，代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+# 定义一个类
+class SomeOne:
+
+    # 构造函数
+    def __init__(self, name):
+        self.name = name
+
+    def to_high_station(self):
+        print('%s 到了高铁站' % self.name)
+
+    def buy_rail_tickets(self):
+        print('%s 买了高铁票' % self.name)
+
+    def geton_high_rail(self):
+        print('%s 坐上了高铁' % self.name)
+
+    def to_beijing(self):
+        print('%s 到了北京' % self.name)
+
+if __name__ == '__main__':
+
+    # 创建一个类的对象
+    i = SomeOne('小明')
+
+    i.to_high_station()
+    i.buy_rail_tickets()
+    i.geton_high_rail()
+    i.to_beijing()
+</code></pre>
+<p>将该代码写在文件<code>SomeOne.py</code> 中，在控制台执行命令，如下：</p>
+<pre><code class="language-shell">$ python3 SomeOne.py 
+小明 到了高铁站
+小明 买了高铁票
+小明 坐上了高铁
+小明 到了北京
+</code></pre>
+<p>在上面的代码中，我们定义了一个名叫<code>SomeOne</code> 的类，其中包含了我们需要的四个方法，另外还有一个<code>__init__</code> 的方法，这是类的构造函数（后续我们会详细讲解）。</p>
+<p>在<code>__main__</code>  代码块中，我们创建了<code>SomeOne</code> 类的对象<code>i</code>，并调用了该对象的四个方法。</p>
+<p>下一节，我们来详细介绍<code>类与对象</code>。</p>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn13/">Python 简明教程 &mdash; 13，Python 集合</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn14/">Python 简明教程 &mdash; 14，Python 数据结构进阶</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn15/">Python 简明教程 &mdash; 15，Python 函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn16/">Python 简明教程 &mdash; 16，Python 高阶函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn17/">Python 简明教程 &mdash; 17，Python 模块与包</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-06-17
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/06/python-learn19/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 19，Python 类与对象</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/06/python-learn17/">
+            <span class="next-text nav-default">Python 简明教程 --- 17，Python 模块与包</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/06/python-learn18/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 18，Python 面向对象">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

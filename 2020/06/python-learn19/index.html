@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 19，Python 类与对象 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 那些能用计算机迅速解决的问题，就别用手做了。" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/06/python-learn19/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 19，Python 类与对象" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 那些能用计算机迅速解决的问题，就别用手做了。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/06/python-learn19/" />
+<meta property="article:published_time" content="2020-06-19T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-06-19T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 19，Python 类与对象">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 那些能用计算机迅速解决的问题，就别用手做了。">
+<meta itemprop="datePublished" content="2020-06-19T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-19T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2939">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 19，Python 类与对象"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 那些能用计算机迅速解决的问题，就别用手做了。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 19，Python 类与对象</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-19 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 2939 字 </span>
+          <span class="more-meta"> 阅读约需 6 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1类的定义">1，类的定义</a></li>
+        <li><a href="#2创建对象">2，创建对象</a></li>
+        <li><a href="#3属性">3，属性</a></li>
+        <li><a href="#4__init__-方法">4，<strong><code>__init__</code> 方法</strong></a></li>
+        <li><a href="#5私有属性和方法">5，私有属性和方法</a></li>
+        <li><a href="#6set-和-get-方法">6，<code>set</code> 和 <code>get</code> 方法</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>那些能用计算机迅速解决的问题，就别用手做了。</strong></p>
+<p>—— Tom Duff</p>
+</blockquote>
+<p><strong>目录</strong>
+<img src="https://img-blog.csdnimg.cn/20200625172328301.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><a href="https://codeshellme.github.io/2020/06/python-learn18/">上一节</a> 我们介绍了<code>Python 面向对象</code>的相关概念，我们已经知道<code>类与对象</code>是<code>面向对象编程</code>中非常重要的概念。</p>
+<p>类就是一个<code>模板</code>，是抽象的。对象是由类创建出来的实例，是具体的。由同一个类创建出来的对象拥有相同的<code>方法</code>和<code>属性</code>，但属性的值可以是不同的。不同的对象是不同的实例，互不干扰。</p>
+<h3 id="1类的定义">1，类的定义</h3>
+<p>如下，是一个最简单的类，实际上是一个<code>空类</code>，不能做任何事情：</p>
+<pre><code class="language-python">class People:
+    pass
+</code></pre>
+<p>在Python 中定义一个类，需要用到<code>class</code> 关键字，后边是<code>类名</code>，然后是一个<code>冒号：</code>，然后下一行是类中的代码，注意要有<code>缩进</code>。</p>
+<h3 id="2创建对象">2，创建对象</h3>
+<p><code>People</code> 虽然是一个<code>空类</code>，但依然可以创建对象，创建一个对象的语法为：</p>
+<pre><code class="language-python">对象名 = 类名(参数列表)
+</code></pre>
+<p>参数列表是跟<code>__init__</code> 构造方法相匹配的，如果没有编写<code>__init__</code> 方法，创建对象时，就不需要写参数，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p = People()
+&gt;&gt;&gt; p
+&lt;__main__.People object at 0x7fd30e60be80&gt;
+&gt;&gt;&gt; 
+&gt;&gt;&gt; p1 = People()
+&gt;&gt;&gt; p1
+&lt;__main__.People object at 0x7fd30e60be48&gt;
+</code></pre>
+<p><code>p</code> 和 <code>p1</code> 都是<code>People</code>类的对象。<code>0x7fd30e60be80</code> 是<code>p</code> 的地址，<code>0x7fd30e60be48</code>  是<code>p1</code> 的地址。可以看到不同的对象的地址是不同的，它们是两不同的实例，互不干扰。</p>
+<h3 id="3属性">3，属性</h3>
+<p>类中可以包含<code>属性</code>（<code>类中的变量</code>），创建出来的对象就会拥有相应的属性，每个对象的属性的值可以不同。</p>
+<p>创建好对象后，可以用如下方法给对象添加属性：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p = People()
+&gt;&gt;&gt; p.name = '小明' # 添加 name 属性
+&gt;&gt;&gt; p.sex = '男'    # 添加 sex 属性
+&gt;&gt;&gt; p.name         # 访问对象的属性
+'小明'
+&gt;&gt;&gt; p.sex          # 访问对象的属性
+'男'
+</code></pre>
+<p>虽然在技术上可以这样做，但是一般情况下，我们并不这样为对象添加属性，这样会破坏类的<code>封装性</code>，使得代码混乱，不利于维护。</p>
+<p>当访问一个不存在的属性时，会出现异常：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p.job         # 一个不存在的属性
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: 'People' object has no attribute 'job'
+</code></pre>
+<p>我们一般会在<code>__init__</code> 方法中为类添加属性并赋值。</p>
+<h3 id="4__init__-方法">4，<strong><code>__init__</code> 方法</strong></h3>
+<p>在Python 的类中，以双下划线<code>__</code>开头和结尾的方法，被称为<code>魔法方法</code>，每个魔法方法都有特定的含义。Python 为我们规定了一些魔法方法，让我们自己实现这些方法。</p>
+<p><code>__init__</code> 方法叫做<code>构造方法</code>，用来初始化对象。Python 解释器会在生成<code>对象</code>时，自动执行构造方法，而无需用户显示调用。</p>
+<p><code>__init__</code> 方法不需要有返回值。</p>
+<p>类中的所有<code>实例方法</code> 方法，都至少有一个参数，就是<code>self</code>。Python 中的<code>self </code> 相当于C++ 和Java 中的<code>this</code> 指针，都是代表当前对象。只是Python 中的<code>self</code> 需要显示写在方法的第一个参数，而<code>this</code> 指针则不需要写在方法参数中。</p>
+<p>构造方法一般用于初始化对象的一些属性，构造函数可以不写，也可以只有一个<code>self</code> 参数。</p>
+<p>当构造函数只有一个<code>self</code> 参数时，创建该类的对象时，不需要添加参数。当构造函数除了<code>self</code> 参数还有其它参数时，创建该类的对象时，则需要添加相匹配的参数。</p>
+<p>比如，我们定义一个<code>People</code> 类，它有三个属性，分别是<code>name</code>，<code>sex</code>，<code>age</code>：</p>
+<pre><code class="language-python">class People:
+
+    def __init__(self, name, sex, age):
+        self.name = name
+        self.sex = sex
+        self.age = age
+        print('执行了 __init__ 方法')
+
+    def print_info(self):
+        print('people:%s sex:%s age:%s' % (
+            self.name, self.sex, self.age))
+</code></pre>
+<p>在这个<code>People</code> 类中除了有一个<code>__init__</code> 方法外，还有一个<code>print_info</code> 方法，每个方法中的都有<code>self</code> 参数，并且是第一个参数，<code>self</code> 代表当前对象。</p>
+<p>在创建该类的对象时，需要传递匹配的参数（<code>self</code> 参数不用传递）：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p = People('小明', '男', 18)
+执行了 __init__ 方法
+&gt;&gt;&gt; p 
+&lt;People.People object at 0x7feb6276bda0&gt;
+&gt;&gt;&gt; p.print_info()
+people:小明 sex:男 age:18
+&gt;&gt;&gt;
+&gt;&gt;&gt; p1 = People('小美', '女', 18)
+执行了 __init__ 方法
+&gt;&gt;&gt; p1
+&lt;People.People object at 0x7fd54352be48&gt;
+&gt;&gt;&gt; p1.print_info()
+people:小美 sex:女 age:18
+</code></pre>
+<p>可以看到，在创建<code>p</code> 和<code>p1</code> 对象时，字符串<code>执行了 __init__ 方法</code> 被打印了出来，而我们并没有显示调用该方法，说明<code>__init__</code> 方法被默认执行了。</p>
+<p>对象<code>p</code> 和<code>p1</code> 是两个不同的对象，拥有相同的属性和方法，但是属性值是不一样的。两个对象互不干扰，对象<code>p</code> 的地址为<code>0x7feb6276bda0</code>，<code>p1</code> 的地址是<code>0x7fd54352be48</code>。</p>
+<p>执行代码<code>p.print_info()</code>，是调用<code>p</code> 对象的<code>print_info()</code> 方法，因为，在定义该方法的时候，只有一个<code>self</code> 参数，所以在调用该方法的时候，不需要有参数。</p>
+<h3 id="5私有属性和方法">5，私有属性和方法</h3>
+<p><strong>私有属性</strong></p>
+<p>普通的属性，就像上面的<code>name</code>，<code>sex</code>和<code>age</code> 属性，都是<code>公有属性</code>，在类的外部都可以被任意的访问，就是可以用<code>对象.属性名</code>的方式来访问属性，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p = People('小明', '男', 18)
+执行了 __init__ 方法
+&gt;&gt;&gt; p.name  # 访问属性
+'小明'
+&gt;&gt;&gt; p.name = '小丽'  # 修改属性
+&gt;&gt;&gt; p.name  # 访问属性
+'小丽'
+</code></pre>
+<p>这样就破坏了数据的<code>封装性</code>，这种访问方式是不可控（会不受限制的被任意访问）的，不利于代码的维护，不符合面向对象的编程规范。</p>
+<p>所以，通常我们会将类中的属性，改为<code>私有属性</code>，就是不能以<code>对象.属性名</code> 这样的方式访问类属性。</p>
+<p>在Python 中，通过在属性名的前边添加双下划线<code>__</code>，来将<code>公有属性</code>变为<code>私有属性</code>，如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class People:
+
+    def __init__(self, name, sex, age):
+        self.__name = name   # 两个下划线
+        self.__sex = sex     # 两个下划线
+        self._age = age      # 一个下划线
+        print('执行了 __init__ 方法')
+
+    def print_info(self):
+        print('people:%s sex:%s age:%s' % (
+            self.__name, self.__sex, self._age))
+</code></pre>
+<p>这样就无法通过<code>对象.属性名</code>的方式来访问属性了，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p = People('小美', '女', 18)
+执行了 __init__ 方法
+&gt;&gt;&gt; p.__name        # 出现异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: 'People' object has no attribute '__name'
+</code></pre>
+<p>但是，Python 中这种<code>私有属性</code>的方式，并不是真正的私有属性，Python 只是将<code>__name</code> 转换为了<code>_People__name</code>，即是在<code>__name</code> 的前边加上了<code>_类名</code>(<code>_People</code>)，我们依然可以这样访问<code>__name</code> 属性：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p._People__name
+'小美'
+</code></pre>
+<p>但我们并不提倡这种方式，这会让代码变得混乱难懂。</p>
+<p>可以注意到，<code>People</code> 类中的<code>_age</code> 属性是以单下划线开头的，这种以单下划线开头的属性是可以在类的外部被访问的：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; p._age
+18
+</code></pre>
+<p>但是根据Python 规范，以单下划线开头的属性，也被认为是<code>私有属性</code>，也不应该在类的外部访问（虽然在技术上是可以访问的）。</p>
+<blockquote>
+<p>注意：以双下划线<code>__</code> 开头且结尾的属性<code>__xxx__</code>，是<code>特殊属性</code>，是公有的，可在类的外部访问</p>
+</blockquote>
+<p><strong>私有方法</strong></p>
+<p>私有方法与私有属性类似，也可以在方法名的前边加上双下划线<code>__</code>，来将某个方法变成私有的，一般不需要被外部访问的方法，应该将其设置为<code>私有方法</code>。</p>
+<h3 id="6set-和-get-方法">6，<code>set</code> 和 <code>get</code> 方法</h3>
+<p>为了数据的<code>封装性</code>，我们不应该直接在类的外部以<code>对象.属性名</code>的方式访问属性，那么如果我们需要访问类的属性该怎么办呢？</p>
+<p>这时我们需要为每个私有属性都提供两个方法：</p>
+<ul>
+<li>set 方法：用于设置属性的值</li>
+<li>get 方法：用于访问属性的值</li>
+</ul>
+<p>为了减少代码量，这里只为<code>__name</code> 属性设置了这两个方法，代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class People:
+
+    def __init__(self, name, sex, age):
+        self.__name = name
+        self.__sex = sex
+        self._age = age
+        print('执行了 __init__ 方法')
+
+    def print_info(self):
+        print('people:%s sex:%s age:%s' % (
+            self.__name, self.__sex, self._age))
+
+    # set 和 get 方法
+    def set_name(self, name):
+        self.__name = name
+
+    def get_name(self):
+        return self.__name
+</code></pre>
+<p>用户可以这样设置和访问类的属性：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from People import People
+&gt;&gt;&gt; p = People('小美', '女', 18)
+执行了 __init__ 方法
+&gt;&gt;&gt; p.get_name()         # 获取 name 值
+'小美'
+&gt;&gt;&gt; p.set_name('小丽')   # 设置新的值
+&gt;&gt;&gt; p.get_name()        # 再次获取name 值
+'小丽'
+</code></pre>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn14/">Python 简明教程 &mdash; 14，Python 数据结构进阶</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn15/">Python 简明教程 &mdash; 15，Python 函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn16/">Python 简明教程 &mdash; 16，Python 高阶函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn17/">Python 简明教程 &mdash; 17，Python 模块与包</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn18/">Python 简明教程 &mdash; 18，Python 面向对象</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-06-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/06/python-learn20/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 20，Python 类中的属性与方法</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/06/python-learn18/">
+            <span class="next-text nav-default">Python 简明教程 --- 18，Python 面向对象</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/06/python-learn19/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 19，Python 类与对象">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
