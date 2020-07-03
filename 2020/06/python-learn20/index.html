@@ -48,7 +48,7 @@
 <meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 与客户保持良好的关系可以使生产率加倍。 —— Larry">
 <meta itemprop="datePublished" content="2020-06-21T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-06-21T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="2346">
+<meta itemprop="wordCount" content="2929">
 
 
 
@@ -139,8 +139,8 @@
         <div class="post-category">
             <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
             </div>
-          <span class="more-meta"> 2346 字 </span>
-          <span class="more-meta"> 阅读约需 5 分钟 </span>
+          <span class="more-meta"> 2929 字 </span>
+          <span class="more-meta"> 阅读约需 6 分钟 </span>
         
 
       </div>
@@ -155,6 +155,7 @@
       <ul>
         <li><a href="#1实例属性与类属性">1，实例属性与类属性</a></li>
         <li><a href="#2实例方法类方法静态方法">2，实例方法，类方法，静态方法</a></li>
+        <li><a href="#3专有方法">3，专有方法</a></li>
       </ul>
     </li>
   </ul>
@@ -171,7 +172,7 @@
 <p>—— Larry Bernstain</p>
 </blockquote>
 <p><strong>目录</strong></p>
-<p><img src="https://img-blog.csdnimg.cn/20200625210357299.png#pic_center" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/202006271223363.png?#pic_center" alt="在这里插入图片描述"></p>
 <p>类中的变量称为<code>属性</code>，类中的函数称为<code>方法</code>。</p>
 <p>类中的属性分为：</p>
 <ul>
@@ -351,6 +352,49 @@ Traceback (most recent call last):
 NameError: name 'self' is not defined
 </code></pre>
 <p>从上面代码中可以看到，在静态方法中无论访问实例方法还是类方法，都会出现异常。</p>
+<h3 id="3专有方法">3，专有方法</h3>
+<p>我们之前讲到过的<code>魔法方法</code>，即以双下划线<code>__</code>开头且结尾的方法<code>__xxx__</code>，就是<code>专有方法</code>。这些方法都被Python 赋予了特殊的含义，用户可以根据需要，来实现这些方法。</p>
+<p>下面我们介绍一些 Python 中常见的专有方法。</p>
+<p><strong><code>__len__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以用<code>len()</code> 函数计算其长度。</p>
+<p><strong><code>__str__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以转化为字符串。</p>
+<p><strong><code>__call__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以像函数一样调用。</p>
+<p><strong><code>__iter__</code> 方法</strong></p>
+<p>实现该方法的类的对象，是可迭代的。</p>
+<p><strong><code>__setitem__ </code> 方法</strong></p>
+<p>实现该方法的类的对象，可以用<code>索引</code>的方式进行赋值。</p>
+<p><strong><code>__getitem__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以用<code>索引</code>的方式进行访问。</p>
+<p><strong><code>__contains__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>in</code> 运算。</p>
+<hr>
+<p><strong><code>__add__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>加+</code>运算。</p>
+<p><strong><code>__sub__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>减-</code>运算。</p>
+<p><strong><code>__mul__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>乘*</code>运算。</p>
+<p><strong><code>__div__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>除/</code>运算。</p>
+<p><strong><code>__pow__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>乘方</code>运算。</p>
+<p><strong><code>__mod__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>取模</code>运算。</p>
+<hr>
+<p><strong><code>__eq__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>相等==</code>比较。</p>
+<p><strong><code>__ne__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>不等于!=</code>比较。</p>
+<p><strong><code>__gt__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>大于&gt;</code>比较。</p>
+<p><strong><code>__ge__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>大于等于&gt;=</code>比较。</p>
+<p><strong><code>__lt__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>小于&lt;</code>比较。</p>
+<p><strong><code>__le__</code> 方法</strong></p>
+<p>实现该方法的类的对象，可以进行<code>小于等于&lt;=</code>比较。</p>
 <p>（完。）</p>
 <hr>
 <p><strong>推荐阅读：</strong></p>
