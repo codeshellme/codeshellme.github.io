@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sun, 21 Jun 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jun 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -28,6 +28,15 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 21，Python 继承与多态</title>
+      <link>https://codeshellme.github.io/2020/06/python-learn21/</link>
+      <pubDate>Tue, 23 Jun 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/06/python-learn21/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序不是年轻的专利，但是，它属于年轻。 目录 我</description>
     </item>
     
     <item>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 21，Python 继承与多态 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序不是年轻的专利，但是，它属于年轻。 目录 我" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/06/python-learn21/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 21，Python 继承与多态" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序不是年轻的专利，但是，它属于年轻。 目录 我" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/06/python-learn21/" />
+<meta property="article:published_time" content="2020-06-23T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-06-23T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 21，Python 继承与多态">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序不是年轻的专利，但是，它属于年轻。 目录 我">
+<meta itemprop="datePublished" content="2020-06-23T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-23T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3997">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 21，Python 继承与多态"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 程序不是年轻的专利，但是，它属于年轻。 目录 我"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 21，Python 继承与多态</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-23 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 3997 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1封装">1，封装</a></li>
+        <li><a href="#2继承">2，继承</a></li>
+        <li><a href="#3多继承">3，多继承</a></li>
+        <li><a href="#4多态">4，多态</a></li>
+        <li><a href="#5鸭子类型">5，鸭子类型</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>程序不是年轻的专利，但是，它属于年轻。</strong></p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200627103603632.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>我们已经知道<code>封装</code>，<code>继承</code>和<code>多态</code> 是面向对象的三大特征，面向对象语言都会提供这些机制。</p>
+<h3 id="1封装">1，封装</h3>
+<p>在<a href="https://codeshellme.github.io/2020/06/python-learn20/">这一节</a>介绍类的<code>私有属性和方法</code>的时候，我们已经讲到过<code>封装</code>。</p>
+<p><code>封装</code>就是在设计一个类的时候，只允许使用者访问他需要的方法，将复杂的，没有必要让使用者知道的方法隐藏起来。这样，使用者只需关注他需要的东西，为其屏蔽了复杂性。</p>
+<p><code>私有性</code>就是实现<code>封装</code>的一种手段，这样，类的设计者就可以控制类中的哪些属性和方法可以被使用者访问到。一般，类中的属性，和一些复杂的方法都不会暴露给使用者。</p>
+<p>由于<a href="https://codeshellme.github.io/2020/06/python-learn20/">前边的章节</a>介绍过封装，这里就不再举例说明了。</p>
+<h3 id="2继承">2，继承</h3>
+<p>通过<code>继承</code>的机制，可使得<code>子类</code>轻松的拥有<code>父类</code>中的<code>属性和方法</code>。<code>继承</code>也是一种<code>代码复用</code>的方式。</p>
+<p>Python 支持类的继承，<code>继承的类</code>叫做<code>子类</code>或者<code>派生类</code>，<code>被继承的类</code>叫做<code>父类</code>或<code>基类</code>。</p>
+<p>继承的语法如下：</p>
+<pre><code class="language-python">class 子类名(父类名):
+    pass
+</code></pre>
+<p>在<code>子类名</code>后边的括号中，写入要继承的父类。</p>
+<p><strong><code>object</code> 类</strong></p>
+<p>在Python 的继承体系中，<code>object</code> 是最顶层类，它是所有类的父类。在定义一个类时，如果没有继承任何类，会默认继承<code>object</code> 类。如下两种定义方式是等价的：</p>
+<pre><code class="language-python"># 没有显示继承任何类，默认继承 object
+class A1:
+    pass
+
+# 显示继承 object
+class A2(object):
+    pass
+</code></pre>
+<p>每个类中都有一个<code>mro</code> 方法，该方法可以打印类的继承关系（顺序）。我们来查看<code>A1</code> 和 <code>A2</code> 的继承关系：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; A1.mro()
+[&lt;class '__main__.A1'&gt;, &lt;class 'object'&gt;]
+&gt;&gt;&gt;
+&gt;&gt;&gt; A2.mro()
+[&lt;class '__main__.A2'&gt;, &lt;class 'object'&gt;]
+</code></pre>
+<p>可见这两个类都继承了 <code>object</code> 类。</p>
+<p><strong>继承中的<code>__init__</code> 方法</strong></p>
+<p>当一个子类继承一个父类时，如果子类中没有定义<code>__init__</code>，在创建子类的对象时，会调用父类的<code>__init__</code> 方法，如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class A(object):
+
+    def __init__(self):
+        print('A.__init__')
+
+class B(A):
+    pass
+</code></pre>
+<p>以上代码中，<code>B</code> 继承了<code>A</code>，<code>A</code> 中有<code>__init__</code> 方法，<code>B</code> 中没有<code>__init__</code> 方法，创建类<code>B</code> 的对象<code>b</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; b = B()
+A.__init__
+</code></pre>
+<p>可见<code>A</code> 中的<code>__init__</code> 被执行了。</p>
+<p><strong>方法覆盖</strong></p>
+<p>如果类<code>B</code>  中也定义了<code>__init__</code> 方法，那么，就只会执行<code>B</code> 中的<code>__init__</code> 方法，而不会执行<code>A</code> 中的<code>__init__</code> 方法：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class A(object):
+
+    def __init__(self):
+        print('A.__init__')
+
+class B(A):
+
+    def __init__(self):
+        print('B.__init__')
+</code></pre>
+<p>此时创建<code>B</code> 的对象<code>b</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; b = B()
+B.__init__
+</code></pre>
+<p>可见，此时只执行了<code>B</code> 中的<code>__init__</code> 方法。这其实是<code>方法覆盖</code>的原因，因为<code>子类</code>中的<code>__init__</code> 与<code>父类</code>中的<code>__init__</code> 的参数列表一样，此时，子类中的方法覆盖了父类中的方法，所以创建对象<code>b</code> 时，只会执行<code>B</code> 中的<code>__init__</code> 方法。</p>
+<blockquote>
+<p>当发生继承关系（即一个子类继承一个父类）时，如果子类中的一个方法与父类中的一个方法<code>一模一样</code>（即方法名相同，参数列表也相同），这种情况就是<code>方法覆盖</code>（子类中的方法会覆盖父类中的方法）。</p>
+</blockquote>
+<p><strong>方法重载</strong></p>
+<p>当<code>方法名</code>与<code>参数列表</code>都一样时会发生<code>方法覆盖</code>；当<code>方法名</code>一样，<code>参数列表</code>不一样时，会发生<code>方法重载</code>。</p>
+<p>在单个类中，代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class A(object):
+
+    def __init__(self):
+        print('A.__init__')
+
+    def test(self):
+        print('test...')
+
+    def test(self, i):
+        print('test... i:%s' % i)
+</code></pre>
+<p>类<code>A</code> 中的两个<code>test</code> 方法，<code>方法名</code>相同，<code>参数列表</code>不同。</p>
+<p>其实这种情况在<code>Java</code> 和 <code>C++</code> 是允许的，就是<code>方法重载</code>。而在Python 中，虽然在类中这样写不会报错，但实际上，下面的<code>test(self, i)</code> 已经把上面的<code>test(self)</code> 给覆盖掉了。创建出来的对象只能调用<code>test(self, i)</code>，而<code>test(self)</code> 是不存在的。</p>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; a = A()       # 创建 A 的对象 a
+A.__init__
+&gt;&gt;&gt;
+&gt;&gt;&gt; a.test(123)   # 可以调用 test(self, i) 方法
+test... i:123
+&gt;&gt;&gt;
+&gt;&gt;&gt; a.test()      # 调用 test(self) 发生异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: test() missing 1 required positional argument: 'i'
+</code></pre>
+<p>在继承关系中，代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class A(object):
+
+    def __init__(self):
+        print('A.__init__')
+
+    def test(self):
+        print('test...')
+
+class B(A):
+
+    def __init__(self):
+        print('B.__init__')
+
+    def test(self, i):
+        print('test... i:%s' % i)
+</code></pre>
+<p>上面代码中<code>B</code> 继承了<code>A</code>，<code>B</code> 和 <code>A</code> 中都有一个名为<code>test</code> 的方法，但是<code>参数列表</code>不同。</p>
+<p>这种情况跟在单个类中的情况是一样的，在类<code>B</code> 中，<code>test(self, i)</code> 会覆盖A 中的<code>test(self)</code>，类<code>B</code> 的对象只能调用<code>test(self, i)</code>，而不能调用<code>test(self)</code>。</p>
+<p>示例：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; b = B()        # 创建 B 的对象
+B.__init__
+&gt;&gt;&gt; 
+&gt;&gt;&gt; b.test(123)    # 可以调用 test(self, i)  方法
+test... i:123
+&gt;&gt;&gt;
+&gt;&gt;&gt; b.test()       # 调用 test(self) 方法，出现异常
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: test() missing 1 required positional argument: 'i'
+</code></pre>
+<p><strong><code>super()</code> 方法</strong></p>
+<p><code>super()</code> 方法用于调用父类中的方法。</p>
+<p>示例代码：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class A(object):
+
+    def __init__(self):
+        print('A.__init__')
+
+    def test(self):
+        print('class_A test...')
+
+class B(A):
+
+    def __init__(self):
+        print('B.__init__')
+        super().__init__()     # 调用父类中的构造方法
+
+    def test(self, i):
+        print('class_B test... i:%s' % i)
+        super().test()         # 调用父类中的 test 方法
+</code></pre>
+<p>演示：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; b = B()          # 创建 B 的对象
+B.__init__           # 调用 B 的构造方法
+A.__init__           # 调用 A 的构造方法
+&gt;&gt;&gt;
+&gt;&gt;&gt; b.test(123)      # 调用 B 中的 test 方法 
+class_B test... i:123
+class_A test...      # 执行 A 中的 test 方法 
+</code></pre>
+<p><strong><code>is-a</code> 关系</strong></p>
+<p>一个子类的对象，同时也是一个父类的对象，这叫做<code>is-a</code> 关系。但是一个父类的对象，不一定是一个子类的对象。</p>
+<p>这很好理解，就像，猫一定是动物，但动物不一定是猫。</p>
+<p>我们可以使用<code>isinstance()</code> 函数来判断一个对象是否是一个类的实例。</p>
+<p>比如我们有如下两个类，<code>Cat</code> 继承了 <code>nimal</code>：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class Animal(object):
+    pass
+
+class Cat(Animal):
+    pass
+</code></pre>
+<p>来看下对象和类之间的从属关系：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; a = Animal()           # 创建 Animal 的对象
+&gt;&gt;&gt; c = Cat()              # 创建 Cat 的对象
+&gt;&gt;&gt; 
+&gt;&gt;&gt; isinstance(a, Animal)  # a 一定是 Animal 的实例
+True
+&gt;&gt;&gt; isinstance(c, Cat)     # c 一定是 Cat 的实例
+True
+&gt;&gt;&gt; 
+&gt;&gt;&gt; isinstance(c, Animal)  # Cat 继承了 Animal，所以 c 也是 Animal 的实例
+True
+&gt;&gt;&gt; isinstance(a, Cat)     # 但 a 不是 Cat 的实例
+False
+</code></pre>
+<h3 id="3多继承">3，多继承</h3>
+<p><code>多继承</code>就是一个子类同时继承多个父类，这样，这个子类就同时拥有了多个父类的特性。</p>
+<p>C++ 语言中允许多继承，但由于多继承会使得类的继承关系变得复杂。因此，到了Java 中，就禁止了多继承的方式，取而代之的是，在Java 中允许同时继承多个<code>接口</code>。</p>
+<p>Python 中也允许多继承，语法如下：</p>
+<pre><code class="language-python"># 括号中可以写多个父类
+class 子类名(父类1, 父类2, ...):
+    pass
+</code></pre>
+<p>我们构造一个如下的继承关系：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200626175140508.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class A(object):
+    def test(self):
+        print('class_A test...')
+
+class B(A):
+    def test(self):
+        print('class_B test...') 
+
+class C(A):
+    def test(self):
+        print('class_C test...') 
+
+class D(B, C):
+    pass
+</code></pre>
+<p>类<code>A</code>，<code>B</code>，<code>C</code> 中都有<code>test()</code> 方法，<code>D</code> 中没有<code>test()</code> 方法。</p>
+<p>使用<code>D</code> 类中的<code>mro()</code>方法查看继承关系：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; D.mro()
+[&lt;class 'Test.D'&gt;, &lt;class 'Test.B'&gt;, &lt;class 'Test.C'&gt;, &lt;class 'Test.A'&gt;, &lt;class 'object'&gt;]
+</code></pre>
+<p>创建<code>D</code> 的对象：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; d = D()
+</code></pre>
+<p>如果类<code>D</code> 中有<code>test()</code> 方法，那么<code>d.test()</code> 肯定会调用<code>D</code> 中的<code>test()</code> 方法，这种情况很简单，不用多说。</p>
+<p>当类<code>D</code> 中没有<code>test()</code> 方法时，而它继承的父类 <code>B</code> 和 <code>C</code> 中都有 <code>test()</code> 方法，此时会调用哪个<code>test()</code> 呢？</p>
+<pre><code class="language-shell">&gt;&gt;&gt; d.test()
+class_B test...
+</code></pre>
+<p>可以看到<code>d.test()</code> 调用了类<code>B</code> 中的 <code>test()</code> 方法。</p>
+<p>实际上这种情况下，Python 解释器会根据<code>D.mro()</code> 的输出结果来依次查找<code>test()</code> 方法，即查找顺序是<code>D-&gt;B-&gt;C-&gt;A-&gt;object</code>。</p>
+<p>所以<code>d.test()</code> 调用了类<code>B</code> 中的 <code>test()</code> 方法。</p>
+<blockquote>
+<p><strong>建议：</strong></p>
+<p>由于<code>多继承</code>会使类的继承关系变得复杂，所以并不提倡过多的使用<code>多继承</code>。</p>
+</blockquote>
+<h3 id="4多态">4，多态</h3>
+<p><code>多态</code>从字面上理解就是一个事物可以呈现多种状态。<code>继承</code>是多态的基础。</p>
+<p>在上面的例子中，类<code>D</code> 的对象<code>d</code> 调用<code>test()</code> 方法时，沿着<code>继承链</code>（<code>D.mro()</code>）查找合适的<code>test()</code> 方法的过程，就是多态的表现过程。</p>
+<p>比如，我们有以下几个类：</p>
+<ul>
+<li><code>Animal</code>：有一个<code>speak()</code> 方法</li>
+<li><code>Cat</code>：继承<code>Animal</code> 类，有自己的<code>speak()</code> 方法</li>
+<li><code>Dog</code>：继承<code>Animal</code> 类，有自己的<code>speak()</code> 方法</li>
+<li><code>Duck</code>：继承<code>Animal</code> 类，有自己的<code>speak()</code> 方法</li>
+</ul>
+<p><code>Cat</code>，<code>Dog</code>，<code>Duck</code> 都属于动物，因此都继承<code>Animal</code>，代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+class Animal(object):
+    def speak(self):
+        print('动物会说话...')
+
+class Cat(Animal):
+    def speak(self):
+        print('喵喵...') 
+
+class Dog(Animal):
+    def speak(self):
+        print('汪汪...') 
+
+class Duck(Animal):
+    def speak(self):
+        print('嘎嘎...') 
+
+def animal_speak(animal):
+    animal.speak()
+</code></pre>
+<p>我们还定义了一个<code>animal_speak</code> 函数，它接受一个参数<code>animal</code>，在函数内，调用了<code>speak()</code> 方法。</p>
+<p>实际上，这种情况下，我们调用<code>animal_speak</code> 函数时，可以为它传递<code>Animal</code> 类型的对象，以及任何的<code>Animal</code> 子类的对象。</p>
+<p>传递<code>Animal</code> 的对象时，调用了<code>Animal</code> 类中的 <code>speak()</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; animal_speak(Animal())
+动物会说话...
+</code></pre>
+<p>传递<code>Cat</code> 的对象时，调用了<code>Cat</code> 类中的 <code>speak()</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; animal_speak(Cat())
+喵喵...
+</code></pre>
+<p>传递<code>Dog</code> 的对象时，调用了<code>Dog</code> 类中的 <code>speak()</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; animal_speak(Dog())
+汪汪...
+</code></pre>
+<p>传递<code>Duck</code> 的对象时，调用了<code>Duck</code> 类中的 <code>speak()</code>：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; animal_speak(Duck())
+嘎嘎...
+</code></pre>
+<p>可以看到，我们可以给<code>animal_speak()</code> 函数传递<code>多种不同类型</code>的对象，为<code>animal_speak()</code> 函数传递不同类型的参数，输出了不同的结果，这就是<code>多态</code>。</p>
+<h3 id="5鸭子类型">5，鸭子类型</h3>
+<p>在<code>静态类型</code>语言中，有严格的类型判断，上面的<code>animal_speak()</code> 函数的参数只能传递<code>Animal</code> 及其<code>子类</code>的对象。</p>
+<p>而Python 属于<code>动态类型</code>语言，不会进行严格的类型判断。</p>
+<p>因此，我们不仅可以为<code>animal_speak()</code> 函数传递<code>Animal</code> 及其<code>子类</code>的对象，还可以传递其它与<code>Animal</code> 类毫不相关的类的对象，只要该类中有<code>speak()</code> 方法就行。</p>
+<p>这种特性，在Python 中被叫做<code>鸭子类型</code>，意思就是，<code>只要一个事物走起来像鸭子，叫起来像鸭子，那么它就是鸭子，即使它不是真正的鸭子</code>。</p>
+<p>从代码上来说，只要一个类中有<code>speak()</code> 方法，那么就可以将该类的对象传递给<code>animal_speak()</code> 函数。</p>
+<p>比如，有一个鼓类<code>Drum</code>，其中有一个函数<code>speak()</code>：</p>
+<pre><code class="language-python">class Drum(object):
+    def speak(self):
+        print('咚咚...')
+</code></pre>
+<p>那么，类<code>Drum</code> 的对象也可以传递给<code>animal_speak()</code> 函数，即使<code>Drum</code> 与<code>Animal</code> 类毫不相关：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; animal_speak(Drum())
+咚咚...
+</code></pre>
+<p>从另一个角度来考虑，实际上Python 函数中的参数，并没有标明参数的类型。在<code>animal_speak()</code> 函数中，我们只是将参数叫做了<code>animal</code> 而已，因此我们就认为<code>animal_speak()</code> 函数应该接受Animal 类及其子类的对象，其实这仅仅只是我们认为的而已。</p>
+<p>计算机并不知道<code>animal</code> 的含义，如果我们将原来的<code>animal_speak()</code> 函数：</p>
+<pre><code class="language-python">def animal_speak(animal):
+    animal.speak()
+</code></pre>
+<p>改写成：</p>
+<pre><code class="language-python">def animal_speak(a):
+    a.speak()
+</code></pre>
+<p>实际上，我们知道，这两个函数并没有任何区别。因此，参数<code>a</code>可以是任意的类型，只要<code>a</code> 中有<code>speak()</code> 方法就行。这就是Python 能够表现出<code>鸭子特性</code>的原因。</p>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn16/">Python 简明教程 &mdash; 16，Python 高阶函数</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn17/">Python 简明教程 &mdash; 17，Python 模块与包</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn18/">Python 简明教程 &mdash; 18，Python 面向对象</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn19/">Python 简明教程 &mdash; 19，Python 类与对象</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn20/">Python 简明教程 &mdash; 20，Python 类中的属性与方法</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-06-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/06/python-learn20/">
+            <span class="next-text nav-default">Python 简明教程 --- 20，Python 类中的属性与方法</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/06/python-learn21/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 21，Python 继承与多态">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
