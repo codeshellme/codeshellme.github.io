@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 22，Python 闭包与装饰器 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/07/python-learn22/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 22，Python 闭包与装饰器" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/07/python-learn22/" />
+<meta property="article:published_time" content="2020-07-15T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-07-15T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 22，Python 闭包与装饰器">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术">
+<meta itemprop="datePublished" content="2020-07-15T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-07-15T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3578">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 22，Python 闭包与装饰器"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 当你选择了一种语言，意味着你还选择了一组技术"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 22，Python 闭包与装饰器</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-15 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 3578 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1什么是闭包">1，什么是闭包</a></li>
+        <li><a href="#2用闭包实现一个计数器">2，用闭包实现一个计数器</a></li>
+        <li><a href="#3什么是装饰器">3，什么是装饰器</a></li>
+        <li><a href="#4被修饰的函数带有参数">4，被修饰的函数带有参数</a></li>
+        <li><a href="#5装饰器带有参数">5，装饰器带有参数</a></li>
+        <li><a href="#6使用-functoolswraps">6，使用 <code>@functools.wraps</code></a></li>
+        <li><a href="#7装饰器可以叠加使用">7，装饰器可以叠加使用</a></li>
+        <li><a href="#8一个较通用的装饰器模板">8，一个较通用的装饰器模板</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>当你选择了一种语言，意味着你还选择了一组技术、一个社区。</strong></p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/2020070509472361.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>本节我们来介绍<code>闭包</code>与<code>装饰器</code>。</p>
+<p>闭包与装饰器是函数的高级用法，其实在介绍完<a href="https://codeshellme.github.io/2020/06/python-learn15/">Python 函数</a>我们就可以介绍本节的内容，但由于Python中的<code>类</code>也可以用来实现装饰器，所以我们等到介绍完了<a href="https://codeshellme.github.io/2020/06/python-learn19/">Python 类</a>再来统一介绍闭包与装饰器。</p>
+<p>装饰器使用的是闭包的特性，我们先来介绍闭包，再来介绍装饰器。</p>
+<h3 id="1什么是闭包">1，什么是闭包</h3>
+<p>Python 的函数内部还允许<code>嵌套函数</code>，也就是一个函数中还定义了另一个函数。如下：</p>
+<pre><code class="language-python">def fun_1():
+
+    def fun_2():
+        return 'hello'
+
+    s = fun_2()
+
+    return s
+
+s = fun_1()
+print(s)    # 'hello'
+</code></pre>
+<p>在上面的代码中，我们在函数<code>fun_1</code> 的内部又定义了一个函数<code>fun_2</code>，这就是<code>函数嵌套</code>。</p>
+<p>我们在学习<a href="https://codeshellme.github.io/2020/06/python-learn15/">函数</a>的时候，还知道，Python  函数可以作为<code>函数参数</code>和<code>函数返回值</code>。</p>
+<p>因此，我们可以将上面代码中的函数<code>fun_2</code>作为函数<code>fun_1</code>的返回值，如下：</p>
+<pre><code class="language-python">def fun_1():
+    def fun_2():
+        return 'hello'
+
+    return fun_2
+</code></pre>
+<p>此时，函数<code>fun_1</code> 返回了一个函数，我们这样使用<code>fun_1</code>：</p>
+<pre><code class="language-python">fun = fun_1()    # fun 是一个函数
+s = fun()        # 调用函数 fun
+print(s)         # s 就是 'hello'
+</code></pre>
+<p>我们再来改进函数<code>fun_1</code>，如下：</p>
+<pre><code class="language-python">def fun_1(s):
+    s1 = 'hello ' + s
+
+    def fun_2():
+        return s1 
+
+    return fun_2
+</code></pre>
+<p>上面的代码中，内部函数<code>fun_2</code>返回了变量<code>s1</code>，而<code>s1</code>是函数<code>fun_2</code>的<code>外部变量</code>，这种<code>内部函数</code>能够使用<code>外部变量</code>，并且<code>内部函数</code>作为<code>外部函数</code>的<code>返回值</code>，就是<code>闭包</code>。</p>
+<p>编写闭包时都有一定的套路，也就是，<strong>闭包需要有一个外部函数包含一个内部函数，并且外部函数的返回值是内部函数</strong>。</p>
+<h3 id="2用闭包实现一个计数器">2，用闭包实现一个计数器</h3>
+<p>我们来实现一个计数器的功能，先写一个框架，如下：</p>
+<pre><code class="language-python">def counter():
+
+    # 定义内部函数
+    def add_one():
+        pass
+    
+    # 返回内部函数
+    return add_one
+</code></pre>
+<p>再来实现计数的功能，如下：</p>
+<pre><code class="language-python">def counter():
+    # 用于计数
+    l = [0]
+    
+    # 定义内部函数
+    def add_one():
+        l[0] += 1
+        return l[0] # 返回数字
+    
+    # 返回内部函数
+    return add_one
+</code></pre>
+<p>上面的代码中，我们使用了一个列表<code>l[0]</code>来记录累加数，在内部函数<code>add_one</code>中对<code>l[0]</code>进行累加。</p>
+<p>我们这样使用这个计数器：</p>
+<pre><code class="language-python">c = counter()
+
+print(c())   # 1
+print(c())   # 2
+print(c())   # 3
+</code></pre>
+<p>我们还可以使这个计数器能够设置累加的<code>初始值</code>，就是为<code>counter</code> 函数设置一个参数，如下：</p>
+<pre><code class="language-python">def counter(start):
+    l = [start]
+
+    def add_one():
+        l[0] += 1
+        return l[0] 
+        
+    return add_one
+</code></pre>
+<p>这样我们就可以使用<code>counter</code> 来生成不同的累加器（从不同的初始值开始累加）。我们这样使用该计数器：</p>
+<pre><code class="language-python">c1 = counter(1)   # c1 从 1 开始累加
+print(c1())       # 2
+print(c1())       # 3
+print(c1())       # 4
+
+c5 = counter(5)   # c5 从 5 开始累加
+print(c5())       # 6
+print(c5())       # 7
+print(c5())       # 8
+</code></pre>
+<p><code>c1</code> 从 <code>1</code> 开始累加，<code>c5</code> 从 <code>5</code> 开始累加，两个互不干扰。</p>
+<h3 id="3什么是装饰器">3，什么是装饰器</h3>
+<p><code>装饰器</code>是<code>闭包</code>的一种进阶应用。装饰器从字面上理解就是用来<code>装饰</code>，<code>包装</code>的。装饰器一般用来在不修改函数内部代码的情况下，为一个函数添加额外的新功能。</p>
+<p>装饰器虽然功能强大，但也不是万能的，它也有自己适用场景：</p>
+<ul>
+<li>缓存</li>
+<li>身份认证</li>
+<li>记录函数运行时间</li>
+<li>输入的合理性判断</li>
+</ul>
+<p>比如，我们有一个函数，如下：</p>
+<pre><code class="language-python">def hello():
+    print('hello world.')
+</code></pre>
+<p>如果我们想计算这个函数的运行时间，最直接的想法就是修改该函数，如下：</p>
+<pre><code class="language-python">import time
+
+def hello():
+    s = time.time()
+
+    print('hello world.')
+
+    e = time.time()
+    print('fun:%s time used:%s' % (hello.__name__, e - s))
+
+# 调用函数
+hello()
+</code></pre>
+<p>其中，<code>time</code> 模块是Python 中的内置模块，用于时间相关计算。</p>
+<p>每个函数都有一个<code>__name__</code> 属性，其值为函数的名字。不管我们是直接查看一个函数的<code>__name__</code> 属性，还是将一个函数赋值给一个变量后，再查看这个变量的<code>__name__</code> 属性，它们的值都是一样的（都是原来函数的名字）：</p>
+<pre><code class="language-python">print(hello.__name__)  # hello
+f = hello              # 调用 f() 和 hello() 的效果是一样的
+print(f.__name__)      # hello
+</code></pre>
+<p>但是，如果我们要为很多的函数添加这样的功能，要是都使用这种办法，那会相当的麻烦，这时候使用装饰器就非常的合适。</p>
+<p><strong>最简单的装饰器</strong></p>
+<p>装饰器应用的就是闭包的特性，所以编写装饰器的套路与闭包是一样的，就是有一个外部函数和一个内部函数，外部函数的返回值是内部函数。</p>
+<p>我们先编写一个框架：</p>
+<pre><code class="language-python">def timer(func):
+    def wrapper():
+        pass
+      
+    return wrapper
+</code></pre>
+<p>再来实现计时功能：</p>
+<pre><code class="language-python">import time
+
+def timer(func):
+    def wrapper():
+        s = time.time()
+        ret = func()
+        e = time.time()
+        print('fun:%s time used:%s' % (func.__name__, e - s))
+        
+        return ret
+
+    return wrapper
+
+def hello():
+    print('hello world.')
+</code></pre>
+<p>该装饰器的名字是<code>timer</code>，其接受一个函数类型的参数<code>func</code>，<code>func</code> 就是要修饰的函数。</p>
+<p><code>func</code> 的函数原型要与内部函数<code>wrapper</code> 的原型一致（这是固定的写法），即函数<code>参数</code>相同，函数<code>返回值</code>也相同。</p>
+<blockquote>
+<p>英文 <code>wrapper</code> 就是<code>装饰</code>的意思。</p>
+</blockquote>
+<p>其实<code>timer</code> 就是一个<code>高阶函数</code>，其参数是一个函数类型，返回值也是一个函数。我们可以这样使用<code>timer</code> 装饰器：</p>
+<pre><code class="language-python">hello = timer(hello)
+hello()
+</code></pre>
+<p>以上代码中，<code>hello</code> 函数作为参数传递给了<code>timer</code> 装饰器，返回结果用<code>hello</code> 变量接收，最后调用<code>hello()</code>。这就是装饰器的原本用法。</p>
+<p>只不过，Python 提供了一种<code>语法糖</code>，使得装饰器的使用方法更加<code>简单优雅</code>。如下：</p>
+<pre><code class="language-python">@timer
+def hello():
+    print('hello world.')
+
+hello()
+</code></pre>
+<p>直接在原函数<code>hello</code> 的上方写一个语法糖<code>@timer</code>，其实这个作用就相当于<code>hello = timer(hello)</code>。</p>
+<p><strong>用类实现装饰器</strong></p>
+<p>在上面的代码中，是用<code>函数</code>（也就是<code>timer</code> 函数）来实现的装饰器，我们也可以用<code>类</code>来实现装饰器。</p>
+<p>用<code>类</code>实现装饰器，主要依赖的是<code>__init__</code> 方法和<code>__call__</code> 方法。</p>
+<blockquote>
+<p>我们知道，实现<code>__call__</code> 方法的类，其对象可以像函数一样被调用。</p>
+</blockquote>
+<p>用类来实现<code>timer</code> 装饰器，如下：</p>
+<pre><code class="language-python">import time
+
+class timer:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self):
+        s = time.time()
+        ret = self.func()
+        e = time.time()
+        print('fun:%s time used:%s' % (self.func.__name__, e - s))
+
+        return ret
+
+@timer
+def hello():
+    print('hello world.')
+
+print(hello())
+</code></pre>
+<p>其中，构造方法<code>__init__</code>接收一个函数类型的参数<code>func</code>，然后，<code>__call__</code>方法就相当于<code>wrapper</code> 函数。</p>
+<p>用类实现的装饰器的使用方法，与用函数实现的装饰器的使用方法是一样的。</p>
+<h3 id="4被修饰的函数带有参数">4，被修饰的函数带有参数</h3>
+<p>如果<code>hello</code> 函数带有参数，如下：</p>
+<pre><code class="language-python">def hello(s):
+    print('hello %s.' % s)
+</code></pre>
+<p>那么装饰器应该像下面这样：</p>
+<pre><code class="language-python">import time
+
+def timer(func):
+    def wrapper(args):
+        s = time.time()
+
+        ret = func(args)
+
+        e = time.time()
+        print('fun:%s time used:%s' % (func.__name__, e - s))
+        
+        return ret
+
+    return wrapper
+
+@timer
+def hello(s):
+    print('hello %s.' % s)
+
+hello('python')
+</code></pre>
+<p><code>timer</code> 函数的<code>参数</code>依然是要被修饰的函数，<code>wrapper</code> 函数的原型与<code>hello</code> 函数保持一致。</p>
+<p>用类来实现，如下：</p>
+<pre><code class="language-python">import time
+
+class timer:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, args):
+        s = time.time()
+        ret = self.func(args)
+        e = time.time()
+        print('fun:%s time used:%s' % (self.func.__name__, e - s))
+
+        return ret
+
+@timer
+def hello(s):
+    print('hello %s.' % s)
+
+print(hello('python'))
+</code></pre>
+<p><strong>不定长参数装饰器</strong></p>
+<p>如果<code>hello</code> 函数的参数是<code>不定长</code>的，<code>timer</code> 应该是如下这样：</p>
+<pre><code class="language-python">import time
+
+def timer(func):
+    def wrapper(*args, **kw):
+        s = time.time()
+
+        ret = func(*args, **kw)
+
+        e = time.time()
+        print('fun:%s time used:%s' % (func.__name__, e - s))
+        
+        return ret
+
+    return wrapper
+
+@timer
+def hello(s1, s2): # 带有两个参数
+    print('hello %s %s.' % (s1, s2))
+
+@timer
+def hello_java():  # 没有参数
+    print('hello java.')
+
+hello('python2', 'python3')
+hello_java()
+</code></pre>
+<p>这样的装饰器<code>timer</code>，可以修饰带有任意参数的函数。</p>
+<p>用类来实现，如下：</p>
+<pre><code class="language-python">import time
+
+class timer:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kw):
+        s = time.time()
+        ret = self.func(*args, **kw)
+        e = time.time()
+        print('fun:%s time used:%s' % (self.func.__name__, e - s))
+
+        return ret
+
+@timer
+def hello(s1, s2): # 带有两个参数
+    print('hello %s %s.' % (s1, s2))
+
+@timer
+def hello_java():  # 没有参数
+    print('hello java.')
+
+hello('python2', 'python3')
+hello_java()
+</code></pre>
+<h3 id="5装饰器带有参数">5，装饰器带有参数</h3>
+<p>如果装饰器也需要带有参数，那么则需要在原来的<code>timer</code> 函数的外层再嵌套一层函数<code>Timer</code>，<code>Timer</code> 也带有参数，如下：</p>
+<pre><code class="language-python">import time
+
+def Timer(flag):
+    def timer(func):
+        def wrapper(*args, **kw):
+            s = time.time()
+            ret = func(*args, **kw)
+            e = time.time()
+            print('flag:%s fun:%s time used:%s' % (flag, func.__name__, e - s))
+            
+            return ret
+
+        return wrapper
+
+    return timer
+
+@Timer(1)
+def hello(s1, s2): # 带有两个参数
+    print('hello %s %s.' % (s1, s2))
+
+@Timer(2)
+def hello_java():  # 没有参数
+    print('hello java.')
+
+hello('python2', 'python3')
+hello_java()
+</code></pre>
+<p>从上面的代码中可以看到，<code>timer</code> 的结构没有改变，只是在<code>wrapper</code> 的内部使用了<code>flag</code> 变量，然后<code>timer</code> 的外层多了一层<code>Timer</code>，<code>Timer</code> 的返回值是<code>timer</code>，我们最终使用的装饰器是<code>Timer</code>。</p>
+<p>我们通过<code>函数.__name__</code> 来查看函数的<code>__name__</code> 值：</p>
+<pre><code class="language-python">print(hello.__name__)       # wrapper
+print(hello_java.__name__)  # wrapper
+</code></pre>
+<p>可以发现<code>hello</code> 和 <code>hello_java</code> 的<code>__name__</code> 值都是<code>wrapper</code>（即内部函数<code>wrapper</code> 的名字），而不是<code>hello</code> 和 <code>hello_java</code>，这并不符合我们的需要，因为我们的初衷只是想增加<code>hello</code> 与<code>hello_java</code>的功能，但并不想改变它们的函数名字。</p>
+<h3 id="6使用-functoolswraps">6，使用 <code>@functools.wraps</code></h3>
+<p>我们可以使用<code>functools</code>模块的<code>wraps</code>装饰器来修饰<code>wrapper</code> 函数，以解决这个问题，如下：</p>
+<pre><code class="language-python">import time
+import functools
+
+def Timer(flag):
+    def timer(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            s = time.time()
+            ret = func(*args, **kw)
+            e = time.time()
+            print('flag:%s fun:%s time used:%s' % (flag, func.__name__, e - s))
+            
+            return ret
+
+        return wrapper
+
+    return timer
+
+@Timer(1)
+def hello(s1, s2): # 带有两个参数
+    print('hello %s %s.' % (s1, s2))
+
+@Timer(2)
+def hello_java():  # 没有参数
+    print('hello java.')
+</code></pre>
+<p>此时，再查看<code>hello</code> 与 <code>hello_java</code> 的 <code>__name__</code>值，分别是<code>hello</code> 和 <code>hello_java</code>。</p>
+<h3 id="7装饰器可以叠加使用">7，装饰器可以叠加使用</h3>
+<p>装饰器也可以叠加使用，如下：</p>
+<pre><code class="language-python">@decorator1
+@decorator2
+@decorator3
+def func():
+    ...
+</code></pre>
+<p>上面代码的所用相当于：</p>
+<pre><code class="language-python">decorator1(decorator2(decorator3(func)))
+</code></pre>
+<h3 id="8一个较通用的装饰器模板">8，一个较通用的装饰器模板</h3>
+<p>编写装饰器有一定的套路，根据上文的介绍，我们可以归纳出一个较通用的装饰器模板：</p>
+<pre><code class="language-python">def func_name(func_args):
+
+    def decorator(func):
+    
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            # 在这里可以使用func_args，*args，**kw
+            # 逻辑处理
+            ...
+            ret = func(*args, **kw)
+            # 逻辑处理
+            ...
+            
+            return ret
+
+        return wrapper
+
+    return decorator
+
+
+# 使用装饰器 func_name
+@func_name(func_args)
+def func_a(*args, **kw):
+    pass
+</code></pre>
+<p>在上面的模板中：</p>
+<ul>
+<li><code>func_name</code> 是装饰器的名字，该装饰器可以接收参数 <code>func_args</code></li>
+<li>内部函数 <code>decorator</code> 的参数 <code>func</code>，是一个函数类型的参数，就是将来要修饰的函数</li>
+<li><code>func</code> 的参数列表可以是任意的，因为我们使用的是<code>*args, **kw</code></li>
+<li>内部函数<code>wrapper</code> 的原型（即参数与返回值）要与 被修饰的函数<code>func</code> 保持统一</li>
+<li><code>@functools.wraps</code> 的作用是保留被装饰的原函数的一些元信息（比如<code>__name__</code> 属性）</li>
+</ul>
+<p>与装饰器相关的模块有<code>functools</code> 和 <code>wrapt</code>，可以使用这两个模块来优化完善你写的装饰器，感兴趣的小伙伴可以自己拓展学习。</p>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn17/">Python 简明教程 &mdash; 17，Python 模块与包</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn18/">Python 简明教程 &mdash; 18，Python 面向对象</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn19/">Python 简明教程 &mdash; 19，Python 类与对象</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn20/">Python 简明教程 &mdash; 20，Python 类中的属性与方法</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn21/">Python 简明教程 &mdash; 21，Python 继承与多态</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-07-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/07/python-learn23/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python 简明教程 --- 23，Python 异常处理</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/06/python-learn21/">
+            <span class="next-text nav-default">Python 简明教程 --- 21，Python 继承与多态</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/07/python-learn22/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 22，Python 闭包与装饰器">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

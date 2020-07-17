@@ -24,27 +24,41 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2020-06-23T21:41:52+08:00</lastmod>
+    <lastmod>2020-07-16T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2020-06-23T21:41:52+08:00</lastmod>
+    <lastmod>2020-07-16T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/2020/06/python-learn21/</loc>
-    <lastmod>2020-06-23T21:41:52+08:00</lastmod>
+    <loc>https://codeshellme.github.io/2020/07/python-learn23/</loc>
+    <lastmod>2020-07-16T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2020-07-16T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/07/python-learn22/</loc>
+    <lastmod>2020-07-15T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/06/python-learn21/</loc>
     <lastmod>2020-06-23T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

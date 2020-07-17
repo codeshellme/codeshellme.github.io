@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 23，Python 异常处理 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 要么做第一个，要么做最好的一个。 目录 我们在编" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/07/python-learn23/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 23，Python 异常处理" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 要么做第一个，要么做最好的一个。 目录 我们在编" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/07/python-learn23/" />
+<meta property="article:published_time" content="2020-07-16T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-07-16T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 23，Python 异常处理">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 要么做第一个，要么做最好的一个。 目录 我们在编">
+<meta itemprop="datePublished" content="2020-07-16T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-07-16T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4121">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 23，Python 异常处理"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 要么做第一个，要么做最好的一个。 目录 我们在编"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 23，Python 异常处理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-16 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 4121 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1常见异常">1，常见异常</a></li>
+        <li><a href="#2处理异常">2，处理异常</a></li>
+        <li><a href="#3抛出异常">3，抛出异常</a></li>
+        <li><a href="#4python-异常层次结构">4，Python 异常层次结构</a></li>
+        <li><a href="#5自定义异常">5，自定义异常</a></li>
+        <li><a href="#6调试错误">6，调试错误</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>要么做第一个，要么做最好的一个。</strong></p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200717174828813.png#pic_center" alt="在这里插入图片描述"></p>
+<p>我们在编写程序时，总会不自觉的出现一些错误，比如<code>逻辑错误</code>，<code>语法错误</code>和一些其它的<code>运行时错误</code>等。</p>
+<ul>
+<li><strong>逻辑错误：</strong> 这种错误不会导致程序<code>崩溃</code>，它不容易被发现，只有在执行结果不是我们预期的时候，才会被发现。</li>
+<li><strong>语法错误：</strong> 这种错误是不符合语法规定的错误，说白了，就是<code>编译器</code>或者<code>解释器</code>无法理解的代码。出现这种错误时，程序是不能运行的。</li>
+<li><strong>其它运行时错误：</strong> 这种错误是程序在运行的过程中出现的，一般情况下不会出现，但是极端情况下会出现，是程序编写者考虑不够周全导致的。</li>
+</ul>
+<p>在写程序时一定要把所有的情况都考虑到，并且处理掉，不能有侥幸心理（认为某种情况不会出现）。在程序中，只要是<code>有可能</code>出现的情况，那就<code>一定</code>会出现。</p>
+<p>程序员也喜欢将这些错误戏称为<code>bug</code>，<code>bug</code>代表软件系统中的<code>漏洞</code>或<code>缺陷</code>，<code>bug</code>需要修正，否则程序是无法正常运行的。重要的软件系统如果出现漏洞，会带来巨大的危害。因此，在软件初步完成后，要进行严格的，全面的测试，否则将漏洞百出。</p>
+<p>Python 中提供了一套处理错误的机制，叫做<code>异常</code>。</p>
+<p>比较普通的处理错误的方法，是使用<code>if 语句</code> 或<code>断言assert</code>来对各种情况进行判断，从而进行相应的处理。而<code>异常</code>是一种更加高级的处理错误的机制。</p>
+<h3 id="1常见异常">1，常见异常</h3>
+<p>我们来看一些Python 中常见的异常。</p>
+<p><strong><code>SyntaxError</code> 异常</strong></p>
+<p>Python 语言有自己的语法格式和规则，如果我们没有遵守这些规则，将会出现异常：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; print('abc')- # 右括号后边有一个横线
+  File &quot;&lt;stdin&gt;&quot;, line 1
+    print('abc')-
+                ^
+SyntaxError: invalid syntax
+</code></pre>
+<p>上尖括号<code>^</code>指出了异常出现的的位置。</p>
+<p><strong><code>NameError</code> 异常</strong></p>
+<p>如果我们使用了一个<code>未定义</code>的变量，将会出现该异常：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; print(a)  # a 变量未定义
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+NameError: name 'a' is not defined
+</code></pre>
+<p><strong><code>ZeroDivisionError</code> 异常</strong></p>
+<p>进行除法运算时，如果除数为<code>0</code>，将会该异常：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; 1 / 0 # 除数为 0
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+ZeroDivisionError: division by zero
+</code></pre>
+<p>如果程序没有处理异常，在异常出现时，将会崩溃退出，Python 解释器会为你定位到<code>异常</code>出现的位置，有助于快速的解决异常。</p>
+<h3 id="2处理异常">2，处理异常</h3>
+<p>异常需要捕获，从而处理异常。如果在发生异常时，这个异常没有被捕获处理，这个异常将会一层一层的向上抛，直到这个异常被捕获处理，或者程序崩溃。</p>
+<p><strong><code>try except</code> 语句</strong></p>
+<p>在Python 中使用<code>try</code> 语句块来捕获异常，在<code>except</code> 语句块中处理异常。</p>
+<p>我们一般将<code>有可能出现异常</code>的语句放在<code>try</code> 语句块中，在<code>except</code> 语句块中编写处理异常的措施。</p>
+<p>比如，我们有如下代码：</p>
+<pre><code class="language-python">def hello(s):
+    print('hello %s' % s)
+
+hello('123', 'abc')
+</code></pre>
+<p>其中<code>hello</code> 函数的定义是需要接收一个参数，而在调用时，传递了两个参数，运行此代码将出现如下异常：</p>
+<pre><code class="language-shell">Traceback (most recent call last):
+  File &quot;Test.py&quot;, line 8, in &lt;module&gt;
+    hello('123', 'abc')
+TypeError: hello() takes 1 positional argument but 2 were given
+</code></pre>
+<p>代码在遇到<code>异常</code>时，会在异常代码处抛出异常，后边的代码将不会再执行。如果异常代码没有处理，程序将崩溃退出。</p>
+<p>我们可以这样处理该异常：</p>
+<pre><code class="language-python">try:
+    hello('123', 'abc')
+except Exception as e:
+    print(e)
+</code></pre>
+<p>我们将<code>调用语句</code>放在了<code>try</code> 语句块中，这样就可以捕获异常。<code>except</code> 关键字的后边是要捕获的<code>异常的名字</code>，<code>as</code> 后边是捕获到的异常 <code>e</code>。在<code>except</code> 语句块中，我们只是将捕获到的异常打印了出来，运行该代码，结果如下：</p>
+<pre><code class="language-shell">hello() takes 1 positional argument but 2 were given
+</code></pre>
+<p>可见错误被打印了出来。我们还可以在打印错误之后，再正确的调用<code>hello</code> 函数：</p>
+<pre><code class="language-python">try:
+    hello('123', 'abc')
+except Exception as e:
+    print(e)
+    hello('123')
+</code></pre>
+<p>运行结果如下：</p>
+<pre><code class="language-shell">hello() takes 1 positional argument but 2 were given
+hello 123
+</code></pre>
+<p>可见，运行到<code>hello('123', 'abc')</code> 时，出现异常，然后代码执行到<code>except</code> 语句块，<code>print(e)</code> 将错误打印出来，又执行了<code>hello('123')</code>。</p>
+<blockquote>
+<p>打印异常是最简单的处理异常的方式，在工作中，我们会将异常信息记录在日志文件中，这样可以将异常记录下来，以便处理异常。</p>
+</blockquote>
+<p>一般在捕获异常时，尽量只在<code>try</code> 语句块中编写有可能发生异常的代码，基本不会发生异常的语句不要写在<code>try</code> 块中，这样可以减少<code>try</code> 块中的代码量，有助于定位问题。</p>
+<p><strong><code>except</code> 语句</strong></p>
+<p><code>except</code> 关键字后边可以跟一个<code>异常名字</code>，也可以跟一组<code>异常名字</code>，一组异常时，将多个异常的名字写在一个元组中，语法如下：</p>
+<pre><code class="language-python">except (Error1, Error2...):
+    pass
+</code></pre>
+<p>一个<code>try</code> 语句中，也可以包含多个<code>except</code> 语句块，语法如下：</p>
+<pre><code class="language-python">try:
+    # 代码块
+except Error1 as e:
+    # 处理 Error1
+except Error2 as e:
+    # 处理 Error2
+    .
+    .
+    .
+except:
+    e = sys.exc_info()[0])
+    pass
+</code></pre>
+<p>多个<code>except</code> 语句块时，Python 解释器会从上到下依次判断异常的类型，直到符合某个异常时，会执行对应的语句块中的代码，在该<code>except</code> 块之后的<code>except</code> 块将被忽略。</p>
+<p>其中，最后一个<code>except</code> 块可以省略异常的名字，这种格式可以匹配任意的异常，在该块中，可以使用<code>sys.exc_info()[0]</code> 来获取异常。</p>
+<p>在有多个<code>except</code> 语句块时，要注意，前边的异常的范围应该小于等于后边的异常的范围，否则，后边的<code>except</code> 块将没有意义。</p>
+<p><strong><code>else</code> 语句</strong></p>
+<p>Python 中，<code>try... except...</code> 之后还可以有一个<code>else</code>语句块，<code>except</code> 语句块是在遇到异常时执行的，<code>else</code> 语句块是在没有遇到异常时执行的。</p>
+<p>发生异常时，示例：</p>
+<pre><code class="language-python">try:
+    hello('123', 'abc')
+except Exception as e:
+    print('发生异常')
+    print(e)
+else:
+    print('没有发生异常')
+</code></pre>
+<p>上面的代码中，执行到<code>hello('123', 'abc')</code> 时会发生异常，然后会进入到<code>except</code> 语句块，<code>else</code> 语句不会被执行，执行结果如下：</p>
+<pre><code class="language-shell">发生异常
+hello() takes 1 positional argument but 2 were given
+</code></pre>
+<p>没有发生异常时，示例：</p>
+<pre><code class="language-python">try:
+    hello('123')
+except Exception as e:
+    print('发生异常')
+    print(e)
+else:
+    print('没有发生异常')
+</code></pre>
+<p>上面代码中的<code>try</code> 语句块不会发生异常，那么<code>except</code> 语句就不会执行，<code>else</code> 语句会执行，结果如下：</p>
+<pre><code class="language-shell">hello 123
+没有发生异常
+</code></pre>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p><code>else</code> 语句的使用频率并不高。</p>
+</blockquote>
+<p><strong><code>finally</code> 语句</strong></p>
+<p><code>finally</code> 语句块无论是否异常都会被执行，该语句块经常用在需要关闭系统资源的情况下。</p>
+<p>没有发生异常时，示例如下：</p>
+<pre><code class="language-python">try:
+    hello('123')
+except Exception as e:
+    print('发生异常')
+    print(e)
+else:
+    print('没有发生异常')
+finally:
+    print('执行了 finally 语句块')
+</code></pre>
+<p>上面代码中，<code>try</code> 语句块没有发生异常，<code>else</code> 与 <code>finally</code> 都被执行，<code>except</code> 语句块没有执行。运行结果如下：</p>
+<pre><code class="language-shell">hello 123
+没有发生异常
+执行了 finally 语句块
+</code></pre>
+<p>发生异常时，示例如下：</p>
+<pre><code class="language-python">try:
+    hello('123', 'abc')
+except Exception as e:
+    print('发生异常')
+    print(e)
+else:
+    print('没有发生异常')
+finally:
+    print('执行了 finally 语句块')
+</code></pre>
+<p>上面代码中，<code>try</code> 语句块发生异常，<code>except</code> 与 <code>finally</code> 都被执行，<code>else</code> 语句块没有执行。运行结果如下：</p>
+<pre><code class="language-shell">发生异常
+hello() takes 1 positional argument but 2 were given
+执行了 finally 语句块
+</code></pre>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p><code>else</code> 语句块与<code>finally</code> 语句块可以同时存在，也可以同时不存在，也可以一个存在一个不存在，互不影响。</p>
+</blockquote>
+<h3 id="3抛出异常">3，抛出异常</h3>
+<p><strong><code>raise</code> 异常</strong></p>
+<p>如果你捕获了一个异常，却不想彻底解决这个异常，而想将该异常向上层抛出，可以使用<code>raise</code> 关键字。</p>
+<p><code>raise</code> 用于抛出异常，其后可以跟一个<code>异常对象</code>，或者什么也不跟。</p>
+<p><code>raise</code> 后跟一个<code>异常对象</code>：</p>
+<pre><code class="language-python">raise Exception('这里发生了错误')
+</code></pre>
+<p><code>raise</code> 后什么也不跟：</p>
+<pre><code class="language-python">try:
+    hello('123', 'abc')
+except Exception as e:
+    print('发生异常')
+    raise
+</code></pre>
+<p>Python 解释器会记录最后一个发生的异常，<code>raise</code> 会将最后一个异常抛出。上面代码中的<code>raise</code> 相当于<code>raise e</code>。</p>
+<p><strong><code>assert</code> 断言</strong></p>
+<p><code>assert</code> 语句称为<code>断言</code>，就是判断某个<code>表达式</code>是否为真：</p>
+<ul>
+<li>表达式为<code>True</code> 时，正常通过</li>
+<li>表达式为<code>False</code> 时，抛出<code>AssertionError</code> 异常</li>
+</ul>
+<p>示例如下：</p>
+<p>表达式<code>1 == 1</code>为<code>True</code>，没有反应：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; assert 1 == 1
+</code></pre>
+<p>表达式<code>1 == 0</code>为<code>False</code>，抛出异常：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; assert 1 == 0
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AssertionError
+</code></pre>
+<h3 id="4python-异常层次结构">4，Python 异常层次结构</h3>
+<p>Python 异常层次结构如下：</p>
+<pre><code class="language-python">BaseException
+ +-- SystemExit
+ +-- KeyboardInterrupt
+ +-- GeneratorExit
+ +-- Exception
+      +-- StopIteration
+      +-- StopAsyncIteration
+      +-- ArithmeticError
+      |    +-- FloatingPointError
+      |    +-- OverflowError
+      |    +-- ZeroDivisionError
+      +-- AssertionError
+      +-- AttributeError
+      +-- BufferError
+      +-- EOFError
+      +-- ImportError
+      |    +-- ModuleNotFoundError
+      +-- LookupError
+      |    +-- IndexError
+      |    +-- KeyError
+      +-- MemoryError
+      +-- NameError
+      |    +-- UnboundLocalError
+      +-- OSError
+      |    +-- BlockingIOError
+      |    +-- ChildProcessError
+      |    +-- ConnectionError
+      |    |    +-- BrokenPipeError
+      |    |    +-- ConnectionAbortedError
+      |    |    +-- ConnectionRefusedError
+      |    |    +-- ConnectionResetError
+      |    +-- FileExistsError
+      |    +-- FileNotFoundError
+      |    +-- InterruptedError
+      |    +-- IsADirectoryError
+      |    +-- NotADirectoryError
+      |    +-- PermissionError
+      |    +-- ProcessLookupError
+      |    +-- TimeoutError
+      +-- ReferenceError
+      +-- RuntimeError
+      |    +-- NotImplementedError
+      |    +-- RecursionError
+      +-- SyntaxError
+      |    +-- IndentationError
+      |         +-- TabError
+      +-- SystemError
+      +-- TypeError
+      +-- ValueError
+      |    +-- UnicodeError
+      |         +-- UnicodeDecodeError
+      |         +-- UnicodeEncodeError
+      |         +-- UnicodeTranslateError
+      +-- Warning
+           +-- DeprecationWarning
+           +-- PendingDeprecationWarning
+           +-- RuntimeWarning
+           +-- SyntaxWarning
+           +-- UserWarning
+           +-- FutureWarning
+           +-- ImportWarning
+           +-- UnicodeWarning
+           +-- BytesWarning
+           +-- ResourceWarning 
+</code></pre>
+<blockquote>
+<p>可参考这里：</p>
+<p><code>https://docs.python.org/3/library/exceptions.html#exception-hierarchy</code></p>
+</blockquote>
+<p>这些都是<code>内建异常</code>，<code>BaseException</code> 是所有异常的父类，我们使用最多的是<code>Exception</code> 及其子类。可以使用<code>help(类名)</code>来查看每个类的详情。</p>
+<h3 id="5自定义异常">5，自定义异常</h3>
+<p>有时候，我们需要定义自己的<code>异常类</code>，来满足自己的需求。</p>
+<p>我们已经知道，Python 异常类有自己的层次结构，所有的类都直接或者间接继承了<code>BaseException</code>。因此，用户自定义的异常类，也需要满足这种层次结构。</p>
+<p>一般情况下，自定义异常需要继承<code>Exception</code> 类。如下：</p>
+<pre><code class="language-python">class MyError(Exception):
+    pass
+</code></pre>
+<p><code>MyError</code> 类的使用方式，跟内建异常类的使用方式一样。你可以根据自己的需要，为<code>MyError</code> 类编写相应的构造方法，和其它类方法。</p>
+<p>如果没有为<code>MyError</code> 编写构造方法，那么<code>MyError</code> 就继承了<code>Exception</code> 的构造方法。</p>
+<h3 id="6调试错误">6，调试错误</h3>
+<p>程序编写完成后不一定是正确的，当发现有错误时，就需要定位错误的位置。</p>
+<p>最普遍，最简单的调错的方法就是打印某个变量，通过输出变量的值，来查看其是否是你想要的结果。</p>
+<p>另一种比较高效，有力的调试代码的方式是<code>单步调试</code>，即是通过设置<code>断点</code>，深入到代码内部，一步一步的跟踪查看代码的执行结果是否正确，从而达到修正代码的目的。</p>
+<p>在<code>C 语言</code>中有一个非常著名的工具叫做<code>gdb</code>，这是一款强大的调试工具。Python 中也有类似的一款工具叫做<code>pdb</code>，它使用起来要比<code>gdb</code> 简单许多。</p>
+<p>在Python 中，<code>pdb</code> 是一个模块，所以，在使用之前要先使用<code>import pdb</code> 将该模块引入。然后，在需要调试代码的地方，使用<code>pdb.set_trace()</code> 方法来设置断点，在代码执行到此处时，Python 解释器就会从此处开始让你调式代码。</p>
+<p>如下代码，文件名为<code>Test.py</code>：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+# 引入 pdb 模块
+import pdb
+
+def hello(s):
+    print('hello %s' % s)
+
+# 设置断点
+pdb.set_trace()
+
+hello('python')
+hello('java')
+</code></pre>
+<p>我们使用<code>python3</code> 来运行该程序，如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+&gt; ~/Test.py(12)&lt;module&gt;()
+-&gt; hello('python')
+(Pdb) 
+</code></pre>
+<p>可以看到代码在<code>hello('python')</code>之前暂停并进入断点，控制台显示出<code>(Pdb)</code>，我们可以在这个后面输入Python 代码或者<code>pdb</code> 支持的命令。</p>
+<p><code>pdb</code> 常用命令如下：</p>
+<ul>
+<li><code>n</code>：进行下一步代码，即单步执行</li>
+<li><code>c</code>：代码执行到下一个断点处，如果没有下一个断点，则执行到程序结束</li>
+<li><code>s</code>：在遇到函数时，使用<code>s</code> 命令，可以进入函数内部</li>
+<li><code>l</code>：列出当前语句周围的10行代码</li>
+<li><code>p</code>：用于输出变量的值，相当于<code>print</code> 函数</li>
+</ul>
+<p>（完。）</p>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn18/">Python 简明教程 &mdash; 18，Python 面向对象</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn19/">Python 简明教程 &mdash; 19，Python 类与对象</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn20/">Python 简明教程 &mdash; 20，Python 类中的属性与方法</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn21/">Python 简明教程 &mdash; 21，Python 继承与多态</a></p>
+<p><a href="https://codeshellme.github.io/2020/05/python-learn22/">Python 简明教程 &mdash; 22，Python 闭包与装饰器</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-07-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/07/python-learn22/">
+            <span class="next-text nav-default">Python 简明教程 --- 22，Python 闭包与装饰器</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/07/python-learn23/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 23，Python 异常处理">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
