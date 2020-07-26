@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sat, 18 Jul 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jul 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -28,6 +28,24 @@
       
       <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 26，Python 多进程编程</title>
+      <link>https://codeshellme.github.io/2020/07/python-learn26/</link>
+      <pubDate>Thu, 23 Jul 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/07/python-learn26/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 学编程最有效的方法是动手敲代码。 目录 1，什么</description>
+    </item>
+    
+    <item>
+      <title>Python 简明教程 --- 25，Python 目录操作</title>
+      <link>https://codeshellme.github.io/2020/07/python-learn25/</link>
+      <pubDate>Mon, 20 Jul 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/07/python-learn25/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 做技术一定要一颗恒心，这样才不会半途而废。 目</description>
     </item>
     
     <item>

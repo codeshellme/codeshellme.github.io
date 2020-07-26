@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Python 简明教程 --- 26，Python 多进程编程 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 学编程最有效的方法是动手敲代码。 目录 1，什么" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/07/python-learn26/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Python 简明教程 --- 26，Python 多进程编程" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 学编程最有效的方法是动手敲代码。 目录 1，什么" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/07/python-learn26/" />
+<meta property="article:published_time" content="2020-07-23T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-07-23T21:41:52+08:00" />
+<meta itemprop="name" content="Python 简明教程 --- 26，Python 多进程编程">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 学编程最有效的方法是动手敲代码。 目录 1，什么">
+<meta itemprop="datePublished" content="2020-07-23T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-07-23T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5746">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python 简明教程 --- 26，Python 多进程编程"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 学编程最有效的方法是动手敲代码。 目录 1，什么"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/2020/05/python-learn/">
+        <li class="mobile-menu-item">Python 简明教程</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/2020/04/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/05/python-learn/">Python 简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/2020/04/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Python 简明教程 --- 26，Python 多进程编程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-23 </span>
+        <div class="post-category">
+            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            </div>
+          <span class="more-meta"> 5746 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1什么是多进程">1，什么是多进程</a></li>
+        <li><a href="#2fork-函数">2，<code>fork</code> 函数</a></li>
+        <li><a href="#3孤儿进程与僵尸进程">3，孤儿进程与僵尸进程</a></li>
+        <li><a href="#4避免僵尸进程">4，避免僵尸进程</a></li>
+        <li><a href="#5使用信号处理僵尸进程">5，使用信号处理僵尸进程</a></li>
+        <li><a href="#6忽略sigchld-信号">6，忽略<code>SIGCHLD</code> 信号</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>学编程最有效的方法是动手敲代码。</strong></p>
+</blockquote>
+<p><strong>目录</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725220932527.png" alt="在这里插入图片描述"></p>
+<h3 id="1什么是多进程">1，什么是多进程</h3>
+<p>我们所写的Python 代码就是一个<code>程序</code>，Python 程序用Python 解释器来执行。程序是存储在磁盘上的一个文件，Python 程序需要通过Python 解释器将其读入内存，然后进行<code>解释</code>并<code>执行</code>。</p>
+<p>处于<code>执行</code>（<code>运行</code>）状态的程序叫做<code>进程</code>。进程是由<code>操作系统</code>分配资源并进行调度才能执行。操作系统会为每个进程分配<code>进程ID</code>（非负整数），作为进程的<code>唯一标识</code>。</p>
+<p>现代操作系统都提供了<code>多进程</code>同步执行的机制，也就是操作系统允许多个进程同时运行。操作系统负责进程的管理工作。比如我们在处理<code>word</code> 文档的同时还在听音乐，这就需要有一个<code>word</code> 程序和一个音乐软件在同步运行。</p>
+<p>多进程机制的硬件支持是由<code>CPU</code> 提供的，CPU 有<code>单核</code>与<code>多核</code>之分。</p>
+<p><code>单核CPU</code> 只有一个核心，在同一时刻只能有一个进程在执行，单核CPU 上的多个进程的执行，实际上是<code>并发</code>执行。其背后的原理是，CPU 的运行速度是相当快的，多进程执行实际上是每个进程<code>间隔运行</code>，而间隔的时间非常短，人类是无法察觉到这种间隔的，这样，人类感觉起来就像多个进程同时执行一样。</p>
+<p><code>多核CPU</code> 有多个核心，每个核心都可以处理进程，这样每个进程都可以运行在不同的CPU 上，这叫做<code>并行</code>执行，是真正的在同一时刻运行。</p>
+<h3 id="2fork-函数">2，<code>fork</code> 函数</h3>
+<p>Python 语言也支持多进程编程，以此来支持更加复杂的，高性能的应用。</p>
+<p>为了支持多进程编程，操作系统提供了最原始的系统调用<code>fork()</code> 函数，使得当前进程可以创建出一个子进程，这样父进程和子进程就可以处理不同的事务。</p>
+<p>Python 中的<code>fork()</code> 函数被封装在<code>os</code> 模块中，该函数原型很简单，没有任何参数，如下：</p>
+<pre><code class="language-python">fork()
+</code></pre>
+<p>与一般函数不同的是，该函数的返回值比较特殊，<code>fork</code> 函数执行一次，返回两次值：</p>
+<ul>
+<li><strong>返回值为0：</strong> 为子进程范围，子进程可通过<code>getppid()</code> 函数得到父进程ID</li>
+<li><strong>返回值为子进程ID：</strong> 为父进程范围，这样父进程可得到子进程ID</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+import os
+
+# 这里是父进程
+# 创建子进程
+pid = os.fork()
+
+if pid == 0:
+    # 子进程范围，编写子进程需要处理的事务
+    print('这里是子进程，父进程ID 为:%s，子进程ID 为:%s' % (
+        os.getppid(), os.getpid()))
+else:
+    # 父进程范围，编写父进程需要处理的事务
+    print('这里是父进程, 父进程ID 为:%s, 子进程ID 为:%s' % (
+        os.getpid(), pid))
+
+# 父进程和子进程都会执行到这里
+print('进程ID:%s' % os.getpid())
+</code></pre>
+<p>在上面代码中，我们调用了<code>fork()</code> 函数，返回值为<code>pid</code>：</p>
+<ul>
+<li><strong>pid 为0 时：</strong> 进入了子进程范围，我们使用<code>getppid()</code> 函数获取了父进程ID，使用<code>getpid()</code> 函数获取了当前进程（子进程）ID</li>
+<li><strong>pid 不为0 时：</strong> 进入了父进程范围，此时<code>pid</code> 就是子进程ID，我们使用<code>getpid()</code> 函数获取了当前进程（父进程）ID</li>
+</ul>
+<p>代码的最后一行<code>print('进程ID:%s' % os.getpid())</code>，父进程和子进程都会执行到。</p>
+<p>这段代码的执行结果如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+这里是父进程, 父进程ID 为:1405, 子进程ID 为:1406
+进程ID:1405   # 最后一行代码的输出
+这里是子进程，父进程ID 为:1405，子进程ID 为:1406
+进程ID:1406   # 最后一行代码的输出
+</code></pre>
+<p>从上面的执行结果，我们可以看到，父进程ID 为 <code>1405</code>，子进程ID 为<code>1406</code>。</p>
+<p>最后一行代码，子进程和父进程都能执行到的原因是，在执行了<code>fork()</code> 函数后，之后的代码就同时存在于两个进程（父子进程）空间中。返回值<code>pid</code> 为<code>0</code> 时，是子进程空间；返回值<code>pid</code> 不为<code>0</code> 时，是父进程空间。</p>
+<p>而最后一行代码，即属于<code>pid == 0</code> 的范围，又属于<code>else</code> 的范围，所以父子进程都会执行该代码。</p>
+<h3 id="3孤儿进程与僵尸进程">3，孤儿进程与僵尸进程</h3>
+<p>我们已经知道，在<code>fork()</code> 函数之后，就会有两个进程，分别是<code>父进程</code>和<code>子进程</code>。那这两个进程是哪个先执行呢？是父进程先于子进程执行，还是子进程先于父进程执行？</p>
+<p>答案是<code>不确定</code>。因为父子进程哪个先执行不是程序能够决定的，而是由操作系统的调度决定的，操作系统先调度到谁，谁就先执行。</p>
+<p>另外，在父子进程退出时，由于退出的先后顺序不一样，也会造成<code>孤儿进程</code>与<code>僵尸进程</code>：</p>
+<ul>
+<li>孤儿进程：父进程先于子进程退出，子进程会变成孤儿进程。孤儿进程会被<code>系统进程</code>接管，系统进程变成孤儿进程的父进程。在孤儿进程退出时，系统进程会进行处理。</li>
+<li>僵尸进程：如果子进程退出时，其父进程没有处理子进程的<code>退出状态</code>，那么这个进程退出后，其占用的系统资源就不会<code>释放</code>，也就是，这个进程即不进行正常的工作，却依然占用系统资源，这样的进程叫做<code>僵尸进程</code>。</li>
+</ul>
+<p>下面我们编写一段会产生僵尸进程的代码：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+import os
+import time
+
+# 这里是父进程
+# 创建子进程
+pid = os.fork()
+
+if pid == 0:
+    # 子进程范围，编写子进程需要处理的事务
+    print('这里是子进程，父进程ID 为:%s，子进程ID 为:%s' % (
+        os.getppid(), os.getpid()))
+else:
+    # 父进程范围，编写父进程需要处理的事务
+    print('这里是父进程, 父进程ID 为:%s, 子进程ID 为:%s' % (
+        os.getpid(), pid))
+        
+    print('父进程正在sleep 600S...')
+    time.sleep(600)
+
+# 父进程和子进程都会执行到这里
+print('进程ID:%s' % os.getpid())
+</code></pre>
+<p>上面的代码中，我们在父进程中<code>sleep</code> 了<code>600</code> 秒，这样，子进程会先于父进程退出，而父进程没有处理子进程的退出状态，这必然造成子进程变为僵尸进程。</p>
+<p>我们使用<code>python3</code> 执行该程序，如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+这里是父进程, 父进程ID 为:1524, 子进程ID 为:1525
+父进程正在sleep 600S...
+这里是子进程，父进程ID 为:1524，子进程ID 为:1525
+进程ID:1525
+`注意，这里父进程在sleep，程序并没有退出`
+</code></pre>
+<p>从上面的输出，我们可以知道，父进程ID 为 <code>1524</code>，子进程ID 为<code>1525</code>。</p>
+<p>然后，我们用<code>ps</code> 命令，来查看当前的<code>python3</code> 进程，如下：</p>
+<pre><code class="language-shell">$ ps -aux| grep python3
+1      2    3    4     5      6     7      8      9      10          11
+wp   1524  1.0  0.0  23992  6604  pts/2   `S`   09:13   0:00  python3 Test.py
+wp   1525  0.0  0.0      0     0  pts/2   `Z`   09:13   0:00  [python3] &lt;defunct&gt;
+</code></pre>
+<p>（为了方便查看，我在上面的输出中添加了<code>列数</code>，共11 列。）</p>
+<p>其中第 2 列为进程ID，第 8 列为进程状态。我们看到父进程(1524)处于<code>S</code> 状态（即休眠状态），子进程（1525）处于<code>Z</code> 状态（即僵尸状态）。</p>
+<p>这说明，子进程先于父进程退出，而父进程又没有处理子进程的退出状态，所以使得子进程变为了<code>僵尸进程</code>。</p>
+<h3 id="4避免僵尸进程">4，避免僵尸进程</h3>
+<p>孤儿进程不会造成什么危害，而僵尸进程会造成系统资源浪费，所以僵尸进程是应该被避免的情况。</p>
+<p>既然僵尸进程会导致资源浪费的情况，那么操作系统为什么还要设计僵尸进程的存在呢？</p>
+<p>僵尸进程存在的意义是保存了进程退出时的一些状态，比如进程ID，终止状态，资源使用情况等信息，这些信息都可以让其父进程获取到，来做适当的处理。</p>
+<p>所以，在子进程退出后，只有经过父进程的处理才能避免<code>僵尸进程</code>的出现。</p>
+<p><strong><code>wait</code> 函数</strong></p>
+<p>父进程可以通过<code>wait()</code> 函数来获取子进程的退出状态。需要说明的是，调用<code>wait()</code> 函数的进程将会阻塞，直到该进程的某个子进程退出。</p>
+<p><code>wait</code> 函数原型如下：</p>
+<pre><code class="language-shell">wait()
+`
+该函数返回一个元组(pid, status)
+pid 为退出进程的ID
+status 为退出进程的状态
+`
+</code></pre>
+<p>父进程调用<code>wait()</code> 函数有两种情况，这两种情况都会正确的避免<code>僵尸进程</code>的出现：</p>
+<ul>
+<li>父进程在子进程退出<code>前</code>调用<code>wait()</code></li>
+<li>父进程在子进程退出<code>后</code>调用<code>wait()</code></li>
+</ul>
+<p>我们分别对这两种情况进行代码演示，通过<code>sleep</code> 函数来控制哪个进程先退出：</p>
+<ol>
+<li>父进程在子进程退出<code>前</code>调用<code>wait()</code></li>
+</ol>
+<p>代码：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+import os
+import time
+
+# 这里是父进程
+# 创建子进程
+pid = os.fork()
+
+if pid == 0:
+    # 子进程调用sleep，保证父进程先调用wait
+    print('这里是子进程, 父进程pid:%s, 子进程pid:%s sleep 5 秒' % (
+        os.getppid(), os.getpid()
+        ))
+    time.sleep(5)
+
+else:
+    # 父进程调用wait，且出阻塞在这里
+    child_pid, child_status = os.wait()
+    print('这里是父进程, 父进程pid:%s, 子进程pid:%s, 子进程退出状态:%s' % (
+        os.getpid(), child_pid, child_status))
+
+    print('父进程sleep 600 秒, 此时用 ps 命令查看进程状态')
+    time.sleep(600)
+</code></pre>
+<p>该代码的执行结果如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+这里是子进程, 父进程pid:1585, 子进程pid:1586 sleep 5 秒
+这里是父进程, 父进程pid:1585, 子进程pid:1586, 子进程退出状态:0
+父进程sleep 600 秒, 此时用 ps 命令查看进程状态
+</code></pre>
+<p>当打印出<code>父进程sleep 600 秒, 此时用 ps 命令查看进程状态</code> 这句话时，证明<code>子进程</code>已经退出，我们用<code>ps</code> 命令查看<code>python3</code> 进程状态，如下：</p>
+<pre><code class="language-shell">$ ps -aux| grep python3
+1     2    3    4     5      6    7    8    9     10          11
+wp  1585  0.0  0.0  23992  6604 pts/2  S  10:10  0:00  python3 Test.py
+</code></pre>
+<p>可见此时只有父进程存活，子进程已经成功退出，没有处于僵尸进程状态。</p>
+<ol start="2">
+<li>父进程在子进程退出<code>后</code>调用<code>wait()</code></li>
+</ol>
+<p>代码：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+import os
+import time
+
+# 这里是父进程
+# 创建子进程
+pid = os.fork()
+
+if pid == 0:
+    # 子进程范围
+    print('这里是子进程, 父进程pid:%s, 子进程pid:%s' % (
+        os.getppid(), os.getpid()
+        ))
+
+else:
+    # 父进程先 sleep，保证子进程先退出，然后再调用 wait
+    time.sleep(5)
+
+    child_pid, child_status = os.wait()
+    print('这里是父进程, 父进程pid:%s, 子进程pid:%s, 子进程退出状态:%s' % (
+        os.getpid(), child_pid, child_status))
+
+    print('父进程sleep 600 秒, 此时用 ps 命令查看进程状态')
+    time.sleep(600)
+</code></pre>
+<p>该代码执行结果如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+这里是子进程, 父进程pid:1591, 子进程pid:1592
+这里是父进程, 父进程pid:1591, 子进程pid:1592, 子进程退出状态:0
+父进程sleep 600 秒, 此时用 ps 命令查看进程状态
+</code></pre>
+<p>当打印出<code>父进程sleep 600 秒, 此时用 ps 命令查看进程状态</code> 这句话时，我们用<code>ps</code> 命令查看<code>python3</code> 进程状态，如下：</p>
+<p>执行结果：</p>
+<pre><code class="language-shell">$ ps -aux| grep python3
+1     2    3    4     5      6    7    8    9     10          11
+wp  1591  0.2  0.0  23992  6620 pts/2  S  10:20  0:00  python3 Test.py
+</code></pre>
+<p>可见此时只有父进程存活，子进程已经成功退出，没有处于僵尸进程状态。</p>
+<h3 id="5使用信号处理僵尸进程">5，使用信号处理僵尸进程</h3>
+<p>因为<code>wait()</code> 函数会导致调用进程阻塞，那就使得调用进程无法处理别的事情。这其实不是很合理，因为白白浪费了一个进程。</p>
+<p>这种情况我们可以使用<code>信号</code>来处理。</p>
+<p><code>信号</code>是一种系统中断，当进程遇到系统中断时，就会打断进程正在执行的正常流程，转而去处理<code>中断函数</code>。进程处理完中断函数后，又会回到进程原来的处理流程。</p>
+<p><code>中断函数</code>是用户向系统注册的一个函数，用于在遇到某个信号时，要做哪些处理。</p>
+<p>因为子进程在退出时会向父进程发送<code>SIGCHLD</code> 信号，所以父进程可以通过捕获该信号来处理子进程。</p>
+<p><strong><code>signal</code> 模块</strong></p>
+<p>在Linux 系统中，我们可以通过<code>kill -l</code> 命令来查看系统中的信号，共<code>64</code> 个信号：</p>
+<pre><code class="language-shell">$ kill -l
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP
+ 6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1
+11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM
+16) SIGSTKFLT	17) SIGCHLD	18) SIGCONT	19) SIGSTOP	20) SIGTSTP
+21) SIGTTIN	22) SIGTTOU	23) SIGURG	24) SIGXCPU	25) SIGXFSZ
+26) SIGVTALRM	27) SIGPROF	28) SIGWINCH	29) SIGIO	30) SIGPWR
+31) SIGSYS	34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+63) SIGRTMAX-1	64) SIGRTMAX
+</code></pre>
+<p>在Python 中通过<code>signal</code> 模块来处理信号，我们通过<code>dir(signal)</code> 来查看<code>signal</code> 模块都有哪些内容：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir(signal)
+['Handlers', 'ITIMER_PROF', 'ITIMER_REAL', 
+'ITIMER_VIRTUAL', 'ItimerError', 'NSIG', 
+'SIGABRT', 'SIGALRM', 'SIGBUS', 'SIGCHLD', 
+'SIGCLD', 'SIGCONT', 'SIGFPE', 'SIGHUP', 
+'SIGILL', 'SIGINT', 'SIGIO', 'SIGIOT', 
+'SIGKILL', 'SIGPIPE', 'SIGPOLL', 'SIGPROF', 
+'SIGPWR', 'SIGQUIT', 'SIGRTMAX', 'SIGRTMIN', 
+'SIGSEGV', 'SIGSTOP', 'SIGSYS', 'SIGTERM', 
+'SIGTRAP', 'SIGTSTP', 'SIGTTIN', 'SIGTTOU', 
+'SIGURG', 'SIGUSR1', 'SIGUSR2', 'SIGVTALRM', 
+'SIGWINCH', 'SIGXCPU', 'SIGXFSZ', 'SIG_BLOCK', 
+'SIG_DFL', 'SIG_IGN', 'SIG_SETMASK', 
+'SIG_UNBLOCK', 'Sigmasks', 'Signals', 
+'_IntEnum', '__builtins__', '__cached__', 
+'__doc__', '__file__', '__loader__', 
+'__name__', '__package__', '__spec__', 
+'_enum_to_int', '_int_to_enum', '_signal', 
+'alarm', 'default_int_handler', 'getitimer', 
+'getsignal', 'pause', 'pthread_kill', 
+'pthread_sigmask', 'set_wakeup_fd', 'setitimer', 
+'siginterrupt', 'signal', 'sigpending', 
+'sigtimedwait', 'sigwait', 'sigwaitinfo', 
+'struct_siginfo']
+</code></pre>
+<p>可以看到，<code>signal</code> 模块中包含了一些信号相关函数，和绝大部分信号。</p>
+<p><strong><code>signal</code> 函数</strong></p>
+<p>要想处理信号，则需要使用<code>signal</code> 模块中的<code>signal</code> 函数向系统注册，捕获哪个信号，以及处理该信号的函数。</p>
+<p><code>signal</code> 函数原型如下：</p>
+<pre><code class="language-python">signal(signalnum, handler)
+</code></pre>
+<ul>
+<li>该函数接收两个参数，分别是<code>signalnum</code>和<code>handler</code></li>
+<li><code>signalnum</code> 是要捕获的信号</li>
+<li><code>handler</code> 是信号处理函数</li>
+</ul>
+<p><code>handler</code> 参数有三种取值：</p>
+<ul>
+<li><code>SIG_DFL</code>：表示系统设置的默认值</li>
+<li><code>SIG_IGN</code>：表示忽略该信号</li>
+<li>一个函数类型的参数：该函数接收两个参数分别是<code>信号编号</code>和<code>当前的栈帧</code></li>
+</ul>
+<p>接下来，我们编写代码，用信号来处理僵尸进程。</p>
+<p>示例代码：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+import os
+import time
+import signal
+
+# 这里是父进程
+
+# 信号处理函数
+# 该函数须有两个参数
+def sig_handelr(signum, frame):
+    # print(frame)
+
+    # 父进程中调用 wait 来处理子进程
+    child_pid, child_status = os.wait()
+    print('这里是父进程, 接收到了信号:%s, 此时用 ps 命令查看进程状态。父进程pid:%s, 子进程pid:%s, 子进程退出状态:%s' % (
+        signum, os.getpid(), child_pid, child_status))
+
+# 父进程注册信号处理函数
+signal.signal(signal.SIGCHLD, sig_handelr)
+
+# 创建子进程
+pid = os.fork()
+
+if pid == 0:
+    # 子进程范围
+
+    print('这里是子进程, 父进程pid:%s, 子进程pid:%s, 子进程 sleep 10 秒' % (
+        os.getppid(), os.getpid()
+        ))
+
+    # 先让子进程sleep 10 秒，然后退出
+    time.sleep(10)
+
+else:
+    print('这里是父进程, 父进程sleep 600 秒, 保证子进程先退出')
+    time.sleep(600)
+</code></pre>
+<p>注意：信号处理函数<code>signal</code> 的调用，一定要在<code>fork</code> 函数之前。</p>
+<p>执行结果如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+这里是父进程, 父进程sleep 600 秒, 保证子进程先退出
+这里是子进程, 父进程pid:1651, 子进程pid:1652, 子进程 sleep 10 秒
+这里是父进程, 接收到了信号:17, 此时用 ps 命令查看进程状态。父进程pid:1651, 子进程pid:1652, 子进程退出状态:0
+`这里程序并没有退出，因为父进程在sleep 600 秒`
+</code></pre>
+<p>等待子进程<code>sleep </code>10 秒，退出之后，我们用<code>ps</code> 命令查看进程状态：</p>
+<pre><code class="language-shell">ps -aux| grep python3
+1    2     3    4     5      6    7     8     9      10          11
+wp  1651  0.0  0.0  23992  6708 pts/2   S   21:38   0:00  python3 Test.py
+</code></pre>
+<p>通过<code>ps</code> 命令可以看出，在子进程退出之后，并没有变成僵尸进程，说明我们的处理没有问题。</p>
+<h3 id="6忽略sigchld-信号">6，忽略<code>SIGCHLD</code> 信号</h3>
+<p>更简单处理办法是直接将<code>SIGCHLD</code> 信号<code>忽略</code>掉，而不需要为信号注册<code>处理函数</code>。<code>忽略信号</code>也是处理信号的一种，同样不会使子进程变成僵尸进程。</p>
+<p>代码如下：</p>
+<pre><code class="language-python">#! /usr/bin/env python3
+
+import os
+import time
+import signal
+
+# 这里是父进程
+# 父进程注册信号，处理方法是忽略
+signal.signal(signal.SIGCHLD, signal.SIG_IGN)
+
+# 创建子进程
+pid = os.fork()
+
+if pid == 0:
+    # 子进程范围
+    print('这里是子进程, 父进程pid:%s, 子进程pid:%s, 子进程 sleep 10 秒' % (
+        os.getppid(), os.getpid()
+        ))
+
+    # 先让子进程sleep 10 秒，然后退出
+    time.sleep(10)
+
+else:
+    print('这里是父进程, 父进程sleep 600 秒, 保证子进程先退出')
+    time.sleep(600)
+</code></pre>
+<p>我们将<code>signal</code> 函数的第二个参数设置为<code>signal.SIG_IGN</code>，意思是<code>忽略</code>掉信号。</p>
+<p>执行结果如下：</p>
+<pre><code class="language-shell">$ python3 Test.py 
+这里是父进程, 父进程sleep 600 秒, 保证子进程先退出
+这里是子进程, 父进程pid:1659, 子进程pid:1660, 子进程 sleep 10 秒
+`这里程序并没有退出，因为父进程在sleep 600 秒`
+</code></pre>
+<p>我们再用 <code>ps</code> 命令输出如下：</p>
+<pre><code class="language-shell">$ ps -aux| grep python3
+1     2    3    4     5      6     7     8     9     10         11
+wp  1659  0.1  0.0  23992  6688  pts/2   S   21:57  0:00  python3 Test.py
+</code></pre>
+<p>可以看到，子进程依然没有变成僵尸进程。</p>
+<p>（完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="https://codeshellme.github.io/2020/06/python-learn21/">Python 简明教程 &mdash; 21，Python 继承与多态</a></p>
+<p><a href="https://codeshellme.github.io/2020/07/python-learn22/">Python 简明教程 &mdash; 22，Python 闭包与装饰器</a></p>
+<p><a href="https://codeshellme.github.io/2020/07/python-learn23/">Python 简明教程 &mdash; 23，Python 异常处理</a></p>
+<p><a href="https://codeshellme.github.io/2020/07/python-learn24/">Python 简明教程 &mdash; 24，Python 文件读写</a></p>
+<p><a href="https://codeshellme.github.io/2020/07/python-learn25/">Python 简明教程 &mdash; 25，Python 目录操作</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-07-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/04/love-music/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">音乐</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/07/python-learn25/">
+            <span class="next-text nav-default">Python 简明教程 --- 25，Python 目录操作</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/07/python-learn26/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 26，Python 多进程编程">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
