@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>决策树算法-理论篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-decisiontree1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="决策树算法-理论篇" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-decisiontree1/" />
+<meta property="article:published_time" content="2020-11-08T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-08T21:41:52+08:00" />
+<meta itemprop="name" content="决策树算法-理论篇">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，">
+<meta itemprop="datePublished" content="2020-11-08T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-08T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3387">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="决策树算法-理论篇"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">决策树算法-理论篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-08 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 3387 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1什么是决策树">1，什么是决策树？</a></li>
+        <li><a href="#2如何构建决策树">2，如何构建决策树？</a></li>
+        <li><a href="#3什么是信息熵">3，什么是信息熵？</a></li>
+        <li><a href="#4什么是信息纯度">4，什么是信息纯度？</a></li>
+        <li><a href="#5什么是信息增益">5，什么是信息增益？</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1什么是决策树">1，什么是决策树？</h3>
+<p>决策树是一种机器学习算法，我们可以使用决策树来处理分类问题。决策树的决策（分类）过程可以用一个倒着的树形结构来形象的表达出来，因此得名决策树。</p>
+<p>比如我们根据天气<strong>是否晴朗</strong>和<strong>是否刮风</strong>来决定是否去踢球？当天气晴朗并且不刮风的时候，我们才去踢球。</p>
+<p>此时，就可以将这个决策过程用一个树形结构来表示，如下：</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201109114949821.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<p>这就是一颗最简单的决策树，我们可以用它来判断是否要去踢球。最上方是树的根节点，最下方是树的叶子节点。方框里是判断的过程，椭圆形中是决策的结果。</p>
+<p>当然，实际的使用过程中，判断条件并不会这么简单，也不会让我们自己手动画图。实际应用中，我们会让程序自动的，从一堆样本数据集中构造出这颗决策树，这个程序自动构建决策树的过程就是<strong>机器学习</strong>的过程。</p>
+<p>最终构造出来的这棵决策树就是机器学习的结果，叫做<strong>模型</strong>。最后，我们可以向模型中输入一些<strong>属性条件</strong>，让模型给出我们<strong>判断结果</strong>。</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201109115204430.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<h3 id="2如何构建决策树">2，如何构建决策树？</h3>
+<p>比如我们有如下数据集：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>条件:天气晴朗?</th>
+<th>条件:是否刮风?</th>
+<th>结果:去踢球吗?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>是</td>
+<td>否</td>
+<td>去</td>
+</tr>
+<tr>
+<td>2</td>
+<td>是</td>
+<td>是</td>
+<td>不去</td>
+</tr>
+<tr>
+<td>3</td>
+<td>否</td>
+<td>是</td>
+<td>不去</td>
+</tr>
+<tr>
+<td>4</td>
+<td>否</td>
+<td>否</td>
+<td>不去</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到这个表格中有4 行（第一行表头不算），4 列数据。</p>
+<p>一般在机器学习中，最后一列称为<strong>目标(target)</strong>，前边的列都称为<strong>特征(features)</strong>。</p>
+<p>我们要根据这个数据集，来构建一颗决策树，那如何构建呢？</p>
+<p>首先，需要确定使用哪个属性作为第一个判断条件，是先判断<strong>天气晴朗</strong>，还是先判断<strong>是否刮风</strong>？也就是，让天气晴朗作为树的根节点，还是让是否刮风作为树的根节点？</p>
+<p>解决这个问题需要用到<strong>信息熵</strong>和<strong>信息纯度</strong>的概念，我们先来看什么是信息熵。</p>
+<h3 id="3什么是信息熵">3，什么是信息熵？</h3>
+<p>1948 年，克劳德·香浓在他的论文“通信的数学原理”中提到了<strong>信息熵</strong>（一般用<strong>H</strong> 表示），度量信息熵的单位是<strong>比特</strong>。</p>
+<p>就是说，信息量的多少是可以量化的。一条信息量的多少与信息的不确定性有关，可以认为，信息量就等于不确定性的多少（信息的不确定度）。</p>
+<p>信息熵的计算公式如下：</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201109120725729.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<p>该公式的含义是：</p>
+<ul>
+<li>待分类的事物可以分在多个分类中，这里的<code>n</code> 就是分类的数目。</li>
+<li><code>H(X)</code> 表示熵，数学含义是，所有类别包含的信息期望值。</li>
+<li><code>-㏒p(Xì)</code>表示符号的信息值，<code>p(Xì)</code> 是选择该分类的概率。</li>
+<li>公式中的<code>log</code> 一般以2 为底。</li>
+</ul>
+<p>总之，就是要知道，信息量的多少是可以用数学公式计算出来的，用信息论中的专业术语就叫做信息熵。信息熵越大，信息量也就越大。</p>
+<h4 id="31计算信息熵">3.1，计算信息熵</h4>
+<p>那么我们就来计算一下上面表格数据的信息熵。我们只关注“结果”那一列：</p>
+<table>
+<thead>
+<tr>
+<th>结果:去踢球吗?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>去</td>
+</tr>
+<tr>
+<td>不去</td>
+</tr>
+<tr>
+<td>不去</td>
+</tr>
+<tr>
+<td>不去</td>
+</tr>
+</tbody>
+</table>
+<p>根据表格，我们可以知道，所有的分类共有2 种，也就是“去” 和“不去”，“去”出现了1 次，“不去”出现了3 次。</p>
+<p>分别计算“去” 和“不去” 出现的概率：</p>
+<ul>
+<li><code>P(去) = 1 / 4 = 0.25</code></li>
+<li><code>P(不去) = 3 / 4  = 0.75</code></li>
+</ul>
+<p>然后，根据熵的计算公式来计算“去”和“不去” 的信息熵，其中log 以2 为底：</p>
+<ul>
+<li><code>H(去) = 0.25 * log 0.25 = -0.5</code></li>
+<li><code>H(不去) = 0.74 * log 0.75 = -0.31127812445913283</code></li>
+</ul>
+<p>所以，整个表格含有的信息量就是：</p>
+<ul>
+<li><code>H(表格) = -(H(去) + H(不去)) = 0.81127812445913283</code></li>
+</ul>
+<h4 id="32用代码实现信息熵的计算">3.2，用代码实现信息熵的计算</h4>
+<p>将计算信息熵的过程用<code>Python</code> 代码实现，如下：</p>
+<pre><code class="language-python">import math
+
+# 本函数用于计算一组数据的信息熵
+# data_set 是一个列表，代表一组数据
+# data_set 的元素data 也是一个列表
+def calc_ent(data_set):
+    labels = {} # 用于统计每个label 的数量
+    
+    for data in data_set:
+        label = data[-1]	# 只用最后一个元素做计算
+        if label not in labels:
+            labels[label] = 0
+
+        labels[label] += 1 
+
+    ent = 0 # 熵
+    n = len(data_set)   # 数据条数
+
+    # 计算信息熵
+    for label in labels:
+        prob = float(labels[label]) / n # label 的概率
+        ent -= prob * math.log(prob, 2) # 根据信息熵公式计算
+
+    return ent
+</code></pre>
+<p>下面用该函数来计算表格的信息熵：</p>
+<pre><code class="language-python"># 将表格转化为 python 列表
+# &quot;yes&quot; 表示&quot;去&quot;
+# &quot;no&quot; 表示&quot;不去&quot;
+data_set = [['yes'], ['no'], ['no'], ['no']] 
+ent = calc_ent(data_set)
+print(ent)	# 0.811278124459
+</code></pre>
+<p>可见，用代码计算出来的结果是 <strong>0.811278124459</strong>，跟我们手算的结果 <strong>0.81127812445913283</strong> 是一样的（保留的小数位数不同）。</p>
+<h3 id="4什么是信息纯度">4，什么是信息纯度？</h3>
+<p>信息的纯度与信息熵成反比：</p>
+<ul>
+<li>信息熵越大，信息量越大，信息越杂乱，纯度越低。</li>
+<li>信息熵越小，信息量越小，信息越规整，纯度越高。</li>
+</ul>
+<p>经典的“不纯度”算法有三种，分别是：</p>
+<ul>
+<li><strong>信息增益</strong>，即 <code>ID3 算法</code>，<code>Information Divergence</code>，该算法由 <code>Ross Quinlan</code> 于1975 年提出，可用于生成二叉树或多叉树。
+<ul>
+<li>ID3 算法会选择信息增益最大的属性来作为属性的划分。</li>
+</ul>
+</li>
+<li><strong>信息增益率</strong>，即 <code>C4.5 算法</code>，是 <code>Ross Quinlan</code> 在ID3 算法的基础上改进而来，可用于生成二叉树或多叉树。</li>
+<li><strong>基尼不纯度</strong>，即 <code>CART 算法</code>，<code>Classification and Regression Trees</code>，中文为<strong>分类回归树</strong>。
+<ul>
+<li>即可用于分类数，又可用于回归树。分类树用<strong>基尼系数</strong>做判断，回归树用<strong>偏差</strong>做判断。</li>
+<li>基尼系数本身反应了样本的不确定度。
+<ul>
+<li>当基尼系数越小的时候，样本之间的差异性越小，不确定程度越低。</li>
+<li><code>CART 算法</code>会选择基尼系数最小的属性作为属性的划分。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>信息增益是其中最简单的一种算法，后两者都是由它衍生而来。本篇文章中，我们只详细介绍信息增益。</p>
+<blockquote>
+<p><strong>基尼系数</strong>是经济学中用来衡量一个国家收入差距的常用指标。当基尼系数大于 <code>0.4</code> 的时候，说明财富差异较大。基尼系数在 <code>0.2-0.4</code> 之间说明分配合理，财富差距不大。</p>
+</blockquote>
+<h3 id="5什么是信息增益">5，什么是信息增益？</h3>
+<p>信息增益就是，在根据某个属性划分数据集的前后，信息量发生的变化。</p>
+<p>信息增益的计算公式如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201109123048138.png#pic_center" alt="在这里插入图片描述"></p>
+<p>该公式的含义：</p>
+<ul>
+<li>简写就是：<code>G = H(父节点) - H(所有子节点)</code></li>
+<li>也就是：父节点的信息熵减去所有子节点的信息熵。</li>
+<li>所有子节点的信息熵会按照子节点在父节点中的出现的概率来计算，这叫做<strong>归一化信息熵</strong>。</li>
+</ul>
+<p>信息增益的目的在于，将数据集划分之后带来的纯度提升，也就是信息熵的下降。如果数据集在根据某个属性划分之后，能够获得最大的信息增益，那么这个属性就是最好的选择。</p>
+<p>所以，我们想要找到根节点，就需要计算每个属性作为根节点时的信息增益，那么获得信息增益最大的那个属性，就是根节点。</p>
+<h4 id="51计算信息增益">5.1，计算信息增益</h4>
+<p>为了方便看，我将上面那个表格放在这里：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>条件:天气晴朗?</th>
+<th>条件:是否刮风?</th>
+<th>结果:去踢球吗?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>是</td>
+<td>否</td>
+<td>去</td>
+</tr>
+<tr>
+<td>2</td>
+<td>是</td>
+<td>是</td>
+<td>不去</td>
+</tr>
+<tr>
+<td>3</td>
+<td>否</td>
+<td>是</td>
+<td>不去</td>
+</tr>
+<tr>
+<td>4</td>
+<td>否</td>
+<td>否</td>
+<td>不去</td>
+</tr>
+</tbody>
+</table>
+<p>我们已经知道了，信息增益等于按照某个属性划分前后的信息熵之差。</p>
+<p>这个表格划分之前的信息熵我们已经知道了，就是我们在上面计算的结果：</p>
+<ul>
+<li><code>H(表格) = 0.81127812445913283</code>。</li>
+</ul>
+<p>接下来，我们计算按照“天气晴朗”划分的信息增益。按照“天气晴朗”划分后有两个表格。</p>
+<p>表格1，“天气晴朗”的值为“是”：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>条件:天气晴朗?</th>
+<th>条件:是否刮风?</th>
+<th>结果:去踢球吗?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>是</strong></td>
+<td>否</td>
+<td>去</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>是</strong></td>
+<td>是</td>
+<td>不去</td>
+</tr>
+</tbody>
+</table>
+<p>分类共有2 种，也就是“去” 和“不去”，“去”出现了1 次，“不去”出现了1 次。</p>
+<p>所以，“去” 和“不去” 出现的概率均为0.5：</p>
+<ul>
+<li><code>P(去) = P(不去) = 1 / 2 = 0.5</code></li>
+</ul>
+<p>然后，“去”和“不去” 的信息熵，其中log 以2 为底：</p>
+<ul>
+<li><code>H(去) = H(不去) = 0.5 * log 0.5 = -0.5</code></li>
+</ul>
+<p>所以，表格1 含有的信息量就是：</p>
+<ul>
+<li><code>H(表格1) = -(H(去) + H(不去)) = 1</code></li>
+</ul>
+<p>表格2，“天气晴朗”的值为“否”：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>条件:天气晴朗?</th>
+<th>条件:是否刮风?</th>
+<th>结果:去踢球吗?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td><strong>否</strong></td>
+<td>是</td>
+<td>不去</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>否</strong></td>
+<td>否</td>
+<td>不去</td>
+</tr>
+</tbody>
+</table>
+<p>所有的分类只有1 种，是“不去”。所以：</p>
+<ul>
+<li><code>P(不去) = 1</code></li>
+</ul>
+<p>然后，“不去” 的信息熵，其中log 以2 为底：</p>
+<ul>
+<li><code>H(不去) = 1 * log 1 = 0</code></li>
+</ul>
+<p>所以，表格2 含有的信息量就是：</p>
+<ul>
+<li><code>H(表格2) = 0</code></li>
+</ul>
+<p>总数据共有4 份：</p>
+<ul>
+<li>表格1 中有2 份，概率为 2/4 = 0.5</li>
+<li>表格2 中有2 份，概率为 2/4 = 0.5</li>
+</ul>
+<p>所以，最终按照“天气晴朗”划分的信息增益为：</p>
+<ul>
+<li><code>G(天气晴朗) = H(表格) - (0.5*H(表格1) + 0.5*H(表格2)) = H(表格) - 0.5 = 0.31127812445913283。</code></li>
+</ul>
+<h4 id="52id3-算法的缺点">5.2，ID3 算法的缺点</h4>
+<p>当我们计算的信息增益多了，你会发现，ID3 算法倾向于选择取值比较多的属性作为（根）节点。</p>
+<p>但是有的时候，某些属性并不会影响结果（或者对结果的影响不大），那此时使用ID3 选择的属性就不恰当了。</p>
+<p>为了改进ID3 算法的这种缺点，C4.5 算法应运而生。</p>
+<p>C4.5 算法对ID3 算法的改进点包括：</p>
+<ul>
+<li>采用信息增益率，而不是信息增益，避免ID3 算法有倾向于选择取值多的属性的缺点。</li>
+<li>加入了剪枝技术，防止ID3 算法中过拟合情况的出现。</li>
+<li>对连续的属性进行离散化的处理，使得C4.5 算法可以处理连续属性的情况，而ID3 只能处理离散型数据。</li>
+<li>处理缺失值，C4.5 也可以针对数据集不完整的情况进行处理。</li>
+</ul>
+<p>当然C4.5 算法也并不是没有缺点，由于 C4.5算法需要对数据集进行多次扫描，所以算法效率相对较低。这里不再展开讨论C4.5 算法。</p>
+<p>下篇会介绍如何用决策树来解决实际问题。</p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201109125331689.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0xVQU9IQU4=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-08
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/07/python-learn26/">
+            <span class="next-text nav-default">Python 简明教程 --- 26，Python 多进程编程</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-decisiontree1/" class="leancloud_visitors" data-flag-title="决策树算法-理论篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

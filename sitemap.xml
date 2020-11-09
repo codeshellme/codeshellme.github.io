@@ -2,14 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://codeshellme.github.io/2020/05/python-learn/</loc>
+    <loc>https://codeshellme.github.io/ml/</loc>
+    <lastmod>2020-11-08T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/python-learn/</loc>
     <lastmod>2020-05-10T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/2020/04/love-music/</loc>
+    <loc>https://codeshellme.github.io/love-music/</loc>
     <lastmod>2020-04-09T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -24,14 +31,35 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2020-07-23T21:41:52+08:00</lastmod>
+    <lastmod>2020-11-08T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2020-07-23T21:41:52+08:00</lastmod>
+    <lastmod>2020-11-08T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/11/ml-decisiontree1/</loc>
+    <lastmod>2020-11-08T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2020-11-08T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/</loc>
+    <lastmod>2020-11-08T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -317,13 +345,6 @@
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/categories/music/</loc>
-    <lastmod>2020-04-09T21:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://codeshellme.github.io/2020/04/funny-shell-cmd/</loc>
     <lastmod>2020-04-09T01:37:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -347,13 +368,6 @@
   <url>
     <loc>https://codeshellme.github.io/2020/04/0-basics-py/</loc>
     <lastmod>2020-04-06T01:37:56+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/</loc>
-    <lastmod>2020-03-28T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

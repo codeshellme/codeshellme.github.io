@@ -7,26 +7,35 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Fri, 20 Mar 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Python 简明教程</title>
-      <link>https://codeshellme.github.io/2020/05/python-learn/</link>
+      <title>机器学习</title>
+      <link>https://codeshellme.github.io/ml/</link>
+      <pubDate>Sun, 08 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/ml/</guid>
+      <description>这里是机器学习相关文章。 决策树算法-理论篇</description>
+    </item>
+    
+    <item>
+      <title>Python简明教程</title>
+      <link>https://codeshellme.github.io/python-learn/</link>
       <pubDate>Sun, 10 May 2020 21:38:52 +0800</pubDate>
       
-      <guid>https://codeshellme.github.io/2020/05/python-learn/</guid>
+      <guid>https://codeshellme.github.io/python-learn/</guid>
       <description>这是一份Python 教程。 Python 简明教程 &amp;mdash; 0，前言 Python 基础 Python 简明教程 &amp;mdash; 1，搭建Python 环境 Python 简明教程 &amp;mdash; 2，第一个Python 程序 Python 简明教程 &amp;mdash; 3</description>
     </item>
     
     <item>
       <title>音乐</title>
-      <link>https://codeshellme.github.io/2020/04/love-music/</link>
+      <link>https://codeshellme.github.io/love-music/</link>
       <pubDate>Thu, 09 Apr 2020 21:38:52 +0800</pubDate>
       
-      <guid>https://codeshellme.github.io/2020/04/love-music/</guid>
+      <guid>https://codeshellme.github.io/love-music/</guid>
       <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
     </item>
     
@@ -37,6 +46,15 @@
       
       <guid>https://codeshellme.github.io/about/</guid>
       <description>更多技术干货，尽在本站微信公众号，欢迎关注！ 你的支持，是我最大的动力！ --</description>
+    </item>
+    
+    <item>
+      <title>决策树算法-理论篇</title>
+      <link>https://codeshellme.github.io/2020/11/ml-decisiontree1/</link>
+      <pubDate>Sun, 08 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-decisiontree1/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，</description>
     </item>
     
     <item>

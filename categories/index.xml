@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 23 Jul 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>机器学习</title>
+      <link>https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sun, 08 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Python简明教程</title>
@@ -36,15 +45,6 @@
       <pubDate>Fri, 01 May 2020 01:37:56 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/categories/linux-%E7%B3%BB%E7%BB%9F/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>music</title>
-      <link>https://codeshellme.github.io/categories/music/</link>
-      <pubDate>Thu, 09 Apr 2020 21:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/categories/music/</guid>
       <description></description>
     </item>
     
