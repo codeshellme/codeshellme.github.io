@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，我们可以使" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -39,22 +39,22 @@
 
 
 <meta property="og:title" content="决策树算法-理论篇" />
-<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，我们可以使" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-decisiontree1/" />
 <meta property="article:published_time" content="2020-11-08T21:38:52+08:00" />
 <meta property="article:modified_time" content="2020-11-08T21:41:52+08:00" />
 <meta itemprop="name" content="决策树算法-理论篇">
-<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，我们可以使">
 <meta itemprop="datePublished" content="2020-11-08T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-11-08T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="3387">
+<meta itemprop="wordCount" content="3953">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="决策树算法-理论篇"/>
-<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，我们可以使"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -143,8 +143,8 @@
         <div class="post-category">
             <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
             </div>
-          <span class="more-meta"> 3387 字 </span>
-          <span class="more-meta"> 阅读约需 7 分钟 </span>
+          <span class="more-meta"> 3953 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
         
 
       </div>
@@ -161,7 +161,9 @@
         <li><a href="#2如何构建决策树">2，如何构建决策树？</a></li>
         <li><a href="#3什么是信息熵">3，什么是信息熵？</a></li>
         <li><a href="#4什么是信息纯度">4，什么是信息纯度？</a></li>
-        <li><a href="#5什么是信息增益">5，什么是信息增益？</a></li>
+        <li><a href="#5id3-算法">5，ID3 算法</a></li>
+        <li><a href="#6c45-算法">6，C4.5 算法</a></li>
+        <li><a href="#7cart-算法">7，CART 算法</a></li>
       </ul>
     </li>
   </ul>
@@ -170,21 +172,36 @@
 </div>
     <div class="post-content">
       <blockquote>
-<p><strong>微信公众号：码农充电站pro</strong></p>
-<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+<p>公号：码农充电站pro</p>
+<p>主页：https://codeshellme.github.io</p>
 </blockquote>
 <h3 id="1什么是决策树">1，什么是决策树？</h3>
-<p>决策树是一种机器学习算法，我们可以使用决策树来处理分类问题。决策树的决策（分类）过程可以用一个倒着的树形结构来形象的表达出来，因此得名决策树。</p>
+<p>决策树是一种机器学习算法，我们可以使用决策树来处理分类问题。决策树的决策（分类）过程可以用一个倒着的树形结构来形象的表达出来，因此得名<strong>决策树</strong>。</p>
+<p>决策树是一个包含根节点、若干内部节点和若干叶子节点的树形结构。决策树的根节点包含样本全集，内部节点对应特征属性，叶子节点表示决策的结果。</p>
+<p>使用决策树进行判断时，从根节点开始，测试待分类数据的特征属性值，应该走哪条分支，循环这样判断，直到叶子节点为止。最终到达的这个叶子节点，就是决策树的最终决策结果。</p>
+<p>决策树模型的学习过程一般有三个阶段：</p>
+<ul>
+<li><strong>特征选择</strong>：选择哪些属性作为树的节点。</li>
+<li><strong>生成决策树</strong>：生成树形结构。</li>
+<li><strong>决策树剪枝</strong>：是决策树的一种优化手段，比如剪去一些不必要的属性节点。一般有“预剪枝”和“后剪枝”两种。
+<ul>
+<li>剪枝的<strong>目的</strong>是防止过拟合现象，提高泛化能力。</li>
+<li><strong>预剪枝</strong>是在决策树的生成过程中就进行剪枝，缺点是有可能造成欠拟合。</li>
+<li><strong>后剪枝</strong>是在决策树生成之后再进行剪枝，缺点是计算量较大。</li>
+</ul>
+</li>
+</ul>
+<p>我们来看一个例子。</p>
 <p>比如我们根据天气<strong>是否晴朗</strong>和<strong>是否刮风</strong>来决定是否去踢球？当天气晴朗并且不刮风的时候，我们才去踢球。</p>
 <p>此时，就可以将这个决策过程用一个树形结构来表示，如下：</p>
 <hr>
-<p><img src="https://img-blog.csdnimg.cn/20201109114949821.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20201111102818315.png?#pic_center" alt="在这里插入图片描述"></p>
 <hr>
-<p>这就是一颗最简单的决策树，我们可以用它来判断是否要去踢球。最上方是树的根节点，最下方是树的叶子节点。方框里是判断的过程，椭圆形中是决策的结果。</p>
+<p>这就是一颗最简单的决策树，我们可以用它来判断是否要去踢球。最上方是树的根节点，最下方是树的叶子节点。方框里是判断条件，圆形中是决策的结果。</p>
 <p>当然，实际的使用过程中，判断条件并不会这么简单，也不会让我们自己手动画图。实际应用中，我们会让程序自动的，从一堆样本数据集中构造出这颗决策树，这个程序自动构建决策树的过程就是<strong>机器学习</strong>的过程。</p>
 <p>最终构造出来的这棵决策树就是机器学习的结果，叫做<strong>模型</strong>。最后，我们可以向模型中输入一些<strong>属性条件</strong>，让模型给出我们<strong>判断结果</strong>。</p>
 <hr>
-<p><img src="https://img-blog.csdnimg.cn/20201109115204430.png?#pic_center" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20201111103446771.png?#pic_center" alt="在这里插入图片描述"></p>
 <hr>
 <h3 id="2如何构建决策树">2，如何构建决策树？</h3>
 <p>比如我们有如下数据集：</p>
@@ -334,7 +351,7 @@ print(ent)	# 0.811278124459
 <li><strong>信息增益率</strong>，即 <code>C4.5 算法</code>，是 <code>Ross Quinlan</code> 在ID3 算法的基础上改进而来，可用于生成二叉树或多叉树。</li>
 <li><strong>基尼不纯度</strong>，即 <code>CART 算法</code>，<code>Classification and Regression Trees</code>，中文为<strong>分类回归树</strong>。
 <ul>
-<li>即可用于分类数，又可用于回归树。分类树用<strong>基尼系数</strong>做判断，回归树用<strong>偏差</strong>做判断。</li>
+<li>只支持二叉树，即可用于分类数，又可用于回归树。分类树用<strong>基尼系数</strong>做判断，回归树用<strong>偏差</strong>做判断。</li>
 <li>基尼系数本身反应了样本的不确定度。
 <ul>
 <li>当基尼系数越小的时候，样本之间的差异性越小，不确定程度越低。</li>
@@ -348,8 +365,8 @@ print(ent)	# 0.811278124459
 <blockquote>
 <p><strong>基尼系数</strong>是经济学中用来衡量一个国家收入差距的常用指标。当基尼系数大于 <code>0.4</code> 的时候，说明财富差异较大。基尼系数在 <code>0.2-0.4</code> 之间说明分配合理，财富差距不大。</p>
 </blockquote>
-<h3 id="5什么是信息增益">5，什么是信息增益？</h3>
-<p>信息增益就是，在根据某个属性划分数据集的前后，信息量发生的变化。</p>
+<h3 id="5id3-算法">5，ID3 算法</h3>
+<p>ID3 算法也就是信息增益，在根据某个属性划分数据集的前后，信息量发生的变化。</p>
 <p>信息增益的计算公式如下：</p>
 <p><img src="https://img-blog.csdnimg.cn/20201109123048138.png#pic_center" alt="在这里插入图片描述"></p>
 <p>该公式的含义：</p>
@@ -492,6 +509,7 @@ print(ent)	# 0.811278124459
 <p>当我们计算的信息增益多了，你会发现，ID3 算法倾向于选择取值比较多的属性作为（根）节点。</p>
 <p>但是有的时候，某些属性并不会影响结果（或者对结果的影响不大），那此时使用ID3 选择的属性就不恰当了。</p>
 <p>为了改进ID3 算法的这种缺点，C4.5 算法应运而生。</p>
+<h3 id="6c45-算法">6，C4.5 算法</h3>
 <p>C4.5 算法对ID3 算法的改进点包括：</p>
 <ul>
 <li>采用信息增益率，而不是信息增益，避免ID3 算法有倾向于选择取值多的属性的缺点。</li>
@@ -499,8 +517,21 @@ print(ent)	# 0.811278124459
 <li>对连续的属性进行离散化的处理，使得C4.5 算法可以处理连续属性的情况，而ID3 只能处理离散型数据。</li>
 <li>处理缺失值，C4.5 也可以针对数据集不完整的情况进行处理。</li>
 </ul>
-<p>当然C4.5 算法也并不是没有缺点，由于 C4.5算法需要对数据集进行多次扫描，所以算法效率相对较低。这里不再展开讨论C4.5 算法。</p>
+<p>当然C4.5 算法也并不是没有缺点，由于 C4.5算法需要对数据集进行多次扫描，所以算法效率相对较低。</p>
+<p>ID3 和C4.5 都是基于信息熵，所以涉及大量的对数运算。而 CART 算法基于基尼系数，不涉及对数运算。</p>
+<h3 id="7cart-算法">7，CART 算法</h3>
+<p>CART 算法全称为<strong>分类回归树</strong>，基于基尼系数。</p>
+<p>基尼系数的计算公式如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201110231426221.png#pic_center" alt="在这里插入图片描述"></p>
+<p>该公式表示的含义是：</p>
+<ul>
+<li>整个数据集共有 k 个类别。</li>
+<li>第 n 个类别的概率为 Pn。</li>
+</ul>
+<p>基尼系数的效果与熵模型高度近似，而且避免了对数运算，因此CART 算法的执行效率较高。</p>
+<p>本篇文章主要介绍了决策树的基本原理，决策树的算法一般有三种，分别是ID3  算法，C4.5 算法，CART 算法，其中重点介绍了ID3 算法的计算过程。</p>
 <p>下篇会介绍如何用决策树来解决实际问题。</p>
+<p>（完。）</p>
 <hr>
 <p>欢迎关注作者公众号，获取更多技术干货。</p>
 <p><img src="https://img-blog.csdnimg.cn/20201109125331689.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0xVQU9IQU4=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
