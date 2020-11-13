@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sun, 08 Nov 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>设计模式</title>
+      <link>https://codeshellme.github.io/dp/</link>
+      <pubDate>Thu, 12 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/dp/</guid>
+      <description>这里是设计模式相关文章。 设计模式之高质量代码</description>
+    </item>
     
     <item>
       <title>机器学习</title>
@@ -46,6 +55,15 @@
       
       <guid>https://codeshellme.github.io/about/</guid>
       <description>更多技术干货，尽在本站微信公众号，欢迎关注！ 你的支持，是我最大的动力！ --</description>
+    </item>
+    
+    <item>
+      <title>设计模式之高质量代码</title>
+      <link>https://codeshellme.github.io/2020/11/dp1/</link>
+      <pubDate>Thu, 12 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/dp1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢</description>
     </item>
     
     <item>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式 on 码农充电站</title>
+    <link>https://codeshellme.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+    <description>Recent content in 设计模式 on 码农充电站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>@码农充电站</copyright>
+    <lastBuildDate>Thu, 12 Nov 2020 21:38:52 +0800</lastBuildDate>
+    
+	<atom:link href="https://codeshellme.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>设计模式之高质量代码</title>
+      <link>https://codeshellme.github.io/2020/11/dp1/</link>
+      <pubDate>Thu, 12 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/dp1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>设计模式之高质量代码 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/dp1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="设计模式之高质量代码" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/dp1/" />
+<meta property="article:published_time" content="2020-11-12T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-12T21:41:52+08:00" />
+<meta itemprop="name" content="设计模式之高质量代码">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢">
+<meta itemprop="datePublished" content="2020-11-12T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-12T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4183">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="设计模式之高质量代码"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">设计模式之高质量代码</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 4183 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0什么是高质量代码">0，什么是高质量代码</a></li>
+        <li><a href="#1如何编写高质量代码">1，如何编写高质量代码</a></li>
+        <li><a href="#2如何发现代码的问题">2，如何发现代码的问题</a></li>
+        <li><a href="#3设计模式">3，设计模式</a></li>
+        <li><a href="#4uml-建模">4，UML 建模</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p>公号：码农充电站pro</p>
+<p>主页：https://codeshellme.github.io</p>
+</blockquote>
+<p>如果有人问你，“什么样的代码是好代码”，你会怎样回答呢？</p>
+<h3 id="0什么是高质量代码">0，什么是高质量代码</h3>
+<p>我觉得回答这个问题，应该从两个方面考虑。</p>
+<ol>
+<li>从业务角度考虑。首先，在公司开发一款软件，应该是业务在驱动。所以，从这个角度来说，代码第一个应该满足的是业务需求，如果连最基本的业务需求都满足不了，别的也就无从谈起。</li>
+<li>从纯代码层面考虑。本篇我们重点要介绍的也就是这个问题。</li>
+</ol>
+<p>那从纯代码层面来说，什么样的代码才是好代码呢？</p>
+<p>通常会有以下几个判断标准：</p>
+<ul>
+<li><strong>可维护性</strong>：在当前代码的基础上，做修正或改进，是否容易做到？</li>
+<li><strong>可扩展性</strong>：当有了新的需求，在不对当前代码做大的改动的前期下，是否容易满足？</li>
+<li><strong>可复用性</strong>：代码是否能较容易的迁移到别的地方使用？不重复造轮子。</li>
+<li><strong>可读性</strong>：当其他人阅读代码，或者过一段时间自己再阅读，是否容易理解？</li>
+<li><strong>灵活性</strong>：是否足够灵活，易调整？</li>
+<li><strong>简洁性</strong>：是否简单，不复杂？</li>
+<li><strong>可测试性</strong>：是否容易测试正确性？</li>
+</ul>
+<p>好的代码，不一定要满足以上所有的条件。但一条也不满足的代码，基本上就不是好代码了。</p>
+<h3 id="1如何编写高质量代码">1，如何编写高质量代码</h3>
+<p>无规则不成方圆，写代码也是如此。要写出好的代码，需要遵守一些规则，主要有以下几个方面：</p>
+<ul>
+<li>设计原则</li>
+<li>设计模式</li>
+<li>编码规范</li>
+<li>持续重构</li>
+</ul>
+<h4 id="11设计原则">1.1，设计原则</h4>
+<p>每种设计模式都遵守了一个或多个设计原则。常用的设计原则有以下几种：</p>
+<ul>
+<li><strong>单一职责原则</strong>：一个类的职责要单一明确。</li>
+<li><strong>开闭原则</strong>：代码应该对扩展开发，对修改关闭（尽量减少对原有代码的<strong>修改</strong>）。</li>
+<li><strong>里式替换原则</strong>：能够使用父类对象的地方，也能使用子类。</li>
+<li><strong>接口隔离原则</strong>：接口的使用者不应该被强迫依赖它不需要的接口。</li>
+<li><strong>依赖倒置原则</strong>：高层模块不要依赖低层模块。高层模块和低层模块应该通过抽象来互相依赖。抽象不要依赖具体实现细节，具体实现细节依赖抽象。</li>
+<li><strong>KISS 原则</strong>：尽量保持代码简单。</li>
+<li><strong>YAGNI 原则</strong>：不要编写当前用不到的功能/代码，不要做过度设计。但并不是不需要考虑代码的扩展性。</li>
+<li><strong>DRY 原则</strong>：避免重复性代码。</li>
+<li><strong>LOD 原则</strong>：最小知识原则，每个模块只关心与自己关系密切的模块的有限知识。</li>
+</ul>
+<p>另外在面向对象编程中，也有两个比较重要的编程原则：</p>
+<ul>
+<li><strong>基于接口而非实现编程</strong>：设计接口的时候要自顶向下，统揽全局，不拘泥于细节。</li>
+<li><strong>多用组合少用继承</strong>：继承的最大问题在于，当继承层次过深层，过于复杂，就会影响到代码的可读性和维护性。</li>
+</ul>
+<p>在编码的过程中，要时常想着这些原则，思考自己的代码是否符合其中的某项或多项原则。</p>
+<h4 id="12设计模式">1.2，设计模式</h4>
+<p>常见的设计模式有23 种，下面会详细介绍。</p>
+<h4 id="13编码规范">1.3，编码规范</h4>
+<p>编码规范注重的是代码细节，主要目的是让代码具有可读性。整体上来说，好的代码，对外应该有一个统一的<strong>代码风格</strong>，代码风格不一定有好坏之分，但一定有是否统一之别。</p>
+<p>另外，<strong>代码命名</strong>也很重要，大到项目命名，目录命名，包名等。小到类名，接口名，方法名，对象名，变量名等。命名最基本的要求是用词<strong>标准达意</strong>，让人一看知道大概的用途是什么。</p>
+<p>还有，必要的地方要有必要的<strong>注释</strong>，对于他人及自己回头看代码都有帮助。</p>
+<h4 id="14持续重构">1.4，持续重构</h4>
+<p>随着项目需求的增加变化，代码结构，代码量也都会跟着变化。代码<strong>重构</strong>需要我们不断的从整体架构的角度审视整个项目代码的结构，是否已经变得混乱无序。只有不断的对代码进行重构，才能使得代码持续的具有可维护性，可读性等标准。</p>
+<h3 id="2如何发现代码的问题">2，如何发现代码的问题</h3>
+<p>经过上文，我们已经知道了高质量代码的标准是什么。那么，当我们编写完一部分代码后，应该怎样判断自己写的代码是否是高质量呢？</p>
+<p>文章开头已经提到过，好的代码应该从业务和纯代码两个角度来衡量，下面我们就从这两个角度来看，一般要对代码做哪些检查？</p>
+<p>业务角度：</p>
+<ul>
+<li>代码能否满足业务需求（逻辑是否正确，是否有bug）？</li>
+<li>代码是否健壮，能否应对边界条件（特殊情况）？</li>
+<li>软件性能是否足够，算法是否最优？</li>
+<li>代码是否有线程安全问题，能够支持并发？</li>
+<li>是否具备事物安全？</li>
+</ul>
+<p>从纯代码角度考虑：</p>
+<ul>
+<li>代码结构，目录划分是否清晰合理？</li>
+<li>是否满足可维护性，可扩展性等标准？</li>
+<li>是否遵循设计原则？是否过渡设计？</li>
+<li>是否遵守代码规范，风格是否统一？</li>
+<li>有无必要使用设计模式，运用是否得当？</li>
+<li>有无单元测试，测试是否全面？</li>
+</ul>
+<p>当我们完成某一阶段的代码后，可以尝试从以上几点来检查代码是否过关。</p>
+<p>下面主要介绍设计模式。</p>
+<h3 id="3设计模式">3，设计模式</h3>
+<p>设计模式讲的是如何编写可扩展、可维护、可读的高质量代码，它是针对软件开发中经常遇到的一些设计问题，总结出来的一套通用的解决方案。</p>
+<p>使用设计模式，可以使得我们编写的代码具有一个良好的结构，从而写出优雅的代码。设计模式关注的是，类与类之间以及对象与对象之间如何交互。</p>
+<p>常见的设计模式有23 种，但并不是每一种模式都常用。这23 种设计模式可分为3 大类，分别是：</p>
+<ul>
+<li>创建型：用于解决对象的创建问题。</li>
+<li>结构型：用于处理类或对象之间的组合关系。</li>
+<li>行为型：用于处理类或对象之间怎样交互及分配职责的问题。</li>
+</ul>
+<p>下面介绍每类之中都包含哪些设计模式。</p>
+<h4 id="31创建型">3.1，创建型</h4>
+<p>创建型包含5 种设计模式：</p>
+<ul>
+<li><strong>单例模式</strong>：保证一个类只能有一个实例，并提供一个全局访问点。</li>
+<li><strong>工厂方法</strong>：定义了一个创建对象的接口，由子类决定实例化哪一个类，使得类的实例化推迟到子类中。
+<ul>
+<li><strong>简单工厂</strong>：严格来说不是一种模式，但经常用于封装创建对象的过程。</li>
+</ul>
+</li>
+<li><strong>抽象工厂</strong>：提供了创建一系列相关对象的接口，而无需指定它们具体的类。</li>
+<li><strong>创建者模式</strong>：将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。</li>
+<li><strong>原型模式</strong>（不常用）：用原型实例指定创建对象的种类，并且通过拷贝这个原型来创建新的对象。</li>
+</ul>
+<h4 id="32结构型">3.2，结构型</h4>
+<p>结构型包含7 种设计模式：</p>
+<ul>
+<li><strong>装饰者模式</strong>：动态的给一个对象添加其它功能。从扩展性来说，这种方式比继承更有弹性，更加灵活，可作为替代继承的方案。</li>
+<li><strong>适配器模式</strong>：将一个类的接口转换成客户期望的另一个接口，使得原本接口不兼容的类可以相互合作。</li>
+<li><strong>代理模式</strong>：为对象提供一个代理，来控制对该对象的访问。</li>
+<li><strong>桥接模式</strong>：将抽象部分与它的实现部分分离，使它们可以独立的变化。</li>
+<li><strong>组合模式</strong>（不常用）：可以将对象组合成树形结构来表示“整体-部分”的层次结构，使得客户可以用一致的方式处理个别对象和对象组合。</li>
+<li><strong>外观模式</strong>（不常用）：提供了一个统一的接口，用来访问子系统中的一群接口。它定义了一个高层接口，让子系统更容易使用。</li>
+<li><strong>享元模式</strong>（不常用）：“享元”即共享单元，当一个系统中出现大量重复对象的时候，将对象设计成享元，以减少内存中对象的数量，节省内存。</li>
+</ul>
+<h4 id="33行为型">3.3，行为型</h4>
+<p>行为型包含11 种设计模式：</p>
+<ul>
+<li><strong>观察者模式</strong>：定义了对象之间的一对多关系，以便当一个对象的状态发生变化时，所有依赖它的对象都能得到通知，并自动更新。</li>
+<li><strong>策略模式</strong>：定义一系列的算法，将它们一个个封装起来，让它们之间可以互相替换。可使得算法的变化独立于使用它的客户。</li>
+<li><strong>迭代器模式</strong>：提供一个方法，可以顺序访问集合中的元素，而不暴露集合的内部表示。</li>
+<li><strong>模板模式</strong>：在一个方法中定义一个算法的骨架，而将一些步骤延迟到子类中，使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤。</li>
+<li><strong>状态模式</strong>：允许对象在内部状态改变时，改变它的行为，对象看起来好像改变了它的类。</li>
+<li><strong>职责链模式</strong>：多个对象可以处理同一个请求，这些对象连成一条链，并沿着这条链传递这个请求，直到有一个对象处理它。</li>
+<li><strong>访问者模式</strong>（不常用）：表示一个作用于某对象结构中的各元素的操作。它使你可以在不改变各元素的类的前提下，定义作用于这些元素的新操作。</li>
+<li><strong>命令模式</strong>（不常用）：将“请求”封装成对象，以便使用不同的请求，队列或日志来参数化其它对象。另外还支持可撤销的操作。</li>
+<li><strong>备忘录模式</strong>（不常用）：在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。以便以后恢复该对象。</li>
+<li><strong>中介模式</strong>（不常用）：用一个中介对象来封装一系列的对象交互，从而最小化对象之间的交互关系，降低代码复杂度。</li>
+<li><strong>解释器模式</strong> （不常用）：为某个语言定义它的语法表示，并定义一个解释器，来解释这种语法。</li>
+</ul>
+<h3 id="4uml-建模">4，UML 建模</h3>
+<p>设计模式中经常会用到UML 图来表示类与类之间的关系，下面介绍6 种UML 规定的类关系，分别是：</p>
+<ul>
+<li>泛化</li>
+<li>实现</li>
+<li>聚类</li>
+<li>组合</li>
+<li>关联</li>
+<li>依赖</li>
+</ul>
+<p>各种关系之间的强弱性为：</p>
+<ul>
+<li>泛化 = 实现 &gt; 组合 &gt; 聚合 &gt; 关联 &gt; 依赖。</li>
+<li>泛化与实现表示的关系最强。</li>
+<li>依赖表示的关系最弱。</li>
+</ul>
+<h4 id="41泛化关系">4.1，泛化关系</h4>
+<p>泛化可理解为继承关系。如下代码中，类B继承了类A。</p>
+<pre><code class="language-java">public class A { ... }
+public class B extends A { ... }
+</code></pre>
+<p>泛化关系用一个实线三角箭头表示，关系图如下，箭头由B 指向A，表示B继承了A：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201110184129918.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="42实现关系">4.2，实现关系</h4>
+<p>实现类和接口之间的关系，称为实现关系。</p>
+<p>如下代码中，类B 实现了接口A。</p>
+<pre><code class="language-java">public interface A {...}
+public class B implements A { ... }
+</code></pre>
+<p>实现关系用一个虚线三角箭头表示，关系图如下，箭头由B 指向A，表示B 实现了A：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201110184524729.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="43聚合关系">4.3，聚合关系</h4>
+<p>聚合是一种包含关系，A 类对象包含B 类对象，B类对象的生命周期可以不依赖A 类对象的生命周期。</p>
+<p>如下代码中，A 类对象包含了B 类对象。</p>
+<pre><code class="language-java">public class A {
+  private B b;
+  public A(B b) {
+    this.b = b;
+  }
+}
+</code></pre>
+<p>聚合关系用一个实线空心菱形箭头表示，关系图如下，箭头由B 指向A，表示A 中聚合了B：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020111018495385.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="44组合关系">4.4，组合关系</h4>
+<p>组合是一种包含关系。A 类对象包含B 类对象，B 类对象的生命周期依赖A 类对象的生命周期，B 类对象不可单独存在。</p>
+<p>如下代码中，A 类对象包含了B 类对象。</p>
+<pre><code class="language-java">public class A {
+  private B b;
+  public A() {
+    this.b = new B();
+  }
+}
+</code></pre>
+<p>组合关系用一个实线实心菱形箭头表示，关系图如下，箭头由B 指向A，表示A 中组合了B：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201110185158149.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="45关联关系">4.5，关联关系</h4>
+<p>关联是一种非常弱的关系，包含聚合、组合两种关系。如果B 类对象是A 类的成员变量，那么B 类和A 类就是关联关系。</p>
+<p>如下两种代码都是关联关系。</p>
+<pre><code class="language-java">public class A {
+  private B b;
+  public A(B b) {
+    this.b = b;
+  }
+}
+
+// 或者
+public class A {
+  private B b;
+  public A() {
+    this.b = new B();
+  }
+}
+</code></pre>
+<p>关联关系用一个实线箭头表示，关系图如下，箭头由A 指向B，表示A 关联B：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201110185545164.png#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="46依赖关系">4.6，依赖关系</h4>
+<p>依赖是一种比关联关系更弱的关系，包含关联关系。只要B 类对象和A  类对象有任何使用关系。</p>
+<p>如下三种代码都是依赖关系。</p>
+<pre><code class="language-java">public class A {
+  private B b;
+  public A(B b) {
+    this.b = b;
+  }
+}
+// 或者
+public class A {
+  private B b;
+  public A() {
+    this.b = new B();
+  }
+}
+// 或者
+public class A {
+  public void func(B b) { ... }
+}
+</code></pre>
+<p>依赖关系用一个虚线箭头表示，关系图如下，箭头由A 指向B，表示A 依赖B：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201110185816374.png#pic_center" alt="在这里插入图片描述"></p>
+<p>本篇文章主要介绍了什么是高质量代码，如何发现代码中的问题，以及如何编写高质量代码。另外重点介绍了23 种设计模式都有哪些，及每种设计模式的含义。最后介绍了设计模式中经常用到的UML 关系都有哪些。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201113112602391.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>希望本篇文章对你有所帮助，如果哪里有任何问题也欢迎指正，谢谢！</p>
+<p>（完。）</p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201109125331689.png?#pic_center" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/ml-decisiontree1/">
+            <span class="next-text nav-default">决策树算法-理论篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/dp1/" class="leancloud_visitors" data-flag-title="设计模式之高质量代码">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:3101968978@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/6258380929" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
