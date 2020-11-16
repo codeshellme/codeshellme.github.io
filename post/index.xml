@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 12 Nov 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 15 Nov 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>决策树算法-实战篇</title>
+      <link>https://codeshellme.github.io/2020/11/ml-decisiontree2/</link>
+      <pubDate>Sun, 15 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-decisiontree2/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了决策树算法的理论篇，本节来介绍如何用决策</description>
+    </item>
     
     <item>
       <title>设计模式之高质量代码</title>
