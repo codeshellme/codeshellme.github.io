@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>决策树算法-实战篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了决策树算法的理论篇，本节来介绍如何用决策" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-decisiontree2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="决策树算法-实战篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了决策树算法的理论篇，本节来介绍如何用决策" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-decisiontree2/" />
+<meta property="article:published_time" content="2020-11-15T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-15T21:41:52+08:00" />
+<meta itemprop="name" content="决策树算法-实战篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了决策树算法的理论篇，本节来介绍如何用决策">
+<meta itemprop="datePublished" content="2020-11-15T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-15T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5028">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="决策树算法-实战篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了决策树算法的理论篇，本节来介绍如何用决策"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">决策树算法-实战篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 5028 字 </span>
+          <span class="more-meta"> 阅读约需 11 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1scikit-learn">1，scikit-learn</a></li>
+        <li><a href="#2sklearn-中的决策树">2，sklearn 中的决策树</a></li>
+        <li><a href="#3构造分类树">3，构造分类树</a></li>
+        <li><a href="#4打印决策树">4，打印决策树</a></li>
+        <li><a href="#5构造回归树">5，构造回归树</a></li>
+        <li><a href="#6关于数据准备">6，关于数据准备</a></li>
+        <li><a href="#7总结">7，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>上篇文章介绍了<a href="/2020/11/ml-decisiontree1">决策树算法的理论篇</a>，本节来介绍如何用决策树解决实际问题。</p>
+<p>决策树是常用的机器学习算法之一，决策树模型的决策过程非常类似人类做判断的过程，比较好理解。</p>
+<p>决策树可用于很多场景，比如金融风险评估，房屋价格评估，医疗辅助诊断等。</p>
+<p>要使用决策树算法，我们先来介绍一下 <strong>scikit-learn</strong> 。</p>
+<h3 id="1scikit-learn">1，scikit-learn</h3>
+<p><a href="https://scikit-learn.org/stable/">scikit-learn</a> 是基于Python 的一个机器学习库，简称为<strong>sklearn</strong>，其中实现了很多机器学习算法。我们可以通过<a href="https://scikit-learn.org/stable/user_guide.html">sklearn 官方手册</a> 来学习如何使用它。</p>
+<p><em><strong>sklearn 自带数据集</strong></em></p>
+<p>要进行数据挖掘，首先得有数据。sklearn 库的<a href="https://github.com/scikit-learn/scikit-learn/tree/master/sklearn/datasets/data">datasets</a> 模块中自带了一些数据集，可以方便我们使用。</p>
+<p>sklearn 自带数据集：</p>
+<ol>
+<li>鸢尾花数据集：<em>load_iris</em>()</li>
+<li>乳腺癌数据集：<em>load_breast_cancer</em>()</li>
+<li>手写数字数据集：<em>load_digits</em>()</li>
+<li>糖尿病数据集：<em>load_diabetes</em>()</li>
+<li>波士顿房价数据集：<em>load_boston</em>()</li>
+<li>体能训练数据集：<em>load_linnerud</em>()</li>
+<li>葡萄酒产地数据集：<em>load_wine</em>()</li>
+</ol>
+<p>冒号后边是每个数据集对应的函数，可以使用相应的函数来导入数据。</p>
+<p>比如我们用如下代码导入<strong>鸢尾花数据集</strong>：</p>
+<pre><code class="language-python">from sklearn.datasets import load_iris
+iris = load_iris()
+</code></pre>
+<p>使用<code>dir(iris)</code> 查看<code>iris</code> 中包含哪些属性：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; dir(iris)
+['DESCR', 'data', 'feature_names', 'filename', 'frame', 'target', 'target_names']
+</code></pre>
+<h3 id="2sklearn-中的决策树">2，sklearn 中的决策树</h3>
+<p>sklearn 库的<a href="https://github.com/scikit-learn/scikit-learn/tree/master/sklearn/tree">tree</a> 模块实现了两种决策树：</p>
+<ul>
+<li><code>sklearn.tree.DecisionTreeClassifier</code> 类：分类树的实现。</li>
+<li><code>sklearn.tree.DecisionTreeRegressor</code> 类：回归树的实现。</li>
+</ul>
+<p>分类树用于预测<strong>离散型</strong>数值，回归树用于预测<strong>连续性</strong>数值。</p>
+<blockquote>
+<p>sklearn 只实现了<strong>预剪枝</strong>，没有实现<strong>后剪枝</strong>。</p>
+</blockquote>
+<p><strong><code>DecisionTreeClassifier</code> 类的构造函数</strong></p>
+<pre><code class="language-python">def __init__(self, *,
+       criterion=&quot;gini&quot;,
+       splitter=&quot;best&quot;,
+       max_depth=None,
+       min_samples_split=2,
+       min_samples_leaf=1,
+       min_weight_fraction_leaf=0.,
+       max_features=None,
+       random_state=None,
+       max_leaf_nodes=None,
+       min_impurity_decrease=0.,
+       min_impurity_split=None,
+       class_weight=None,
+       ccp_alpha=0.0):
+</code></pre>
+<p><code>DecisionTreeClassifier</code> 类的构造函数中的<code>criterion</code> 参数有2 个取值：</p>
+<ul>
+<li><code>entropy</code>：表示使用 ID3 算法（信息增益）构造决策树。</li>
+<li><code>gini</code>：表示使用CART 算法（基尼系数）构造决策树，为默认值。</li>
+</ul>
+<p>其它参数可使用默认值。</p>
+<blockquote>
+<p>sklearn 库中的决策分类树只实现了ID3 算法和CART 算法。</p>
+</blockquote>
+<p><strong><code>DecisionTreeRegressor</code> 类的构造函数</strong></p>
+<pre><code class="language-python">def __init__(self, *,
+      criterion=&quot;mse&quot;,
+      splitter=&quot;best&quot;,
+      max_depth=None,
+      min_samples_split=2,
+      min_samples_leaf=1,
+      min_weight_fraction_leaf=0.,
+      max_features=None,
+      random_state=None,
+      max_leaf_nodes=None,
+      min_impurity_decrease=0.,
+      min_impurity_split=None,
+      ccp_alpha=0.0):
+</code></pre>
+<p><code>DecisionTreeRegressor</code> 类的构造函数中的<code>criterion</code> 参数有4 个取值：</p>
+<ul>
+<li><code>mse</code>：表示<strong>均方误差</strong>算法，为默认值。</li>
+<li><code>friedman_mse</code>：表示<strong>费尔德曼均方误差</strong>算法。</li>
+<li><code>mae</code>：表示<strong>平均误差</strong>算法。</li>
+<li><code>poisson</code>：表示<strong>泊松偏差</strong>算法。</li>
+</ul>
+<p>其它参数可使用默认值。</p>
+<h3 id="3构造分类树">3，构造分类树</h3>
+<p>我们使用 <code>sklearn.datasets</code> 模块中自带的<strong>鸢尾花数据集</strong> 构造一颗决策树。</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201111220817840.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<h4 id="31鸢尾花数据集">3.1，鸢尾花数据集</h4>
+<p><strong>鸢尾花数据集</strong>目的是通过花瓣的长度和宽度，及花萼的长度和宽度，预测出花的品种。</p>
+<p><a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/iris.csv">这个数据集</a>包含150条数据，将鸢尾花分成了三类(每类是50条数据)，分别是：</p>
+<ul>
+<li><code>setosa</code>，用数字<code>0</code> 表示。</li>
+<li><code>versicolor</code>，用数字<code>1</code> 表示。</li>
+<li><code>virginica</code>，用数字<code>2</code> 表示。</li>
+</ul>
+<p>我们抽出3 条数据如下：</p>
+<pre><code class="language-shell">5.1,3.5,1.4,0.2,0
+6.9,3.1,4.9,1.5,1
+5.9,3.0,5.1,1.8,2
+</code></pre>
+<p>数据的含义：</p>
+<ul>
+<li>每条数据包含5 列，列与列之间用逗号隔开。</li>
+<li>从第1 列到第5 列，每列代表的含义是：<strong>花萼长度</strong>，<strong>花萼宽度</strong>，<strong>花瓣长度</strong>，<strong>花瓣宽度</strong>，<strong>花的品种</strong>。</li>
+<li>在机器学习中，前4列称为<code>特征值</code>，最后1列称为<code>目标值</code>。我们的目的就是用特征值预测出目标值。</li>
+</ul>
+<p>将上面3 条数据，用表格表示就是：</p>
+<table>
+<thead>
+<tr>
+<th>花萼长度</th>
+<th>花萼宽度</th>
+<th>花瓣长度</th>
+<th>花瓣宽度</th>
+<th>花的品种</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.1</td>
+<td>3.5</td>
+<td>1.4</td>
+<td>0.2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>6.9</td>
+<td>3.1</td>
+<td>4.9</td>
+<td>1.5</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5.9</td>
+<td>3.0</td>
+<td>5.1</td>
+<td>1.8</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="32构造分类树">3.2，构造分类树</h4>
+<p>首先导入必要的类和函数：</p>
+<pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>DecisionTreeClassifier</code> 类用于构造决策树。</li>
+<li><code>load_iris()</code> 函数用于导入数据。</li>
+<li><code>train_test_split()</code> 函数用于将数据集拆分成训练集与测试集。</li>
+<li><code>accuracy_score()</code> 函数用于为模型的准确度进行评分。</li>
+</ul>
+<p>导入数据集：</p>
+<pre><code class="language-python">iris = load_iris()   	# 准备数据集
+features = iris.data	# 获取特征集
+labels = iris.target    # 获取目标集
+</code></pre>
+<p>将数据分成<strong>训练集</strong>和<strong>测试集</strong>，训练集用于训练模型，测试集用于测试模型的准确度。</p>
+<pre><code class="language-python">train_features, test_features, train_labels, test_labels = 
+	train_test_split(features, labels, test_size=0.33, random_state=0)
+</code></pre>
+<p>我们向<code>train_test_split()</code> 函数中传递了4 个参数，分别是：</p>
+<ul>
+<li>features：特征集。</li>
+<li>labels：目标集。</li>
+<li>test_size=0.33：测试集数据所占百分比，剩下的数据分给训练集。</li>
+<li>random_state=0：随机数种子。</li>
+</ul>
+<p>该函数返回4 个值，分别是：</p>
+<ul>
+<li>train_features：训练特征集。</li>
+<li>test_features：测试特征集。</li>
+<li>train_labels：训练目标集。</li>
+<li>test_labels：测试目标集。</li>
+</ul>
+<p>接下来构造决策树：</p>
+<pre><code class="language-python"># 用CART 算法构建分类树（你也可以使用ID3 算法构建）
+clf = DecisionTreeClassifier(criterion='gini')
+
+# 用训练集拟合构造CART分类树
+clf = clf.fit(train_features, train_labels)
+</code></pre>
+<p>上面两句代码已经在注释中说明，最终我们得到了决策树<code>clf</code>（<code>classifier</code> 的缩写）。</p>
+<p>用<code>clf</code> 预测<strong>测试集</strong>数据，<code>test_predict</code>  为预测结果：</p>
+<pre><code class="language-python">test_predict = clf.predict(test_features)
+</code></pre>
+<p>计算预测结果的准确率：</p>
+<pre><code class="language-python">score = accuracy_score(test_labels, test_predict)
+score2 = clf.score(test_features, test_labels)
+print(score, score2)
+</code></pre>
+<p>最终得出，<code>sorce</code> 和 <code>score2</code>都为 0.96，意思就是我们训练出的模型的准确率为<strong>96%</strong>。</p>
+<p>函数<code>accuracy_score()</code> 和 <code>clf.score()</code> 都可以计算模型的准确率，但注意这两个函数的参数不同。</p>
+<h3 id="4打印决策树">4，打印决策树</h3>
+<p>为了清楚的知道，我们构造出的这个决策树<code>cfl</code> 到底是什么样子，可使用 <code>graphviz</code> 模块将决策树画出来。</p>
+<p>代码如下：</p>
+<pre><code class="language-python">from sklearn.tree import export_graphviz
+import graphviz
+
+# clf 为决策树对象
+dot_data = export_graphviz(clf)
+graph = graphviz.Source(dot_data)
+
+# 生成 Source.gv.pdf 文件，并打开
+graph.view()
+</code></pre>
+<blockquote>
+<p>为了画出决策树，除了需要安装相应的 Python 模块外，还需要安装<a href="http://www.graphviz.org/download/">Graphviz</a> 软件。</p>
+</blockquote>
+<p>由上面的代码，我们得到的决策树图如下：</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201111232025164.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<p>我们以根节点为例，来解释一下每个方框里的四行数据（叶子节点是三行数据）都是什么意思。</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201112111319396.png#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<p>四行数据所代表的含义：</p>
+<ul>
+<li>第一行<code>X[3]&lt;=0.75</code>：鸢尾花数据集的特征集有4 个属性，所以对于<code>X[n]</code>中的<code>n</code>的取值范围为<code>0&lt;=n&lt;=3</code>，<code>X[0]</code> 表示第1个属性，<code>X[3]</code> 表示第4 个属性。<code>X[3]&lt;=0.75</code> 的意思就是当<code>X[3]</code> 属性的值小于等于0.75 的时候，走左子树，否则走右子树。
+<ul>
+<li>X[0] 表示花萼长度。</li>
+<li>X[1] 表示花萼宽度。</li>
+<li>X[2] 表示花瓣长度。</li>
+<li>X[3] 表示花瓣宽度。</li>
+</ul>
+</li>
+<li>第二行<code>gini=0.666</code>，表示当前的<code>gini</code> 系数值。</li>
+<li>第三行<code>samples=100</code>，<code>samples</code> 表示当前的样本数。我们知道整个数据集有150 条数据，我们选择了0.33 百分比作为测试集，那么训练集的数据就占0.67，也就是100 条数据。根节点包含所有样本集，所以根节点的<code>samples</code> 值为100。</li>
+<li>第四行<code>value</code>：<code>value</code> 表示属于该节点的每个类别的样本个数，<code>value</code> 是一个数组，数组中的元素之和为<code>samples</code> 值。我们知道该数据集的目标集中共有3 个类别，分别为：<code>setosa</code>，<code>versicolor</code> 和 <code>virginica</code>。所以：
+<ul>
+<li><code>value[0]</code> 表示该节点中<code>setosa</code> 种类的数据量，即34。</li>
+<li><code>value[1]</code> 表示该节点中<code>versicolor</code> 种类的数据量，即31。</li>
+<li><code>value[2]</code> 表示该节点中<code>virginica</code> 种类的数据量，即35。</li>
+</ul>
+</li>
+</ul>
+<h4 id="41打印特征重要性">4.1，打印特征重要性</h4>
+<p>我们构造出来的决策树对象<code>clf</code> 中，有一个<code>feature_importances_ </code> 属性，如下：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; clf.feature_importances_
+array([0, 0.02252929, 0.88894654, 0.08852417])
+</code></pre>
+<p><code>clf.feature_importances_</code> 是一个数组类型，里边的元素分别代表对应特征的重要性，所有元素之和为<code>1</code>。元素的值越大，则对应的特征越重要。</p>
+<p>所以，从这个数组，我们可以知道，四个特征的重要性排序为：</p>
+<ul>
+<li>花瓣长度 &gt; 花瓣宽度 &gt; 花萼宽度 &gt; 花萼长度</li>
+</ul>
+<p>我们可以使用下面这个函数，将该数组画成柱状图：</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# mode 是我们训练出的模型，即决策树对象
+# data 是原始数据集
+def plot_feature_importances(model, data):
+    n_features = data.data.shape[1]
+    plt.barh(range(n_features), model.feature_importances_, align='center')
+    plt.yticks(np.arange(n_features), data.feature_names)
+    plt.xlabel(&quot;Feature importance&quot;)
+    plt.ylabel(&quot;Feature&quot;)
+
+    plt.show()
+
+plot_feature_importances(clf, iris)
+</code></pre>
+<p>下图是用<code>plot_feature_importances()</code> 函数生成的柱状图（<code>红字是我添加的</code>），从图中可以清楚的看出每个特种的重要性。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201112174610945.png?#pic_center" alt="在这里插入图片描述">
+从该图中也可以看出，为什么决策树的根节点的特征是<code>X[3]</code>。</p>
+<h3 id="5构造回归树">5，构造回归树</h3>
+<p>我们已经用<strong>鸢尾花数据集</strong>构造了一棵分类树，下面我们用<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/boston_house_prices.csv"><strong>波士顿房价数据集</strong></a>构造一颗回归树。</p>
+<p>来看几条数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020111220555756.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>首先，我们认为房价是有很多因素影响的，在这个数据集中，影响房价的因素有13 个：</p>
+<ol>
+<li>&ldquo;CRIM&rdquo;，人均犯罪率。</li>
+<li>&ldquo;ZN&rdquo;，住宅用地占比。</li>
+<li>&ldquo;INDUS&rdquo;，非商业用地占比。</li>
+<li>&ldquo;CHAS&rdquo;，查尔斯河虚拟变量，用于回归分析。</li>
+<li>&ldquo;NOX&rdquo;，环保指数。</li>
+<li>&ldquo;RM&rdquo;，每个住宅的房间数。</li>
+<li>&ldquo;AGE&rdquo;，1940 年之前建成的房屋比例。</li>
+<li>&ldquo;DIS&rdquo;，距离五个波士顿就业中心的加权距离。</li>
+<li>&ldquo;RAD&rdquo;，距离高速公路的便利指数。</li>
+<li>&ldquo;TAX&rdquo;，每一万美元的不动产税率。</li>
+<li>&ldquo;PTRATIO&rdquo;，城镇中教师学生比例。</li>
+<li>&ldquo;B&rdquo;，城镇中黑人比例。</li>
+<li>&ldquo;LSTAT&rdquo;，地区有多少百分比的房东属于是低收入阶层。</li>
+</ol>
+<p>数据中的最后一列的数据是房价：</p>
+<ol start="14">
+<li>&ldquo;MEDV&rdquo; ，自住房屋房价的中位数。</li>
+</ol>
+<p>因为房价是一个连续值，而不是离散值，所以需要构建一棵<strong>回归树</strong>。</p>
+<p>下面对数据进行建模，构造回归树使用<code>DecisionTreeRegressor</code> 类：</p>
+<pre><code class="language-python">from sklearn.tree import DecisionTreeRegressor
+from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
+
+# 准备数据集
+boston = load_boston()
+
+# 获取特征集和房价
+features = boston.data
+prices = boston.target
+
+# 随机抽取33% 的数据作为测试集，其余为训练集
+train_features, test_features, train_price, test_price = 
+    train_test_split(features, prices, test_size=0.33)
+
+# 创建CART回归树
+dtr = DecisionTreeRegressor()
+
+# 拟合构造CART回归树
+dtr.fit(train_features, train_price)
+
+# 预测测试集中的房价
+predict_price = dtr.predict(test_features)
+
+# 测试集的结果评价
+print('回归树准确率:', dtr.score(test_features, test_price)) 
+print('回归树r2_score:', r2_score(test_price, predict_price)) 
+print('回归树二乘偏差均值:', mean_squared_error(test_price, predict_price))
+print('回归树绝对值偏差均值:', mean_absolute_error(test_price, predict_price)) 
+</code></pre>
+<p>最后四行代码是计算模型的准确度，这里用了4 种方法，输出如下：</p>
+<pre><code class="language-shell">回归树准确率: 0.7030833400349499
+回归树r2_score: 0.7030833400349499
+回归树二乘偏差均值: 28.40730538922156
+回归树绝对值偏差均值: 3.6275449101796404
+</code></pre>
+<p>需要注意，回归树与分类树预测准确度的方法不一样：</p>
+<ul>
+<li><code>dtr.score</code>()：与分类树类似，不多说。</li>
+<li><code>r2_score</code>()：表示R 方误差，结果与 <code>dtr.score</code>() 一样，取值范围是0 到1。</li>
+<li><code>mean_squared_error</code>()：表示均方误差，数值越小，代表准确度越高。</li>
+<li><code>mean_absolute_error</code>()：表示平均绝对误差，数值越小，代表准确度越高。</li>
+</ul>
+<p>可以用下面代码，将构建好的决策树画成图：</p>
+<pre><code class="language-python">from sklearn.tree import export_graphviz
+import graphviz
+
+# dtr 为决策树对象
+dot_data = export_graphviz(dtr)
+graph = graphviz.Source(dot_data)
+
+# 生成 Source.gv.pdf 文件，并打开
+graph.view()
+</code></pre>
+<p>这棵二叉树比较大，你可以自己生成看一下。</p>
+<p>再来执行下面代码，看下特征重要性：</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# mode 是我们训练出的模型，即决策树对象
+# data 是原始数据集
+def plot_feature_importances(model, data):
+    n_features = data.data.shape[1]
+    plt.barh(range(n_features), model.feature_importances_, align='center')
+    plt.yticks(np.arange(n_features), data.feature_names)
+    plt.xlabel(&quot;Feature importance&quot;)
+    plt.ylabel(&quot;Feature&quot;)
+
+    plt.show()
+
+plot_feature_importances(dtr, boston)
+</code></pre>
+<p>从生成的柱状图，可以看到<strong>LSTAT</strong> 对房价的影响最大：
+<img src="https://img-blog.csdnimg.cn/20201112205054997.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="6关于数据准备">6，关于数据准备</h3>
+<p>本文中用到的数据是sklearn 中自带的数据，数据完整性比较好，所以我们没有对数据进行预处理。实际项目中，可能数据比较杂乱，所以在构建模型之前，先要对数据进行预处理。</p>
+<ol>
+<li>
+<p>要对数据有个清楚的认识，每个特征的含义。如果有特别明显的特征对我们要预测的目标集没有影响，则要将这些数据从训练集中删除。</p>
+</li>
+<li>
+<p>如果某些特征有数据缺失，需要对数据进行补全，可以使用著名的 <a href="https://pandas.pydata.org/">Pandas</a> 模块对数据进行预处理。如果某特征的数据缺失严重，则应该将其从训练集中删除。对于需要补全的值：</p>
+<ul>
+<li>如果缺失的值是离散型数据，可以用出现次数最多的值去补全缺失值。</li>
+<li>如果缺失的值是连续型数据，可以用该特征的平均值去补全缺失值。</li>
+</ul>
+</li>
+<li>
+<p>如果某些特征的值是字符串类型数据，则需要将这些数据转为数值型数据。</p>
+<ul>
+<li>可以使用 <code>sklearn.feature_extraction</code> 模块中的 <code>DictVectorizer</code> 类来处理（转换成数字<code>0/1</code>）。</li>
+</ul>
+</li>
+<li>
+<p>在测试模型的准确率时，如果测试集中只有特征值没有目标值，就不好对测试结果进行验证。此时有两种方法来测试模型准确率：</p>
+<ul>
+<li>在构造模型之前，用 <code>train_test_split</code>() 函数将原始数据集（含有目标集）拆分成训练集和测试集。</li>
+<li>使用 <code>sklearn.model_selection</code> 模块中的 <code>cross_val_score</code> 函数进行<strong>K 折交叉验证</strong>来计算准确率。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><em><strong>K 折交叉验证</strong>原理很简单</em>：</p>
+<ol>
+<li>将数据集平均分成K 个等份，<code>K</code> 一般取<code>10</code>。</li>
+<li>使用K 份中的1 份作为测试数据，其余为训练数据，然后进行准确率计算。</li>
+<li>进行多次以上步骤，求平均值。</li>
+</ol>
+</blockquote>
+<h3 id="7总结">7，总结</h3>
+<p>本篇文章介绍了如何用决策树来处理实际问题。主要介绍了以下知识点：</p>
+<ul>
+<li><code>sklearn</code> 是基于 <code>Python</code> 的一个机器学习库。</li>
+<li><code>sklearn.datasets</code> 模块中有一些自带数据集供我们使用。</li>
+<li>用 <code>sklearn.tree</code> 中的两个类来构建分类树和回归树：
+<ul>
+<li><code>DecisionTreeClassifier</code> 类：构造决策分类树，用于预测离散值。</li>
+<li><code>DecisionTreeRegressor</code> 类：构造决策回归树，用于预测连续值。</li>
+</ul>
+</li>
+<li>分别介绍了两个类的构造函数中的 <code>criterion</code> 参数的含义。</li>
+<li>介绍了几个重要函数的用途：
+<ul>
+<li><code>train_test_split</code>() 函数用于拆分数据集。</li>
+<li><code>o.fit</code>() 用于拟合决策树。（<code>o</code> 表示决策树对象）</li>
+<li><code>o.predict</code>() 用于预测数据。</li>
+<li><code>o.score</code>() 用于给模型的准确度评分。</li>
+<li><code>accuracy_score</code>() 函数用于给分类树模型评分。</li>
+<li><code>r2_score</code>() 函数用于给回归树模型评分。</li>
+<li><code>mean_squared_error</code>() 函数用于给回归树模型评分。</li>
+<li><code>mean_absolute_error</code>() 函数用于给回归树模型评分。</li>
+</ul>
+</li>
+<li>介绍了如何给决策树画图。</li>
+<li>介绍了如何给特征重要性画图。</li>
+</ul>
+<p>(本节完。)</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1">决策树算法-理论篇</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/dp1/">
+            <span class="next-text nav-default">设计模式之高质量代码</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-decisiontree2/" class="leancloud_visitors" data-flag-title="决策树算法-实战篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
