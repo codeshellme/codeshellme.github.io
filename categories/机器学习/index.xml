@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sun, 15 Nov 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 17 Nov 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>朴素贝叶斯分类-理论篇</title>
+      <link>https://codeshellme.github.io/2020/11/ml-nb1/</link>
+      <pubDate>Tue, 17 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-nb1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 贝叶斯原理是英国数学家托马斯·贝叶斯于18 世纪提出的，</description>
+    </item>
     
     <item>
       <title>决策树算法-实战篇</title>

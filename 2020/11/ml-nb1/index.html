@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>朴素贝叶斯分类-理论篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 贝叶斯原理是英国数学家托马斯·贝叶斯于18 世纪提出的，" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-nb1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="朴素贝叶斯分类-理论篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 贝叶斯原理是英国数学家托马斯·贝叶斯于18 世纪提出的，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-nb1/" />
+<meta property="article:published_time" content="2020-11-17T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-17T21:41:52+08:00" />
+<meta itemprop="name" content="朴素贝叶斯分类-理论篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 贝叶斯原理是英国数学家托马斯·贝叶斯于18 世纪提出的，">
+<meta itemprop="datePublished" content="2020-11-17T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-17T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3038">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="朴素贝叶斯分类-理论篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 贝叶斯原理是英国数学家托马斯·贝叶斯于18 世纪提出的，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">朴素贝叶斯分类-理论篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-17 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 3038 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1概率相关概念">1，概率相关概念</a></li>
+        <li><a href="#2贝叶斯定理">2，贝叶斯定理</a></li>
+        <li><a href="#3朴素贝叶斯">3，朴素贝叶斯</a></li>
+        <li><a href="#4处理分类问题的一般步骤">4，处理分类问题的一般步骤</a></li>
+        <li><a href="#5用朴素贝叶斯分类">5，用朴素贝叶斯分类</a></li>
+        <li><a href="#6总结">6，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：https://codeshellme.github.io</strong></p>
+</blockquote>
+<p>贝叶斯原理是英国数学家<strong>托马斯·贝叶斯</strong>于18 世纪提出的，当我们不能直接计算一件事情（A）发生的可能性大小的时候，可以间接的计算与这件事情有关的事情(X，Y，Z)发生的可能性大小，从而间接判断事情（A）发生的可能性大小。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201115224342263.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>在介绍贝叶斯原理之前，先介绍几个与概率相关的概念。</p>
+<h3 id="1概率相关概念">1，概率相关概念</h3>
+<p><strong>概率</strong>用于描述一件事情发生的可能性大小，用数学符号<code>P(x)</code> 表示，<code>x</code> 表示<strong>随机变量</strong>，<code>P(x)</code> 表示<code>x</code> 的概率。</p>
+<p><strong>随机变量</strong>根据变量取值是否连续，可分为<strong>离散型随机变量</strong>和<strong>连续型随机变量</strong>。</p>
+<p><strong>联合概率</strong>由多个随机变量共同决定，用<code>P(x, y)</code> 表示，含义为“事件<code>x</code> 与事件<code>y</code> 同时发生的概率”。</p>
+<p><strong>条件概率</strong>也是由多个随机变量共同决定，用<code>P(x|y)</code> 表示，含义为“在事件<code>y</code> 发生的前提下，事件<code>x</code> 发生的概率。”</p>
+<p><strong>边缘概率</strong>：从 <code>P(x, y)</code> 推导出 <code>P(x)</code>，从而忽略 <code>y</code> 变量。</p>
+<ul>
+<li>对于离散型随机变量，通过联合概率 <code>P(x, y)</code> 在 <code>y</code> 上<strong>求和</strong>， 可得到<code>P(x)</code>，这里的<code>P(x)</code> 就是边缘概率。</li>
+<li>对于连续型随机变量，通过联合概率 <code>P(x, y)</code> 在 <code>y</code> 上<strong>求积分</strong>， 可得到<code>P(x)</code>，这里的<code>P(x)</code> 就是边缘概率。</li>
+</ul>
+<p><strong>概率分布</strong>：将随机变量所有可能出现的值，及其对应的概率都展现出来，就能得到这个变量的<strong>概率分布</strong>，概率分布分为两种，分别是离散型和连续型。</p>
+<p>常见的<strong>离散型数据分布模型</strong>有：</p>
+<ul>
+<li>伯努利分布：表示单个随机变量的分布，且该变量的取值只有两个，0 或 1。例如抛硬币（不考虑硬币直立的情况）的概率分布就是伯努利分布。数学公式如下：
+<ul>
+<li>P(x = 0) = 1 - λ</li>
+<li>P(x = 1) = λ</li>
+</ul>
+</li>
+<li>多项式分布：也叫分类分布，描述了一个具有 k 个不同状态的单个随机变量。这里的 k，是有限的数值，如果 k 为 2，那就变成了伯努利分布。
+<ul>
+<li>P(x  = k) =  λ</li>
+</ul>
+</li>
+<li>二项式分布</li>
+<li>泊松分布</li>
+</ul>
+<p>常见的<strong>连续型数据分布模型</strong>有：</p>
+<ul>
+<li>正态分布，也叫高斯分布，是最重要的一种。</li>
+<li>均匀分布</li>
+<li>指数分布</li>
+<li>拉普拉斯分布</li>
+</ul>
+<p>正态分布的数学公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201116174857451.png#pic_center" alt="在这里插入图片描述"></p>
+<p>正态分布的分布图为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201116174927338.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>正态分布还可分为：</p>
+<ul>
+<li>一元正态分布：此时 <strong>μ</strong>为 0，<strong>σ</strong>为 1。</li>
+<li>多元正态分布。</li>
+</ul>
+<p><strong>数学期望</strong>，如果把“每次随机结果的出现概率”看做<strong>权重</strong>，那么期望就是所有结果的<strong>加权平均值</strong>。</p>
+<p><strong>方差</strong>表示的是随机变量的取值与其数学期望的偏离程度，方差越小意味着偏离程度越小，方差越大意味着偏离程度越大。</p>
+<p><strong>概率论</strong>研究的就是这些概率之间的转化关系。</p>
+<h3 id="2贝叶斯定理">2，贝叶斯定理</h3>
+<p>贝叶斯公式如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201115233150528.png#pic_center" alt="在这里插入图片描述"></p>
+<p>含义：</p>
+<ul>
+<li>等号右边分子部分，<code>P(Bi)</code> 为<strong>先验概率</strong>，<code>P(A|Bi)</code> 为<strong>条件概率</strong>。</li>
+<li>等号右边整个分母部分为<strong>边缘概率</strong>。</li>
+<li>等号左边<code>P(Bi|A)</code> 为<strong>后验概率</strong>，由先验概率，条件概率，边缘概率计算得出。</li>
+</ul>
+<p>贝叶斯定理可用于分类问题，将其用在分类问题中时，可将上面的公式简化为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201115234151896.png#pic_center" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li>c 表示一个分类，f 表示属性值。</li>
+<li>P(c|f) 表示在待分类样本中，出现属性值 f 时，样本属于类别 c 的概率。</li>
+<li>P(f|c) 是根据训练样本数据，进行统计得到的，分类 c 中出现属性 f 的概率。</li>
+<li>P(c ) 是分类 c 在训练数据中出现的概率。</li>
+<li>P(f) 是属性 f 在训练样本中出现的概率。</li>
+</ul>
+<p>这就意味着，当我们知道一些属性特征值时，根据这个公式，就可以计算出所属分类的概率，最终所属哪个分类的概率最大，就划分为哪个分类，这就完成了一个分类问题。</p>
+<p><em><strong>贝叶斯推导</strong></em></p>
+<p>来看下贝叶斯公式是如何推导出来的。</p>
+<p>如下图两个椭圆，左边为C，右边为F。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201117094814161.png#pic_center" alt="在这里插入图片描述"></p>
+<p>现在让两个椭圆产生交集：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201117095152915.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>根据上图可知：在事件F 发生的条件下，事件C 发生的概率就是<code>P(C ∩ F) / P(F)</code>，即：</p>
+<ul>
+<li><code>P(C | F) = P(C ∩ F) / P(F)</code></li>
+</ul>
+<p>可得到：</p>
+<ul>
+<li><code>P(C ∩ F) = P(C | F) *  P(F)</code></li>
+</ul>
+<p>同理可得：</p>
+<ul>
+<li><code>P(C ∩ F) = P(F | C) *  P(C)</code></li>
+</ul>
+<p>所以：</p>
+<ul>
+<li><code>P(C ∩ F) = P(C | F) *  P(F) =  P(F | C) *  P(C)</code></li>
+<li><code>P(C | F)  =  P(F | C) *  P(C) /  P(F)</code></li>
+</ul>
+<h3 id="3朴素贝叶斯">3，朴素贝叶斯</h3>
+<p>假设我们现在有一个数据集，要使用贝叶斯定理，进行分类。特征有两个：f1，f2。现在要对数据<code>F</code> 进行分类，那我们需要求解：</p>
+<ul>
+<li><code>P(c|F)</code>：表示数据<code>F</code> 属于分类<code>c</code> 的概率。</li>
+</ul>
+<p>因为特征有 <code>f1</code> 与 <code>f2</code>，那么：</p>
+<ul>
+<li><code>P(c|F) = P(c|(f1,f2))</code></li>
+</ul>
+<p>对于分类问题，特征往往不止一个。如果特征之间相互影响，也就是<code>f1</code> 与<code>f2</code> 之间相互影响，那么<code>P(c|(f1,f2))</code> 就不容易求解。</p>
+<p><strong>朴素贝叶斯在贝叶斯的基础上做了一个简单粗暴的假设，它假设多个特征之间互不影响，相互独立。</strong></p>
+<blockquote>
+<p><strong>朴素</strong>的意思就是<strong>纯朴，简单</strong>。</p>
+</blockquote>
+<p>用数学公式表示就是：</p>
+<ul>
+<li><code>P(A, B) = P(A) * P(B)</code></li>
+</ul>
+<p>实际上就是大学概率论中所讲的<strong>事件独立性</strong>，即<strong>事件A 与事件B 的发生互不干扰，相互独立</strong>。</p>
+<p>那么，根据朴素贝叶斯，<code>P(c|F)</code> 的求解过程如下：</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201116201923167.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<p>假设我们现在要分类的数据有两类：<code>c1 和 c2</code>。</p>
+<p>那么对于数据<code>F</code> 的分类问题，我们就需要求解两个概率：<code>P(c1|F) 和P(c2|F)</code>：</p>
+<ul>
+<li>如果<code>P(c1|F) &gt; P(c2|F)</code>，那么<code>F</code> 属于<code>c1</code> 类。</li>
+<li>如果<code>P(c1|F) &lt; P(c2|F)</code>，那么<code>F</code> 属于<code>c2</code> 类。</li>
+</ul>
+<p>根据贝叶斯原理，我们可以得到：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201116203546255.png#pic_center" alt="在这里插入图片描述"></p>
+<p>对于分类问题，我们的最终目的是分类，而不是真正的求解出<code>P(c1|F)</code> 和 <code>P(c2|F)</code> 的确切数值。</p>
+<p>根据上面的公式，我们可以看到，等号右边的分母部分都是<code>P(F)</code>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201116203909338.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>所以我们只需要求出<code>P(F|c1) × P(c1)</code> 和 <code>P(F|c2) × P(c2)</code>，就可以知道<code>P(c1|F)</code> 和 <code>P(c2|F)</code> 哪个大了。</p>
+<p>所以对于<code>P(c|F)</code> 可以进一步简化：</p>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201116204614104.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<h3 id="4处理分类问题的一般步骤">4，处理分类问题的一般步骤</h3>
+<p>用朴素贝叶斯原理，处理一个分类问题，一般要经过以下几个步骤：</p>
+<ul>
+<li><strong>准备阶段</strong>：
+<ul>
+<li>获取数据集。</li>
+<li>分析数据，确定特征属性，并得到训练样本。</li>
+</ul>
+</li>
+<li><strong>训练阶段</strong>：
+<ul>
+<li>计算每个类别概率<code>P(Ci)</code>。</li>
+<li>对每个特征属性，计算每个分类的条件概率<code>P(Fj|Ci)</code>。</li>
+<li><code>Ci</code> 代表所有的类别。</li>
+<li><code>Fj</code> 代表所有的特征。</li>
+</ul>
+</li>
+<li><strong>预测阶段</strong>：
+<ul>
+<li>给定一个数据，计算该数据所属每个分类的概率<code>P(Fj|Ci) * P(Ci)</code>。</li>
+<li>最终那个分类的概率大，数据就属于哪个分类。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5用朴素贝叶斯分类">5，用朴素贝叶斯分类</h3>
+<p>接下来我们来处理一个实际的分类问题，我们处理的是<strong>离散型数据</strong>。</p>
+<h4 id="51准备数据集">5.1，准备数据集</h4>
+<p>我们的数据集如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201116210441460.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>该数据集的特征集有<code>身高</code>，<code>体重</code>和<code>鞋码</code>，目标集为<code>性别</code>。</p>
+<p>我们的目的是训练一个模型，该模型可以根据身高，体重和鞋码来预测所属的性别。</p>
+<p>我们给定一个特征：</p>
+<ul>
+<li>身高 = 高，用<code>F1</code> 表示。</li>
+<li>体重 = 中，用<code>F2</code> 表示。</li>
+<li>鞋码 = 中，用<code>F3</code> 表示。</li>
+</ul>
+<p>要求这个特征是<code>男</code>还是<code>女</code>？（用<code>C1</code> 表示<code>男</code>，<code>C2</code> 表示<code>女</code>）也就是要求<code>P(C1|F)</code> 大，还是<code>P(C2|F)</code> 大？</p>
+<pre><code class="language-python"># 根据朴素贝叶斯推导
+
+   P(C1|F)
+=&gt; P(C1|(F1,F2,F3))
+=&gt; P(C1|F1) * P(C1|F2) * P(C1|F3)
+=&gt; [P(F1|C1) * P(C1)] * [P(F2|C1) * P(C1)] * [P(F3|C1) * P(C1)]
+
+   P(C2|F)
+=&gt; P(C2|(F1,F2,F3))
+=&gt; P(C2|F1) * P(C2|F2) * P(C2|F3)
+=&gt; [P(F1|C2) * P(C2)] * [P(F2|C2) * P(C2)] * [P(F3|C2) * P(C2)]
+</code></pre>
+<h4 id="52计算pci">5.2，计算<code>P(Ci)</code></h4>
+<p>目标集共有两类：男和女，男出现4 次，女出现4 次，所以：</p>
+<ul>
+<li><code>P(C1) = 4 / 8 = 0.5</code></li>
+<li><code>P(C2) = 4 / 8 = 0.5</code></li>
+</ul>
+<h4 id="53计算pfjci">5.3，计算<code>P(Fj|Ci)</code></h4>
+<p>通过观察表格中的数据，我们可以知道：</p>
+<pre><code class="language-python"># 性别为男的情况下，身高=高 的概率
+P(F1|C1) = 2 / 4 = 0.5
+
+# 性别为男的情况下，体重=中 的概率
+P(F2|C1) = 2 / 4 = 0.5
+
+# 性别为男的情况下，鞋码=中 的概率
+P(F3|C1) = 1 / 4 = 0.25
+
+# 性别为女的情况下，身高=高 的概率
+P(F1|C2) = 0 / 4 = 0
+
+# 性别为女的情况下，体重=中 的概率
+P(F2|C2) = 2 / 4 = 0.5
+
+# 性别为女的情况下，鞋码=中 的概率
+P(F3|C2) = 2 / 4 = 0.5
+</code></pre>
+<h4 id="54计算pfjci--pci">5.4，计算<code>P(Fj|Ci) * P(Ci)</code></h4>
+<p>上面我们已经推导过<code>P(C1|F)</code> 和 <code>P(C2|F)</code>，下面可以求值了：</p>
+<pre><code class="language-python">   P(C1|F)
+=&gt; [P(F1|C1) * P(C1)] * [P(F2|C1) * P(C1)] * [P(F3|C1) * P(C1)]
+=&gt; [0.5 * 0.5] * [0.5 * 0.5] * [0.25 * 0.5]
+=&gt; 0.25 * 0.25 * 0.125
+=&gt; 0.0078125
+
+   P(C2|F)
+=&gt; [P(F1|C2) * P(C2)] * [P(F2|C2) * P(C2)] * [P(F3|C2) * P(C2)]
+=&gt; [0 * 0.25] * [0.5 * 0.5] * [0.5 * 0.5]
+=&gt; 0
+</code></pre>
+<p>最终可以看到 <code>P(C1|F) &gt; P(C2|F)</code>，所以该特征属于<code>C1</code>，即男性。</p>
+<h3 id="6总结">6，总结</h3>
+<p>可以看到，对于一个分类问题：<strong>给定一个数据F，求解它属于哪个分类？</strong> 实际上就是要求解<code>F</code> 属于各个分类的概率大小，即<code>P(C|F)</code>。</p>
+<p>根据朴素贝叶斯原理，<code>P(C|F)</code> 与 <code>P(F|C) * P(C)</code> 正相关，所以最终要求解的就是<code>P(F|C) * P(C)</code>。这就将一个分类问题转化成了一个概率问题。</p>
+<p>下篇文章会介绍如何使用朴素贝叶斯处理实际问题。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1">决策树算法-理论篇</a></p>
+<p><a href="/2020/11/ml-decisiontree2">决策树算法-实战篇</a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-17
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/ml-decisiontree2/">
+            <span class="next-text nav-default">决策树算法-实战篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-nb1/" class="leancloud_visitors" data-flag-title="朴素贝叶斯分类-理论篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

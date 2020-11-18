@@ -27,7 +27,7 @@
       <pubDate>Sun, 08 Nov 2020 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/ml/</guid>
-      <description>这里是机器学习相关文章。 1, 决策树算法-理论篇 2, 决策树算法-实战篇</description>
+      <description>这里是机器学习相关文章。 1, 决策树算法-理论篇 2, 决策树算法-实战篇 3, 朴素贝叶斯分类-理论篇</description>
     </item>
     
     <item>
@@ -55,6 +55,15 @@
       
       <guid>https://codeshellme.github.io/about/</guid>
       <description>更多技术干货，尽在本站微信公众号，欢迎关注！ 你的支持，是我最大的动力！ --</description>
+    </item>
+    
+    <item>
+      <title>朴素贝叶斯分类-理论篇</title>
+      <link>https://codeshellme.github.io/2020/11/ml-nb1/</link>
+      <pubDate>Tue, 17 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-nb1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 贝叶斯原理是英国数学家托马斯·贝叶斯于18 世纪提出的，</description>
     </item>
     
     <item>
