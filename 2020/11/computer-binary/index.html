@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>计算机二进制原码反码补码 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 计算机最基本的工作是处理数据，而数据的最底层表现形式是" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/computer-binary/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="计算机二进制原码反码补码" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 计算机最基本的工作是处理数据，而数据的最底层表现形式是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/computer-binary/" />
+<meta property="article:published_time" content="2020-11-22T01:37:56+08:00" />
+<meta property="article:modified_time" content="2020-11-22T01:37:56+08:00" />
+<meta itemprop="name" content="计算机二进制原码反码补码">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 计算机最基本的工作是处理数据，而数据的最底层表现形式是">
+<meta itemprop="datePublished" content="2020-11-22T01:37:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-22T01:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="2512">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="计算机二进制原码反码补码"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 计算机最基本的工作是处理数据，而数据的最底层表现形式是"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">计算机二进制原码反码补码</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 2512 字 </span>
+          <span class="more-meta"> 阅读约需 6 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1二进制数">1，二进制数</a></li>
+        <li><a href="#2二进制原码">2，二进制原码</a></li>
+        <li><a href="#3数字溢出">3，数字溢出</a></li>
+        <li><a href="#4二进制反码与补码">4，二进制反码与补码</a></li>
+        <li><a href="#5总结">5，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>计算机最基本的工作是处理数据，而数据的最底层表现形式是二进制，并非是我们人类熟悉的十进制。可以这么认为，计算机其实是很“笨的”，它只理解二进制数据。</p>
+<p>今天，主要介绍计算机是怎样做加减运算的。你可能会想，加减运算？这么简单的事情，还用介绍？也许还真不是你想的那样。</p>
+<p>计算机的运算是由CPU 完成的，而CPU 只会做加法运算，不会做减法运算，那计算机怎样完成减法工作呢？</p>
+<h3 id="1二进制数">1，二进制数</h3>
+<p>我们先来看看二进制数。</p>
+<p>二进制数是由0，1 组成的，比如：</p>
+<ul>
+<li>十进制的5，用二进制表示是 101。</li>
+<li>十进制的7，用二进制表示是 111。</li>
+</ul>
+<p>数字由正数和负数组成。为了表示正负数，计算机中就有了<strong>有符号数</strong>和<strong>无符号数</strong>之分：</p>
+<ul>
+<li>无符号数：英文为 <code>unsigned</code>，只能表示正数。</li>
+<li>有符号数：英文为<code>signed</code>，即能表示正数，又能表示负数。</li>
+</ul>
+<blockquote>
+<p><strong>C/C++</strong> 语言中的数字有<strong>有符号数</strong>和<strong>无符号数</strong>之分。</p>
+<p><strong>Java</strong> 语言所有的数字都是<strong>有符号数</strong>。</p>
+</blockquote>
+<p>假如，我们用 4 位二进制，来表示无符号数，也就是只表示正数，能表示的范围是 <code>0 到 15</code>，转换关系如下表：</p>
+<table>
+<thead>
+<tr>
+<th>十进制数</th>
+<th>二进制数</th>
+<th>十进制数</th>
+<th>二进制数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0000</td>
+<td>8</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0001</td>
+<td>9</td>
+<td>1001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0010</td>
+<td>10</td>
+<td>1010</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0011</td>
+<td>11</td>
+<td>1011</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0100</td>
+<td>12</td>
+<td>1100</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0101</td>
+<td>13</td>
+<td>1101</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0110</td>
+<td>14</td>
+<td>1110</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0111</td>
+<td>15</td>
+<td>1111</td>
+</tr>
+</tbody>
+</table>
+<p>有符号数，即要表示正数，也要表示负数。</p>
+<p>要用二进制表示有符号数，需要用二进制的<strong>最高位</strong>来表示符号，<code>0</code> 表示<code>正</code>，<code>1</code> 表示<code>负</code>。所谓的最高位，也就是最左边那一位。</p>
+<p>用 4 位二进制，来表示有符号数，能表示的范围是 <code>-8 到 7</code>，转换关系如下表：</p>
+<table>
+<thead>
+<tr>
+<th>十进制数</th>
+<th>二进制数</th>
+<th>十进制数</th>
+<th>二进制数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>0</code>000</td>
+<td><strong>-8</strong></td>
+<td><strong><code>1</code>000</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>0</code>001</td>
+<td>-1</td>
+<td><code>1</code>001</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>0</code>010</td>
+<td>-2</td>
+<td><code>1</code>010</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>0</code>011</td>
+<td>-3</td>
+<td><code>1</code>011</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>0</code>100</td>
+<td>-4</td>
+<td><code>1</code>100</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>0</code>101</td>
+<td>-5</td>
+<td><code>1</code>101</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>0</code>110</td>
+<td>-6</td>
+<td><code>1</code>110</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>0</code>111</td>
+<td>-7</td>
+<td><code>1</code>111</td>
+</tr>
+</tbody>
+</table>
+<p>上表中的最高位的符号位，已标红。</p>
+<blockquote>
+<p>要注意，对于有符号的4 位二进制 &mdash;-<code>1000</code> 不是 <code>-0</code>，而是 <code>-8</code>。</p>
+</blockquote>
+<p>可以总结出，对于<code>N</code> 位的二进制数：</p>
+<ul>
+<li>无论是表示<strong>有符号数</strong>还是<strong>无符号数</strong>，都能表示<code>2^N</code> 个数字。</li>
+<li>若用于表示<strong>无符号数</strong>，则能表示的范围是 <code>[0, 2^N - 1]</code>。</li>
+<li>若用于表示<strong>有符号数</strong>，则能表示的范围是 <code>[-2^(N-1), 2^(N-1) - 1]</code>。
+<ul>
+<li><strong>需要注意</strong>，在有符号数中，对于符号位是 <code>1</code>，后面 <code>N-1</code> 位全是 <code>0</code>，这种情况表示的是 <code>-2^(N-1)</code>(也就是所能表示的最小值)，而不是 <code>-0</code>。</li>
+<li>实际上是将<code>-0</code> 这种情况解释成了<code>最小值</code>，否则就会出现 <code>+0</code> 和 <code>-0</code> 两个<code>0</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2二进制原码">2，二进制原码</h3>
+<p>上面介绍到的二进制就是原码形式。</p>
+<p><strong>原码就是除符号位外的其他位，保存该二进制数的绝对值。</strong></p>
+<p><em><strong>用原码进行加法计算</strong></em></p>
+<p>计算机中的数字运算都会先转成二进制数再进行计算。</p>
+<p>我们用原码来计算加法，用4 位二进制数来计算 <code>3 + 2</code>，过程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201121115329554.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>可以看到，用原码计算加法是没有问题的。</p>
+<p><em><strong>用原码进行减法计算</strong></em></p>
+<p>我们再用原码来计算减法，因为CPU 只会计算加法，所以计算减法时，会将减法转换成加法。</p>
+<p>比如，用4 位二进制数来计算计算 <code>3 - 2</code>，会将其转换成 <code>3 + (-2)</code>， 过程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201121120031179.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>可以看到 <code>3-2</code> 计算出来的结果是 <code>-5</code>，显然是错误的。</p>
+<p>所以，用二进制原码来计算减法是行不通的。实际上，计算机计算减法用的是<strong>补码</strong>。</p>
+<p>在介绍补码之前，我们先来看下什么是<strong>溢出</strong>。</p>
+<h3 id="3数字溢出">3，数字溢出</h3>
+<p>计算机中数字的表示是需要内存空间的，不同类型的数字所能占用的空间是不一样的。</p>
+<p>比如，在Java 语言中<code>short</code> 类型占用 2 个字节，<code>int</code> 类型占用 4 个字节。</p>
+<blockquote>
+<p>一个字节等于 8 位。</p>
+</blockquote>
+<p>既然空间大小是有限制的，所以计算机中的数字也是有范围的，即<strong>上限</strong>和<strong>下限</strong>，如果数字超出限制，就会产生<strong>溢出</strong>。超出上限叫<strong>上溢出</strong>，超出下限叫<strong>下溢出</strong>。<U><em><strong>而溢出的部分会直接被舍去</strong></em></U>。</p>
+<p>就像我们在上文中介绍的，对于<code>N</code> 位二进制<strong>有符号整数</strong>，所能表示的范围是 <code>[-2^(N-1), 2^(N-1) - 1]</code>。</p>
+<p>由于溢出的部分会被舍去，那么最大值加1，将发生上溢出，变为最小值；最小值减1，将发生下溢出，变为最大值。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201121124424444.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>我们用<strong>Java</strong> 中的<code>int</code> 类型来验证，<strong>Java</strong> 中<code>int</code> 类型的最大、最小值分别是：</p>
+<ul>
+<li>最大值：<code>Integer.MAX_VALUE</code>，是 <code>2147483647</code>。</li>
+<li>最小值：<code>Integer.MIN_VALUE</code>，是 <code>-2147483648</code>。</li>
+</ul>
+<p>用下面代码验证：</p>
+<pre><code class="language-java">System.out.println(Integer.MAX_VALUE + 1 == Integer.MIN_VALUE); // true
+System.out.println(Integer.MIN_VALUE - 1 == Integer.MAX_VALUE); // true
+</code></pre>
+<p>这两行代码的输出均为<code>true</code>，说明最大值加1 变为最小值，最小值减1 变为最大值。</p>
+<p>所以，在计算机中，只要一个整数的类型确定了，那么它所能占用的内存空间大小也就确定了，从而它所能表示的数字范围也就确定了。那么不管给这个整数加多大的数字，或者减多大的数字，最终的结果都只能在这个范围内旋转。</p>
+<p>就像表盘一样，当表针走过最大值的时候，就变成了最小值。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201121125009922.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>同样，这也等同于数学中的<strong>取余</strong>运算。只要分母确定了，不管分子是多大，或者多小的数字，最终的结果也都是在一个确定的范围之内。</p>
+<p>比如我们对十进制<code>5</code> 进行<strong>取余</strong>计算，那么最终的结果都是在<code>[0, 4]</code> 范围之内，如下：</p>
+<ul>
+<li><code>0 % 5 = 0</code></li>
+<li><code>2 % 5 = 2</code></li>
+<li><code>397 % 5 = 2</code></li>
+<li><code>99999 % 5 = 4</code></li>
+</ul>
+<p>可以总结出，对数字<code>N</code> 进行取余，<code>N &gt;= 2</code> 且为整数，那么结果都在 <code>[0, N-1]</code> 范围之内。</p>
+<h3 id="4二进制反码与补码">4，二进制反码与补码</h3>
+<p>知道了<strong>溢出</strong>，就可以介绍CPU 如何计算减法了。CPU 的减法运算使用了二进制补码，补码实际上就是采用了<strong>溢出</strong>的原理。</p>
+<p>我们直接给出<strong>反码与补码</strong>的定义：</p>
+<ul>
+<li>反码定义：<strong>正数的反码等于其原码，负数的反码是其原码除符号位外，按位取反。</strong></li>
+<li>补码定义：<strong>正数的补码等于其原码，负数的补码是其反码加1。</strong></li>
+</ul>
+<p>比如下面的几个数字：</p>
+<table>
+<thead>
+<tr>
+<th>十进制数</th>
+<th>2</th>
+<th>3</th>
+<th>-2</th>
+<th>-5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>二进制原码</strong></td>
+<td><strong>0010</strong></td>
+<td><strong>0011</strong></td>
+<td><strong><code>1</code>010</strong></td>
+<td><strong><code>1</code>101</strong></td>
+</tr>
+<tr>
+<td><strong>二进制反码</strong></td>
+<td><strong>0010</strong></td>
+<td><strong>0011</strong></td>
+<td><strong><code>1</code>101</strong></td>
+<td><strong><code>1</code>010</strong></td>
+</tr>
+<tr>
+<td><strong>二进制补码</strong></td>
+<td><strong>0010</strong></td>
+<td><strong>0011</strong></td>
+<td><strong><code>1</code>110</strong></td>
+<td><strong><code>1</code>011</strong></td>
+</tr>
+</tbody>
+</table>
+<p>我们用<code>4</code> 位二进制补码来计算 <code>3+(-2)</code>，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201121215718758.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>最高位的<code>1</code> 发生上溢出，直接被舍去，所以结果是正确的。</p>
+<p>所以，要记住，<strong>真实的计算机中的二进制是用补码表示的，而不是原码</strong>。</p>
+<h3 id="5总结">5，总结</h3>
+<p>本篇文章主要介绍了：</p>
+<ul>
+<li>CPU 只能做加法，不能做减法，减法要转成加法做计算。</li>
+<li>二进制数字有三种表示方式：
+<ul>
+<li>原码：除符号位外的其他位，保存该二进制数的绝对值。</li>
+<li>反码：正数的反码等于其原码，负数的反码是其原码除符号位外，按位取反。</li>
+<li>补码：正数的补码等于其原码，负数的补码是其反码加1。</li>
+</ul>
+</li>
+<li>计算机中的数字采用二进制补码表示，而不是原码表示。
+<ul>
+<li>补码采用了溢出的原理。</li>
+</ul>
+</li>
+<li>计算机中的数字是有范围限制的，超出限制会发生溢出。
+<ul>
+<li>超出上限叫做上溢出。最大值加1会发生上溢出，变为最小值。</li>
+<li>超出下限叫做下溢出。最小值减1会发生下溢出，变为最大值。</li>
+</ul>
+</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇</strong></em></a></p>
+<p><a href="/2020/11/dp1/"><em><strong>设计模式之高质量代码</strong></em></a></p>
+<p><a href="2020/04/vim-use/"><em><strong>如何高效使用VIM</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/ml-nb1/">
+            <span class="next-text nav-default">朴素贝叶斯分类-理论篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/computer-binary/" class="leancloud_visitors" data-flag-title="计算机二进制原码反码补码">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
