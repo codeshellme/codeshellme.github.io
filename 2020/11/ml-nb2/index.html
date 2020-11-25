@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>朴素贝叶斯分类-实战篇-如何进行文本分类 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 上篇介绍了朴素贝叶斯的原理，本篇来介绍如何用" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-nb2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="朴素贝叶斯分类-实战篇-如何进行文本分类" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 上篇介绍了朴素贝叶斯的原理，本篇来介绍如何用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-nb2/" />
+<meta property="article:published_time" content="2020-11-23T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-23T21:41:52+08:00" />
+<meta itemprop="name" content="朴素贝叶斯分类-实战篇-如何进行文本分类">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 上篇介绍了朴素贝叶斯的原理，本篇来介绍如何用">
+<meta itemprop="datePublished" content="2020-11-23T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-23T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4725">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="朴素贝叶斯分类-实战篇-如何进行文本分类"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 上篇介绍了朴素贝叶斯的原理，本篇来介绍如何用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">朴素贝叶斯分类-实战篇-如何进行文本分类</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-23 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 4725 字 </span>
+          <span class="more-meta"> 阅读约需 10 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1对文档分词">1，对文档分词</a></li>
+        <li><a href="#2计算单词权重">2，计算单词权重</a></li>
+        <li><a href="#3sklearn-朴素贝叶斯的实现">3，sklearn 朴素贝叶斯的实现</a></li>
+        <li><a href="#4构建模型">4，构建模型</a></li>
+        <li><a href="#5如何存储模型">5，如何存储模型</a></li>
+        <li><a href="#6总结">6，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>上篇介绍了<a href="/2020/11/ml-nb1">朴素贝叶斯的原理</a>，本篇来介绍如何用朴素贝叶斯解决实际问题。</p>
+<p>朴素贝叶斯最擅长的领域是文本分析，包括：</p>
+<ul>
+<li>文本分类</li>
+<li>情感分析</li>
+<li>垃圾邮件处理</li>
+</ul>
+<p>要对文本进行分类，首先要做的是如何提取文本的主要信息，如何衡量哪些信息是文本中的主要信息呢？</p>
+<h3 id="1对文档分词">1，对文档分词</h3>
+<p>我们知道，一篇文档是由若干<strong>词汇</strong>组成的，也就是文档的主要信息是词汇。从这个角度来看，我们就可以用一些<strong>关键词</strong>来描述文档。</p>
+<p>这种处理文本的方法叫做<strong>词袋</strong>(bag of words)模型，该模型会忽略文本中的词语出现的顺序以及相应的语法，将文档看做是由若干单词组成的，且单词之间互相独立，没有关联。</p>
+<p>要想提取文档中的关键词，就得先对文档进行分词。分词方法一般有两种：</p>
+<ul>
+<li>第一种是基于字符串匹配。就是扫描字符串。如果发现字符串的子串和词相同，就算匹配成功。
+<ul>
+<li>匹配规则一般有“正向最大匹配”，“逆向最大匹配”，“长词优先”等。</li>
+<li>该类算法的优点是只需基于字典匹配，算法简单；缺点是没有考虑词义，处理歧义词效果不佳。</li>
+</ul>
+</li>
+<li>第二种是基于统计和机器学习。需要人工标注词性和统计特征，对中文进行建模。
+<ul>
+<li>先要训练分词模型，然后基于模型进行计算概率，取概率最大的分词作为匹配结果。</li>
+<li>常见的序列标注模型有<strong>隐马尔科夫模型</strong>和<strong>条件随机场</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>停用词</strong>是一些非常普遍使用的词语，对文档分析作用不大，在文档分析之前需要将这些词去掉。比如：</p>
+<ul>
+<li>中文停用词：“你，我，他，它，的，了” 等。</li>
+<li>英文停用词：“is，a，the，this，that” 等。</li>
+<li>停用词文件：停用词一般保存在文件中，需要自行读取。</li>
+</ul>
+<p>另外分词阶段，还需要处理<strong>同义词</strong>，很多时候一件东西有多个不同的名字。比如“番茄”和“西红柿”，“凤梨”和“菠萝”等。</p>
+<p>中文分词与英文分词是不同的，我们分别介绍一个著名的分词包：</p>
+<ul>
+<li>中文分词：<a href="https://github.com/fxsjy/jieba/">jieba</a> 分词比较常用，其中包含了中文的停用词等。</li>
+<li>英文分词：<a href="http://www.nltk.org/">NTLK</a> 比较常用，其中包含了英文的停用词等。</li>
+</ul>
+<h3 id="2计算单词权重">2，计算单词权重</h3>
+<p>哪些关键词对一个文档才是重要的？比如可以通过单词出现的<strong>次数</strong>，次数越多就表示越重要。</p>
+<p>更合理的方法是计算单词的<code>TF-IDF</code> 值。</p>
+<h4 id="21单词的-tf-idf-值">2.1，单词的 TF-IDF 值</h4>
+<p>单词的<code>TF-IDF</code> 值可以描述一个单词对文档的重要性，<code>TF-IDF</code> 值越大，则越重要。</p>
+<ul>
+<li><strong>TF</strong>：全称是<code>Term Frequency</code>，即词频（单词出现的频率），也就是一个单词在文档中出现的<strong>次数</strong>，次数越多越重要。
+<ul>
+<li>计算公式：<code>一个单词的词频TF = 单词出现的次数 / 文档中的总单词数</code></li>
+</ul>
+</li>
+<li><strong>IDF</strong>：全称是<code>Inverse Document Frequency</code>，即逆向文档词频，是指一个单词在文档中的区分度。它认为一个<strong>单词</strong>出现在的<strong>文档数</strong>越少，这个单词对该文档就越重要，就越能通过这个单词把该文档和其他文档区分开。
+<ul>
+<li>计算公式：<code>一个单词的逆向文档频率 IDF = log(文档总数 / 该单词出现的文档数 + 1)</code></li>
+<li>为了避免分母为0（有些单词可能不在文档中出现），所以在分母上加1</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><img src="https://img-blog.csdnimg.cn/20201118102831340.png?#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<blockquote>
+<p><strong>IDF</strong> 是一个相对权重值，公式中<strong>log</strong> 的底数可以自定义，一般可取<strong>2，10，e</strong> 为底数。</p>
+</blockquote>
+<p>假设我们现在有一篇文章，文章中共有2000 个单词，“中国”出现100 次。假设全网共有1 亿篇文章，其中包含“中国”的有200 万篇。现在我们要求“中国”的<strong>TF-IDF</strong>值。</p>
+<p>计算过程如下：</p>
+<pre><code class="language-python">TF(中国) = 100 / 2000 = 0.05
+IDF(中国) = log(1亿/(200万+1)) = 1.7 # 这里的log 以10 为底
+TF-IDF(中国) = 0.05 * 1.7 = 0.085
+</code></pre>
+<p>通过计算文档中单词的<code>TF-IDF</code> 值，我们就可以提取文档中的特征属性，就是把<code>TF-IDF</code> 值较高的单词，作为文档的特征属性。</p>
+<h4 id="22tfidfvectorizer-类">2.2，TfidfVectorizer 类</h4>
+<p>sklearn 库的 <code>feature_extraction.text</code> 模块中的 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html#sklearn.feature_extraction.text.TfidfVectorizer">TfidfVectorizer</a> 类，可以计算 <code>TF-IDF</code> 值。</p>
+<p><code>TfidfVectorizer</code> 类的原型如下：</p>
+<pre><code class="language-python">TfidfVectorizer(*, 
+  input='content', 
+  encoding='utf-8', 
+  decode_error='strict', 
+  strip_accents=None, 
+  lowercase=True, 
+  preprocessor=None, 
+  tokenizer=None, 
+  analyzer='word', 
+  stop_words=None, 
+  token_pattern='(?u)\b\w\w+\b', 
+  ngram_range=(1, 1), 
+  max_df=1.0, 
+  min_df=1, 
+  max_features=None, 
+  vocabulary=None, 
+  binary=False, 
+  dtype=&lt;class 'numpy.float64'&gt;, 
+  norm='l2', 
+  use_idf=True, 
+  smooth_idf=True, 
+  sublinear_tf=False)
+</code></pre>
+<p>常用的参数有：</p>
+<ul>
+<li><code>input</code>：有三种取值：
+<ul>
+<li>filename</li>
+<li>file</li>
+<li>content：默认值为<code>content</code>。</li>
+</ul>
+</li>
+<li><code>analyzer</code>：有三种取值，分别是：
+<ul>
+<li>word：默认值为<code>word</code>。</li>
+<li>char</li>
+<li>char_wb</li>
+</ul>
+</li>
+<li><code>stop_words</code>：表示停用词，有三种取值：
+<ul>
+<li><code>english</code>：会加载<a href="http://ir.dcs.gla.ac.uk/resources/linguistic_utils/stop_words">自带英文停用词</a>。</li>
+<li><code>None</code>：没有停用词，默认为<code>None</code>。</li>
+<li><code>List</code>类型的对象：需要用户自行加载停用词。</li>
+<li>只有当参数 <code>analyzer == 'word'</code> 时才起作用。</li>
+</ul>
+</li>
+<li><code>token_pattern</code>：表示过滤规则，是一个正则表达式，不符合正则表达式的单词将会被过滤掉。
+<ul>
+<li>注意默认的 <code>token_pattern</code> 值为 <code>r'(?u)\b\w\w+\b'</code>，匹配两个以上的字符，如果是一个字符则匹配不上。</li>
+<li>只有参数 <code>analyzer == 'word'</code> 时，正则才起作用。</li>
+</ul>
+</li>
+<li><code>max_df</code>：用于描述单词在文档中的最高出现率，取值范围为 <code>[0.0~1.0]</code>。
+<ul>
+<li>比如 <code>max_df=0.6</code>，表示一个单词在 60% 的文档中都出现过，那么认为它只携带了非常少的信息，因此就不作为分词统计。</li>
+</ul>
+</li>
+<li><code>mid_df</code>：单词在文档中的最低出现率，一般不用设置。</li>
+</ul>
+<p>常用的<strong>方法</strong>有：</p>
+<ul>
+<li><code>t.fit(raw_docs)</code>：用<code>raw_docs</code> 拟合模型。</li>
+<li><code>t.transform(raw_docs)</code>：将 <code>raw_docs</code> 转成矩阵并返回，其中包含了每个单词在每个文档中的 TF-IDF 值。</li>
+<li><code>t.fit_transform(raw_docs)</code>：可理解为先 <code>fit</code> 再 <code>transform</code>。</li>
+</ul>
+<p>在上面三个方法中：</p>
+<ul>
+<li><code>t</code> 表示 <code>TfidfVectorizer</code> 对象。</li>
+<li><code>raw_docs</code> 参数是一个可遍历对象，其中的每个元素表示一个文档。</li>
+</ul>
+<p><em><strong><code>fit_transform</code> 与 <code>transform</code> 的用法</strong></em></p>
+<ul>
+<li>一般在拟合转换数据时，先处理<strong>训练集</strong>数据，再处理<strong>测试集</strong>数据。</li>
+<li>训练集数据会用于拟合模型，而测试集数据不会用于拟合模型。所以：
+<ul>
+<li><code>fit_transform</code> 用于训练集数据。</li>
+<li><code>transform</code> 用于测试集数据，且 <code>transform</code>	 必须在 <code>fit_transform</code> 之后。</li>
+<li>如果测试集数据也用 <code>fit_transform</code> 方法，则会造成过拟合。</li>
+</ul>
+</li>
+</ul>
+<p>下图表达的很清晰明了：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020112218213559.png?#pic_center" alt="在这里插入图片描述">
+所以一般的使用步骤是：</p>
+<pre><code class="language-python"># x 为 DictVectorizer，DictVectorizer 等类的对象
+# 用于特征提取
+x = XXX()
+
+train_features = x.fit_transform(train_datas)
+test_features = x.transform(test_datas)
+</code></pre>
+<h4 id="23一个例子">2.3，一个例子</h4>
+<p>比如我们有如下3 个文档（<code>docs</code> 的每个元素表示一个文档）：</p>
+<pre><code class="language-python">docs = [ 
+    'I am a student.',
+    'I live in Beijing.',
+    'I love China.', 
+]
+</code></pre>
+<p>我们用 <code>TfidfVectorizer</code> 类来计算TF-IDF 值：</p>
+<pre><code class="language-python">from sklearn.feature_extraction.text import TfidfVectorizer
+t = TfidfVectorizer() # 使用默认参数
+</code></pre>
+<p>用 <code>fit_transform()</code> 方法拟合模型，反回矩阵：</p>
+<pre><code class="language-python">t_matrix = t.fit_transform(docs)
+</code></pre>
+<p>用 <code>get_feature_names()</code> 方法获取所有不重复的特征词：</p>
+<pre><code class="language-python">&gt;&gt;&gt; t.get_feature_names()
+['am', 'beijing', 'china', 'in', 'live', 'love', 'student']
+</code></pre>
+<blockquote>
+<p>不知道你有没有发现，这些特征词中不包含<code>i</code> 和 <code>a</code> ？你能解释一下是为什么吗？</p>
+</blockquote>
+<p>用<code>vocabulary_</code> 属性获取特征词与<code>ID</code> 的对应关系：</p>
+<pre><code class="language-python">&gt;&gt;&gt; t.vocabulary_
+{'am': 0, 'student': 6, 'live': 4, 'in': 3, 'beijing': 1, 'love': 5, 'china': 2}
+</code></pre>
+<p>用 <strong>矩阵对象</strong>的<code>toarray()</code> 方法输出 <code>TF-IDF</code> 值：</p>
+<pre><code class="language-python">&gt;&gt;&gt; t_matrix.toarray()
+array([
+  [0.70710678, 0.        , 0.        , 0.        , 0.        , 0.        , 0.70710678],
+  [0.        , 0.57735027, 0.        , 0.57735027, 0.57735027, 0.        , 0.        ],
+  [0.        , 0.        , 0.70710678, 0.        , 0.        , 0.70710678, 0.        ]
+])
+</code></pre>
+<h3 id="3sklearn-朴素贝叶斯的实现">3，sklearn 朴素贝叶斯的实现</h3>
+<p>sklearn 库中的 <strong>naive_bayes</strong> 模块实现了 5 种<strong>朴素贝叶斯</strong>算法：</p>
+<ol>
+<li><code>naive_bayes.BernoulliNB</code> 类：<strong>伯努利朴素贝叶斯</strong>的实现。
+<ul>
+<li>适用于离散型数据，适合特征变量是布尔变量，符合 0/1 分布，在文档分类中特征是<strong>单词是否出现</strong>。</li>
+<li>该算法<strong>以文件为粒度</strong>，如果该单词在某文件中出现了即为 1，否则为 0。</li>
+</ul>
+</li>
+<li><code>naive_bayes.CategoricalNB</code> 类：<strong>分类朴素贝叶斯</strong>的实现。</li>
+<li><code>naive_bayes.GaussianNB</code> 类：<strong>高斯朴素贝叶斯</strong>的实现。
+<ul>
+<li>适用于特征变量是连续型数据，符合高斯分布。比如说人的身高，物体的长度等，这种<strong>自然界物体</strong>。</li>
+</ul>
+</li>
+<li><code>naive_bayes.MultinomialNB</code> 类：<strong>多项式朴素贝叶斯</strong>的实现。
+<ul>
+<li>适用于特征变量是离散型数据，符合多项分布。在文档分类中特征变量体现在一个单词出现的次数，或者是单词的 TF-IDF 值等。</li>
+</ul>
+</li>
+<li><code>naive_bayes.ComplementNB</code> 类：<strong>补充朴素贝叶斯</strong>的实现。
+<ul>
+<li>是多项式朴素贝叶斯算法的一种改进。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>每个类名中的<strong>NB</strong> 后缀是 <strong>Naive Bayes</strong> 的缩写，即表示<strong>朴素贝叶斯</strong>。</p>
+</blockquote>
+<p>各个类的原型如下：</p>
+<pre><code class="language-python">BernoulliNB(*, alpha=1.0, binarize=0.0, fit_prior=True, class_prior=None)
+CategoricalNB(*, alpha=1.0, fit_prior=True, class_prior=None)
+GaussianNB(*, priors=None, var_smoothing=1e-09)
+MultinomialNB(*, alpha=1.0, fit_prior=True, class_prior=None)
+ComplementNB(*, alpha=1.0, fit_prior=True, class_prior=None, norm=False)
+</code></pre>
+<p>构造方法中的<code>alpha</code> 的含义为<strong>平滑参数</strong>：</p>
+<ul>
+<li>如果一个单词在训练样本中没有出现，这个单词的概率就会是 0。但训练集样本只是整体的抽样情况，不能因为没有观察到，就认为整个事件的概率为 0。为了解决这个问题，需要做平滑处理。</li>
+<li>当 alpha=1 时，使用的是 Laplace 平滑。Laplace 平滑就是采用加 1 的方式，来统计没有出现过的单词的概率。这样当训练样本很大的时候，加 1 得到的概率变化可以忽略不计。</li>
+<li>当 0&lt;alpha&lt;1 时，使用的是 Lidstone 平滑。对于 Lidstone 平滑来说，alpha 越小，迭代次数越多，精度越高。一般可以设置 alpha 为 0.001。</li>
+</ul>
+<h3 id="4构建模型">4，构建模型</h3>
+<p>我准备了一个<a href="https://github.com/codeshellme/codeshellme.github.io/tree/master/somecode/ml/naive_bayes/">实战案例</a>，目录结构如下：</p>
+<pre><code class="language-shell.">naive_bayes\
+    ├── stop_word\
+    │   └── stopword.txt
+    ├── test_data\
+    │   ├── test_economy.txt
+    │   ├── test_fun.txt
+    │   ├── test_health.txt
+    │   └── test_sport.txt
+    ├── text_classification.py
+    └── train_data\
+        ├── train_economy.txt
+        ├── train_fun.txt
+        ├── train_health.txt
+        └── train_sport.txt
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>stop_word</code> 目录中是<a href="https://github.com/elephantnose/characters">中文停用词</a>。</li>
+<li><code>train_data</code> 目录中是训练集数据。</li>
+<li><code>test_data</code> 目录中是测试集数据。</li>
+<li><code>text_classification.py</code>：是Python 代码，包括以下步骤：
+<ul>
+<li>中文分词</li>
+<li>特征提取</li>
+<li>模型训练</li>
+<li>模型测试</li>
+</ul>
+</li>
+</ul>
+<p>这些数据是一些新闻数据，每条数据包含了<strong>新闻类型</strong>和<strong>新闻标题</strong>，类型有以下四种：</p>
+<ul>
+<li>财经类</li>
+<li>娱乐类</li>
+<li>健康类</li>
+<li>体育类</li>
+</ul>
+<p>我们的目的是训练一个模型，该模型的输入是新闻标题，模型的输出是新闻类型，也就是想通过新闻标题来判断新闻类型。</p>
+<p>来看下数据的样子，每类数据抽取了一条：</p>
+<pre><code class="language-python">财经---11月20日晚间影响市场重要政策消息速递
+娱乐---2020金鸡港澳台影展曝片单 修复版《蝶变》等将映
+健康---全面解析耳聋耳鸣，让你不再迷茫它的危害
+体育---中国军团1人已进32强！赵心童4-1晋级，丁俊晖颜丙涛将出战
+</code></pre>
+<p>可以看到，每条数据以<code>---</code> 符号分隔，前边是新闻类型，后边是新闻标题。</p>
+<p>下面来看下代码：</p>
+<pre><code class="language-python">import os
+import sys
+import jieba
+import warnings
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn import metrics
+
+warnings.filterwarnings('ignore')
+
+if sys.version.startswith('2.'):
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+
+
+def load_file(file_path):
+    with open(file_path) as f:
+        lines = f.readlines()
+
+    titles = []
+    labels = []
+
+    for line in lines:
+        line = line.encode('unicode-escape').decode('unicode-escape')
+        line = line.strip().rstrip('\n')
+
+        _lines = line.split('---')
+        if len(_lines) != 2:
+            continue
+
+        label, title = _lines
+        words = jieba.cut(title)
+
+        s = ''
+        for w in words:
+            s += w + ' '
+
+        s = s.strip()
+
+        titles.append(s)
+        labels.append(label)
+
+    return titles, labels
+
+
+def load_data(_dir):
+    file_list = os.listdir(_dir)
+
+    titles_list = []
+    labels_list = []
+
+    for file_name in file_list:
+        file_path = _dir + '/' + file_name
+
+        titles, labels = load_file(file_path)
+
+        titles_list += titles
+        labels_list += labels
+
+    return titles_list, labels_list
+
+
+def load_stopwords(file_path):
+    with open(file_path) as f:
+        lines = f.readlines()
+
+    words = []
+    for line in lines:
+        line = line.encode('unicode-escape').decode('unicode-escape')
+        line = line.strip('\n')
+        words.append(line)
+
+    return words
+
+
+if __name__ == '__main__':
+    # 加载停用词
+    stop_words = load_stopwords('stop_word/stopword.txt')
+
+    # 加载训练数据
+    train_datas, train_labels = load_data('train_data')
+
+    # 加载测试数据
+    test_datas, test_labels = load_data('test_data')
+
+    # 计算单词权重
+    tf = TfidfVectorizer(stop_words = stop_words, max_df = 0.5)
+    train_features = tf.fit_transform(train_datas)
+    test_features = tf.transform(test_datas) 
+
+    # 多项式贝叶斯分类器
+    clf = MultinomialNB(alpha = 0.001).fit(train_features, train_labels)
+
+    # 预测数据
+    predicted_labels = clf.predict(test_features)
+
+    # 计算准确率
+    score = metrics.accuracy_score(test_labels, predicted_labels)
+    print score
+</code></pre>
+<p>说明：</p>
+<ul>
+<li><code>load_stopwords</code> 函数用于加载停用词。</li>
+<li><code>load_data</code> 函数用于加载训练集和测试集数据。</li>
+<li>使用 <code>fit_transform</code> 方法提取<strong>训练集</strong>特征。</li>
+<li>使用 <code>transform</code> 方法提取<strong>测试集</strong>特征。</li>
+<li>这里使用的是<strong>多项式贝叶斯分类器</strong>&mdash;<code>MultinomialNB</code>，平滑参数设置为<strong>0.001</strong>。</li>
+<li>用<code>fit</code> 方法拟合出了模型。</li>
+<li>用 <code>predict</code> 方法对测试数据进行了预测。</li>
+<li>最终用 <code>accuracy_score</code> 方法计算了模型的准确度，为 <strong>0.959</strong>。</li>
+</ul>
+<h3 id="5如何存储模型">5，如何存储模型</h3>
+<p>实际应用中，训练一个模型需要大量的数据，也就会花费很多时间。</p>
+<p>为了方便使用，可以将训练好的模型存储到磁盘上，在使用的时候，直接加载出来就可以使用。</p>
+<p>可以使用 <strong>sklearn</strong> 中的 <a href="https://joblib.readthedocs.io">joblib</a> 模块来存储和加载模型：</p>
+<ul>
+<li><code>joblib.dump(obj, filepath)</code> 方法将<code>obj</code> 存储到 <code>filepath</code> 指定的文件中。
+<ul>
+<li><code>obj</code> 是要存储的对象。</li>
+<li><code>filepath</code> 是文件路径。</li>
+</ul>
+</li>
+<li><code>joblib.load(filepath)</code> 方法用于加载模型。
+<ul>
+<li><code>filepath</code> 是文件路径。</li>
+</ul>
+</li>
+</ul>
+<p>在上边的例子用，我们需要存储两个对象，分别是：</p>
+<ul>
+<li><code>tf</code>：<strong>TF-IDF</strong> 值模型。</li>
+<li><code>cfl</code>：朴素贝叶斯模型。</li>
+</ul>
+<p>存储代码如下：</p>
+<pre><code class="language-python">from sklearn.externals import joblib
+&gt;&gt;&gt; joblib.dump(clf, 'nb.pkl') 
+['nb.pkl']
+&gt;&gt;&gt; joblib.dump(tf, 'tf.pkl') 
+['tf.pkl']
+</code></pre>
+<p>使用模型代码如下：</p>
+<pre><code class="language-python">import jieba
+import warnings
+from sklearn.externals import joblib
+
+warnings.filterwarnings('ignore')
+
+MODEL = None
+TF = None
+
+def load_model(model_path, tf_path):
+    global MODEL 
+    global TF
+
+    MODEL = joblib.load(model_path)
+    TF = joblib.load(tf_path)
+
+def nb_predict(title):
+    assert MODEL != None and TF != None
+    
+    words = jieba.cut(title)
+    s = ' '.join(words)
+
+    test_features = TF.transform([s]) 
+    predicted_labels = MODEL.predict(test_features)
+
+    return predicted_labels[0]
+
+if __name__ == '__main__':
+    # 加载模型
+    load_model('nb.pkl', 'tf.pkl')
+
+	# 测试
+    print nb_predict('东莞市场采购贸易联网信息平台参加部委首批联合验收')
+    print nb_predict('留在中超了！踢进生死战决胜一球，武汉卓尔保级成功')
+    print nb_predict('陈思诚全新系列电影《外太空的莫扎特》首曝海报 黄渤、荣梓杉演父子')
+    print nb_predict('红薯的好处 常吃这种食物能够帮你减肥')
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>load_model()</code> 函数用于加载模型。</li>
+<li><code>nb_predict()</code> 函数用于对新闻标题进行预测，返回标题的类型。</li>
+</ul>
+<h3 id="6总结">6，总结</h3>
+<p>本篇文章介绍了如何利用<strong>朴素贝叶斯</strong>处理<strong>文本分类</strong>问题：</p>
+<ul>
+<li>首先需要对文本进行分词，常用的分词包有：
+<ul>
+<li><a href="https://github.com/fxsjy/jieba/">jieba</a> 用于中文分词。</li>
+<li><a href="http://www.nltk.org/">NTLK</a> 用于英文分词。</li>
+<li>一些<a href="https://github.com/elephantnose/characters">中文停用词</a>，供参考。</li>
+</ul>
+</li>
+<li>使用 <code>TfidfVectorizer</code> 计算单词权重。
+<ul>
+<li>使用 <code>fit_transform</code> 方法提取<strong>训练集</strong>特征。</li>
+<li>使用 <code>transform</code> 方法提取<strong>测试集</strong>特征。</li>
+</ul>
+</li>
+<li>使用 <code>MultinomialNB</code> 类训练模型，这里给出了一个<a href="https://github.com/codeshellme/codeshellme.github.io/tree/master/somecode/ml/naive_bayes/">实战项目</a>，供大家参考。</li>
+<li>使用 <a href="https://joblib.readthedocs.io">joblib</a>  存储模型，方便模型的使用。</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/computer-binary/">
+            <span class="next-text nav-default">计算机二进制原码反码补码</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-nb2/" class="leancloud_visitors" data-flag-title="朴素贝叶斯分类-实战篇-如何进行文本分类">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

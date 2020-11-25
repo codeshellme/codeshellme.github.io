@@ -7,13 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Tue, 17 Nov 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 23 Nov 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>朴素贝叶斯分类-理论篇</title>
+      <title>朴素贝叶斯分类-实战篇-如何进行文本分类</title>
+      <link>https://codeshellme.github.io/2020/11/ml-nb2/</link>
+      <pubDate>Mon, 23 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-nb2/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 上篇介绍了朴素贝叶斯的原理，本篇来介绍如何用</description>
+    </item>
+    
+    <item>
+      <title>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</title>
       <link>https://codeshellme.github.io/2020/11/ml-nb1/</link>
       <pubDate>Tue, 17 Nov 2020 21:38:52 +0800</pubDate>
       
@@ -22,7 +31,7 @@
     </item>
     
     <item>
-      <title>决策树算法-实战篇</title>
+      <title>决策树算法-实战篇-鸢尾花及波士顿房价预测</title>
       <link>https://codeshellme.github.io/2020/11/ml-decisiontree2/</link>
       <pubDate>Sun, 15 Nov 2020 21:38:52 +0800</pubDate>
       
@@ -31,7 +40,7 @@
     </item>
     
     <item>
-      <title>决策树算法-理论篇</title>
+      <title>决策树算法-理论篇-如何计算信息纯度</title>
       <link>https://codeshellme.github.io/2020/11/ml-decisiontree1/</link>
       <pubDate>Sun, 08 Nov 2020 21:38:52 +0800</pubDate>
       
