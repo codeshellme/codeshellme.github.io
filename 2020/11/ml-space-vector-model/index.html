@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>计算机如何理解事物的相关性-文档的相似度判断 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 生活中，我们经常会对比两个事物的相关性，也可以叫做相似" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-space-vector-model/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="计算机如何理解事物的相关性-文档的相似度判断" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 生活中，我们经常会对比两个事物的相关性，也可以叫做相似" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-space-vector-model/" />
+<meta property="article:published_time" content="2020-11-26T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-26T21:41:52+08:00" />
+<meta itemprop="name" content="计算机如何理解事物的相关性-文档的相似度判断">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 生活中，我们经常会对比两个事物的相关性，也可以叫做相似">
+<meta itemprop="datePublished" content="2020-11-26T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-26T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3204">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="计算机如何理解事物的相关性-文档的相似度判断"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 生活中，我们经常会对比两个事物的相关性，也可以叫做相似"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">计算机如何理解事物的相关性-文档的相似度判断</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-26 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 3204 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1空间向量模型">1，空间向量模型</a></li>
+        <li><a href="#2向量之间的距离">2，向量之间的距离</a></li>
+        <li><a href="#3向量的长度">3，向量的长度</a></li>
+        <li><a href="#4向量的夹角">4，向量的夹角</a></li>
+        <li><a href="#5向量距离与夹角的使用">5，向量距离与夹角的使用</a></li>
+        <li><a href="#6如何判断文档的相似度">6，如何判断文档的相似度</a></li>
+        <li><a href="#7总结">7，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>生活中，我们经常会对比两个事物的<strong>相关性</strong>，也可以叫做<strong>相似度</strong>。</p>
+<ul>
+<li>
+<p>如果一件事物与另一件事物的相似度比较高，那这两件事物的相关性就比较大。</p>
+</li>
+<li>
+<p>如果一件事物与另一件事物的相似度比较低，那这两件事物的相关性就比较小。</p>
+</li>
+</ul>
+<p>人类会根据自己的经验，很容易的判断两件事物是否相似，或者相似度是多少。那如何让<strong>计算机</strong>也能够进行这样的判断呢？</p>
+<h3 id="1空间向量模型">1，空间向量模型</h3>
+<p>我们都知道，计算机并没有思维，它只能理解数字。所以，如果想让计算机理解我们现实世界中的事物，必须先把现实事物转换成数字。</p>
+<p>空间向量模型假设，任何事物都可以转换成 <strong>N 维空间中的一个点</strong>，这个点称为<strong>向量</strong>，然后通过计算<strong>向量之间的距离或夹角</strong>，来判断向量的之间相关性，进而判断事物之间的相关性。</p>
+<ul>
+<li>向量之间的距离越大，事物就越不相关；距离越小就越相关。</li>
+<li>向量之间的夹角越大，事物就越不相关；夹角越小就越相关。</li>
+</ul>
+<p><em><strong>什么是向量</strong></em></p>
+<p>向量代表了事物的特征。</p>
+<p>向量是相对标量而言，标量只是单个数字，没有方向性。向量也叫矢量，由一组数字构成，具有方向性。</p>
+<p>例如，用下图中的 <code>x</code> 表示向量，其中 <code>n</code> 表示向量的维度：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126105634340.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="2向量之间的距离">2，向量之间的距离</h3>
+<p>两个向量所对应的两点之间的距离就是向量的距离，距离可以描述不同向量在向量空间中的差异，也就是现实事物之间的差异。</p>
+<p>常用的计算距离的方法有四种：</p>
+<ul>
+<li>麦哈顿距离</li>
+<li>欧式距离</li>
+<li>切比雪夫距离</li>
+<li>闵可夫斯基距离</li>
+</ul>
+<p>其中使用最多的是欧氏距离，下面一一介绍。</p>
+<p><em><strong>麦哈顿距离</strong></em></p>
+<p><strong>麦哈顿距离</strong>可以理解为街道距离，或者出租车距离。</p>
+<p>可以看到下图中，从A 点到B 点，不管是走<strong>1线路</strong> 还是<strong>2线路</strong>，距离都是一样的，这个线路的距离就是麦哈顿距离。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126150844921.png#pic_center" alt="在这里插入图片描述"></p>
+<p>二维空间中的两个点<code>A(x1, x2)</code> 和<code>B(y1, y2)</code>，麦哈顿距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126151118739.png#pic_center" alt="在这里插入图片描述"></p>
+<p><code>n</code> 维空间中的两个点<code>A(x1...xn)</code> 和<code>B(y1...yn)</code>，麦哈顿距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126151537145.png#pic_center" alt="在这里插入图片描述"></p>
+<p><em><strong>欧式距离</strong></em></p>
+<p><strong>欧式距离</strong>也叫欧几里得距离，比较好理解，就是直线距离。</p>
+<p>如下图，A 点到B 点的直线距离就是欧式距离。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126152331839.png#pic_center" alt="在这里插入图片描述"></p>
+<p>对于二维空间中的两个点<code>A(x1, x2)</code> 和<code>B(y1, y2)</code>，欧式距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020112615245910.png#pic_center" alt="在这里插入图片描述"></p>
+<p>对于<code>n</code> 维空间中的两点<code>A(x1...xn)</code> 和<code>B(y1...yn)</code>，欧式距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126152629735.png#pic_center" alt="在这里插入图片描述"></p>
+<p><em><strong>切比雪夫距离</strong></em></p>
+<p><strong>切比雪夫距离</strong>可以类比为在方格中走格子，怎样走的格子数最少。</p>
+<p>如下图中，从A 格子走到B 格子，先斜线走，再直线走，最终走的<strong>格子数</strong>就是切比雪夫距离。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126152845911.png#pic_center" alt="在这里插入图片描述"></p>
+<p>对于二维空间中的两个点<code>A(x1, x2)</code> 和<code>B(y1, y2)</code>，切比雪夫距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020112615313465.png#pic_center" alt="在这里插入图片描述">
+上面公式的含义是，<code>∣x1 − y1∣</code> 和 <code>∣x2 − y2∣</code> 两者的最大者。</p>
+<p>对于<code>n</code> 维空间中的两点<code>A(x1...xn)</code> 和<code>B(y1...yn)</code>，切比雪夫距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126153148563.png#pic_center" alt="在这里插入图片描述"></p>
+<p><em><strong>闵可夫斯基距离</strong></em></p>
+<p><strong>闵可夫斯基距离</strong>也叫做闵氏距离，它并不是一种单独的距离，而是上面三种距离的统一。</p>
+<p>对于二维空间中的两个点<code>A(x1, x2)</code> 和<code>B(y1, y2)</code>，闵可夫斯基距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126153612679.png#pic_center" alt="在这里插入图片描述"></p>
+<p>对于<code>n</code> 维空间中的两点<code>A(x1...xn)</code> 和<code>B(y1...yn)</code>，闵可夫斯基距离的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126153620989.png#pic_center" alt="在这里插入图片描述"></p>
+<p>根据<code>p</code> 取值的不同，闵可夫斯基距离表示不同的距离：</p>
+<ul>
+<li>当 <code>p=1</code> 时，就是曼哈顿距离；</li>
+<li>当 <code>p=2</code> 时，就是欧氏距离；</li>
+<li>当 <code>p</code> 趋近于无穷大的时候，就是切比雪夫距离。</li>
+</ul>
+<h3 id="3向量的长度">3，向量的长度</h3>
+<p>向量也是有大小的，向量的大小就是向量的长度。</p>
+<p>向量的长度也叫<strong>向量的模</strong>，它是向量所对应的<strong>点到空间原点的距离</strong>，通常使用<strong>欧氏距离</strong>来表示向量的长度。</p>
+<p>数学中有一个概念叫做<strong>范数</strong>，范数常被用来衡量向量的长度。</p>
+<p>范数有4 种，分别对应向量的4 种距离：</p>
+<ul>
+<li><code>L1</code> 范数，用 <strong>||x||</strong> 表示，对应于麦哈顿距离。</li>
+<li><code>L2</code> 范数，用 <strong>||x||<sub>2</sub></strong> 表示，对应于欧式距离。</li>
+<li><code>L∞</code> 范数，用 <strong>||x||<sub>∞</sub></strong> 表示，对应于切比雪夫距离。</li>
+<li><code>Lp</code> 范数，用 <strong>||x||<sub>p</sub></strong> 表示，对应于闵可夫斯基距离。</li>
+</ul>
+<h3 id="4向量的夹角">4，向量的夹角</h3>
+<p>向量的夹角经常用<strong>余弦值</strong>表示。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126162220818.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>对于二维空间中的两个点<code>A(x1, x2)</code> 和 <code>B(y1, y2)</code>，余弦的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126163139924.png#pic_center" alt="在这里插入图片描述"></p>
+<p>对于<code>n</code> 维空间中的两点<code>A(x1...xn)</code> 和<code>B(y1...yn)</code>，余弦的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126163249480.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>夹角的余弦取值范围是<code>[-1, 1]</code>，那么：</p>
+<ul>
+<li>当两个向量的方向重合时，余弦值最大，为<code>1</code>。</li>
+<li>当两个向量的方向相反时，余弦值最小，为 <code>-1</code>。</li>
+<li>余弦值越大，说明夹角越小，两点相距就越近。</li>
+<li>余弦值越小，说明夹角越大，两点相距就越远。</li>
+</ul>
+<h3 id="5向量距离与夹角的使用">5，向量距离与夹角的使用</h3>
+<p>我们可以将向量的距离与夹角展现在同一个<code>N</code> 维坐标系中，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126165059162.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>向量的余弦取值范围是<code>[-1, 1]</code>，余弦值越大，表示越相似，正好与相似度成正比。</p>
+<p>对于向量之间的距离，通常用<strong>欧式距离</strong> ED表示，<strong>ED</strong> 越小，表示越相似，与相似度成反比，而且<strong>ED</strong> 的取值范围非常大。</p>
+<p>所以通常会将欧式距离进行 <code>1/(ED+1)</code> <strong>归一化</strong>处理，用<code>ED'</code> 表示。<code>ED'</code>的取值范围是<code>[0, 1]</code>，并且与相似度成正比：</p>
+<ul>
+<li>当 ED 为 0 时，<code>ED'</code>值是 1，表示相似度为 1，事物完全相同。</li>
+<li>当 ED 趋近于无穷大时，<code>ED'</code>值是 0，表示相似度为 0，事物完全不同。</li>
+</ul>
+<h3 id="6如何判断文档的相似度">6，如何判断文档的相似度</h3>
+<p>为了让计算机能够判断现实事物的相似度，我们引出了<strong>空间向量</strong>的概念。</p>
+<p>下面我们来看如何使用空间向量，来判断<strong>文档相似度</strong>。</p>
+<p>比如，现在我们有两个中文句子，要判断这两个句子的相似度：</p>
+<ul>
+<li>句子1：我去过北京，也去过天安门。</li>
+<li>句子2：我也去过北京，但没去过天安门。</li>
+</ul>
+<p>要想将文档转换成向量，首先需要对文档进行分词。</p>
+<p><em><strong>分词</strong></em></p>
+<p>我们可以使用 <a href="https://github.com/fxsjy/jieba/">jieba</a> 对这两个句子进行分词，结果如下：</p>
+<ul>
+<li>句子1：[&lsquo;我&rsquo;, &lsquo;去过&rsquo;, &lsquo;北京&rsquo;,  &lsquo;也&rsquo;, &lsquo;去过&rsquo;, &lsquo;天安门&rsquo;]</li>
+<li>句子2：[&lsquo;我&rsquo;, &lsquo;也&rsquo;, &lsquo;去过&rsquo;, &lsquo;北京&rsquo;,  &lsquo;但&rsquo;, &lsquo;没&rsquo;, &lsquo;去过&rsquo;, &lsquo;天安门&rsquo;]</li>
+</ul>
+<p>可以得到所有词的集合：</p>
+<ul>
+<li>分词集合：[&lsquo;没&rsquo;, &lsquo;但&rsquo;, &lsquo;北京&rsquo;, &lsquo;我&rsquo;, &lsquo;去过&rsquo;, &lsquo;天安门&rsquo;, &lsquo;也&rsquo;]</li>
+</ul>
+<p>计算每个句子的分词的词频：</p>
+<ul>
+<li>句子1：{&lsquo;没&rsquo;:0, &lsquo;但&rsquo;:0, &lsquo;北京&rsquo;:1, &lsquo;我&rsquo;:1, &lsquo;去过&rsquo;:1, &lsquo;天安门&rsquo;:1, &lsquo;也&rsquo;:1}</li>
+<li>句子2：{&lsquo;没&rsquo;:1, &lsquo;但&rsquo;:1, &lsquo;北京&rsquo;:1, &lsquo;我&rsquo;:1, &lsquo;去过&rsquo;:1, &lsquo;天安门&rsquo;:1, &lsquo;也&rsquo;:1}</li>
+</ul>
+<p>从而可以得到词频向量：</p>
+<ul>
+<li>句子1：[0, 0, 1, 1, 1, 1, 1]</li>
+<li>句子2：[1, 1, 1, 1, 1, 1, 1]</li>
+</ul>
+<p>上文中，我们介绍了，可以通过向量的<strong>距离</strong>或者<strong>余弦夹角</strong>来度量向量之间的相似度。这里我们使用余弦夹角来计算。我们知道 <code>N</code> 维空间的余弦公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126163249480.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>从而可以计算余弦夹角为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201126223801142.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>可以看到，最终算出的余弦夹角为 <strong>0.85</strong>，比较接近<strong>1</strong>，说明这两个句子还是很相近的。</p>
+<h3 id="7总结">7，总结</h3>
+<p>本片文章主要介绍了以下几点：</p>
+<ul>
+<li>要想让计算机理解现实世界中的事物，需要将其转换成<strong>空间向量</strong>的形式。</li>
+<li>可以通过计算空间向量之间的<strong>距离</strong>或者<strong>夹角</strong>，来衡量事物之间的相似度。</li>
+<li>向量之间的夹角通常使用<strong>余弦夹角值</strong>。</li>
+<li>向量之间的距离有4 种，分别是：
+<ul>
+<li>麦哈顿距离</li>
+<li>欧式距离（最常用）</li>
+<li>切比雪夫距离</li>
+<li>闵可夫斯基距离</li>
+</ul>
+</li>
+<li>案例：如何使用空间向量模型判断文档相似度。</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-nb2"><em><strong>朴素贝叶斯分类-实战篇-如何进行文本分类</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/ml-nb2/">
+            <span class="next-text nav-default">朴素贝叶斯分类-实战篇-如何进行文本分类</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-space-vector-model/" class="leancloud_visitors" data-flag-title="计算机如何理解事物的相关性-文档的相似度判断">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
