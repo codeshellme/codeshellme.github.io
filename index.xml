@@ -58,6 +58,24 @@
     </item>
     
     <item>
+      <title>如何使用Python 进行数据可视化</title>
+      <link>https://codeshellme.github.io/2020/11/ml-data-visualization/</link>
+      <pubDate>Sat, 28 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-data-visualization/</guid>
+      <description>微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 在进行数据分析的时候，经常需要将数据进行可视</description>
+    </item>
+    
+    <item>
+      <title>数据变换-归一化与标准化</title>
+      <link>https://codeshellme.github.io/2020/11/ml-data-transform/</link>
+      <pubDate>Fri, 27 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-data-transform/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 一般在机器学习的模型训练之前，有一个比较重要的步骤是数</description>
+    </item>
+    
+    <item>
       <title>计算机如何理解事物的相关性-文档的相似度判断</title>
       <link>https://codeshellme.github.io/2020/11/ml-space-vector-model/</link>
       <pubDate>Thu, 26 Nov 2020 21:38:52 +0800</pubDate>

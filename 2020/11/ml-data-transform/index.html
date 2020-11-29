@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>数据变换-归一化与标准化 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 一般在机器学习的模型训练之前，有一个比较重要的步骤是数" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-data-transform/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="数据变换-归一化与标准化" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 一般在机器学习的模型训练之前，有一个比较重要的步骤是数" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-data-transform/" />
+<meta property="article:published_time" content="2020-11-27T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-27T21:41:52+08:00" />
+<meta itemprop="name" content="数据变换-归一化与标准化">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 一般在机器学习的模型训练之前，有一个比较重要的步骤是数">
+<meta itemprop="datePublished" content="2020-11-27T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-27T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2051">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="数据变换-归一化与标准化"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 一般在机器学习的模型训练之前，有一个比较重要的步骤是数"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">数据变换-归一化与标准化</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-27 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 2051 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1数据归一化">1，数据归一化</a></li>
+        <li><a href="#2数据标准化">2，数据标准化</a></li>
+        <li><a href="#3总结">3，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>一般在机器学习的<strong>模型训练</strong>之前，有一个比较重要的步骤是<strong>数据变换</strong>。</p>
+<p>因为，一般情况下，原始数据的各个特征的值并不在一个统一的范围内，这样数据之间就没有<strong>可比性</strong>。</p>
+<p>数据变换的目的是<strong>将不同渠道，不同量级的数据转化到统一的范围之内，方便后续的分析处理</strong>。</p>
+<p>数据变换的方法有很多，比如<strong>数据平滑，数据聚集，数据概化，数据规范化</strong>和<strong>属性构造</strong>等。</p>
+<p>本篇文章主要介绍数据规范化，这是一种比较常用，也比较简单的方法。</p>
+<p>数据规范化是<strong>使属性数据按比例缩放，这样就将原来的数值映射到一个新的特定区域中</strong>，包括<strong>归一化，标准化</strong>等。</p>
+<h3 id="1数据归一化">1，数据归一化</h3>
+<p>归一化就是获取原始数据的最大值和最小值，然后把原始值线性变换到 <strong>[0,1]</strong> 范围之内，变换公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201127162915978.png" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li><code>x</code> 是当前要变换的原始值。</li>
+<li><code>min</code> 是当前特征中的最小值。</li>
+<li><code>max</code> 是当前特征中的最大值。</li>
+<li><code>x'</code> 是变换完之后的新值。</li>
+</ul>
+<blockquote>
+<p><strong>注意：</strong>
+<code>min</code> 和 <code>max</code> 是指当前特征中的最小最大值。
+所以同一特征之内，最小最大值是一样的。
+而不同特征之间，最小最大值是不一样的。</p>
+</blockquote>
+<p>从公式中可以看出，归一化与最大最小值有关，这也是归一化的缺点，因为最大值与最小值非常容易受<strong>噪音数据</strong>的影响。</p>
+<h4 id="11归一化处理">1.1，归一化处理</h4>
+<p>比如，我们有以下数据：</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>特征1</th>
+<th>特征2</th>
+<th>特征3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第1条</td>
+<td>5</td>
+<td>465</td>
+<td>135</td>
+</tr>
+<tr>
+<td>第2条</td>
+<td>23</td>
+<td>378</td>
+<td>69</td>
+</tr>
+<tr>
+<td>第3条</td>
+<td>69</td>
+<td>796</td>
+<td>83</td>
+</tr>
+</tbody>
+</table>
+<p>通过数据可以观察出：</p>
+<ul>
+<li><code>Max(特征1) = 69，Min(特征1) = 5</code></li>
+<li><code>Max(特征2) = 796，Min(特征2) = 378</code></li>
+<li><code>Max(特征3) = 135，Min(特征3) = 69</code></li>
+</ul>
+<p>这里我们用第一条数据来举例，看看是如何变换的。</p>
+<ul>
+<li>对于第一个数字 <code>5</code> 做变换：<code>(5 - 5) / (69 - 5) = 0</code></li>
+<li>对于第二个数字 <code>465</code> 做变换：<code>(465 - 378) / (796 - 378) = 0.21</code></li>
+<li>对于第三个数字 <code>135</code> 做变换：<code>(135  - 69) / (135 - 69) = 1</code></li>
+</ul>
+<h4 id="12使用-minmaxscaler-类">1.2，使用 MinMaxScaler 类</h4>
+<p><strong>sklearn</strong>  库的 <strong>preprocessing</strong> 模块中的 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler">MinMaxScaler</a> 类就是用来做归一化处理的。</p>
+<p>首先引入 <code>MinMaxScaler</code> 类：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from sklearn.preprocessing import MinMaxScaler
+</code></pre>
+<p>准备要变换的 <code>data</code> 数据，并初始化 <code>MinMaxScaler</code> 对象：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; data = [[5, 465, 135], [23, 378, 69], [69, 796, 83]]
+&gt;&gt;&gt; scaler = MinMaxScaler() # 默认将数据拟合到 [0, 1] 范围内
+</code></pre>
+<p>拟合数据：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; scaler.fit(data)
+</code></pre>
+<p>输出每个特征的最大最小值：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; scaler.data_max_         # 特征最大值
+array([ 69., 796., 135.])
+&gt;&gt;&gt; scaler.data_min_         # 特征最小值
+array([  5., 378.,  69.])
+</code></pre>
+<p>变换所有数据：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; scaler.transform(data)
+array([[0.        , 0.20813397, 1.        ],
+       [0.28125   , 0.        , 0.        ],
+       [1.        , 1.        , 0.21212121]])
+</code></pre>
+<p>可以对比我们计算的第一行数据，结果是一样的。</p>
+<blockquote>
+<p>可以用一个<code>fit_transform</code> 方法，来替换两个方法<code>fit</code> 和 <code>transform</code>。</p>
+</blockquote>
+<h3 id="2数据标准化">2，数据标准化</h3>
+<p><strong>z-score 标准化</strong>是基于正态分布的，该方法假设数据呈现<strong>标准正态分布</strong>。</p>
+<h4 id="21什么是正态分布">2.1，什么是正态分布</h4>
+<p><strong>正态分布也叫高斯分布</strong>，是<strong>连续随机变量</strong>概率分布的一种，它的数学公式是：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201127171921330.png" alt="在这里插入图片描述"></p>
+<p>其中，<strong>u</strong> 为<strong>均值</strong>（平均数），<strong>σ</strong> 为<strong>标准差</strong>。均值和标准差是正态分布的关键参数，它们会决定分布的具体形态。</p>
+<p>正态分布有以下特点：</p>
+<ul>
+<li>正态分布以经过均值 <strong>u</strong> 的垂线为轴，左右对称展开，中间点最高，然后逐渐向两侧下降。</li>
+<li>分布曲线和 <strong>X</strong> 轴组成的面积为 <strong>1</strong>，表示所有事件出现的概率总和为 <strong>1</strong>。</li>
+</ul>
+<p>正态分布就是常态分布，正常状态的分布。在现实生活中，大量随机现象的数据分布都近似于正态分布。</p>
+<p>正态分布的分布图为：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020112717373333.png?" alt="在这里插入图片描述"></p>
+<p>当 <strong>μ</strong> 为 <strong>0</strong>，<strong>σ</strong> 为 <strong>1</strong>时，正态分布为<strong>标准正态分布</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201127172934233.png?" alt="在这里插入图片描述"></p>
+<p>图中的百分数表示所在面积占总面积的百分比。</p>
+<h4 id="22z-score-标准化">2.2，z-score 标准化</h4>
+<p><strong>z-score 标准化</strong>利用正态分布的特点，<strong>计算一个给定分数距离平均数有多少个标准差</strong>。它的转换公式如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201127174826563.png" alt="在这里插入图片描述"></p>
+<p>其中 <strong>x</strong> 为原始值，<strong>u</strong> 为均值，<strong>σ</strong> 为标准差，<strong>x’</strong> 是变换后的值。</p>
+<p>经过 <strong>z-score 标准化</strong>后，高于平均数的分数会得到一个正的标准分，而低于平均数的分数会得到一个负的标准分数。</p>
+<p>和归一化相比，<strong>z-score 标准化</strong>不容易受到噪音数据的影响，并且保留了各维特征对目标函数的影响权重。</p>
+<h4 id="23使用-standardscaler-类">2.3，使用 StandardScaler 类</h4>
+<p><strong>sklearn</strong>  库的 <strong>preprocessing</strong> 模块中的 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler">StandardScaler</a> 类就是用来做<strong>z-score 标准化</strong>处理的。</p>
+<p>首先引入 <code>StandardScaler</code> 类：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; from sklearn.preprocessing import StandardScaler
+</code></pre>
+<p>准备要变换的 <code>data</code> 数据，并初始化 <code>StandardScaler</code> 对象：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; data = [
+ [5, 465, 135], 
+ [23, 378, 69], 
+ [69, 796, 83]
+ ]
+&gt;&gt;&gt; scaler = StandardScaler() 
+</code></pre>
+<p>拟合数据：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; scaler.fit(data)
+</code></pre>
+<p>输出每个特征的均值和标准差：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; scaler.mean_   # 均值
+array([ 32.33333333, 546.33333333,  95.66666667])
+&gt;&gt;&gt; scaler.scale_  # 标准差
+array([ 26.94851058, 180.078378  ,  28.39405259])
+</code></pre>
+<p>变换所有数据：</p>
+<pre><code class="language-shell">&gt;&gt;&gt; scaler.transform(data)
+array([[-1.01427993, -0.45165519,  1.38526662],
+       [-0.34633949, -0.93477815, -0.93916381],
+       [ 1.36061941,  1.38643334, -0.44610281]])
+</code></pre>
+<h3 id="3总结">3，总结</h3>
+<p>数据变换的目的是<strong>将不同渠道，不同量级的数据转化到统一的范围之内，方便后续的分析处理</strong>。</p>
+<p>不同的机器学习算法，对数据有不同的要求，所以要针对不同的算法，对原始数据进行不同的转换。</p>
+<p><strong>数据规范化</strong>是常用的数据变化方法，包括归一化和标准化等：</p>
+<ul>
+<li>归一化：使用特征值中的最大最小值，把原始值转换为 <strong>0 到 1</strong> 之间的值。
+<ul>
+<li>优点：是简单易行，好理解。</li>
+<li>缺点：是容易受最大最小值的干扰。</li>
+<li>介绍了 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html#sklearn.preprocessing.MinMaxScaler">MinMaxScaler</a> 类的使用。</li>
+</ul>
+</li>
+<li>标准化：介绍了 <strong>z-score 标准化</strong>，原始数据经过转换后，符合标准正态分布。
+<ul>
+<li>和归一化相比，<strong>z-score 标准化</strong>不容易受到噪音数据的影响。</li>
+<li>介绍了 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler">StandardScaler</a> 类的使用。</li>
+</ul>
+</li>
+</ul>
+<p>数据变换不一定能提高模型的准确度，但是会提高数据的可解释性。</p>
+<p>需要注意的是，对训练数据进行了数据变换之后，在测试模型准确度或者预测数据之前，也要对数据进行同样的数据变换。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-nb2"><em><strong>朴素贝叶斯分类-实战篇-如何进行文本分类</strong></em></a></p>
+<p><a href="/2020/11/ml-space-vector-model"><em><strong>计算机如何理解事物的相关性-文档的相似度判断</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/11/ml-data-visualization/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">如何使用Python 进行数据可视化</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/11/ml-space-vector-model/">
+            <span class="next-text nav-default">计算机如何理解事物的相关性-文档的相似度判断</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-data-transform/" class="leancloud_visitors" data-flag-title="数据变换-归一化与标准化">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

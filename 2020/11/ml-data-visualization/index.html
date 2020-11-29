@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何使用Python 进行数据可视化 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 在进行数据分析的时候，经常需要将数据进行可视" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-data-visualization/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何使用Python 进行数据可视化" />
+<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 在进行数据分析的时候，经常需要将数据进行可视" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-data-visualization/" />
+<meta property="article:published_time" content="2020-11-28T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-28T21:41:52+08:00" />
+<meta itemprop="name" content="如何使用Python 进行数据可视化">
+<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 在进行数据分析的时候，经常需要将数据进行可视">
+<meta itemprop="datePublished" content="2020-11-28T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-28T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1314">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何使用Python 进行数据可视化"/>
+<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 在进行数据分析的时候，经常需要将数据进行可视"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何使用Python 进行数据可视化</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-28 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 1314 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0matplotlib-简介">0，Matplotlib 简介</a></li>
+        <li><a href="#1散点图">1，散点图</a></li>
+        <li><a href="#2折线图">2，折线图</a></li>
+        <li><a href="#3直方图">3，直方图</a></li>
+        <li><a href="#4条形图">4，条形图</a></li>
+        <li><a href="#5饼图">5，饼图</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>微信公众号：码农充电站pro</strong></p>
+<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20201124163927508.png?#pic_center" alt=""></p>
+<p>在进行数据分析的时候，经常需要将数据进行可视化，以方便我们对数据的认识和理解。</p>
+<h3 id="0matplotlib-简介">0，Matplotlib 简介</h3>
+<p><a href="https://matplotlib.org/">Matplotlib</a> 是一个可视化工具包，可以让我们使用<a href="https://blog.csdn.net/luaohan/category_9973992.html">Python</a> 来可视化数据。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124170650225.png?#pic_center" alt="Matplotlib"></p>
+<p>这里有一些官方资源你可以点击查看：</p>
+<ul>
+<li><a href="https://matplotlib.org/users/installing.html">Matplotlib 安装</a></li>
+<li><a href="https://matplotlib.org/users/index.html">Matplotlib 用户手册</a></li>
+<li><a href="https://matplotlib.org/api/pyplot_summary.html">Matplotlib 函数汇总</a></li>
+<li><a href="https://matplotlib.org/py-modindex.html">Matplotlib 模块索引</a></li>
+<li><a href="https://matplotlib.org/gallery/index.html">Matplotlib 示例库</a></li>
+<li>Matplotlib 示例下载
+<ul>
+<li><a href="https://matplotlib.org/_downloads/85d9be59fab8a02517f514497a37cf68/gallery_python.zip">Python code</a></li>
+<li><a href="https://matplotlib.org/_downloads/2e309644ccd557aada4afb564bdde6ed/gallery_jupyter.zip">Jupyter notebooks</a></li>
+</ul>
+</li>
+</ul>
+<p>很多更高级的绘图库，也都是基于<strong>Matplotlib</strong>，比如<a href="https://seaborn.pydata.org/">seaborn</a>，<a href="https://holoviews.org/">HoloViews</a>，<a href="http://ggplot.yhathq.com/">ggplot</a> 等。</p>
+<p>在使用 Matplotlib 时，经常需要用到 <strong>pyplot</strong> 模块，用下面代码引入：</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+</code></pre>
+<p>下文中，都用<code>plt</code> 来代指<code>pyplot</code>。</p>
+<blockquote>
+<p>说明：
+这里我们只介绍几种简单的图，更多其它的图，可以查看官方手册。
+下面的每个函数，只介绍了最简单的用法，其它更多的参数可以查看手册。</p>
+</blockquote>
+<h3 id="1散点图">1，散点图</h3>
+<p><code>plt.scatter</code> 函数用于绘制散点图。函数原型：</p>
+<pre><code class="language-python">scatter（x, y, s = None, c = None, marker = None)
+</code></pre>
+<p>参数含义：</p>
+<ul>
+<li><code>x, y</code>：分别表示点的横纵坐标。<strong>x, y</strong> 可以是单个点坐标，也可以是一组点坐标。</li>
+<li><code>s</code>：表示点的大小。</li>
+<li><code>c</code>：表示点的颜色。</li>
+<li><code>marker</code>：表示点的形状，可选的值见<a href="https://matplotlib.org/api/markers_api.html">这里</a>，比如 <strong>marker</strong> 的值为<code>x</code>, <code>o</code>, <code>s</code>等。</li>
+</ul>
+<p>如下代码，画了三个点：</p>
+<pre><code class="language-python"># 三个点的坐标分别是：
+#   (2, 5) 
+#   (3，6)
+#   (3, 5)
+plt.scatter([2, 3, 3], [5, 6, 5], marker='o')
+plt.show() # 展示图
+</code></pre>
+<p>画出的散点图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124204048661.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="2折线图">2，折线图</h3>
+<p><code>plt.plot</code> 函数用于绘制折线图。函数原型：</p>
+<pre><code class="language-python">plot(x, y)
+</code></pre>
+<p>参数 <code>x</code>，<code>y</code>分别表示点的横纵坐标，一般是一组点坐标。</p>
+<p>比如下面表格代表<code>5</code> 次数学考试成绩：</p>
+<table>
+<thead>
+<tr>
+<th>次数</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>成绩</strong></td>
+<td><strong>89</strong></td>
+<td><strong>78</strong></td>
+<td><strong>92</strong></td>
+<td><strong>79</strong></td>
+<td><strong>86</strong></td>
+</tr>
+</tbody>
+</table>
+<p>将上面表格数据，绘制成折线图，代码如下：</p>
+<pre><code class="language-python">x = [1, 2, 3, 4, 5]
+y = [89, 78, 92, 79, 86]
+plt.plot(x, y)
+plt.show()
+</code></pre>
+<p>画出的折线图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124210050563.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="3直方图">3，直方图</h3>
+<p>直方图用于描述数据的<strong>分布情况</strong>。</p>
+<p><code>plt.hist</code> 函数用于绘制直方图。函数原型：</p>
+<pre><code class="language-python">plt.hist(x, bins=None)
+</code></pre>
+<p>参数<code>x</code>是一个一维数组，<code>bins</code> 可以理解为矩形的个数，默认是<code>10</code>。</p>
+<p>假如下面是一次数学考试的成绩，全班共50 名同学：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124224706567.png#pic_center" alt="在这里插入图片描述"></p>
+<p>将所有同学的成绩画成直方图，代码如下：</p>
+<pre><code class="language-python">scores = [
+    96, 89, 95, 91, 94, 95, 92, 98, 95, 93,
+    93, 96, 94, 94, 98, 92, 88, 90, 88, 98,
+    84, 89, 87, 84, 94, 82, 83, 95, 93, 79,
+    84, 91, 86, 91, 81, 89, 77, 81, 77, 70,
+    66, 93, 90, 87, 79, 83, 86, 90, 93, 79,
+    ]
+plt.hist(scores)
+plt.show()
+</code></pre>
+<p>画出来的直方图如下，横坐标为成绩区间，纵坐标为人数：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124225621671.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>通过该直方图，可以直观的看出来每个成绩区间的人数。</p>
+<h3 id="4条形图">4，条形图</h3>
+<p><code>plt.bar</code> 函数用于绘制条形图。函数原型：</p>
+<pre><code class="language-python">plt.bar(x, y, width = 0.8)
+</code></pre>
+<p>参数<code>x</code>, <code>y</code> 均是一个数组，<code>x</code> 是横坐标，表示数据类别；<code>y</code> 是纵坐标，表示每个类别的频度。参数<code>width</code> 表示长条的宽度。</p>
+<p>比如下表是一位同学的期中考试的各科成绩：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124232743100.png#pic_center" alt="在这里插入图片描述"></p>
+<p>我们将这位同学的成绩单画成条形图，代码如下：</p>
+<pre><code class="language-python"># 每个科目分别用字母表示
+subjects = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+scores = [96, 89, 85, 91, 75, 90, 88, 79, 89]
+plt.bar(subjects, scores)
+plt.show()
+</code></pre>
+<p>画出的条形图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124233535305.png?#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="5饼图">5，饼图</h3>
+<p>饼图常用于表示个体占总体的占比情况。</p>
+<p><code>plt.pie</code> 函数用于绘制饼图。函数原型：</p>
+<pre><code class="language-python">plt.pie(x, labels=None)
+</code></pre>
+<p>参数<code>x</code>是一个数组，表示一组数据，<code>labels</code> 用于描述每个数据的含义。</p>
+<p>比如下表是某个公司某年每个季度的收入：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201125210023175.png#pic_center" alt="在这里插入图片描述"></p>
+<p>我们可以用饼图分析出每个季度占全年收入的占比，代码如下：</p>
+<pre><code class="language-python"># 表示每个季度
+quarters = ['1', '2', '3', '4']
+incomes = [56, 89, 75, 91]
+plt.pie(incomes, labels=quarters)
+plt.show()
+</code></pre>
+<p>画出的饼图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201124234936434.png?#pic_center" alt="在这里插入图片描述"></p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-nb2"><em><strong>朴素贝叶斯分类-实战篇-如何进行文本分类</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/ml-data-transform/">
+            <span class="next-text nav-default">数据变换-归一化与标准化</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-data-visualization/" class="leancloud_visitors" data-flag-title="如何使用Python 进行数据可视化">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
