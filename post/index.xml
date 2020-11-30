@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sat, 28 Nov 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 30 Nov 2020 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>KNN 算法-实战篇-如何识别手写数字</title>
+      <link>https://codeshellme.github.io/2020/11/ml-knn2/</link>
+      <pubDate>Mon, 30 Nov 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-knn2/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了KNN 算法的原理，今天来介绍如何使用KN</description>
+    </item>
+    
+    <item>
+      <title>KNN 算法-理论篇-如何给电影进行分类</title>
+      <link>https://codeshellme.github.io/2020/11/ml-knn1/</link>
+      <pubDate>Mon, 30 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-knn1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io KNN 算法的全称是K-Nearest Neighbor，中文</description>
+    </item>
+    
+    <item>
+      <title>PageRank 算法-Google 如何给网页排名</title>
+      <link>https://codeshellme.github.io/2020/11/ml-page-rank/</link>
+      <pubDate>Sun, 29 Nov 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/11/ml-page-rank/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 在互联网早期，随着网络上的网页逐渐增多，如何从海量网页</description>
+    </item>
     
     <item>
       <title>如何使用Python 进行数据可视化</title>

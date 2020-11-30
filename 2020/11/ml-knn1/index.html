@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>KNN 算法-理论篇-如何给电影进行分类 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io KNN 算法的全称是K-Nearest Neighbor，中文" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-knn1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="KNN 算法-理论篇-如何给电影进行分类" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io KNN 算法的全称是K-Nearest Neighbor，中文" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-knn1/" />
+<meta property="article:published_time" content="2020-11-30T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-30T21:41:52+08:00" />
+<meta itemprop="name" content="KNN 算法-理论篇-如何给电影进行分类">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io KNN 算法的全称是K-Nearest Neighbor，中文">
+<meta itemprop="datePublished" content="2020-11-30T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-30T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1620">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="KNN 算法-理论篇-如何给电影进行分类"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io KNN 算法的全称是K-Nearest Neighbor，中文"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">KNN 算法-理论篇-如何给电影进行分类</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-30 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 1620 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1准备电影数据">1，准备电影数据</a></li>
+        <li><a href="#2用knn-算法处理分类问题">2，用KNN 算法处理分类问题</a></li>
+        <li><a href="#3用knn-算法处理回归问题">3，用KNN 算法处理回归问题</a></li>
+        <li><a href="#4总结">4，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><strong>KNN 算法</strong>的全称是<strong>K-Nearest Neighbor</strong>，中文为<strong>K 近邻</strong>算法，它是基于<strong>距离</strong>的一种算法，简单有效。</p>
+<p><strong>KNN 算法</strong>即可用于分类问题，也可用于回归问题。</p>
+<h3 id="1准备电影数据">1，准备电影数据</h3>
+<p>假如我们统计了一些<strong>电影数据，包括电影名称，打斗次数，接吻次数，电影类型</strong>，如下：</p>
+<table>
+<thead>
+<tr>
+<th>电影名称</th>
+<th>打斗次数</th>
+<th>接吻次数</th>
+<th>电影类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黑客帝国</td>
+<td>115</td>
+<td>6</td>
+<td>动作片</td>
+</tr>
+<tr>
+<td>功夫</td>
+<td>109</td>
+<td>8</td>
+<td>动作片</td>
+</tr>
+<tr>
+<td>战狼</td>
+<td>120</td>
+<td>9</td>
+<td>动作片</td>
+</tr>
+<tr>
+<td>恋恋笔记本</td>
+<td>5</td>
+<td>78</td>
+<td>爱情片</td>
+</tr>
+<tr>
+<td>泰坦尼克号</td>
+<td>6</td>
+<td>60</td>
+<td>爱情片</td>
+</tr>
+<tr>
+<td>花样年华</td>
+<td>8</td>
+<td>69</td>
+<td>爱情片</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到，电影分成了两类，分别是动作片和爱情片。</p>
+<h3 id="2用knn-算法处理分类问题">2，用KNN 算法处理分类问题</h3>
+<p>如果现在有一部新的电影A，它的打斗和接吻次数分别是80 和7，那如何用KNN 算法对齐进行分类呢？</p>
+<p>我们可以将打斗次数作为<strong>X 轴</strong>，接吻次数作为<strong>Y 轴</strong>，将上述电影数据画在一个坐标系中，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201129201227525.png?" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>关于如何用Python 画图，可以参考文章<a href="https://blog.csdn.net/LUAOHAN/article/details/110086067">《
+如何使用Python 进行数据可视化》</a></p>
+</blockquote>
+<p>通过上图可以直观的看出，动作电影与爱情电影的分布范围是不同的。</p>
+<p><strong>KNN 算法</strong>基于距离，它的原理是：<strong>选择与待分类数据最近的K 个点，这K 个点属于哪个分类最多，那么待分类数据就属于哪个分类</strong>。</p>
+<p>所以，要判断电影A 属于哪一类电影，就要从已知的电影样本中，选出K 个点：</p>
+<ul>
+<li>如果这K 个点中，属于动作电影较多，那么电影A 就属于动作电影。</li>
+<li>如果这K 个点中，属于爱情电影较多，那么电影A 就属于爱情电影。</li>
+</ul>
+<p>比如，我们从样本中选出三个点（即 K 为 3），那么距离电影A 最近的三个点是《功夫》，《黑客帝国》和《战狼》，而这三部电影都是动作电影。因此，可以判断电影A 也是动作电影。</p>
+<p>另外，我们还要处理两个问题：</p>
+<ol>
+<li>如何判断点之间的距离。</li>
+<li>如何确定K 的值。</li>
+</ol>
+<p>关于点之间的距离判断，可以参考文章<a href="https://blog.csdn.net/LUAOHAN/article/details/110167944">《计算机如何理解事物的相关性》</a>。</p>
+<p>至于K 值的选择，K 值较大或者较小都会对模型的训练造成负面影响，K 值较小会造成<strong>过拟合</strong>，K 值较大<strong>欠拟合</strong>。</p>
+<p>因此，K 值的选择，一般采用<strong>交叉验证</strong>的方式。</p>
+<p>交叉验证的思路是，把样本集中的大部分样本作为训练集，剩余部分用于预测，来验证分类模型的准确度。一般会把 K 值选取在较小范围内，逐一尝试K 的值，当模型准确度最高时，就是最合适的K 值。</p>
+<p>可以总结出，<strong>KNN 算法</strong>用于分类问题时，一般的步骤是：</p>
+<ol>
+<li>计算待分类物体与其他物体之间的距离；</li>
+<li>按照距离进行排序，统计出距离最近的 K 个邻居；</li>
+<li>K 个最近的邻居，属于哪个分类最多，待分类物体就属于哪一类。</li>
+</ol>
+<h3 id="3用knn-算法处理回归问题">3，用KNN 算法处理回归问题</h3>
+<p>如果，我们现在有一部电影B，知道该电影属于动作电影，并且知道该电影的接吻次数是<strong>7</strong>，现在想预测该电影的打斗次数是多少？</p>
+<p>这个问题就属于<strong>回归问题</strong>。</p>
+<blockquote>
+<p>分类问题的预测结果是离散值，
+回归问题的预测结果是连续值。</p>
+</blockquote>
+<p>首先看下，根据已知数据，如何判断出距离电影B 最近的K 个点。</p>
+<p>我们依然设置K 为3，已知数据为：</p>
+<ul>
+<li>电影B 属于动作电影。</li>
+<li>电影B 的接吻次数是 7。</li>
+</ul>
+<p>根据已知数据可以画出下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201129210315929.png?" alt="在这里插入图片描述"></p>
+<p>图中我们画出了一条水平线，这条线代表所有接吻次数是7 的电影，接下来就是要找到距离<strong>这条线</strong>最近的三部（K 为 3）动作电影。</p>
+<p>可以看到，距离这条水平线最近的三部动作电影是《功夫》，《黑客帝国》和《战狼》，那么这三部电影的打斗次数的平均值，就是我们预测的电影B 的打斗次数。</p>
+<p>所以，电影B 的打斗次数是：</p>
+<ul>
+<li><code>(115 + 109 +120)  / 3 ≈ 115</code></li>
+</ul>
+<h3 id="4总结">4，总结</h3>
+<p>本篇文章主要介绍了<strong>KNN 算法</strong>的基本原理，它简单易懂，即可处理分类问题，又可处理回归问题。</p>
+<p><strong>KNN 算法</strong>是基于<strong>距离</strong>的一种机器学习算法，需要计算测试点与样本点之间的距离。因此，当数据量大的时候，计算量就会非常庞大，需要大量的存储空间和计算时间。</p>
+<p>另外，如果样本数据分类不均衡，比如有些分类的样本非常少，那么该类别的分类准确率就会很低。因此，在实际应用中，要特别注意这一点。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-nb2"><em><strong>朴素贝叶斯分类-实战篇-如何进行文本分类</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-30
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/11/ml-knn2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">KNN 算法-实战篇-如何识别手写数字</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/11/ml-page-rank/">
+            <span class="next-text nav-default">PageRank 算法-Google 如何给网页排名</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-knn1/" class="leancloud_visitors" data-flag-title="KNN 算法-理论篇-如何给电影进行分类">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>PageRank 算法-Google 如何给网页排名 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在互联网早期，随着网络上的网页逐渐增多，如何从海量网页" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-page-rank/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="PageRank 算法-Google 如何给网页排名" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在互联网早期，随着网络上的网页逐渐增多，如何从海量网页" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-page-rank/" />
+<meta property="article:published_time" content="2020-11-29T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-29T21:41:52+08:00" />
+<meta itemprop="name" content="PageRank 算法-Google 如何给网页排名">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在互联网早期，随着网络上的网页逐渐增多，如何从海量网页">
+<meta itemprop="datePublished" content="2020-11-29T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-29T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2185">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PageRank 算法-Google 如何给网页排名"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在互联网早期，随着网络上的网页逐渐增多，如何从海量网页"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">PageRank 算法-Google 如何给网页排名</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-29 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 2185 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1pagerank-算法原理">1，PageRank 算法原理</a></li>
+        <li><a href="#2计算网页的分值">2，计算网页的分值</a></li>
+        <li><a href="#3pagerank-的两个问题">3，PageRank 的两个问题</a></li>
+        <li><a href="#4pagerank-的随机浏览模型">4，PageRank 的随机浏览模型</a></li>
+        <li><a href="#5用代码计算网页分值">5，用代码计算网页分值</a></li>
+        <li><a href="#6画出网络图">6，画出网络图</a></li>
+        <li><a href="#7总结">7，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>在互联网早期，随着网络上的网页逐渐增多，如何从海量网页中检索出我们想要的页面，变得非常的重要。</p>
+<p>当时著名的雅虎和其它互联网公司都试图解决这个问题，但都没能有一个很好的解决方案。</p>
+<p>直到1998 年前后，两位斯坦福大学的博士生，拉里·佩奇和谢尔盖·布林一起发明了著名的 <strong>PageRank</strong> 算法，才完美的解决了网页排名的问题。也正是因为这个算法，诞生了伟大的 <strong>Google</strong> 公司。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128164559962.png?" alt="在这里插入图片描述">
+（上图中：<strong>左为布林</strong>，<strong>右为佩奇</strong>。）</p>
+<h3 id="1pagerank-算法原理">1，PageRank 算法原理</h3>
+<p><strong>PageRank</strong> 算法的核心原理是：<strong>在互联网中，如果一个网页被很多其它网页所链接，说明该网页非常的重要，那么它的排名就高</strong>。</p>
+<p>拉里·佩奇将整个互联网看成一张大的图，每个网站就像一个节点，而每个网页的链接就像一个弧。那么，互联网就可以用一个图或者矩阵来描述。</p>
+<blockquote>
+<p>拉里·佩奇也因该算法在30 岁时当选为美国工程院院士。</p>
+</blockquote>
+<p>假设目前有4 个网页，分别是 <strong>A，B，C，D</strong>，它们的链接关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128170854783.png?" alt="在这里插入图片描述">
+我们规定有两种链：</p>
+<ul>
+<li>出链：从自身引出去的链。</li>
+<li>入链：从外部引入自身的链。</li>
+</ul>
+<p>比如图中的C 网页，有两个入链，一个出链。</p>
+<p>PageRank 的思想就是，<strong>一个网页的影响力就等于它的所有入链的影响力之和</strong>。</p>
+<p>用数学公式表示为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128171619707.png" alt="在这里插入图片描述"></p>
+<p>其中（分值代表页面影响力）：</p>
+<ul>
+<li><code>PR(u)</code> 是网页<code>u</code> 的分值。</li>
+<li><code>Bu</code> 是网页<code>u</code> 的入链集合。</li>
+<li>网页<code>v</code> 是网页<code>u</code> 的任意一个入链。</li>
+<li><code>PR(v)</code> 是网面<code>v</code> 的分值。</li>
+<li><code>L(v)</code> 是网页<code>v</code> 的出链数量。</li>
+<li>网页<code>v</code> 带给网页<code>u</code> 的分值就是 <code>PR(v) / L(v)</code>。</li>
+<li>那么<code>PR(u)</code> 就等于所有的入链分值之和。</li>
+</ul>
+<p>在上面的公式中，我们假设<strong>从一个页面v 到达它的所有的出链页面的概率是相等的</strong>。</p>
+<p>比如上图来说，页面<strong>A</strong> 有三个出链分别链接到了 <strong>B、C、D</strong> 上。那么当用户访问 <strong>A</strong> 的时候，就有跳转到 <strong>B、C</strong> 或者 <strong>D</strong> 的可能性，跳转概率均为 <strong>1/3</strong>。</p>
+<h3 id="2计算网页的分值">2，计算网页的分值</h3>
+<p>下面来看下如何计算网页的分值。</p>
+<p>我们可以用一个表格，来表示上图中的网页的链接关系，及每个页面到其它页面的概率：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td><code>0</code> A-&gt;A</td>
+<td><code>1/2</code> B-&gt;A</td>
+<td><code>1</code> C-&gt;A</td>
+<td><code>0</code> D-&gt;A</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td><code>1/3</code> A-&gt;B</td>
+<td><code>0</code> B-&gt;B</td>
+<td><code>0</code> C-&gt;B</td>
+<td><code>1/2</code> D-&gt;B</td>
+</tr>
+<tr>
+<td><strong>C</strong></td>
+<td><code>1/3</code> A-&gt;C</td>
+<td><code>0</code> B-&gt;C</td>
+<td><code>0</code> C-&gt;C</td>
+<td><code>1/2</code> D-&gt;C</td>
+</tr>
+<tr>
+<td><strong>D</strong></td>
+<td><code>1/3</code> A-&gt;D</td>
+<td><code>1/2</code> B-&gt;D</td>
+<td><code>0</code> C-&gt;D</td>
+<td><code>0</code> D-&gt;D</td>
+</tr>
+</tbody>
+</table>
+<p>根据这个表格中的数字，可以将其转换成一个矩阵<strong>M</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128173843414.png" alt="在这里插入图片描述"></p>
+<p>假设 <strong>A、B、C、D</strong> 四个页面的初始影响力都是相同的，都为 <strong>1/4</strong>，即：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128173925779.png" alt="在这里插入图片描述"></p>
+<p>经过第一次分值转移之后，可以得到 <strong>W<sub>1</sub></strong>，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128175032751.png" alt="在这里插入图片描述"></p>
+<p>同理可以得到<strong>W<sub>2</sub></strong>，<strong>W<sub>3</sub></strong> 一直到 <strong>W<sub>n</sub></strong>：</p>
+<ul>
+<li><strong>W<sub>2</sub></strong> = M * <strong>W<sub>1</sub></strong></li>
+<li><strong>W<sub>3</sub></strong> = M * <strong>W<sub>2</sub></strong></li>
+<li><strong>W<sub>n</sub></strong> = M * <strong>W<sub>n-1</sub></strong></li>
+</ul>
+<p>那么什么时候计算终止呢？</p>
+<p>佩奇和布林已经证明，不管网页的初识值选择多少（我们这假设都是1/4），最终都能保证网页的分值能够收敛到一个真实确定值。</p>
+<p>也就是直到 <strong>W<sub>n</sub></strong> 不再变化为止。</p>
+<p>这就是网页分值的计算过程，还是比较好理解的。</p>
+<h3 id="3pagerank-的两个问题">3，PageRank 的两个问题</h3>
+<p>我们上文中介绍到的是<strong>PageRank</strong> 的基本原理，是简化版本。在实际应用中会出现<strong>等级泄露</strong>（RankLeak）和<strong>等级沉没</strong>（Rank Sink）的问题。</p>
+<p>如果一个网页<strong>没有出链</strong>，就会吸收其它网页的分值不释放，最终会导致其它网页的分值为<strong>0</strong>，这种现象叫做<strong>等级泄露</strong>。如下图中的网页<strong>C</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128222411596.png" alt="在这里插入图片描述"></p>
+<p>相反，如果一个网页<strong>没有入链</strong>，最终会导致该网页的分值为<strong>0</strong>，这种现象叫做<strong>等级沉没</strong>。如下图中的网页<strong>C</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128222506105.png?" alt="在这里插入图片描述"></p>
+<h3 id="4pagerank-的随机浏览模型">4，PageRank 的随机浏览模型</h3>
+<p>为了解决上面的问题，拉里·佩奇提出了<strong>随机浏览模型</strong>，即用户并不都是依靠网页链接来访问网页，也有可能用其它方式访问网址，比如输入网址。</p>
+<p>因此，提出了<strong>阻尼因子</strong>的概念，这个因子代表用户按照<strong>跳转链接</strong>来上网的概率，而 <strong>1-d</strong> 则代表用户通过其它方式访问网页的概率。</p>
+<p>所以，将上文中的公式改进为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128223823862.png" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li><strong>d</strong> 为阻尼因子，通常可以取<strong>0.85</strong>。</li>
+<li><strong>N</strong> 为网页总数。</li>
+</ul>
+<h3 id="5用代码计算网页分值">5，用代码计算网页分值</h3>
+<p>如何用代码来计算网页的<strong>PR</strong> 分值呢？（为了方便查看，我把上图放在这里）</p>
+<p><img src="https://img-blog.csdnimg.cn/20201128170854783.png?" alt="在这里插入图片描述"></p>
+<p>我们可以看到，该图实际上就是数据结构中的<strong>有向图</strong>，因此我们可以通过构建有向图来构建 <strong>PageRank</strong> 算法。</p>
+<p><a href="https://networkx.org/">NetworkX</a> 是一个<strong>Python</strong> 工具包，其中集成了常用的<strong>图结构和网络分析算法</strong>。</p>
+<p>我们可以用 <strong>NetworkX</strong> 来构建上图中的网络结构。</p>
+<p>首先引入模块：</p>
+<pre><code class="language-python">import networkx as nx
+</code></pre>
+<p>用 <strong>DiGraph</strong> 类创建有向图：</p>
+<pre><code class="language-python">G = nx.DiGraph()
+</code></pre>
+<p>将4 个网页的链接关系，用数组表示：</p>
+<pre><code class="language-python">edges = [
+  (&quot;A&quot;, &quot;B&quot;), (&quot;A&quot;, &quot;C&quot;), (&quot;A&quot;, &quot;D&quot;), 
+  (&quot;B&quot;, &quot;A&quot;), (&quot;B&quot;, &quot;D&quot;), 
+  (&quot;C&quot;, &quot;A&quot;), 
+  (&quot;D&quot;, &quot;B&quot;), (&quot;D&quot;, &quot;C&quot;)
+  ]
+</code></pre>
+<p>数组中的元素作为有向图的边，并添加到图中：</p>
+<pre><code class="language-python">for edge in edges:    
+    G.add_edge(edge[0], edge[1])
+</code></pre>
+<p>使用<code>pagerank</code> 方法计算<strong>PR</strong> 分值：</p>
+<pre><code class="language-python"># alpha 为阻尼因子
+PRs = nx.pagerank(G, alpha=1)
+print PRs 
+</code></pre>
+<p>输出每个网页的<strong>PR</strong> 值：</p>
+<pre><code class="language-shell">{'A': 0.33333396911621094, 
+ 'B': 0.22222201029459634, 
+ 'C': 0.22222201029459634, 
+ 'D': 0.22222201029459634}
+</code></pre>
+<p>最终，我们计算出了每个网页的<strong>PR</strong> 值。</p>
+<h3 id="6画出网络图">6，画出网络图</h3>
+<p><strong>NetworkX</strong> 包中还提供了画出网络图的方法：</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+# 画网络图
+nx.draw_networkx(G)
+plt.show()
+</code></pre>
+<p>如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201129162824862.png?" alt="在这里插入图片描述"></p>
+<p>我们还可以设置<strong>图的形状，节点的大小，边的长度</strong>等属性，具体可以点击<a href="https://networkx.org/documentation/stable/reference/drawing.html">这里</a>查看。</p>
+<blockquote>
+<p>更多关于 <strong>NetworkX</strong> 的内容可以参考其<a href="https://networkx.org/documentation/stable/">官方文档</a>。</p>
+</blockquote>
+<h3 id="7总结">7，总结</h3>
+<p><strong>PageRank</strong> 算法给了我们一个很重要的启发，<strong>权重</strong>在很多时候是一个非常重要的指标。</p>
+<ul>
+<li>比如在人际交往中，个人的影响力不仅取决于你的朋友的数量，而且朋友的质量非常重要，说明了<strong>圈子</strong>的重要性。</li>
+<li>比如在自媒体时代，粉丝数并不能真正的代表你的影响力，粉丝的质量也很重要。如果你的粉丝中有很多大V，那么将大大增加你影响力。</li>
+</ul>
+<p>本篇文章主要介绍了：</p>
+<ul>
+<li><strong>PageRank</strong> 算法的原理。</li>
+<li>简化版的<strong>PageRank</strong> 算法遇到的问题，以及解决方案：
+<ul>
+<li>等级泄露和等级沉没。</li>
+<li>引出<strong>随机浏览模型</strong>来解决这两个问题。</li>
+</ul>
+</li>
+<li>如何用代码模拟PageRank 算法：
+<ul>
+<li>使用了 <a href="https://networkx.org/">NetworkX</a> 模块。</li>
+</ul>
+</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-nb2"><em><strong>朴素贝叶斯分类-实战篇-如何进行文本分类</strong></em></a></p>
+<p><a href="/2020/11/ml-space-vector-model"><em><strong>计算机如何理解事物的相关性-文档的相似度判断</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/11/ml-knn1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">KNN 算法-理论篇-如何给电影进行分类</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/11/ml-data-visualization/">
+            <span class="next-text nav-default">如何使用Python 进行数据可视化</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-page-rank/" class="leancloud_visitors" data-flag-title="PageRank 算法-Google 如何给网页排名">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

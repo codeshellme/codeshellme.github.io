@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>KNN 算法-实战篇-如何识别手写数字 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了KNN 算法的原理，今天来介绍如何使用KN" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/11/ml-knn2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="KNN 算法-实战篇-如何识别手写数字" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了KNN 算法的原理，今天来介绍如何使用KN" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/11/ml-knn2/" />
+<meta property="article:published_time" content="2020-11-30T22:38:52+08:00" />
+<meta property="article:modified_time" content="2020-11-30T22:41:52+08:00" />
+<meta itemprop="name" content="KNN 算法-实战篇-如何识别手写数字">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了KNN 算法的原理，今天来介绍如何使用KN">
+<meta itemprop="datePublished" content="2020-11-30T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-11-30T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1418">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="KNN 算法-实战篇-如何识别手写数字"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了KNN 算法的原理，今天来介绍如何使用KN"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">KNN 算法-实战篇-如何识别手写数字</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-30 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 1418 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1手写数字数据集">1，手写数字数据集</a></li>
+        <li><a href="#2sklearn-对-knn-算法的实现">2，sklearn 对 KNN 算法的实现</a></li>
+        <li><a href="#3构造-knn-分类器">3，构造 KNN 分类器</a></li>
+        <li><a href="#4总结">4，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>上篇文章介绍了<a href="/2020/11/ml-knn1">KNN 算法的原理</a>，今天来介绍如何<strong>使用KNN 算法识别手写数字</strong>？</p>
+<h3 id="1手写数字数据集">1，手写数字数据集</h3>
+<p>手写数字数据集是一个用于图像处理的数据集，这些数据描绘了 <strong>[0, 9]</strong> 的数字，我们可以用<strong>KNN 算法</strong>来识别这些数字。</p>
+<p><a href="http://yann.lecun.com/exdb/mnist/">MNIST</a> 是完整的手写数字数据集，其中包含了60000 个训练样本和10000 个测试样本。</p>
+<p><strong>sklearn</strong> 中也有一个自带的<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/digits.csv.gz">手写数字数据集</a>：</p>
+<ul>
+<li>共包含 1797 个数据样本，每个样本描绘了一个 <strong>8*8</strong> 像素的 <strong>[0, 9]</strong> 的数字。</li>
+<li>每个样本由 65 个数字组成：
+<ul>
+<li>前 64 个数字是特征数据，特征数据的范围是 <strong>[0, 16]</strong></li>
+<li>最后一个数字是目标数据，目标数据的范围是 <strong>[0, 9]</strong></li>
+</ul>
+</li>
+</ul>
+<p>我们抽出 5 个样本来看下：</p>
+<pre><code class="language-python">0,0,5,13,9,1,0,0,0,0,13,15,10,15,5,0,0,3,15,2,0,11,8,0,0,4,12,0,0,8,8,0,0,5,8,0,0,9,8,0,0,4,11,0,1,12,7,0,0,2,14,5,10,12,0,0,0,0,6,13,10,0,0,0,0
+0,0,0,12,13,5,0,0,0,0,0,11,16,9,0,0,0,0,3,15,16,6,0,0,0,7,15,16,16,2,0,0,0,0,1,16,16,3,0,0,0,0,1,16,16,6,0,0,0,0,1,16,16,6,0,0,0,0,0,11,16,10,0,0,1
+0,0,0,4,15,12,0,0,0,0,3,16,15,14,0,0,0,0,8,13,8,16,0,0,0,0,1,6,15,11,0,0,0,1,8,13,15,1,0,0,0,9,16,16,5,0,0,0,0,3,13,16,16,11,5,0,0,0,0,3,11,16,9,0,2
+0,0,7,15,13,1,0,0,0,8,13,6,15,4,0,0,0,2,1,13,13,0,0,0,0,0,2,15,11,1,0,0,0,0,0,1,12,12,1,0,0,0,0,0,1,10,8,0,0,0,8,4,5,14,9,0,0,0,7,13,13,9,0,0,3
+0,0,0,1,11,0,0,0,0,0,0,7,8,0,0,0,0,0,1,13,6,2,2,0,0,0,7,15,0,9,8,0,0,5,16,10,0,16,6,0,0,4,15,16,13,16,1,0,0,0,0,3,15,10,0,0,0,0,0,2,16,4,0,0,4
+</code></pre>
+<p>使用该数据集，需要先加载：</p>
+<pre><code class="language-python">&gt;&gt;&gt; from sklearn.datasets import load_digits
+&gt;&gt;&gt; digits = load_digits()
+</code></pre>
+<p>查看第一个图像数据：</p>
+<pre><code class="language-python">&gt;&gt;&gt; digits.images[0]
+array([[ 0.,  0.,  5., 13.,  9.,  1.,  0.,  0.],
+       [ 0.,  0., 13., 15., 10., 15.,  5.,  0.],
+       [ 0.,  3., 15.,  2.,  0., 11.,  8.,  0.],
+       [ 0.,  4., 12.,  0.,  0.,  8.,  8.,  0.],
+       [ 0.,  5.,  8.,  0.,  0.,  9.,  8.,  0.],
+       [ 0.,  4., 11.,  0.,  1., 12.,  7.,  0.],
+       [ 0.,  2., 14.,  5., 10., 12.,  0.,  0.],
+       [ 0.,  0.,  6., 13., 10.,  0.,  0.,  0.]])
+</code></pre>
+<p>我们可以用 <a href="https://matplotlib.org/">matplotlib</a> 将该图像画出来：</p>
+<pre><code class="language-python">&gt;&gt;&gt; import matplotlib.pyplot as plt
+&gt;&gt;&gt; plt.imshow(digits.images[0])
+&gt;&gt;&gt; plt.show()
+</code></pre>
+<p>画出来的图像如下，代表 <strong>0</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201130132714324.png?" alt="在这里插入图片描述"></p>
+<h3 id="2sklearn-对-knn-算法的实现">2，sklearn 对 KNN 算法的实现</h3>
+<p><strong>sklearn</strong> 库的 <a href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.neighbors">neighbors</a> 模块实现了<strong>KNN</strong> 相关算法，其中：</p>
+<ul>
+<li><code>KNeighborsClassifier</code> 类用于分类问题</li>
+<li><code>KNeighborsRegressor</code> 类用于回归问题</li>
+</ul>
+<p>这两个类的构造方法基本一致，这里我们主要介绍 <code>KNeighborsClassifier</code> 类，原型如下：</p>
+<pre><code class="language-python">KNeighborsClassifier(
+	n_neighbors=5, 
+	weights='uniform', 
+	algorithm='auto', 
+	leaf_size=30, 
+	p=2, 
+	metric='minkowski', 
+	metric_params=None, 
+	n_jobs=None, 
+	**kwargs)
+</code></pre>
+<p>来看下几个重要参数的含义：</p>
+<ul>
+<li><strong>n_neighbors</strong>：即 <strong>KNN</strong> 中的 K 值，一般使用默认值 5。</li>
+<li><strong>weights</strong>：用于确定邻居的权重，有三种方式：
+<ul>
+<li>weights=uniform，表示所有邻居的权重相同。</li>
+<li>weights=distance，表示权重是距离的倒数，即与距离成反比。</li>
+<li>自定义函数，可以自定义不同距离所对应的权重，一般不需要自己定义函数。</li>
+</ul>
+</li>
+<li><strong>algorithm</strong>：用于设置计算邻居的算法，它有四种方式：
+<ul>
+<li>algorithm=auto，根据数据的情况自动选择适合的算法。</li>
+<li>algorithm=kd_tree，使用 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KDTree.html">KD 树</a> 算法。
+<ul>
+<li><strong>KD 树</strong>是一种多维空间的数据结构，方便对数据进行检索。</li>
+<li><strong>KD 树</strong>适用于维度较少的情况，一般维数不超过 20，如果维数大于 20 之后，效率会下降。</li>
+</ul>
+</li>
+<li>algorithm=ball_tree，使用<a href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.BallTree.html">球树</a>算法。
+<ul>
+<li>与<strong>KD 树</strong>一样都是多维空间的数据结构。</li>
+<li><strong>球树</strong>更适用于维度较大的情况。</li>
+</ul>
+</li>
+<li>algorithm=brute，称为<strong>暴力搜索</strong>。
+<ul>
+<li>它和 <strong>KD 树</strong>相比，采用的是线性扫描，而不是通过构造树结构进行快速检索。</li>
+<li>缺点是，当训练集较大的时候，效率很低。</li>
+</ul>
+</li>
+<li><strong>leaf_size</strong>：表示构造 <strong>KD 树</strong>或<strong>球树</strong>时的<strong>叶子节点数</strong>，默认是 30。
+<ul>
+<li>调整 leaf_size 会影响树的构造和搜索速度。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3构造-knn-分类器">3，构造 KNN 分类器</h3>
+<p>首先加载数据集：</p>
+<pre><code class="language-python">from sklearn.datasets import load_digits
+
+digits = load_digits()
+data = digits.data     # 特征集
+target = digits.target # 目标集
+</code></pre>
+<p>将数据集拆分为训练集（75%）和测试集（25%），</p>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+
+train_x, test_x, train_y, test_y = train_test_split(
+    data, target, test_size=0.25, random_state=33)
+</code></pre>
+<p>构造<strong>KNN</strong> 分类器：</p>
+<pre><code class="language-python">from sklearn.neighbors import KNeighborsClassifier
+
+# 采用默认参数
+knn = KNeighborsClassifier() 
+</code></pre>
+<p>拟合模型：</p>
+<pre><code class="language-python">knn.fit(train_x, train_y) 
+</code></pre>
+<p>预测数据：</p>
+<pre><code class="language-python">predict_y = knn.predict(test_x) 
+</code></pre>
+<p>计算模型准确度：</p>
+<pre><code class="language-python">from sklearn.metrics import accuracy_score
+
+score = accuracy_score(test_y, predict_y)
+print score # 0.98
+</code></pre>
+<p>最终计算出来模型的准确度是 <strong>98%</strong>，准确度还是不错的。</p>
+<h3 id="4总结">4，总结</h3>
+<p>本篇文章使用<strong>KNN 算法</strong>处理了一个实际的分类问题，主要介绍了以下几点：</p>
+<ul>
+<li>介绍了<strong>sklearn</strong> 中自带的手写数字集，并用 <strong>matplotlib</strong> 模块画出了数字图像。</li>
+<li>介绍了<strong>sklearn</strong> 中 <code>neighbors.KNeighborsClassifier</code> 类的用法。</li>
+<li>使用 <code>KNeighborsClassifier</code> 来识别手写数字。</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-knn1"><em><strong>KNN 算法-理论篇-如何给电影进行分类</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree1"><em><strong>决策树算法-理论篇-如何计算信息纯度</strong></em></a></p>
+<p><a href="/2020/11/ml-decisiontree2"><em><strong>决策树算法-实战篇-鸢尾花及波士顿房价预测</strong></em></a></p>
+<p><a href="/2020/11/ml-nb1"><em><strong>朴素贝叶斯分类-理论篇-如何通过概率解决分类问题</strong></em></a></p>
+<p><a href="/2020/11/ml-nb2"><em><strong>朴素贝叶斯分类-实战篇-如何进行文本分类</strong></em></a></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-11-30
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/11/ml-knn1/">
+            <span class="next-text nav-default">KNN 算法-理论篇-如何给电影进行分类</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/11/ml-knn2/" class="leancloud_visitors" data-flag-title="KNN 算法-实战篇-如何识别手写数字">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
