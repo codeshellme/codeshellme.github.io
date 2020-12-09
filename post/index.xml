@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Mon, 30 Nov 2020 22:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 03 Dec 2020 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Apriori 算法-如何进行关联规则挖掘</title>
+      <link>https://codeshellme.github.io/2020/12/ml-apriori/</link>
+      <pubDate>Thu, 03 Dec 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/ml-apriori/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 在数据分析领域有一个经典的故事，叫做“尿布与啤酒”。 据</description>
+    </item>
+    
+    <item>
+      <title>K 均值算法-如何让数据自动分组</title>
+      <link>https://codeshellme.github.io/2020/12/ml-kmean/</link>
+      <pubDate>Tue, 01 Dec 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/ml-kmean/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督</description>
+    </item>
     
     <item>
       <title>KNN 算法-实战篇-如何识别手写数字</title>

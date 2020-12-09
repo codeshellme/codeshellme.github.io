@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Apriori 算法-如何进行关联规则挖掘 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在数据分析领域有一个经典的故事，叫做“尿布与啤酒”。 据" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/ml-apriori/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Apriori 算法-如何进行关联规则挖掘" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在数据分析领域有一个经典的故事，叫做“尿布与啤酒”。 据" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/ml-apriori/" />
+<meta property="article:published_time" content="2020-12-03T22:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-03T22:41:52+08:00" />
+<meta itemprop="name" content="Apriori 算法-如何进行关联规则挖掘">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在数据分析领域有一个经典的故事，叫做“尿布与啤酒”。 据">
+<meta itemprop="datePublished" content="2020-12-03T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-03T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2934">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Apriori 算法-如何进行关联规则挖掘"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在数据分析领域有一个经典的故事，叫做“尿布与啤酒”。 据"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Apriori 算法-如何进行关联规则挖掘</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-03 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 2934 字 </span>
+          <span class="more-meta"> 阅读约需 6 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1关联分析">1，关联分析</a></li>
+        <li><a href="#2三个重要概念">2，三个重要概念</a></li>
+        <li><a href="#3如何寻找频繁项">3，如何寻找频繁项</a></li>
+        <li><a href="#4apriori-算法">4，Apriori 算法</a></li>
+        <li><a href="#5apriori-算法的实现">5，Apriori 算法的实现</a></li>
+        <li><a href="#6总结">6，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>在数据分析领域有一个经典的故事，叫做“尿布与啤酒”。</p>
+<p>据说，在美国西部的一家连锁超市发现，很多男人会在周四购买尿布和啤酒。这样超市就可以将尿布与啤酒放在一起卖，便可以增加销售量。</p>
+<p>“尿布与啤酒”这个案例就属于数据分析中的<strong>关联分析</strong>，也就是分析数据集中的内在隐含关系。</p>
+<p>关联分析可以被用于发掘商品与商品之间的内在关联关系，进而通过商品捆绑销售或者相互推荐，来增加商品销量。</p>
+<blockquote>
+<p><strong>关联分析</strong>除了可以用于零售行业外，还可以用于<strong>网站流量分析</strong>和<strong>医药行业</strong>等。</p>
+</blockquote>
+<p><strong>Apriori 算法</strong>是一种发掘事物内在关联关系的算法，它可以加快关联分析的速度，从而让我们更有效的进行关联分析。</p>
+<h3 id="1关联分析">1，关联分析</h3>
+<p><strong>关联分析</strong>用于发掘大规模数据集中的内在关系。</p>
+<p>关联分析一般要分析数据集中的<strong>频繁项集</strong>（frequent item sets）和<strong>关联规则</strong>（association rules）：</p>
+<ul>
+<li>频繁项集：是数据集中<strong>频繁项</strong>的集合，集合中可以有<strong>一项或多项</strong>物品。</li>
+<li>关联规则：暗示了两种物品之间可能存在很强的内在关系。</li>
+</ul>
+<p>假设，我们收集了一家商店的交易清单：</p>
+<table>
+<thead>
+<tr>
+<th align="left">交易编号</th>
+<th align="left">购物清单</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">牛奶，面包</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">牛奶，面包，火腿</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">面包，火腿，可乐</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">火腿，可乐，方便面</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">面包，火腿，可乐，方便面</td>
+</tr>
+</tbody>
+</table>
+<p>频繁项集是一些经常出现在一起的物品集合。比如：<code>{牛奶，面包}</code>，<code>{火腿，方便面，可乐}</code>都是频繁项集的例子。</p>
+<blockquote>
+<p>项集中的物品，一般不考虑<strong>顺序</strong>关系。</p>
+</blockquote>
+<p>关联规则意味着有人买了一种物品，还会买另一种物品。比如<code>方便面-&gt;火腿</code>，就是一种关联规则，表示如果买了方便面，还会买火腿。</p>
+<h3 id="2三个重要概念">2，三个重要概念</h3>
+<p>关联分析中有三个重要的概念，分别是：</p>
+<ul>
+<li>支持度</li>
+<li>可信度 <strong>/</strong> 置信度</li>
+<li>提升度</li>
+</ul>
+<p><em><strong>支持度</strong></em></p>
+<p>要进行关联分析，首先要寻找<strong>频繁项</strong>，也就是频繁出现的物品集。那么怎样才叫频繁呢？我们可以用<strong>支持度</strong>来衡量频繁。</p>
+<p><strong>支持度</strong>是针对<strong>项集</strong>来说的，一个项集的支持度就是该项集的记录占总记录的比例。通常可以定义一个<strong>最小支持度</strong>，从而只保留满足最小支持度的项集。</p>
+<p>一个项集<code>{A}</code> 的支持度的定义如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201205082735964.png" alt="在这里插入图片描述"></p>
+<p>比如，在上面表格中的5 项记录中，<code>{牛奶}</code> 出现在了两条记录中，所以<code>{牛奶}</code> 的支持度为 <code>2/5</code>；而<code>{面包，火腿}</code> 出现在了三条记录中，所以<code>{面包，火腿}</code>的支持度为<code>3/5</code>。</p>
+<p><em><strong>可信度</strong></em></p>
+<p><strong>可信度</strong>又叫<strong>置信度</strong>，它是针对<strong>关联规则</strong>来说的，比如<code>{火腿}-&gt;{可乐}</code>。</p>
+<p>一个关联规则<code>{A}-&gt;{B}</code> 表示，如果购买了<strong>物品A</strong>，会有多大的概率购买<strong>物品B</strong>？它的可信度的定义如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201204231948437.png" alt="在这里插入图片描述"></p>
+<p>所以，在上面的表格中，<code>{火腿，可乐}</code> 的支持度是 <code>3/5</code>，<code>{火腿}</code> 的支持度是 <code>4/5</code>，所以<code>{可乐}-&gt;{火腿}</code> 的可信度为 <code>3/5</code> 除以 <code>4/5</code>，等于 <code>0.75</code>。这意味着，如果购买了火腿，有 <code>75%</code> 的可能性会购买可乐。</p>
+<p><em><strong>提升度</strong></em></p>
+<p>提升度也是针对关联规则来说的，它表示的是“如果购买物品A，会对购买物品B 的概率<strong>提升</strong>多少”。</p>
+<p>一个关联规则<code>{A}-&gt;{B}</code> 的提升度的定义如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201205084713458.png" alt="在这里插入图片描述"></p>
+<p>提升度会有三种情况：</p>
+<ul>
+<li>提升度{A}-&gt;{B} &gt; 1：表示购买物品A 对购买物品B 的概率有提升。</li>
+<li>提升度{A}-&gt;{B} = 1：表示购买物品A 对购买物品B 的概率没有提升，也没有下降。</li>
+<li>提升度{A}-&gt;{B} &lt; 1：表示购买物品A 对购买物品B 的概率有下降。</li>
+</ul>
+<h3 id="3如何寻找频繁项">3，如何寻找频繁项</h3>
+<p>寻找频繁项的一个简单粗暴的方法是，<strong>对所有的物品进行排列组合</strong>，然后计算所有组合的支持度，这种算法也可以叫做<strong>穷举法</strong>。</p>
+<p><em><strong>穷举法</strong></em></p>
+<p>穷举法就是列出所有物品的组合，然后计算每种组合的支持度。</p>
+<p>比如，我们有一个物品集{0，1，2，3}，其中有四个物品，那么所有的物品组合如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201205093614876.png?" alt="在这里插入图片描述"></p>
+<p>从图中可以看到一共有<strong>15</strong> 种组合，计算每一种组合的支持度都需要遍历一遍所有的记录，检查每个记录中是否包含该组合。因此有多少种组合，就需要遍历多少遍记录，时间复杂度则会很大。</p>
+<p>可以总结出：包含<strong>N</strong> 种物品的数据集，共有 <strong>2<sup>N</sup> - 1</strong> 种组合。为了计算每种组合的支持度，则需要遍历 <strong>2<sup>N</sup> - 1</strong> 次记录。</p>
+<p>如果一个商店中有100 款商品，将会有<strong>1.26*10<sup>30</sup></strong> 种组合，这是一个非常庞大的数字。而普通商店一般都会有成千上万的商品，那么组合数将大到无法计算。</p>
+<h3 id="4apriori-算法">4，Apriori 算法</h3>
+<p>为了降低计算所需的时间，1994 年 <strong>Agrawal</strong> 提出了著名的 <strong>Apriori 算法</strong>，该算法可以有效减少需要计算的组合的数量，避免组合数量的指数增长，从而在合理的时间内计算出频繁项集。</p>
+<p><strong>Apriori 原理</strong>是说：如果一个项集是<strong>非频繁集</strong>，那么它的所有超集也是<strong>非频繁的</strong>。</p>
+<p>比如下图中的项集<code>{1，3}</code> 是非频繁集，那么<code>{0，1，3}</code>，<code>{1，2，3}</code>，<code>{0，1，2，3}</code> 就都是非频繁项集。这就大大减少了需要计算的项集的数量。</p>
+<p><img src="https://img-blog.csdnimg.cn/2020120512132242.png?" alt="在这里插入图片描述"></p>
+<h3 id="5apriori-算法的实现">5，Apriori 算法的实现</h3>
+<p>这里，我们使用<strong>Apriori 算法</strong>来寻找上文表格中的购物清单的频繁项集（为了方便查看，我把表格放在这里）。</p>
+<table>
+<thead>
+<tr>
+<th align="left">交易编号</th>
+<th align="left">购物清单</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">牛奶，面包</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">牛奶，面包，火腿</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">面包，火腿，可乐</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">火腿，可乐，方便面</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">面包，火腿，可乐，方便面</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>efficient_apriori 模块</strong></em></p>
+<p><a href="https://pypi.org/project/efficient-apriori/">Efficient-Apriori</a> 包是<strong>Apriori 算法</strong>的稳定高效的实现，该模块适用于 <code>Python 3.6+</code>。</p>
+<blockquote>
+<p>使用<strong>Apriori 算法</strong>要先安装：<code>pip install efficient-apriori</code></p>
+</blockquote>
+<p><strong>efficient_apriori</strong> 包中有一个 <code>apriori</code> 函数，原型如下（这里只列出了常用参数）：</p>
+<pre><code class="language-python">apriori(data, 
+  min_support = 0.5, 
+  min_confidence = 0.5)
+</code></pre>
+<p>参数的含义：</p>
+<ul>
+<li><strong>data</strong>：表示数据集，是一个列表。列表中的元素可以是元组，也可以是列表。</li>
+<li><strong>min_support</strong>：表示最小支持度，小于最小支持度的项集将被舍去。
+<ul>
+<li>该参数的取值范围是 <strong>[0, 1]</strong>，表示一个百分比，比如<strong>0.3</strong> 表示<strong>30%</strong>，那么支持度小于<strong>30%</strong> 的项集将被舍去。</li>
+<li>该参数的默认值为<strong>0.5</strong>，常见的取值有<strong>0.5，0.1，0.05</strong>。</li>
+</ul>
+</li>
+<li><strong>min_confidence</strong>：表示最小可信度。
+<ul>
+<li>该参数的取值范围也是 <strong>[0, 1]</strong>。</li>
+<li>该参数的默认值为<strong>0.5</strong>，常见的取值有<strong>1.0，0.9，0.8</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>使用 apriori 函数</strong></em></p>
+<p>首先，将表格中的购物清单转化成 <strong>Python</strong> 列表，如下：</p>
+<pre><code class="language-python">data = [
+    ('牛奶', '面包'), 
+    ('牛奶', '面包', '火腿'),
+    ('面包', '火腿', '可乐'),
+    ('火腿', '可乐', '方便面'),
+    ('面包', '火腿', '可乐', '方便面')
+]
+</code></pre>
+<p>挖掘频繁项集和频繁规则：</p>
+<pre><code class="language-python"># 该函数的使用很简单，就一行代码
+# 最小支持度为 0.5
+# 最小可信度为 1
+itemsets, rules = apriori(data, min_support=0.5,  min_confidence=1)
+</code></pre>
+<p>查看频繁项集和频繁规则：</p>
+<pre><code class="language-python">&gt;&gt;&gt; itemsets # 频繁项集
+{1: { # 只有一个元素的项集
+    ('面包',): 4, # 4 表示记录数
+    ('火腿',): 4, 
+    ('可乐',): 3
+    }, 
+ 2: { # 有两个元素的项集
+    ('火腿', '面包'): 3, 
+    ('可乐', '火腿'): 3
+    }
+}
+&gt;&gt;&gt; rules # 频繁规则
+[{可乐} -&gt; {火腿}]
+</code></pre>
+<h3 id="6总结">6，总结</h3>
+<p>本篇文章主要介绍了什么是关联分析，关联分析中三个重要的概念，以及 <strong>Apriori</strong> 算法。</p>
+<p><strong>Apriori</strong> 算法用于加快关联分析的速度，但它也需要多次扫描数据集。其实除了<strong>Apriori</strong> 算法，还有其它算法也可以加快寻找频繁项集的速度。</p>
+<p>2000 年提出的<a href="https://pypi.org/project/fptools/">FP-Growth</a> 算法，对 <strong>Apriori</strong> 算法进行了改进。<strong>FP-Growth</strong> 通过创建一棵 <strong>FP树</strong>来存储频繁项集。对不满足最小支持度的项不会创建节点，减少了存储空间。而且整个生成过程只遍历数据集 2 次，大大减少了计算量。</p>
+<p>另外，还有<strong>CBA</strong> 算法，<strong>GSP</strong> 算法等，都对<strong>Apriori</strong>算法进行了改进，这里不再详细介绍。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-data-transform">数据变换-归一化与标准化</a></p>
+<p><a href="/2020/11/ml-data-visualization">如何使用Python 进行数据可视化</a></p>
+<p><a href="/2020/11/ml-knn2">KNN 算法-实战篇-如何识别手写数字</a></p>
+<p><a href="/2020/12/ml-kmean">K 均值算法-如何让数据自动分组</a></p>
+<p><a href="/2020/11/ml-page-rank">PageRank 算法-Google 如何给网页排名</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/ml-kmean/">
+            <span class="next-text nav-default">K 均值算法-如何让数据自动分组</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/ml-apriori/" class="leancloud_visitors" data-flag-title="Apriori 算法-如何进行关联规则挖掘">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

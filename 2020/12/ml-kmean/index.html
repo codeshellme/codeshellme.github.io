@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>K 均值算法-如何让数据自动分组 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/ml-kmean/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="K 均值算法-如何让数据自动分组" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/ml-kmean/" />
+<meta property="article:published_time" content="2020-12-01T22:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-01T22:41:52+08:00" />
+<meta itemprop="name" content="K 均值算法-如何让数据自动分组">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督">
+<meta itemprop="datePublished" content="2020-12-01T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-01T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2063">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K 均值算法-如何让数据自动分组"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">K 均值算法-如何让数据自动分组</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-01 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 2063 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1k-均值算法">1，K 均值算法</a></li>
+        <li><a href="#2k-均值算法的实现">2，K 均值算法的实现</a></li>
+        <li><a href="#3准备数据点">3，准备数据点</a></li>
+        <li><a href="#4对数据聚类">4，对数据聚类</a></li>
+        <li><a href="#5总结">5，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>之前介绍到的一些机器学习算法都是<strong>监督学习</strong>算法。所谓监督学习，就是既有<strong>特征数据</strong>，又有<strong>目标数据</strong>。</p>
+<p>而本篇文章要介绍的<strong>K 均值</strong>算法是一种<strong>无监督学习</strong>。</p>
+<p>与分类算法相比，无监督学习算法又叫<strong>聚类</strong>算法，就是只有特征数据，没有目标数据，让算法自动从数据中“学习知识”，将不同类别的数据<strong>聚集</strong>到相应的类别中。</p>
+<h3 id="1k-均值算法">1，K 均值算法</h3>
+<p><strong>K 均值</strong>的英文为<strong>K-Means</strong>，其含义是：</p>
+<ul>
+<li><strong>K</strong>：表示该算法可以将数据划分到<strong>K</strong> 个不同的组中。</li>
+<li><strong>均值</strong>：表示每个组的<strong>中心点</strong>是组内所有值的<strong>平均值</strong>。</li>
+</ul>
+<p><strong>K 均值</strong>算法可以将一个没有被分类的数据集，划分到K 个类中。某个数据应该被划分到哪个类，是通过该数据与<strong>群组中心点</strong>的<strong>相似度</strong>决定的，也就是该数据与哪个类的中心点最相似，则该数据就应该被划分到哪个类中。</p>
+<blockquote>
+<p>关于如何计算事物之间的<strong>相似度</strong>，可以参考文章《<a href="/2020/11/ml-space-vector-model">计算机如何理解事物的相关性</a>》。</p>
+</blockquote>
+<p>使用<strong>K 均值</strong>算法的一般步骤是：</p>
+<ol>
+<li>确定<strong>K</strong> 值是多少：
+<ul>
+<li>对于K 值的选择，可以通过分析数据，估算数据应该分为几个类。</li>
+<li>如果无法估计确切值，可以多试几个K 值，最终将划分效果最好的K 值作为最终选择。</li>
+</ul>
+</li>
+<li>选择<strong>K 个中心点</strong>：一般最开始的<strong>K 个中心点</strong>是<strong>随机选择</strong>的。</li>
+<li>将数据集中的所有数据，通过与<strong>中心点的相似度</strong>划分到不同的类别中。</li>
+<li>根据类别中的数据平均值，重新计算每个<strong>类别中心点</strong>的位置。</li>
+<li>循环迭代<strong>第3，4步</strong>，直到中心点的位置几乎不再改变，分类过程就算完毕。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20201201223003457.png?" alt="在这里插入图片描述"></p>
+<h3 id="2k-均值算法的实现">2，K 均值算法的实现</h3>
+<p><strong>K 均值</strong>算法是一个<strong>聚类</strong>算法，<strong>sklearn</strong> 库中的 <a href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.cluster">cluster</a> 模块实现了一系列的聚类算法，其中就包括<a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"><strong>K 均值</strong></a>算法。</p>
+<p>来看下<strong>KMeans</strong> 类的原型：</p>
+<pre><code class="language-python">KMeans(
+	n_clusters=8, 
+	init='k-means++', 
+	n_init=10, 
+	max_iter=300, 
+	tol=0.0001, 
+	precompute_distances='deprecated', 
+	verbose=0, 
+	random_state=None, 
+	copy_x=True, 
+	n_jobs='deprecated', 
+	algorithm='auto')
+</code></pre>
+<p>可以看<strong>KMeans</strong> 类有很多参数，这里介绍几个比较重要的参数：</p>
+<ul>
+<li><strong>n_clusters</strong>: 即 K 值，可以随机设置一些 K 值，选择聚类效果最好的作为最终的 K 值。</li>
+<li><strong>init</strong>：选择初始中心点的方式：
+<ul>
+<li>init='k-means++&rsquo;：可加快收敛速度，是默认方式，也是比较好的方式。</li>
+<li>init='random &lsquo;：随机选择中心点。</li>
+<li>也可以自定义方式，这里不多介绍。</li>
+</ul>
+</li>
+<li><strong>n_init</strong>：初始化中心点的运算次数，默认是 10。如果 K 值比较大，可以适当增大 n_init 的值。</li>
+<li><strong>algorithm</strong>：<strong>k-means</strong> 的实现算法，有<strong>auto</strong>，<strong>full</strong>，<strong>elkan</strong>三种。
+<ul>
+<li>默认是<strong>auto</strong>，根据数据的特点自动选择用<strong>full</strong>或者<strong>elkan</strong>。</li>
+</ul>
+</li>
+<li><strong>max_iter</strong>：算法的最大迭代次数，默认是300。
+<ul>
+<li>如果聚类很难收敛，设置最大迭代次数可以让算法尽快结束。</li>
+</ul>
+</li>
+</ul>
+<p>下面对一些二维坐标中的点进行聚类，看下如何使用<strong>K 均值</strong>算法。</p>
+<h3 id="3准备数据点">3，准备数据点</h3>
+<p>下面是随机生成的三类坐标点，每类有20 个点，不同类的点的坐标在不同的范围内：</p>
+<ul>
+<li>A 类点：Ax 表示A 类点的横坐标，Ay 表示A 类点的纵坐标。横纵坐标范围都是 <strong>(0, 20]</strong>。</li>
+<li>B 类点：Bx 表示B 类点的横坐标，By 表示B 类点的纵坐标。横纵坐标范围都是 <strong>(40, 60]</strong>。</li>
+<li>C 类点：Cx 表示C 类点的横坐标，Cy 表示C 类点的纵坐标。横纵坐标范围都是 <strong>(70, 90]</strong>。</li>
+</ul>
+<pre><code class="language-python">Ax = [20, 6, 14, 13, 8, 19, 20, 14, 2, 11, 2, 15, 19, 4, 4, 11, 13, 4, 15, 11]
+Ay = [14, 19, 17, 16, 3, 7, 9, 18, 20, 3, 4, 12, 9, 17, 14, 1, 18, 17, 3, 5]
+
+Bx = [53, 50, 46, 52, 57, 42, 47, 55, 56, 57, 56, 50, 46, 46, 44, 44, 58, 54, 47, 57]
+By = [60, 57, 57, 53, 54, 45, 54, 57, 49, 53, 42, 59, 54, 53, 50, 50, 58, 58, 58, 51]
+
+Cx = [77, 75, 71, 87, 74, 70, 74, 85, 71, 75, 72, 82, 81, 70, 72, 71, 88, 71, 72, 80]
+Cy = [85, 77, 82, 87, 71, 71, 77, 88, 81, 73, 80, 72, 90, 77, 89, 88, 83, 77, 90, 72]
+</code></pre>
+<p>我们可以用 <a href="https://matplotlib.org/">Matplotlib</a> 将这些点画在二维坐标中，代码如下：</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+plt.scatter(Ax + Bx + Cx, Ay + By + Cy, marker='o')
+plt.show()
+</code></pre>
+<p>画出来的图如下，可看到这三类点的分布范围还是一目了然的。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201201172915289.png?" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>关于如何使用 <strong>Matplotlib</strong> 绘图，可以参考文章<a href="/2020/11/ml-data-visualization">《如何使用Python 进行数据可视化》</a>。</p>
+</blockquote>
+<h3 id="4对数据聚类">4，对数据聚类</h3>
+<p>下面使用<strong>K 均值</strong>算法对数据点进行聚类。</p>
+<p>创建<strong>K 均值</strong>模型对象：</p>
+<pre><code class="language-python">from sklearn.cluster import KMeans
+
+# 设置 K 值为 3，其它参数使用默认值
+kmeans = KMeans(n_clusters=3)
+</code></pre>
+<p>准备数据，共三大类，60 个坐标点：</p>
+<pre><code class="language-python">train_data = [
+    # 前20 个为 A 类点
+    [20, 14], [6, 19], [14, 17], [13, 16], [8, 3], [19, 7], [20, 9], 
+    [14, 18], [2, 20], [11, 3], [2, 4], [15, 12], [19, 9], [4, 17], 
+    [4, 14], [11, 1], [13, 18], [4, 17], [15, 3], [11, 5],
+
+    # 中间20 个为B 类点
+    [53, 60], [50, 57], [46, 57], [52, 53], [57, 54], [42, 45], [47, 54], 
+    [55, 57], [56, 49], [57, 53], [56, 42], [50, 59], [46, 54], [46, 53], 
+    [44, 50], [44, 50], [58, 58], [54, 58], [47, 58], [57, 51],
+
+    # 最后20 个为C 类点
+    [77, 85], [75, 77], [71, 82], [87, 87], [74, 71], [70, 71], [74, 77], 
+    [85, 88], [71, 81], [75, 73], [72, 80], [82, 72], [81, 90], [70, 77], 
+    [72, 89], [71, 88], [88, 83], [71, 77], [72, 90], [80, 72],
+]
+</code></pre>
+<p>拟合模型：</p>
+<pre><code class="language-python">kmeans.fit(train_data)
+</code></pre>
+<p>对数据进行聚类：</p>
+<pre><code class="language-python">predict_data = kmeans.predict(train_data)
+</code></pre>
+<p>查看聚类结果，其中的<strong>0，1，2</strong> 分别代表不同的类别：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print(predict_data)
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+ 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+</code></pre>
+<p>通过观察最终的聚类结果<strong>predict_data</strong>，可以看到，<strong>前，中，后</strong>20 个数据分别被分到了不同的类中，也非常符合我们的预期，说明<strong>K 均值</strong>算法的聚类结果还是很不错的 。</p>
+<blockquote>
+<p>因为本例中的二维坐标点的分布界限非常明显，所以最终的聚类结果非常不错。</p>
+</blockquote>
+<h3 id="5总结">5，总结</h3>
+<p>本篇文章主要介绍了<strong>K 均值</strong>算法的原理，及<strong>sklearn</strong> 库对它的实现，并且演示了如何使用<strong>K 均值</strong>算法对二维数据点进行聚类。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><em><strong><a href="/2020/11/ml-data-visualization">如何使用Python 进行数据可视化</a></strong></em></p>
+<p><em><strong><a href="/2020/11/ml-space-vector-model">计算机如何理解事物的相关性-文档的相似度判断</a></strong></em></p>
+<p><em><strong><a href="/2020/11/ml-decisiontree2">决策树算法-实战篇-鸢尾花及波士顿房价预测</a></strong></em></p>
+<p><em><strong><a href="/2020/11/ml-nb2">朴素贝叶斯分类-实战篇-如何进行文本分类</a></strong></em></p>
+<hr>
+<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2020/12/ml-apriori/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Apriori 算法-如何进行关联规则挖掘</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2020/11/ml-knn2/">
+            <span class="next-text nav-default">KNN 算法-实战篇-如何识别手写数字</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/ml-kmean/" class="leancloud_visitors" data-flag-title="K 均值算法-如何让数据自动分组">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

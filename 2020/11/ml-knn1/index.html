@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io KNN 算法的全称是K-Nearest Neighbor，中文">
 <meta itemprop="datePublished" content="2020-11-30T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-11-30T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="1620">
+<meta itemprop="wordCount" content="1627">
 
 
 
@@ -147,7 +147,7 @@
         <div class="post-category">
             <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
             </div>
-          <span class="more-meta"> 1620 字 </span>
+          <span class="more-meta"> 1627 字 </span>
           <span class="more-meta"> 阅读约需 4 分钟 </span>
         
 
@@ -234,12 +234,11 @@
 <p>我们可以将打斗次数作为<strong>X 轴</strong>，接吻次数作为<strong>Y 轴</strong>，将上述电影数据画在一个坐标系中，如下：</p>
 <p><img src="https://img-blog.csdnimg.cn/20201129201227525.png?" alt="在这里插入图片描述"></p>
 <blockquote>
-<p>关于如何用Python 画图，可以参考文章<a href="https://blog.csdn.net/LUAOHAN/article/details/110086067">《
-如何使用Python 进行数据可视化》</a></p>
+<p>关于如何用Python 画图，可以参考文章<a href="https://blog.csdn.net/LUAOHAN/article/details/110086067">《如何使用Python 进行数据可视化》</a></p>
 </blockquote>
 <p>通过上图可以直观的看出，动作电影与爱情电影的分布范围是不同的。</p>
 <p><strong>KNN 算法</strong>基于距离，它的原理是：<strong>选择与待分类数据最近的K 个点，这K 个点属于哪个分类最多，那么待分类数据就属于哪个分类</strong>。</p>
-<p>所以，要判断电影A 属于哪一类电影，就要从已知的电影样本中，选出K 个点：</p>
+<p>所以，要判断电影A 属于哪一类电影，就要从已知的电影样本中，选出距离电影A 最近的K 个点：</p>
 <ul>
 <li>如果这K 个点中，属于动作电影较多，那么电影A 就属于动作电影。</li>
 <li>如果这K 个点中，属于爱情电影较多，那么电影A 就属于爱情电影。</li>
@@ -275,7 +274,7 @@
 </ul>
 <p>根据已知数据可以画出下图：</p>
 <p><img src="https://img-blog.csdnimg.cn/20201129210315929.png?" alt="在这里插入图片描述"></p>
-<p>图中我们画出了一条水平线，这条线代表所有接吻次数是7 的电影，接下来就是要找到距离<strong>这条线</strong>最近的三部（K 为 3）动作电影。</p>
+<p>图中我画出了一条水平线，这条线代表所有接吻次数是7 的电影，接下来就是要找到距离<strong>这条线</strong>最近的三部（K 为 3）动作电影。</p>
 <p>可以看到，距离这条水平线最近的三部动作电影是《功夫》，《黑客帝国》和《战狼》，那么这三部电影的打斗次数的平均值，就是我们预测的电影B 的打斗次数。</p>
 <p>所以，电影B 的打斗次数是：</p>
 <ul>

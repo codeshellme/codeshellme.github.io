@@ -284,7 +284,7 @@ digits = load_digits()
 data = digits.data     # 特征集
 target = digits.target # 目标集
 </code></pre>
-<p>将数据集拆分为训练集（75%）和测试集（25%），</p>
+<p>将数据集拆分为<strong>训练集</strong>（75%）和<strong>测试集</strong>（25%）:</p>
 <pre><code class="language-python">from sklearn.model_selection import train_test_split
 
 train_x, test_x, train_y, test_y = train_test_split(
@@ -348,7 +348,11 @@ print score # 0.98
 <footer class="post-footer">
       
       <nav class="post-nav">
-        
+        <a class="prev" href="/2020/12/ml-kmean/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">K 均值算法-如何让数据自动分组</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         <a class="next" href="/2020/11/ml-knn1/">
             <span class="next-text nav-default">KNN 算法-理论篇-如何给电影进行分类</span>
             <span class="next-text nav-mobile">Next</span>
