@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>EM 算法-对鸢尾花数据进行聚类 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍过K 均值算法，它是一种聚类算法。今天介绍EM 算" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/ml-em/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="EM 算法-对鸢尾花数据进行聚类" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍过K 均值算法，它是一种聚类算法。今天介绍EM 算" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/ml-em/" />
+<meta property="article:published_time" content="2020-12-05T22:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-05T22:41:52+08:00" />
+<meta itemprop="name" content="EM 算法-对鸢尾花数据进行聚类">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍过K 均值算法，它是一种聚类算法。今天介绍EM 算">
+<meta itemprop="datePublished" content="2020-12-05T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-05T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4601">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="EM 算法-对鸢尾花数据进行聚类"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍过K 均值算法，它是一种聚类算法。今天介绍EM 算"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">EM 算法-对鸢尾花数据进行聚类</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 4601 字 </span>
+          <span class="more-meta"> 阅读约需 10 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1和面过程">1，和面过程</a></li>
+        <li><a href="#2再看k-均值算法">2，再看K 均值算法</a></li>
+        <li><a href="#3em-算法">3，EM 算法</a></li>
+        <li><a href="#4最大似然估计">4，最大似然估计</a></li>
+        <li><a href="#5em-算法原理">5，EM 算法原理</a></li>
+        <li><a href="#6硬聚类与软聚类">6，硬聚类与软聚类</a></li>
+        <li><a href="#7em-聚类的缺点">7，EM 聚类的缺点</a></li>
+        <li><a href="#8gmm-高斯混合模型">8，GMM 高斯混合模型</a></li>
+        <li><a href="#9对鸢尾花数据集聚类">9，对鸢尾花数据集聚类</a></li>
+        <li><a href="#10评估聚类结果">10，评估聚类结果</a></li>
+        <li><a href="#11总结">11，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>之前介绍过<a href="/2020/12/ml-kmean">K 均值算法</a>，它是一种聚类算法。今天介绍<strong>EM 算法</strong>，它也是聚类算法，但比<strong>K 均值</strong>算法更加灵活强大。</p>
+<p><strong>EM</strong> 的全称为 <strong>Expectation Maximization</strong>，中文为<strong>期望最大化</strong>算法，它是一个不断<strong>观察和调整</strong>的过程。</p>
+<h3 id="1和面过程">1，和面过程</h3>
+<p><img src="https://img-blog.csdnimg.cn/2020121023550421.png?" alt="在这里插入图片描述"></p>
+<p>我们先来看一下和面的过程。</p>
+<p>通常情况下，如果你事先不知道面与水的比例，和面过程可能是下面这样：</p>
+<ol>
+<li>先放入一些面和水。</li>
+<li>将面团揉拌均匀。</li>
+<li>观察面团的稀稠程度：如果面团比较稀，则加入少许面；如果面团比较稠，则加入少许水。</li>
+<li>如此往复第2，3步骤，直到面团的稀稠程度达到预期。</li>
+</ol>
+<p>这个和面过程，就是一个<strong>EM</strong> 过程：</p>
+<ul>
+<li>先加入一些面和水，将面团揉拌均匀，并观察面团的稀稠程度。这是<strong>E</strong> 过程。</li>
+<li>不断的加入水和面（调整水和面的比例），直到达到预期面团程度。这是<strong>M</strong> 过程。</li>
+</ul>
+<h3 id="2再看k-均值算法">2，再看K 均值算法</h3>
+<p>在介绍<a href="/2020/12/ml-kmean">K 均值</a> 聚类算法时，展示过一个给二维坐标点进行聚类的例子。</p>
+<p>我们再来看一下这个例子，如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211095215492.png?" alt="在这里插入图片描述"></p>
+<p>上图是一个聚类的过程，共有6 个步骤：</p>
+<ol>
+<li>初始时散点（绿色点）的分布。</li>
+<li>随机选出两个中心点的位置，<code>红色x</code> 和<code>蓝色x</code>。</li>
+<li>计算所有散点分别到<code>红色x</code> 和<code>蓝色x</code>的距离，距离<code>红色x</code> 近的点标红色，距离<code>蓝色x</code>近的点标蓝色。</li>
+<li>重新计算两个中心点的位置，两个中心点分别移动到新的位置。</li>
+<li>重新计算所有散点分别到<code>红色x</code> 和<code>蓝色x</code>的距离，距离<code>红色x</code> 近的点标红色，距离<code>蓝色x</code>近的点标蓝色。</li>
+<li>再次计算两个中心点的位置，两个中心点分别移动到新的位置。中心点的位置几乎不再变化，聚类结束。</li>
+</ol>
+<p>经过以上步骤就完成了一个聚类过程。</p>
+<p>实际上，<strong>K 均值</strong>算法也是一个<strong>EM</strong> 过程：</p>
+<ul>
+<li>确定当前各类中心点的位置，并计算各个散点到现有的中心点的距离。这是<strong>E</strong> 过程。</li>
+<li>将各个散点归属到各个类中，重新计算各个类的中心点，直到各类的中心点不再改变。这是<strong>M</strong> 过程。</li>
+</ul>
+<h3 id="3em-算法">3，EM 算法</h3>
+<p>将二维数据点的聚类过程，扩展为一般性的聚类问题，<strong>EM</strong> 算法是这样一个模型：对于待分类的数据点，<strong>EM</strong> 算法让计算机通过一个不断迭代的过程，来构建一个分类模型。</p>
+<p><strong>EM 算法</strong>分为两个过程：</p>
+<ul>
+<li><strong>E 过程</strong>：根据现有的模型，计算各个数据输入到模型中的计算结果，这称为<strong>期望值计算过程</strong>，即 <strong>E</strong> 过程。</li>
+<li><strong>M 过程</strong>：重新计算模型参数，以最大化期望值，这称为<strong>最大化过程</strong>，即<strong>M</strong> 过程。</li>
+</ul>
+<p>以二维数据点的聚类过程为例，我们定义：</p>
+<ul>
+<li>同一类中各个点到该类中心的平均距离为 <strong>d</strong>；</li>
+<li>不同类之间的平均距离为 <strong>D</strong>。</li>
+</ul>
+<p>那么二维数据点聚类的<strong>M</strong> 过程，就是寻求最大化的<strong>D</strong> 和 <strong>-d</strong>。我们希望的聚类结果是，同一类的点距离较近，不同类之间距离较远。</p>
+<p><strong>EM 算法</strong>不是单个算法，而是一类算法。只要满足<strong>EM</strong> 这两个过程的算法都可以被称为<strong>EM 算法</strong>。常见的<strong>EM 算法</strong>有<strong>GMM 高斯混合模型</strong>和<strong>HMM  隐马尔科夫模型</strong>。</p>
+<h3 id="4最大似然估计">4，最大似然估计</h3>
+<p><img src="https://img-blog.csdnimg.cn/20201211165648336.png?" alt="在这里插入图片描述"></p>
+<p>高等数学中有一门课叫做《概率论与数理统计》，其中讲到了<strong>参数估计</strong>。</p>
+<p><strong>统计推断</strong>是数理统计的重要组成部分，它是指利用来自总体的样本提供的信息，对总体的某些特征进行估计或推断，从而认识整体。</p>
+<p><strong>统计推断</strong>分为两大类：<strong>参数估计</strong>和<strong>假设检验</strong>。</p>
+<p>我们假设，对于某个数据集，其分布函数的<strong>基本形式</strong>已知，但其中含有一个或多个<strong>未知参数</strong>。</p>
+<p><strong>参数估计</strong>就是讨论如何根据来自总体的样本提供的信息对未知参数做出估计。参数估计包括<strong>点估计</strong>和<strong>区间估计</strong>。其中，点估计中有两种方法：<strong>矩估计法</strong>和<strong>最大似然估计法</strong>。</p>
+<p><strong>最大似然估计</strong>是一种通过已知结果，估计<strong>未知参数</strong>的方法。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211172724453.png" alt="在这里插入图片描述"></p>
+<h3 id="5em-算法原理">5，EM 算法原理</h3>
+<p><strong>EM 算法</strong>使用的是<strong>最大似然估计</strong>的原理，它通过观察样本，来找出样本的模型参数。</p>
+<p>下面通过一个投硬币的例子，来看下<strong>EM 算法</strong>的计算过程。</p>
+<p>这个例子来自《<em>Nature</em>》（自然）期刊的论文《<em>What is the expectation maximization algorithm？</em>》（什么是期望最大化算法？）。</p>
+<p>假定有两枚不同的硬币 A 和 B，它们的重量分布 <strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub>​ 是未知的，则可以通过抛掷硬币，计算正反面各自出现的次数来估计<strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub>​。</p>
+<p>方法是在每一轮中随机抽出一枚硬币抛掷 10 次，同样的过程执行 5 轮，根据这 50 次投币的结果来计算 <strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub>​​ 的<strong>最大似然估计</strong>。</p>
+<p>投掷硬币的过程，记录如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211194515456.png?" alt="在这里插入图片描述"></p>
+<p>第1 到5 次分别投掷的硬币是 <strong>B，A，A，B，A</strong>。<strong>H</strong> 代表正面，<strong>T</strong> 代表负面。将上图转化为表格，如下：</p>
+<table>
+<thead>
+<tr>
+<th>次数</th>
+<th>硬币</th>
+<th>正面数</th>
+<th>负面数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>B</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>A</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>A</td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>B</td>
+<td>4</td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>A</td>
+<td>7</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>通过这个表格，可以直接计算 <strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub>​​，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020121119525944.png" alt="在这里插入图片描述"></p>
+<p>显然，如果<strong>知道</strong>每次投掷的硬币是A 还是B，那么计算<strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub> 是非常简单的。</p>
+<p>但是，如果<strong>不知道</strong>每次投掷的硬币是A 还是B，该如何计算<strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub> 呢？</p>
+<p>此时我们将上面表格中的<strong>硬币</strong>一列隐藏起来，这时<strong>硬币</strong>就是<strong>隐变量</strong>。所以我们只知道如下数据：</p>
+<table>
+<thead>
+<tr>
+<th>次数</th>
+<th>正面数</th>
+<th>负面数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+<td>6</td>
+</tr>
+<tr>
+<td>5</td>
+<td>7</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>这时想要计算 <strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub>，就要用<strong>最大似然估计</strong>的原理。</p>
+<p>计算过程如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211195945957.png?" alt="在这里插入图片描述"></p>
+<p><em><strong>第一步</strong></em></p>
+<p>先为 <strong>θ</strong><sub><strong>A</strong></sub>​ 和 <strong>θ</strong><sub><strong>B</strong></sub> 设定一个初始值，比如 <strong>θ</strong><sub><strong>A</strong></sub> = 0.6，<strong>θ</strong><sub><strong>B</strong></sub> = 0.5。</p>
+<p><em><strong>第二步</strong></em></p>
+<p>我们知道每一轮投币的正 <strong>/</strong> 负面的次数：</p>
+<ul>
+<li>第1轮：5 正 5 负，计算出现这种结果的概率：
+<ul>
+<li>如果是A 硬币，那么P(H<sub>5</sub>T<sub>5</sub>|A) = 0.6^5 * 0.4^5</li>
+<li>如果是B 硬币，那么P(H<sub>5</sub>T<sub>5</sub>|B) = 0.5^5 * 0.5^5</li>
+<li>将 P(H<sub>5</sub>T<sub>5</sub>|A) 和 P(H<sub>5</sub>T<sub>5</sub>|B) 归一化处理，可得：</li>
+<li>P(H<sub>5</sub>T<sub>5</sub>|A) = <strong>0.45</strong>，P(H<sub>5</sub>T<sub>5</sub>|B) = <strong>0.55</strong></li>
+</ul>
+</li>
+<li>第2轮：9 正 1 负，计算出现这种结果的概率：
+<ul>
+<li>如果是A 硬币，那么P(H<sub>9</sub>T<sub>1</sub>|A) = 0.6^9 * 0.4^1</li>
+<li>如果是B 硬币，那么P(H<sub>9</sub>T<sub>1</sub>|B) = 0.5^9 * 0.5^1</li>
+<li>将 P(H<sub>9</sub>T<sub>1</sub>|A) 和 P(H<sub>9</sub>T<sub>1</sub>|B) 归一化处理，可得：</li>
+<li>P(H<sub>9</sub>T<sub>1</sub>|A) = <strong>0.8</strong>，P(H<sub>9</sub>T<sub>1</sub>|B) = <strong>0.2</strong></li>
+</ul>
+</li>
+<li>第3轮：8 正 2 负，计算出现这种结果的概率：
+<ul>
+<li>如果是A 硬币，那么P(H<sub>8</sub>T<sub>2</sub>|A) = 0.6^8 * 0.4^2</li>
+<li>如果是B 硬币，那么P(H<sub>8</sub>T<sub>2</sub>|B) = 0.5^8 * 0.5^2</li>
+<li>将 P(H<sub>8</sub>T<sub>2</sub>|A) 和 P(H<sub>8</sub>T<sub>2</sub>|B) 归一化处理，可得：</li>
+<li>P(H<sub>8</sub>T<sub>2</sub>|A) = <strong>0.73</strong>，P(H<sub>8</sub>T<sub>2</sub>|B) = <strong>0.27</strong></li>
+</ul>
+</li>
+<li>第4轮：4 正 6 负，计算出现这种结果的概率：
+<ul>
+<li>如果是A 硬币，那么P(H<sub>4</sub>T<sub>6</sub>|A) = 0.6^4 * 0.4^6</li>
+<li>如果是B 硬币，那么P(H<sub>4</sub>T<sub>6</sub>|B) = 0.5^4 * 0.5^6</li>
+<li>将 P(H<sub>4</sub>T<sub>6</sub>|A) 和 P(H<sub>4</sub>T<sub>6</sub>|B) 归一化处理，可得：</li>
+<li>P(H<sub>4</sub>T<sub>6</sub>|A) = <strong>0.35</strong>，P(H<sub>4</sub>T<sub>6</sub>|B) = <strong>0.65</strong></li>
+</ul>
+</li>
+<li>第5轮：7 正 3 负，计算出现这种结果的概率：
+<ul>
+<li>如果是A 硬币，那么P(H<sub>7</sub>T<sub>3</sub>|A) = 0.6^7 * 0.4^3</li>
+<li>如果是B 硬币，那么P(H<sub>7</sub>T<sub>3</sub>|B) = 0.5^7 * 0.5^3</li>
+<li>将 P(H<sub>7</sub>T<sub>3</sub>|A) 和 P(H<sub>7</sub>T<sub>3</sub>|B) 归一化处理，可得：</li>
+<li>P(H<sub>7</sub>T<sub>3</sub>|A) = <strong>0.65</strong>，P(H<sub>7</sub>T<sub>3</sub>|B) = <strong>0.35</strong></li>
+</ul>
+</li>
+</ul>
+<p>然后，根据每一轮的 P(H<sub>m</sub>T<sub>n</sub>|A) 和 P(H<sub>m</sub>T<sub>n</sub>|B)，可以计算出每一轮的正 <strong>/</strong> 负面次数。</p>
+<blockquote>
+<p><strong>m</strong> 为正面次数，<strong>n</strong> 为负面次数。</p>
+</blockquote>
+<p>对于硬币A，结果如下：</p>
+<table>
+<thead>
+<tr>
+<th>轮数</th>
+<th>P(H<sub>m</sub>T<sub>n</sub>|A)</th>
+<th>m</th>
+<th>n</th>
+<th>正面数</th>
+<th>负面数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.45</td>
+<td>5</td>
+<td>5</td>
+<td>0.45*5=<strong>2.2</strong></td>
+<td>0.45*5=<strong>2.2</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.8</td>
+<td>9</td>
+<td>1</td>
+<td>0.8*9=<strong>7.2</strong></td>
+<td>0.8*1=<strong>0.8</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.73</td>
+<td>8</td>
+<td>2</td>
+<td>0.73*8=<strong>5.9</strong></td>
+<td>0.73*2=<strong>1.5</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.35</td>
+<td>4</td>
+<td>6</td>
+<td>0.35*4=<strong>1.4</strong></td>
+<td>0.35*6=<strong>2.1</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.65</td>
+<td>7</td>
+<td>3</td>
+<td>0.65*7=<strong>4.5</strong></td>
+<td>0.65*3=<strong>1.9</strong></td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><strong>21.3</strong></td>
+<td><strong>8.6</strong></td>
+</tr>
+</tbody>
+</table>
+<p>对于硬币B，结果如下：</p>
+<table>
+<thead>
+<tr>
+<th>轮数</th>
+<th>P(H<sub>m</sub>T<sub>n</sub>|B)</th>
+<th>m</th>
+<th>n</th>
+<th>正面数</th>
+<th>负面数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.55</td>
+<td>5</td>
+<td>5</td>
+<td>0.55*5=<strong>2.8</strong></td>
+<td>0.55*5=<strong>2.8</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.2</td>
+<td>9</td>
+<td>1</td>
+<td>0.2*9=<strong>1.8</strong></td>
+<td>0.2*1=<strong>0.2</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.27</td>
+<td>8</td>
+<td>2</td>
+<td>0.27*8=<strong>2.1</strong></td>
+<td>0.27*2=<strong>0.5</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.65</td>
+<td>4</td>
+<td>6</td>
+<td>0.65*4=<strong>2.6</strong></td>
+<td>0.65*6=<strong>3.9</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.35</td>
+<td>7</td>
+<td>3</td>
+<td>0.35*7=<strong>2.5</strong></td>
+<td>0.35*3=<strong>1.1</strong></td>
+</tr>
+<tr>
+<td><strong>总计</strong></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><strong>11.7</strong></td>
+<td><strong>8.4</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>第三步</strong></em></p>
+<p>根据上面两个表格，可以得出（第1次迭代的结果） <strong>θ</strong><sub><strong>A</strong></sub> 和 <strong>θ</strong><sub><strong>B</strong></sub>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211210914660.png" alt="在这里插入图片描述"></p>
+<p>根据这个估计值，再次回到第一步去计算。</p>
+<p>如此往复第<strong>一、二、三</strong>步，经过10次迭代之后，<strong>θ</strong><sub><strong>A</strong></sub> 和 <strong>θ</strong><sub><strong>B</strong></sub> 的估计值为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211211150924.png" alt="在这里插入图片描述"></p>
+<p>最终，<strong>θ</strong><sub><strong>A</strong></sub> 和 <strong>θ</strong><sub><strong>B</strong></sub> 将收敛到一个几乎不变的值，此时迭代结束。这样我们就求解出了<strong>θ</strong><sub><strong>A</strong></sub> 和 <strong>θ</strong><sub><strong>B</strong></sub> 的最大似然估计值。</p>
+<p>我们将上述过程中，第一步称为<strong>初始化参数</strong>，第二步称为<strong>观察预期</strong>，第三步称为<strong>重新估计参数</strong>。</p>
+<p>第<strong>一、二</strong>步为<strong>E</strong> 过程，第<strong>三</strong>步为<strong>M</strong> 过程，这就是<strong>EM 算法</strong>的过程。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201211212444598.png?" alt="在这里插入图片描述"></p>
+<p>如果我们有一个待聚类的数据集，我们把潜在的类别当做<strong>隐变量</strong>，样本当做<strong>观察值</strong>，这样就可以把聚类问题转化成<strong>参数估计</strong>问题。这就是<strong>EM 聚类</strong>的原理。</p>
+<h3 id="6硬聚类与软聚类">6，硬聚类与软聚类</h3>
+<p>与 <strong>K 均值</strong>算法相比，<strong>K 均值</strong>算法是通过<strong>距离</strong>来区分样本之间的差别，且每个样本在计算的时候只能属于一个分类，我们称之为<strong>硬聚类</strong>算法。</p>
+<p>而 <strong>EM 聚类</strong>在求解的过程中，实际上每个样本都有一定的概率和每个聚类相关，这叫做<strong>软聚类</strong>算法。</p>
+<h3 id="7em-聚类的缺点">7，EM 聚类的缺点</h3>
+<p>EM 聚类算法存在两个比较明显的问题。</p>
+<p>第一个问题是，<strong>EM 算法</strong>计算复杂，收敛较慢，不太适合大规模数据集和高维数据。</p>
+<p>第二个问题是，<strong>EM 算法</strong>不一定能给出<strong>全局最优解</strong>：</p>
+<ul>
+<li>当优化的<strong>目标函数</strong>是<strong>凸函数</strong>时，一定可以得到<strong>全局最优解</strong>。</li>
+<li>当优化的目标函数不是凸函数时，可能会得到<strong>局部最优解</strong>，而非全局最优解。</li>
+</ul>
+<h3 id="8gmm-高斯混合模型">8，GMM 高斯混合模型</h3>
+<p>上文中介绍过，常见的<strong>EM 算法</strong>有<strong>GMM 高斯混合模型</strong>和<strong>HMM  隐马尔科夫模型</strong>。这里主要介绍<strong>GMM 高斯混合模型</strong>的实现。</p>
+<p><strong>sklearn</strong> 库的<strong>mixture</strong> 模块中的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html">GaussianMixture</a> 类是<a href="https://scikit-learn.org/stable/modules/mixture.html">GMM 算法</a>的实现。</p>
+<p>先来看下 <strong>GaussianMixture</strong> 类的原型：</p>
+<pre><code class="language-python">GaussianMixture(
+  n_components=1,
+  covariance_type='full', 
+  tol=0.001, 
+  reg_covar=1e-06, 
+  max_iter=100, 
+  n_init=1, 
+  init_params='kmeans', 
+  weights_init=None, 
+  means_init=None, 
+  precisions_init=None, 
+  random_state=None, 
+  warm_start=False, 
+  verbose=0, 
+  verbose_interval=10)
+</code></pre>
+<p>这里介绍几个重要的参数：</p>
+<ul>
+<li>n_components：代表高斯混合模型的个数，也就是我们要聚类的个数，默认值为 1。</li>
+<li>covariance_type：代表协方差类型。一个高斯混合模型的分布是由<strong>均值向量</strong>和<strong>协方差矩阵</strong>决定的，所以协方差的类型也代表了不同的高斯混合模型的特征。协方差类型有 4 种取值：
+<ul>
+<li>full，代表完全协方差，也就是元素都不为 0；</li>
+<li>tied，代表相同的完全协方差；</li>
+<li>diag，代表对角协方差，也就是对角不为 0，其余为 0；</li>
+<li>spherical，代表球面协方差，非对角为 0，对角完全相同，呈现球面的特性。</li>
+</ul>
+</li>
+<li>max_iter：代表最大迭代次数，默认值为 100。</li>
+</ul>
+<h3 id="9对鸢尾花数据集聚类">9，对鸢尾花数据集聚类</h3>
+<p>在<a href="/2020/11/ml-decisiontree2">《决策树算法-实战篇-鸢尾花及波士顿房价预测》</a>中我们介绍过<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/iris.csv">鸢尾花数据集</a>。这里我们使用<strong>GMM 算法</strong>对该数据进行<strong>聚类</strong>。</p>
+<p>首先加载数据集：</p>
+<pre><code class="language-python">from sklearn.datasets import load_iris
+
+iris = load_iris()   	# 加载数据集
+features = iris.data	# 获取特征集
+labels = iris.target    # 获取目标集
+</code></pre>
+<p>在聚类算法中，只需要特征数据 <code>features</code>，而不需要目标数据<code>labels</code>，但可以使用 <code>labels</code> 对聚类的结果做验证。</p>
+<p>构造GMM聚类：</p>
+<pre><code class="language-python">from sklearn.mixture import GaussianMixture
+
+# 原数据中有 3 个分类，所以这里我们将 n_components 设置为 3
+gmm = GaussianMixture(n_components=3, covariance_type='full')
+</code></pre>
+<p>对数据集进行聚类：</p>
+<pre><code class="language-python">prediction_labels = gmm.fit_predict(features)
+</code></pre>
+<p>查看原始分类：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print(labels)
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+ 2 2]
+</code></pre>
+<p>查看聚类结果：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print(prediction_labels)
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 2 1 2 1
+ 1 1 1 2 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2
+ 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+ 2 2]
+</code></pre>
+<p>对比原始分类和聚类结果，聚类结果中只有个别数据分类错误，我用<code>红圈</code>标了出来：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212102419198.png?" alt="在这里插入图片描述"></p>
+<h3 id="10评估聚类结果">10，评估聚类结果</h3>
+<p>我们可以使用 <strong>Calinski-Harabaz 指标</strong>对聚类结果进行评估。</p>
+<p><strong>sklearn</strong> 库实现了该指标的计算，即 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.calinski_harabasz_score.html">calinski_harabasz_score</a> 方法，该方法会计算出一个分值，分数越高，代表聚类效果越好，也就是相同类中的差异性小，不同类之间的差异性大。</p>
+<p>下面对<strong>鸢尾花数据集</strong>的聚类结果进行评估，传入<strong>特征数据</strong>和<strong>聚类结果</strong>：</p>
+<pre><code class="language-python">&gt;&gt;&gt; from sklearn.metrics import calinski_harabasz_score
+&gt;&gt;&gt; calinski_harabasz_score(features, prediction_labels)
+481.78070899745234
+</code></pre>
+<p>我们也可以传入<strong>特征数据</strong>和<strong>原始结果</strong>：</p>
+<pre><code class="language-python">&gt;&gt;&gt; calinski_harabasz_score(features, labels)
+487.33087637489984
+</code></pre>
+<p>可以看到，对于<strong>原始结果</strong>计算出的分值是<strong>487.33</strong>，对于<strong>预测结果</strong>计算出的分值是<strong>481.78</strong>，相差并不多，说明预测结果还是不错。</p>
+<p>一般情况下，一个需要聚类的数据集并没有目标数据，所以只能对<strong>预测结果</strong>进行评分。我们需要人工对聚类的含义结果进行分析。</p>
+<h3 id="11总结">11，总结</h3>
+<p>本篇文章主要介绍了如下内容：</p>
+<ul>
+<li><strong>EM 算法</strong>的过程及原理，介绍了一个<strong>投掷硬币</strong>的例子。</li>
+<li>硬聚类与软聚类的区别。</li>
+<li>EM 聚类的缺点：
+<ul>
+<li>计算复杂度较大。</li>
+<li>有可能得不到全局最优解。</li>
+</ul>
+</li>
+<li>使用<a href="https://scikit-learn.org/stable/modules/mixture.html">GMM 算法</a>对鸢尾花数据进行聚类。</li>
+<li>使用 <strong>Calinski-Harabaz 指标</strong>对聚类结果进行评估。</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/ml-kmean">K 均值算法-如何让数据自动分组</a></p>
+<p><a href="/2020/12/ml-apriori">Apriori 算法-如何进行关联规则挖掘</a></p>
+<p><a href="/2020/11/ml-page-rank">PageRank 算法-Google 如何给网页排名</a></p>
+<p><a href="/2020/11/ml-data-transform">数据变换-归一化与标准化</a></p>
+<p><a href="/2020/11/ml-data-visualization">如何使用Python 进行数据可视化</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/ml-apriori/">
+            <span class="next-text nav-default">Apriori 算法-如何进行关联规则挖掘</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/ml-em/" class="leancloud_visitors" data-flag-title="EM 算法-对鸢尾花数据进行聚类">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

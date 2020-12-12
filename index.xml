@@ -58,6 +58,15 @@
     </item>
     
     <item>
+      <title>EM 算法-对鸢尾花数据进行聚类</title>
+      <link>https://codeshellme.github.io/2020/12/ml-em/</link>
+      <pubDate>Sat, 05 Dec 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/ml-em/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍过K 均值算法，它是一种聚类算法。今天介绍EM 算</description>
+    </item>
+    
+    <item>
       <title>Apriori 算法-如何进行关联规则挖掘</title>
       <link>https://codeshellme.github.io/2020/12/ml-apriori/</link>
       <pubDate>Thu, 03 Dec 2020 22:38:52 +0800</pubDate>

@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督">
 <meta itemprop="datePublished" content="2020-12-01T22:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-12-01T22:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="2063">
+<meta itemprop="wordCount" content="2352">
 
 
 
@@ -147,7 +147,7 @@
         <div class="post-category">
             <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
             </div>
-          <span class="more-meta"> 2063 字 </span>
+          <span class="more-meta"> 2352 字 </span>
           <span class="more-meta"> 阅读约需 5 分钟 </span>
         
 
@@ -162,10 +162,11 @@
     <li>
       <ul>
         <li><a href="#1k-均值算法">1，K 均值算法</a></li>
-        <li><a href="#2k-均值算法的实现">2，K 均值算法的实现</a></li>
-        <li><a href="#3准备数据点">3，准备数据点</a></li>
-        <li><a href="#4对数据聚类">4，对数据聚类</a></li>
-        <li><a href="#5总结">5，总结</a></li>
+        <li><a href="#2k-均值算法聚类过程">2，K 均值算法聚类过程</a></li>
+        <li><a href="#3k-均值算法的实现">3，K 均值算法的实现</a></li>
+        <li><a href="#4准备数据点">4，准备数据点</a></li>
+        <li><a href="#5对数据聚类">5，对数据聚类</a></li>
+        <li><a href="#6总结">6，总结</a></li>
       </ul>
     </li>
   </ul>
@@ -204,7 +205,23 @@
 <li>循环迭代<strong>第3，4步</strong>，直到中心点的位置几乎不再改变，分类过程就算完毕。</li>
 </ol>
 <p><img src="https://img-blog.csdnimg.cn/20201201223003457.png?" alt="在这里插入图片描述"></p>
-<h3 id="2k-均值算法的实现">2，K 均值算法的实现</h3>
+<h3 id="2k-均值算法聚类过程">2，K 均值算法聚类过程</h3>
+<p>下面以一个二维数据点的聚类过程，来看下<strong>K 均值</strong>算法如何聚类。</p>
+<p>首先，这里有一些离散的数据点，如下图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212171508858.png" alt="在这里插入图片描述"></p>
+<p>我们使用<strong>K 均值</strong>算法对这些数据点进行聚类。随机选择两个点作为两个类的中心点，分别是<code>红色x</code> 和<code>蓝色x</code>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212171743613.png" alt="在这里插入图片描述"></p>
+<p>计算所有数据点到这两个中心点的距离，距离<code>红色x</code> 近的点标红色，距离<code>蓝色x</code> 近的点标蓝色：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212171935101.png" alt="在这里插入图片描述"></p>
+<p>重新计算两个中心点的位置，两个中心点分别移动到新的位置：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212172046605.png" alt="在这里插入图片描述"></p>
+<p>重新计算所有数据点分别到<code>红色x</code> 和<code>蓝色x</code>的距离，距离<code>红色x</code> 近的点标红色，距离<code>蓝色x</code> 近的点标蓝色：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212172132903.png" alt="在这里插入图片描述"></p>
+<p>再次计算两个中心点的位置，两个中心点分别移动到新的位置：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201212172225415.png" alt="在这里插入图片描述"></p>
+<p>直到中心点的位置几乎不再变化，聚类结束。</p>
+<p>以上过程就是<strong>K 均值</strong>算法的聚类过程。</p>
+<h3 id="3k-均值算法的实现">3，K 均值算法的实现</h3>
 <p><strong>K 均值</strong>算法是一个<strong>聚类</strong>算法，<strong>sklearn</strong> 库中的 <a href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.cluster">cluster</a> 模块实现了一系列的聚类算法，其中就包括<a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"><strong>K 均值</strong></a>算法。</p>
 <p>来看下<strong>KMeans</strong> 类的原型：</p>
 <pre><code class="language-python">KMeans(
@@ -243,7 +260,7 @@
 </li>
 </ul>
 <p>下面对一些二维坐标中的点进行聚类，看下如何使用<strong>K 均值</strong>算法。</p>
-<h3 id="3准备数据点">3，准备数据点</h3>
+<h3 id="4准备数据点">4，准备数据点</h3>
 <p>下面是随机生成的三类坐标点，每类有20 个点，不同类的点的坐标在不同的范围内：</p>
 <ul>
 <li>A 类点：Ax 表示A 类点的横坐标，Ay 表示A 类点的纵坐标。横纵坐标范围都是 <strong>(0, 20]</strong>。</li>
@@ -270,7 +287,7 @@ plt.show()
 <blockquote>
 <p>关于如何使用 <strong>Matplotlib</strong> 绘图，可以参考文章<a href="/2020/11/ml-data-visualization">《如何使用Python 进行数据可视化》</a>。</p>
 </blockquote>
-<h3 id="4对数据聚类">4，对数据聚类</h3>
+<h3 id="5对数据聚类">5，对数据聚类</h3>
 <p>下面使用<strong>K 均值</strong>算法对数据点进行聚类。</p>
 <p>创建<strong>K 均值</strong>模型对象：</p>
 <pre><code class="language-python">from sklearn.cluster import KMeans
@@ -312,7 +329,7 @@ kmeans = KMeans(n_clusters=3)
 <blockquote>
 <p>因为本例中的二维坐标点的分布界限非常明显，所以最终的聚类结果非常不错。</p>
 </blockquote>
-<h3 id="5总结">5，总结</h3>
+<h3 id="6总结">6，总结</h3>
 <p>本篇文章主要介绍了<strong>K 均值</strong>算法的原理，及<strong>sklearn</strong> 库对它的实现，并且演示了如何使用<strong>K 均值</strong>算法对二维数据点进行聚类。</p>
 <p>（本节完。）</p>
 <hr>
