@@ -80,4 +80,6 @@ if __name__ == '__main__':
             width=2000, height=1200)
 
     wc.generate(content)
+    import pdb
+    pdb.set_trace()
     wc.to_file("wordcloud.jpg")
