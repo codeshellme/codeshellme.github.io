@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 之前介绍到的一些机器学习算法都是监督学习算法。所谓监督">
 <meta itemprop="datePublished" content="2020-12-01T22:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-12-01T22:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="2352">
+<meta itemprop="wordCount" content="2419">
 
 
 
@@ -147,7 +147,7 @@
         <div class="post-category">
             <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
             </div>
-          <span class="more-meta"> 2352 字 </span>
+          <span class="more-meta"> 2419 字 </span>
           <span class="more-meta"> 阅读约需 5 分钟 </span>
         
 
@@ -329,6 +329,18 @@ kmeans = KMeans(n_clusters=3)
 <blockquote>
 <p>因为本例中的二维坐标点的分布界限非常明显，所以最终的聚类结果非常不错。</p>
 </blockquote>
+<p>我们可以通过 <code>n_iter_</code> 属性来查看迭代的次数：</p>
+<pre><code class="language-python">&gt;&gt;&gt; kmeans.n_iter_
+2
+</code></pre>
+<p>通过 <code>cluster_centers_</code> 属性查看每个类的中心点坐标：</p>
+<pre><code class="language-python">&gt;&gt;&gt; kmeans.cluster_centers_
+array([[11.25, 11.3 ],
+       [75.9 , 80.5 ],
+              [50.85, 53.6 ]])
+</code></pre>
+<p>将这三个中心点画在坐标轴中，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201214121243134.png?" alt="在这里插入图片描述"></p>
 <h3 id="6总结">6，总结</h3>
 <p>本篇文章主要介绍了<strong>K 均值</strong>算法的原理，及<strong>sklearn</strong> 库对它的实现，并且演示了如何使用<strong>K 均值</strong>算法对二维数据点进行聚类。</p>
 <p>（本节完。）</p>
