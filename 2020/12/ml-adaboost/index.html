@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>AdaBoost 算法-分析波士顿房价数据集 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在机器学习算法中，有一种算法叫做集成算法，AdaBoo" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/ml-adaboost/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="AdaBoost 算法-分析波士顿房价数据集" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在机器学习算法中，有一种算法叫做集成算法，AdaBoo" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/ml-adaboost/" />
+<meta property="article:published_time" content="2020-12-15T22:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-15T22:38:52+08:00" />
+<meta itemprop="name" content="AdaBoost 算法-分析波士顿房价数据集">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在机器学习算法中，有一种算法叫做集成算法，AdaBoo">
+<meta itemprop="datePublished" content="2020-12-15T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-15T22:38:52&#43;08:00" />
+<meta itemprop="wordCount" content="5076">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AdaBoost 算法-分析波士顿房价数据集"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在机器学习算法中，有一种算法叫做集成算法，AdaBoo"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">AdaBoost 算法-分析波士顿房价数据集</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 5076 字 </span>
+          <span class="more-meta"> 阅读约需 11 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1集成算法">1，集成算法</a></li>
+        <li><a href="#2bagging-与-boosting-算法">2，bagging 与 boosting 算法</a></li>
+        <li><a href="#3adaboost-算法">3，AdaBoost 算法</a></li>
+        <li><a href="#4adaboost-算法示例">4，AdaBoost 算法示例</a></li>
+        <li><a href="#5sklearn-对-adaboost-的实现">5，sklearn 对 AdaBoost 的实现</a></li>
+        <li><a href="#6使用-adaboost-进行回归分析">6，使用 AdaBoost 进行回归分析</a></li>
+        <li><a href="#7分析-adaboost-模型的属性">7，分析 AdaBoost 模型的属性</a></li>
+        <li><a href="#8对比-adaboost-模型与决策树knn-算法">8，对比 AdaBoost 模型与决策树，KNN 算法</a></li>
+        <li><a href="#9探究迭代次数与错误率的关系">9，探究迭代次数与错误率的关系</a></li>
+        <li><a href="#10总结">10，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>在机器学习算法中，有一种算法叫做<strong>集成算法</strong>，<strong>AdaBoost 算法</strong>是集成算法的一种。我们先来看下什么是集成算法。</p>
+<h3 id="1集成算法">1，集成算法</h3>
+<p>通常，一个 <strong>Boss</strong> 在做一项决定之前，会听取多个 <strong>Leader</strong> 的意见。<strong>集成算法</strong>就是这个意思，它的基本含义就是<strong>集众算法之所长</strong>。</p>
+<p>前面已经介绍过许多算法，每种算法都有<strong>优缺点</strong>。那么是否可以将这些算法<strong>组合</strong>起来，共同做一项决定呢？答案是肯定的。这就诞生了<strong>集成算法</strong>（<em>Ensemble Methods</em>）。</p>
+<p>集成算法的基本架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215161345282.png?" alt="在这里插入图片描述"></p>
+<p>算法的组合有多种形式，比如将不同的算法集成起来，或者将同一种算法以不同的形式集成起来。</p>
+<p>常见的集成算法有四大类：</p>
+<ul>
+<li><strong>bagging</strong>：装袋法，代表算法为 <a href="https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm">RandomForest</a>（随机森林）。</li>
+<li><strong>boosting</strong>：提升法，代表算法有 <strong>AdaBoost</strong>，<strong>XGBoost</strong> 等。</li>
+<li><strong>stacking</strong>：堆叠法。</li>
+<li><strong>blending</strong>：混合法。</li>
+</ul>
+<p>多个算法以不同的方式可以组合成<strong>集成算法</strong>，如果再深入探究的话，不同的集成方法也可以组合起来：</p>
+<ul>
+<li>如果将 <strong>boosting</strong> 算法的输出作为<strong>bagging</strong> 算法的基学习器，得到的是 <strong>MultiBoosting</strong> 算法；</li>
+<li>如果将 <strong>bagging</strong> 算法的输出作为<strong>boosting</strong> 算法的基学习器，得到的是 <strong>IterativBagging</strong> 算法。</li>
+</ul>
+<p>对于<strong>集成算法</strong>的集成，这里不再过多介绍。</p>
+<h3 id="2bagging-与-boosting-算法">2，bagging 与 boosting 算法</h3>
+<p><strong>bagging</strong>和 <strong>boosting</strong>是两个比较著名的集成算法。</p>
+<p><em><strong>bagging 算法</strong></em></p>
+<p><strong>bagging</strong> 算法是将一个原始数据集随机抽样成 <strong>N</strong> 个新的数据集。然后将这<strong>N</strong> 个新的数据集作用于<strong>同一个</strong>机器学习算法，从而得到 <strong>N</strong> 个模型，最终集成一个<strong>综合模型</strong>。</p>
+<p>在对新的数据进行预测时，需要经过这 <strong>N</strong> 个模型（每个模型互不依赖干扰）的预测（投票），最终综合 <strong>N</strong> 个投票结果，来形成最后的预测结果。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215133730473.png?" alt="在这里插入图片描述"></p>
+<p><em><strong>boosting 算法</strong></em></p>
+<p><strong>boosting 算法</strong>的含义为<strong>提升学习</strong>，它将多个<strong>弱分类器</strong>组合起来形成一个<strong>强分类器</strong>。</p>
+<p><strong>boosting 算法</strong>是将一个原始数据集使用同一个算法迭代学习 N 次，每次迭代会给数据集中的样本分配不同的权重。</p>
+<p>分类正确的样本会在下一次迭代中降低权重，而分类错误的样本会在下一次迭代中提高权重，这样做的目的是，使得算法能够对其<strong>不擅长（分类错误）的数据</strong>不断的<strong>加强提升</strong>学习，最终使得算法的成功率越来越高。</p>
+<p>每次迭代都会训练出一个新的<strong>带有权重的模型</strong>，迭代到一定的次数或者最终模型的错误率足够低时，迭代停止。最终集成一个强大的<strong>综合模型</strong>。</p>
+<p>在对新的数据进行预测时，需要经过这 <strong>N</strong> 个模型的预测，每个模型的预测结果会带有一个权重值，最终综合 <strong>N</strong> 个模型结果，来形成最后的预测结果。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215142731567.png?" alt="在这里插入图片描述"></p>
+<p><strong>boosting 算法</strong>中每个模型的权重是不相等的，而<strong>bagging 算法</strong>中每个模型的权重是相等的。</p>
+<h3 id="3adaboost-算法">3，AdaBoost 算法</h3>
+<p><strong>AdaBoost 算法</strong>是非常流行的一种 <strong>boosting</strong> 算法，它的全称为 <strong>Adaptive Boosting</strong>，即<strong>自适应提升学习</strong>。</p>
+<p><strong>AdaBoost 算法</strong>由<strong>Freund</strong> 和 <strong>Schapire</strong> 于<strong>1995</strong> 年提出。这两位作者写了一篇关于<a href="http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf">AdaBoost 的简介论文</a>，这应该是关于<strong>AdaBoost</strong> 算法的最权威的资料了。为了防止链接丢失，我将论文下载了，放在了<a href="https://codeshellme.github.io/books/IntroToBoosting.pdf">这里</a>。</p>
+<blockquote>
+<p><strong>AdaBoost 算法</strong> 和 <strong>SVM 算法</strong>被很多人认为是监督学习中最强大的两种算法。</p>
+</blockquote>
+<p><strong>AdaBoost 算法</strong>的运行过程如下：</p>
+<ol>
+<li>为训练集中的每个样本初始化一个权重 <strong>w<sub>i</sub></strong>，初始时的权重都相等。</li>
+<li>根据样本训练出一个模型 <strong>G<sub>i</sub></strong>，并计算该模型的错误率 <strong>e<sub>i</sub></strong> 和权重 <strong>a<sub>i</sub></strong>。</li>
+<li>根据权重 <strong>a<sub>i</sub></strong> 将每个样本的权重调整为 <strong>w<sub>i+1</sub></strong>，使得被正确分类的样本权重降低，被错误分类的样本权重增加（这样可以着重训练错误样本）。</li>
+<li>这样迭代第<strong>2，3</strong> 步，直到训练出最终模型。</li>
+</ol>
+<p>这个过程中，我们假设 <strong>x</strong> 为样本，<strong>G<sub>i</sub>(x)</strong> 为第 <strong>i</strong> 轮训练出的模型，<strong>a<sub>i</sub></strong> 为 <strong>G<sub>i</sub>(x)</strong> 的权重，一共迭代 <strong>n</strong> 轮，那么最终模型 <strong>G(x)</strong> 的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215183049285.png" alt="在这里插入图片描述"></p>
+<p>模型权重 <strong>a<sub>i</sub></strong> 的计算公式如下，其中 <strong>e<sub>i</sub></strong> 为第 <strong>i</strong> 轮模型的错误率：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215183302249.png" alt="在这里插入图片描述"></p>
+<p>我们用 <strong>D<sub>k+1</sub></strong> ​代表第 <strong>k+1</strong> 轮的样本的权重集合，用 <strong>W<sub>k+1,1</sub></strong> 代表第 <strong>k+1</strong> 轮中第<strong>1</strong>个样本的权重， <strong>W<sub>k+1,N</sub></strong> 代表第 <strong>k+1</strong> 轮中第 <strong>N</strong> 个样本的权重，用公式表示为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215184128503.png" alt="在这里插入图片描述"></p>
+<p>样本权重 <strong>W<sub>k+1,i</sub></strong> 的计算公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201216232844410.png" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li><strong>y<sub>i</sub></strong> 为 <strong>x<sub>i</sub></strong> 的目标值。</li>
+<li><strong>Z<sub>k</sub></strong> 为归一化因子，使得 <strong>D<sub>k+1</sub></strong> 成为一个概率分布。</li>
+<li><strong>exp</strong> 为指数函数。</li>
+</ul>
+<h3 id="4adaboost-算法示例">4，AdaBoost 算法示例</h3>
+<p>下面我们以一个二分类问题，来看一下<strong>AdaBoost 算法</strong>的计算过程。</p>
+<p>假设我们有10 个样本数据，<strong>X</strong> 为特征集，<strong>Y</strong> 为目标集，如下：</p>
+<table>
+<thead>
+<tr>
+<th>X</th>
+<th>Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+<p>假设有三个分类器，分别以<strong>2.5，5.5，8.5</strong>将数据分界：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201217123702408.png" alt="在这里插入图片描述"></p>
+<p>简单看下其分布图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201217123543502.png?" alt=""></p>
+<p>根据这三个分类器，我们可以算出每个样本对应的值：</p>
+<table>
+<thead>
+<tr>
+<th>X</th>
+<th>Y</th>
+<th>f<sub>1</sub>(x)</th>
+<th>f<sub>2</sub>(x)</th>
+<th>f<sub>3</sub>(x)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><code>-1</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><code>-1</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td><code>-1</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td><code>-1</code></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td><code>-1</code></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+<td><code>-1</code></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>-1</td>
+<td>-1</td>
+<td><code>1</code></td>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+<p>上面表格中，对于每个分类器分类错误的数据，我进行了<code>标红</code>。</p>
+<p><em><strong>第一轮</strong></em></p>
+<p>将每个样本的权重初始化为<strong>0.1</strong>：</p>
+<ul>
+<li><strong>D<sub>1</sub></strong> = <code>(0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)</code></li>
+</ul>
+<p>根据 <strong>D<sub>1</sub></strong> 计算每个分类器的错误率：</p>
+<ul>
+<li><strong>e<sub>1</sub>(x)</strong> = 0.1*3 = 0.3</li>
+<li><strong>e<sub>2</sub>(x)</strong> = 0.1*4 = 0.4</li>
+<li><strong>e<sub>3</sub>(x)</strong> = 0.1*3 = 0.3</li>
+</ul>
+<p>选择错误率最小的分类器作为第1轮的分类器，因为 f<sub>1</sub>(x)和 f<sub>3</sub>(x) 的错误率都是0.3，所以可以任意选一个，比如我们选  f<sub>1</sub>(x)，所以 <strong>G<sub>1</sub>(x)</strong> =  f<sub>1</sub>(x)。</p>
+<p>计算 <strong>G<sub>1</sub>(x)</strong> 的权重 <strong>a<sub>1</sub>(x)</strong>：</p>
+<ul>
+<li><strong>a<sub>1</sub>(x)</strong> = <code>(1/2) * log((1-0.3)/0.3)</code> = <strong>0.42</strong></li>
+</ul>
+<blockquote>
+<p>这里的 <code>log</code> 以 <code>e</code> 为底。</p>
+</blockquote>
+<p>计算第2轮的样本权重<strong>D<sub>2</sub></strong>，首先需要根据<strong>Z<sub>k</sub></strong> 的公式来计算 <strong>Z<sub>1</sub></strong>，先计算 <strong>-a<sub>1</sub>y<sub>i</sub>G<sub>1</sub>(x<sub>i</sub>)</strong> ，如下：</p>
+<table>
+<thead>
+<tr>
+<th>序号 i</th>
+<th align="right">y<sub>i</sub></th>
+<th align="right">G<sub>1</sub>(x<sub>i</sub>)</th>
+<th align="left">-a<sub>1</sub>y<sub>i</sub>G<sub>1</sub>(x<sub>i</sub>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left"><code>-0.42 x 1 x 1 =&gt; -0.42</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left"><code>-0.42 x 1 x 1 =&gt; -0.42</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left"><code>-0.42 x 1 x 1 =&gt; -0.42</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x -1 x -1 =&gt; -0.42</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x -1 x -1 =&gt; -0.42</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x -1 x -1 =&gt; -0.42</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td align="right">1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x 1 x -1 =&gt; 0.42</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td align="right">1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x 1 x -1 =&gt; 0.42</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td align="right">1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x 1 x -1 =&gt; 0.42</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td align="right">-1</td>
+<td align="right">-1</td>
+<td align="left"><code>-0.42 x -1 x -1 =&gt; -0.42</code></td>
+</tr>
+</tbody>
+</table>
+<p>那么 <strong>Z<sub>1</sub></strong> = <code>0.1 * (7 * e^-0.42 + 3 * e^0.42)</code>  = <strong>0.92</strong></p>
+<p>再根据样本权重的计算公式可以得出：</p>
+<ul>
+<li><strong>D<sub>2</sub></strong> = <code>(0.0715, 0.0715, 0.0715, 0.0715, 0.0715, 0.0715, 0.1666, 0.1666, 0.1666, 0.0715)</code></li>
+</ul>
+<p><em><strong>第二轮</strong></em></p>
+<p>根据 <strong>D<sub>2</sub></strong> 计算每个分类器的错误率：</p>
+<ul>
+<li><strong>e<sub>1</sub>(x)</strong> = 0.1666*3 = 0.4998</li>
+<li><strong>e<sub>2</sub>(x)</strong> = 0.0715*4 = 0.286</li>
+<li><strong>e<sub>3</sub>(x)</strong> = 0.0715*3 = 0.2145</li>
+</ul>
+<p>选择错误率最小的分类器作为第2轮的分类器，所以 <strong>G<sub>2</sub>(x)</strong> =  f<sub>3</sub>(x)。</p>
+<p>计算 <strong>G<sub>2</sub>(x)</strong> 的权重 <strong>a<sub>2</sub>(x)</strong>：</p>
+<ul>
+<li><strong>a<sub>2</sub>(x)</strong> = <code>(1/2) * log((1-0.2145)/0.2145)</code> = <strong>0.65</strong></li>
+</ul>
+<p>计算第3轮每个样本的权重：</p>
+<ul>
+<li><strong>D<sub>3</sub></strong> = <code>(0.0455,0.0455,0.0455,0.1667, 0.1667,0.01667,0.1060, 0.1060, 0.1060, 0.0455)</code></li>
+</ul>
+<blockquote>
+<p>这里省略了<strong>D<sub>3</sub></strong> 的计算过程，其计算过程与<strong>D<sub>2</sub></strong> 一样。</p>
+</blockquote>
+<p><em><strong>第三轮</strong></em></p>
+<p>根据 <strong>D<sub>3</sub></strong> 计算每个分类器的错误率：</p>
+<ul>
+<li><strong>e<sub>1</sub>(x)</strong> = 0.1060*3 = 0.318</li>
+<li><strong>e<sub>2</sub>(x)</strong> = 0.0455*4 = 0.182</li>
+<li><strong>e<sub>3</sub>(x)</strong> = 0.1667*3 = 0.5</li>
+</ul>
+<p>选择错误率最小的分类器作为第3轮的分类器，所以 <strong>G<sub>3</sub>(x)</strong> =  f<sub>2</sub>(x)。</p>
+<p>计算 <strong>G<sub>3</sub>(x)</strong> 的权重 <strong>a<sub>3</sub>(x)</strong>：</p>
+<ul>
+<li><strong>a<sub>3</sub>(x)</strong> = <code>(1/2) * log((1-0.182)/0.182)</code> = <strong>0.75</strong></li>
+</ul>
+<p>如果我们只迭代三轮，那么最终的模型 <strong>G(x)</strong> = 0.42G<sub>1</sub>(x) + 0.65G<sub>2</sub>(x) + 0.75G<sub>3</sub>(x)。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215202813533.png?" alt="在这里插入图片描述"></p>
+<p>有了最终的模型<strong>G(x)</strong>，我们根据<strong>G(x)</strong> 来计算每个样本对应的值：</p>
+<pre><code class="language-shell">G0 = 0.42 + 0.65 - 0.75  = 0.32  =&gt;  1
+G1 = 0.42 + 0.65 - 0.75  = 0.32  =&gt;  1
+G2 = 0.42 + 0.65 - 0.75  = 0.32  =&gt;  1
+G3 = -0.42 + 0.65 - 0.75 = -0.52 =&gt; -1
+G4 = -0.42 + 0.65 - 0.75 = -0.52 =&gt; -1
+G5 = -0.42 + 0.65 - 0.75 = -0.52 =&gt; -1
+G6 = -0.42 + 0.65 + 0.75 = 0.98  =&gt;  1
+G7 = -0.42 + 0.65 + 0.75 = 0.98  =&gt;  1
+G8 = -0.42 + 0.65 + 0.75 = 0.98  =&gt;  1
+G9 = -0.42 - 0.65 + 0.75 = -0.32 =&gt; -1
+</code></pre>
+<blockquote>
+<p>因为本例是一个二分类问题，所以对于值大于 <strong>0</strong> 均取 <strong>1</strong>，值小于 <strong>0</strong> 均取 <strong>-1</strong>。</p>
+</blockquote>
+<p>最终可以得到如下表格：</p>
+<table>
+<thead>
+<tr>
+<th>X</th>
+<th>Y</th>
+<th>G(x)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+<p>可以看到经过<strong>提升学习</strong>后的模型的准确率提高到了<strong>100%</strong>。</p>
+<blockquote>
+<p>当然对于实际问题，准确率基本达不到<strong>100%</strong>。</p>
+</blockquote>
+<p>以上就是一个简化版的 <strong>AdaBoost</strong> 算法的计算过程。</p>
+<blockquote>
+<p>本例的原型出自《统计学习方法 <strong>·</strong> 李航》</p>
+</blockquote>
+<h3 id="5sklearn-对-adaboost-的实现">5，sklearn 对 AdaBoost 的实现</h3>
+<p><strong>sklearn</strong> 库的 <strong>ensemble</strong> 模块实现了一系列的<a href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble">集成算法</a>，对于集成方法的介绍，可以参看<a href="https://scikit-learn.org/stable/modules/ensemble.html">这里</a>。</p>
+<p><strong>AdaBoost 算法</strong>即可用于分类问题，也可用于回归问题：</p>
+<ul>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html">AdaBoostClassifier</a> 类用于分类问题。</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostRegressor.html">AdaBoostRegressor</a> 类用于回归问题。</li>
+</ul>
+<p>来看下 <strong>AdaBoostClassifier</strong> 类的原型：</p>
+<pre><code class="language-python">AdaBoostClassifier(
+  base_estimator=None, 
+  n_estimators=50, 
+  learning_rate=1.0, 
+  algorithm='SAMME.R', 
+  random_state=None)
+</code></pre>
+<p>其参数含义：</p>
+<ul>
+<li><strong>base_estimator</strong>：代表弱分类器，默认使用的是<strong>决策树</strong>。
+<ul>
+<li>对于 <code>AdaBoostClassifier</code> 默认使用的是 <code>DecisionTreeClassifier(max_depth=1)</code>。</li>
+<li>对于 <code>AdaBoostRegressor</code> 默认使用的是 <code>DecisionTreeRegressor(max_depth=3)</code>。</li>
+<li>一般不需要修改这个参数，当然也可以指定具体的分类器。</li>
+</ul>
+</li>
+<li><strong>n_estimators</strong>：最大迭代次数，也是分类器的个数，默认是 50。</li>
+<li><strong>learning_rate</strong>：代表学习率，取值在 <strong>0-1</strong> 之间，默认是 1.0。
+<ul>
+<li>学习率和迭代次数是相关的，如果学习率较小，就需要比较多的迭代次数才能收敛。</li>
+<li>所以如果调整了 <strong>learning_rate</strong>，一般也需要调整 <strong>n_estimators</strong> 。</li>
+</ul>
+</li>
+<li><strong>algorithm</strong>：代表采用哪种 <strong>boosting</strong> 算法，有两种选择：<strong>SAMME</strong> 和 <strong>SAMME.R</strong>，默认是 <strong>SAMME.R</strong>。
+<ul>
+<li><strong>SAMME</strong> 和 <strong>SAMME.R</strong> 的区别在于对弱分类权重的计算方式不同。</li>
+<li><strong>SAMME.R</strong> 的收敛速度通常比 <strong>SAMME</strong> 快。</li>
+</ul>
+</li>
+<li><strong>random_state</strong>：代表随机数种子，默认是 None。
+<ul>
+<li>随机种子用来控制<strong>随机模式</strong>，当随机种子取了一个值，也就确定了一种随机规则，其他人取这个值可以得到同样的结果。</li>
+<li>如果不设置随机种子，每次得到的随机数也就不同。</li>
+</ul>
+</li>
+</ul>
+<p>再来看下 <strong>AdaBoostRegressor</strong> 类的原型：</p>
+<pre><code class="language-python">AdaBoostRegressor(
+  base_estimator=None, 
+  n_estimators=50, 
+  learning_rate=1.0, 
+  loss='linear', 
+  random_state=None)
+</code></pre>
+<p>可以看到，回归和分类的参数基本一致，而回归算法里没有 <strong>algorithm</strong> 参数，但多了 <strong>loss</strong> 参数。</p>
+<p><strong>loss</strong> 参数代表损失函数，用于（每次迭代后）更新样本的权重，其共有 3 种选择，分别为：</p>
+<ul>
+<li><strong>linear</strong>，代表线性函数。</li>
+<li><strong>square</strong>，代表平方函数。</li>
+<li><strong>exponential</strong>，代表指数函数。</li>
+<li>默认是 <strong>linear</strong>，一般采用线性就可得到不错的效果。</li>
+</ul>
+<h3 id="6使用-adaboost-进行回归分析">6，使用 AdaBoost 进行回归分析</h3>
+<p>接下来，我们看下如何用 <strong>AdaBoost</strong> 算法进行回归分析。</p>
+<p>之前在文章《<a href="/2020/11/ml-decisiontree2">决策树算法-实战篇-鸢尾花及波士顿房价预测</a>》中，我们介绍过<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/boston_house_prices.csv">波士顿房价数据集</a>，这里不再对数据本身进行过多介绍，下面我们用 <strong>AdaBoost</strong> 算法来分析该数据集。</p>
+<p>首先加载数据集：</p>
+<pre><code class="language-python">from sklearn.datasets import load_boston
+
+boston = load_boston()
+features = boston.data # 特征集
+prices = boston.target # 目标集
+</code></pre>
+<p>将数据拆分成训练集和测试集：</p>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+train_x, test_x, train_y, test_y = train_test_split(
+    features, prices, test_size=0.25, random_state=33)
+</code></pre>
+<p>构建 <strong>AdaBoost</strong> 回归模型：</p>
+<pre><code class="language-python">from sklearn.ensemble import AdaBoostRegressor
+regressor = AdaBoostRegressor()  # 均采用默认参数
+regressor.fit(train_x, train_y)  # 拟合模型
+</code></pre>
+<p>使用模型进行预测：</p>
+<pre><code class="language-python">pred_y = regressor.predict(test_x)
+</code></pre>
+<p>评价模型准确率：</p>
+<pre><code class="language-python">from sklearn.metrics import mean_squared_error
+
+mse = mean_squared_error(test_y, pred_y)
+print &quot;AdaBoost 均方误差 = &quot;, round(mse, 2) # 18.57
+</code></pre>
+<h3 id="7分析-adaboost-模型的属性">7，分析 AdaBoost 模型的属性</h3>
+<p><code>base_estimator_</code> 属性是<strong>基学习器</strong>，也就是训练之前的模型：</p>
+<pre><code class="language-python">&gt;&gt;&gt; regressor.base_estimator_
+DecisionTreeRegressor(criterion='mse', 
+    max_depth=3, max_features=None,
+    max_leaf_nodes=None, min_impurity_decrease=0.0,
+    min_impurity_split=None, min_samples_leaf=1,
+    min_samples_split=2, min_weight_fraction_leaf=0.0,
+    presort=False, random_state=None, splitter='best')
+</code></pre>
+<p><code>estimators_</code> 属性是经过训练之后的所有弱学习器，有 50 个：</p>
+<pre><code class="language-python">&gt;&gt;&gt; len(regressor.estimators_)
+50
+</code></pre>
+<p><code>feature_importances_</code> 属性中存储了每个特征的重要性：</p>
+<pre><code class="language-python">&gt;&gt;&gt; regressor.feature_importances_
+array([0.02104728, 0.        , 0.00304314,
+       0.        , 0.00891602, 0.2825294 ,
+       0.00438134, 0.17308669, 0.00929782,
+       0.07457966, 0.02250937, 0.00592025, 
+       0.39468902])
+</code></pre>
+<p><code>estimator_weights_</code> 属性是每个弱学习器的权重：</p>
+<pre><code class="language-python">&gt;&gt;&gt; regressor.estimator_weights_
+array([2.39259487, 2.02119506, 1.68364189, 0.71892012, 2.01966649,
+       1.03178435, 1.14573926, 2.15335207, 1.62996738, 1.39576421,
+       1.42582945, 0.55214963, 1.17953337, 0.20934333, 0.3022646 ,
+       1.73484417, 1.36590071, 0.27471584, 0.97297267, 0.21729445,
+       1.97061649, 0.91072652, 1.95231025, 0.11764431, 1.19301792,
+       0.21629414, 1.57477075, 1.23626619, 1.21423494, 0.24063141,
+       0.08265621, 0.17198137, 0.58300858, 0.72722721, 2.07974547,
+       0.61855751, 1.98179632, 0.5886063 , 0.18646107, 0.38176832,
+       1.11993353, 1.81984396, 1.06785584, 0.45475221, 1.85522596,
+       0.29177236, 1.0699074 , 1.79358974, 1.37771849, 0.15698322])
+</code></pre>
+<p><code>estimator_errors_</code> 属性是每个弱学习器的错误率：</p>
+<pre><code class="language-python">&gt;&gt;&gt; regressor.estimator_errors_
+array([0.08373912, 0.11699548, 0.15661382, 0.32763082, 0.11715348,
+       0.26273832, 0.24126819, 0.1040184 , 0.16383483, 0.19848913,
+       0.19374934, 0.36536582, 0.23513611, 0.44785447, 0.42500398,
+       0.149969  , 0.20328296, 0.43174973, 0.27428838, 0.44588913,
+       0.12232269, 0.28685119, 0.12430167, 0.4706228 , 0.23271962,
+       0.44613629, 0.17153735, 0.22508658, 0.22895259, 0.44013076,
+       0.47934771, 0.45711032, 0.35824061, 0.32580349, 0.1110811 ,
+       0.3501096 , 0.12112748, 0.3569547 , 0.45351932, 0.40570047,
+       0.24602361, 0.1394526 , 0.25581106, 0.38823148, 0.13526048,
+       0.42757002, 0.25542069, 0.14263317, 0.20137567, 0.46083459])
+</code></pre>
+<p>我们将每个弱学习器的权重和错误率使用 <a href="https://matplotlib.org/">Matplotlib</a> 画出折线图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201216105039237.png?" alt="在这里插入图片描述"></p>
+<p>可以看到弱学习器的错误率与权重成<strong>反比</strong>：</p>
+<ul>
+<li>弱学习器的错误率越低，权重越高。</li>
+<li>弱学习器的错误率越高，权重越低。</li>
+</ul>
+<h3 id="8对比-adaboost-模型与决策树knn-算法">8，对比 AdaBoost 模型与决策树，KNN 算法</h3>
+<p>下面分别使用<strong>决策树回归</strong>和<strong>KNN 回归</strong>来分析波士顿数据集，从而对比这三种算法的准确度。</p>
+<p><em><strong>使用决策树回归</strong></em></p>
+<p>代码如下</p>
+<pre><code class="language-python">from sklearn.tree import DecisionTreeRegressor
+
+# 构建决策树
+dec_regressor = DecisionTreeRegressor()
+
+# 拟合决策树
+dec_regressor.fit(train_x, train_y)
+
+# 预测数据
+pred_y = dec_regressor.predict(test_x)
+
+# 计算模型准确度
+mse = mean_squared_error(test_y, pred_y)
+print &quot;决策树均方误差 = &quot;, round(mse, 2)
+</code></pre>
+<p><em><strong>使用KNN 回归</strong></em></p>
+<p>代码如下</p>
+<pre><code class="language-python">from sklearn.neighbors import KNeighborsRegressor
+
+# 构建 KNN 模型
+knn_regressor = KNeighborsRegressor()
+
+# 拟合模型
+knn_regressor.fit(train_x, train_y)
+
+# 预测数据
+pred_y = knn_regressor.predict(test_x)
+
+# 计算模型准确度
+mse = mean_squared_error(test_y, pred_y)
+print &quot;KNN 均方误差 = &quot;, round(mse, 2)
+</code></pre>
+<p>运行代码得出的结果是：</p>
+<ul>
+<li><strong>AdaBoost</strong> 均方误差 =  18.57</li>
+<li><strong>决策树</strong>均方误差 =  36.92</li>
+<li><strong>KNN</strong> 均方误差 =  27.87</li>
+</ul>
+<p>我们知道均方误差越小，准确率越高，所以 <strong>AdaBoost</strong> 算法在这三种算法中表现最好。</p>
+<h3 id="9探究迭代次数与错误率的关系">9，探究迭代次数与错误率的关系</h3>
+<p>理想情况下，迭代次数越多，最终模型的错误率应该越低，下面我们来探究一下是否是这样？</p>
+<p>sklearn 中的 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html">make_hastie_10_2</a> 函数用于生成<strong>二分类数据</strong>。</p>
+<p>我们用该函数生成12000 个数据，取前2000 个作为测试集，其余为训练集：</p>
+<pre><code class="language-python">from sklearn import datasets
+
+X, Y = datasets.make_hastie_10_2(n_samples=12000, random_state=1)
+train_x, train_y = X[2000:], Y[2000:]
+test_x, test_y = X[:2000], Y[:2000]
+</code></pre>
+<p>构建 <strong>AdaBoost</strong> 分类模型，迭代次数为 <strong>500</strong>：</p>
+<pre><code class="language-python">from sklearn.ensemble import AdaBoostClassifier
+
+IterationN = 500 
+ada = AdaBoostClassifier(n_estimators=IterationN)
+ada.fit(train_x, train_y)
+</code></pre>
+<p>对测试数据进行预测，并统计错误率：</p>
+<pre><code class="language-python">from sklearn.metrics import zero_one_loss
+
+errs = []
+for pred_y in ada.staged_predict(test_x):
+    err = zero_one_loss(pred_y, test_y)
+    errs.append(err)
+</code></pre>
+<p><code>staged_predict</code> 方法用于预测<strong>每一轮迭代后输入样本的预测值</strong>，所以模型迭代了多少次，该方法就会返回多少次预测结果，其返回的就是分别迭代<strong>1，2，3&hellip;N</strong> 次的预测结果。</p>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.zero_one_loss.html">zero_one_loss</a> 方法用于计算错误率。</p>
+<p><code>errs</code> 列表中存储了每次迭代的错误率。</p>
+<p>用 <strong>Matplotlib</strong> 画出错误率折线图：</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+plt.plot(range(1, IterationN+1), errs, label='AdaBoost Error Rate', color='orange')
+plt.legend(loc='upper right', fancybox=True) # 显示图例
+plt.show()
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20201216154820381.png?" alt="在这里插入图片描述"></p>
+<p>通过上图可以看出：</p>
+<ul>
+<li>随着迭代次数的增多，错误率逐渐降低。</li>
+<li>在迭代100 次之后，错误率趋于平缓。</li>
+</ul>
+<blockquote>
+<p><strong>建议：</strong>
+在实际应用中，可以通过画这种折线图的方式，来判断模型应该迭代多少次。当然也要考虑时间成本，迭代次数越多，时间成本也会越高。</p>
+</blockquote>
+<p><strong>sklearn 官方文档</strong>中也有一个这样的例子，你可以参考<a href="https://scikit-learn.org/stable/auto_examples/ensemble/plot_adaboost_hastie_10_2.html">这里</a>。</p>
+<p>需要注意的是，如果数据集不够好的话，错误率在达到一定值后有可能会反弹，即迭代次数如果再增加，错误率可能会增高，这时候就是<strong>过拟合</strong>现象。</p>
+<h3 id="10总结">10，总结</h3>
+<p>本篇文章主要介绍了以下内容：</p>
+<ul>
+<li>什么是<strong>集成算法</strong>及常见的集成算法有哪些？</li>
+<li><strong>bagging</strong> 算法与<strong>boosting</strong> 算法的区别。</li>
+<li><strong>AdaBoost</strong> 算法原理及其计算过程。</li>
+<li>使用<strong>AdaBoost</strong> 算法分析波士顿房价数据集。</li>
+<li>对比<strong>AdaBoost</strong> 算法，决策树算法及KNN 算法哪个更强大。</li>
+<li>探究<strong>AdaBoost</strong> 算法迭代次数与错误率的关系。</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/ml-data-visualization">如何使用Python 进行数据可视化</a></p>
+<p><a href="/2020/12/ml-wordcloud">如何用Python 制作词云-对1000首古诗做词云分析</a></p>
+<p><a href="/2020/11/ml-decisiontree2">决策树算法-实战篇-鸢尾花及波士顿房价预测</a></p>
+<p><a href="/2020/12/ml-apriori">Apriori 算法-如何进行关联规则挖掘</a></p>
+<p><a href="/2020/12/ml-em">EM 算法-对鸢尾花数据进行聚类</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/ml-wordcloud/">
+            <span class="next-text nav-default">如何用Python 制作词云-对1000首古诗做词云分析</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/ml-adaboost/" class="leancloud_visitors" data-flag-title="AdaBoost 算法-分析波士顿房价数据集">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sat, 12 Dec 2020 22:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 15 Dec 2020 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AdaBoost 算法-分析波士顿房价数据集</title>
+      <link>https://codeshellme.github.io/2020/12/ml-adaboost/</link>
+      <pubDate>Tue, 15 Dec 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/ml-adaboost/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 在机器学习算法中，有一种算法叫做集成算法，AdaBoo</description>
+    </item>
     
     <item>
       <title>如何用Python 制作词云-对1000首古诗做词云分析</title>
