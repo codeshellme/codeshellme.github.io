@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上篇文章介绍了决策树算法的理论篇，本节来介绍如何用决策">
 <meta itemprop="datePublished" content="2020-11-15T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-11-15T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="5037">
+<meta itemprop="wordCount" content="5093">
 
 
 
@@ -147,7 +147,7 @@
         <div class="post-category">
             <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
             </div>
-          <span class="more-meta"> 5037 字 </span>
+          <span class="more-meta"> 5093 字 </span>
           <span class="more-meta"> 阅读约需 11 分钟 </span>
         
 
@@ -214,7 +214,11 @@ iris = load_iris()
 </ul>
 <p>分类树用于预测<strong>离散型</strong>数值，回归树用于预测<strong>连续性</strong>数值。</p>
 <blockquote>
-<p>sklearn 只实现了<strong>预剪枝</strong>，没有实现<strong>后剪枝</strong>。</p>
+<p><strong>sklearn</strong> 中的决策树没有集成剪枝步骤。如果要对决策树进行缩减，可以在初始化决策树对象时，对参数进行设置，比如：</p>
+<ul>
+<li><strong>max_depth</strong> 表示树的最大深度；</li>
+<li><strong>max_leaf_nodes</strong> 表示最大的叶子节点数。</li>
+</ul>
 </blockquote>
 <p><strong><code>DecisionTreeClassifier</code> 类的构造函数</strong></p>
 <pre><code class="language-python">def __init__(self, *,
