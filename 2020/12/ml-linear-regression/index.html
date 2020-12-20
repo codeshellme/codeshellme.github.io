@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>线性回归-如何对数据进行回归分析 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 线性回归模型用于处理回归问题，也就是预测连续型数值。线" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/ml-linear-regression/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="线性回归-如何对数据进行回归分析" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 线性回归模型用于处理回归问题，也就是预测连续型数值。线" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/ml-linear-regression/" />
+<meta property="article:published_time" content="2020-12-19T22:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-19T22:41:52+08:00" />
+<meta itemprop="name" content="线性回归-如何对数据进行回归分析">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 线性回归模型用于处理回归问题，也就是预测连续型数值。线">
+<meta itemprop="datePublished" content="2020-12-19T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-19T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2805">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="线性回归-如何对数据进行回归分析"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 线性回归模型用于处理回归问题，也就是预测连续型数值。线"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/love-music/">
+        <li class="mobile-menu-item">音乐</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/love-music/">音乐</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">线性回归-如何对数据进行回归分析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-19 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 2805 字 </span>
+          <span class="more-meta"> 阅读约需 6 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1解方程组">1，解方程组</a></li>
+        <li><a href="#2线性回归模型">2，线性回归模型</a></li>
+        <li><a href="#3线性拟合">3，线性拟合</a></li>
+        <li><a href="#4最小二乘法">4，最小二乘法</a></li>
+        <li><a href="#5用-numpy-库进行矩阵运算">5，用 numpy 库进行矩阵运算</a></li>
+        <li><a href="#6sklearn-对线性回归的实现">6，sklearn 对线性回归的实现</a></li>
+        <li><a href="#7对波士顿房价进行线性分析">7，对波士顿房价进行线性分析</a></li>
+        <li><a href="#8总结">8，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><strong>线性回归模型</strong>用于处理回归问题，也就是预测连续型数值。线性回归模型是最基础的一种回归模型，理解起来也很容易，我们从<strong>解方程组</strong>谈起。</p>
+<h3 id="1解方程组">1，解方程组</h3>
+<p>相信大家对<strong>解方程</strong>都不陌生，这是我们初中时期最熟悉的数学知识。</p>
+<p>假如我们有以下方程组：</p>
+<ul>
+<li>2x +  y = 3  —— ①</li>
+<li>5x - 2y = 7  —— ②</li>
+</ul>
+<p>要解上面这个方程组，我们可以将第一个方程的等号两边都乘以2：</p>
+<ul>
+<li>4x + 2y = 6  —— ③</li>
+</ul>
+<p>再将第2 个方程与第3 个方程的等号两边分别相加：</p>
+<ul>
+<li>9x = 13  —— ④</li>
+</ul>
+<p>这样我们就将<strong>变量y 消去</strong>了，就可以求解出<strong>x</strong> 的值。然后再将<strong>x</strong> 的值<strong>代入</strong>第1或第2个方程中，就可以解出<strong>y</strong> 的值。</p>
+<p>以上这个解方程的过程就是<strong>高斯消元法</strong>。</p>
+<h3 id="2线性回归模型">2，线性回归模型</h3>
+<p>如果将上面方程组中的任意一个表达式单拿出来，那么<strong>x</strong> 和 <strong>y</strong> 都是一种<strong>线性</strong>关系，比如：</p>
+<ul>
+<li>y = 3 - 2x</li>
+</ul>
+<p>该表达式中，我们将<strong>x</strong> 叫做<strong>自变量</strong>，<strong>y</strong> 叫作<strong>因变量</strong>。</p>
+<p>如果将其扩展到机器学习中，那么<strong>特征集</strong>就相当于<strong>自变量X</strong>，<strong>目标集</strong>就相当于<strong>因变量Y</strong>。</p>
+<p>当自变量的个数大于1时，就是<strong>多元回归</strong>；当因变量的个数大于1 时，就是<strong>多重回归</strong>。</p>
+<p><strong>线性回归模型</strong>的目的就是想找出一种<strong>特征集</strong>与<strong>目标集</strong>之间的<strong>线性关系</strong>，使得我们可以通过已知的特征数据预测出目标数据。</p>
+<p>通常，我们的模型是通过多个特征值来预测一个目标值，那么线性回归模型的数学公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219162507534.png" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li>y 表示我们要预测的目标值。</li>
+<li>x1，x2&hellip;xn 代表每个特征，一共有n 个特征。</li>
+<li>b1，b2&hellip;bn 代表每个特征的系数，特征系数也代表了某个特征对目标值的影响。</li>
+<li>b0 是一个常数，称为截距。</li>
+<li>ε 表示模型的误差，也被称作损失函数。</li>
+</ul>
+<p>线性回归模型与数学中的解方程不同，后者的结果是精确解，而前者则是一个近似解。因此在公式中存在一个 <strong>ε</strong> 。</p>
+<p>我们的目标是求得一组使得 <strong>ε</strong>  最小的特征系数（b1，b2&hellip;bn），当有了新的特征时，就可以根据特征系数求得预测值。</p>
+<p><em><strong>回归一词的来源</strong></em></p>
+<p><strong>1875</strong> 年，英国科学家<strong>弗朗西·斯高尔顿</strong>（达尔文的表弟）尝试寻找父代身高与子代身高之间的关系。</p>
+<p>在经过了<strong>1078</strong> 份数据的分析之后，最终他得出结论：人类的身高维持在相对稳定的状态，他称之为<strong>回归效应</strong>，并给出了历史上第一个<strong>回归</strong>公式：</p>
+<ul>
+<li><code>Y = 0.516X + 33.73</code></li>
+</ul>
+<p>公式中的 <strong>Y</strong> 代表子代身高，<strong>X</strong> 代表父代身高，单位为英寸。</p>
+<h3 id="3线性拟合">3，线性拟合</h3>
+<p>线性拟合中不存在精确解，但是存在最优解，也就是使得 <strong>ε</strong> 最小的解。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219173255171.png?" alt="在这里插入图片描述"></p>
+<p>上图中有3 个坐标系：</p>
+<ul>
+<li>在第1个图中只有两个点，这时候存在一条唯一的直线能够同时穿过这两个点，这条直线就是精确解。</li>
+<li>当坐标中的点多于两个时，比如第2个图，这时候就不可能存在一条直线，同时穿过这些点。但是会存在多条直线，会尽可能多的穿过更多的点，就像图3。而这些直线中会有一条直线，是这些点的最好的<strong>拟合</strong>。</li>
+</ul>
+<p>如何才能找到这条最好的拟合的直线呢？</p>
+<h3 id="4最小二乘法">4，最小二乘法</h3>
+<p><strong>最小二乘法</strong>可以用来求解这个最优直线。</p>
+<p>最小二乘法的主要思想是让<strong>真实值</strong>与<strong>预测值</strong>之差（即误差）的平方和达到最小。用公式表示如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219174127251.png" alt="在这里插入图片描述"></p>
+<p>上面的公式中：</p>
+<ul>
+<li>y<sub>i</sub> 是数据的真实值。</li>
+<li>y^ 是数据的预测值。</li>
+<li>ε 是我们要找的最小误差，它是所有的<strong>真实值与预测值之差的平方</strong>的和。</li>
+</ul>
+<p>方程组除了可以使用高斯消元法求解之外，还可以使用<strong>矩阵</strong>来求解。</p>
+<p>将上面的 <strong>ε</strong> 公式写成矩阵的形式就是：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020121917501890.png" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li>B 为系数矩阵</li>
+<li>X 为特征矩阵</li>
+<li>Y 为目标矩阵</li>
+</ul>
+<p>我们的目标就是找到一个向量B，使得向量 XB 与 Y 之间<strong>欧氏距离</strong>的平方数最小。</p>
+<p>经过一系列的推导之后，系数矩阵B 为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219175505415.png" alt="在这里插入图片描述"></p>
+<p>其中：</p>
+<ul>
+<li><code>X'</code> 是 <code>X</code> 的转置矩阵。</li>
+<li><code>(X'X)</code><sup>-1</sup> 是<code>(X'X)</code> 的逆矩阵。</li>
+</ul>
+<h3 id="5用-numpy-库进行矩阵运算">5，用 numpy 库进行矩阵运算</h3>
+<p><img src="https://img-blog.csdnimg.cn/20201219202016672.png" alt="在这里插入图片描述"></p>
+<p><a href="https://numpy.org/">NumPy</a> 是一个使用Python 进行科学计算的软件包，其中就实现了我们需要的矩阵运算：</p>
+<ul>
+<li><code>x.transpose()</code>：矩阵x 的转置运算。</li>
+<li><code>x.dot(y)</code>：矩阵x 点乘矩阵y。</li>
+<li><code>x.I</code>：返回可逆矩阵x 的逆矩阵。</li>
+</ul>
+<p>那么根据公式：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219175505415.png" alt="在这里插入图片描述"></p>
+<p>我们可以编写求B 的函数：</p>
+<pre><code class="language-python">def get_B(X, Y):
+    _X = X.transpose()
+    B = (_X.dot(X)).I.dot(_X).dot(Y)
+    return B
+</code></pre>
+<p>假设我们有以下数据集，要对该数据集进行线性拟合：</p>
+<table>
+<thead>
+<tr>
+<th>特征x1</th>
+<th>特征x2</th>
+<th>目标y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1.4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-1</td>
+<td>-0.48</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8</td>
+<td>13.2</td>
+</tr>
+</tbody>
+</table>
+<p>我们知道线性回归的公式为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219162507534.png" alt="在这里插入图片描述"></p>
+<p>那么上面表格的数据转化为方程组：</p>
+<ul>
+<li>b0​ + b1<strong>​⋅0</strong> + b2​<strong>⋅1</strong> = 1.4</li>
+<li>b0 ​+ b1​<strong>⋅1</strong>  -  b2​<strong>⋅1</strong> = −0.48</li>
+<li>b0 ​+ b1<strong>​⋅2</strong> + b2​<strong>⋅8</strong> = 13.2</li>
+</ul>
+<p>那么矩阵<strong>X</strong> 为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201219203922435.png?" alt="在这里插入图片描述"></p>
+<p>转化为代码如下：</p>
+<pre><code class="language-python">from numpy import *
+
+X = mat([
+    [1,0,1],
+    [1,1,-1],
+    [1,2,8]
+    ])
+    
+Y = mat([[1.4],[-0.48],[13.2]])
+</code></pre>
+<p>计算系数矩阵B：</p>
+<pre><code class="language-python">&gt;&gt;&gt; get_B(X, Y)
+matrix([[-0.01454545],   # b0
+        [ 0.94909091],   # b1
+        [ 1.41454545]])  # b2
+</code></pre>
+<p>这样就得出了各个系数项，我们可以用这些系数项进行数据预测。</p>
+<h3 id="6sklearn-对线性回归的实现">6，sklearn 对线性回归的实现</h3>
+<p><strong>sklearn</strong> 库中的 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">LinearRegression</a> 类是对线性回归的实现。</p>
+<p><strong>LinearRegression</strong> 类的原型：</p>
+<pre><code class="language-python">LinearRegression(
+  fit_intercept=True, 
+  normalize=False, 
+  copy_X=True, 
+  n_jobs=None)
+</code></pre>
+<p>来看下其参数的含义：</p>
+<ul>
+<li><strong>fit_intercept</strong>：拟合模型时，是否存在截距<code>b0</code>，默认为<code>True</code>，即存在。</li>
+<li><strong>normalize</strong>：在拟合模型之前，是否要对特征集进行标准化处理。
+<ul>
+<li>当 <strong>fit_intercept</strong> 为 <code>False</code> 时，该参数被忽略。</li>
+</ul>
+</li>
+<li><strong>copy_X</strong>：是否复制特征集<code>X</code>。</li>
+<li><strong>n_jobs</strong>：用于计算的作业数，只对多重回归且比较复杂的数据进行加速。</li>
+</ul>
+<p>接下来，使用 <strong>LinearRegression</strong> 类对上面表格数据进行拟合。（为了方便查看，我将表格放在这里）</p>
+<table>
+<thead>
+<tr>
+<th>特征x1</th>
+<th>特征x2</th>
+<th>目标y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1.4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>-1</td>
+<td>-0.48</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8</td>
+<td>13.2</td>
+</tr>
+</tbody>
+</table>
+<p>将该表格数据转化成 <strong>Python</strong> 变量，如下：</p>
+<pre><code class="language-python">X = [(0, 1), [1, -1], [2, 8]]
+Y = [1.4, -0.48, 13.2]
+</code></pre>
+<p>创建线性回归对象：</p>
+<pre><code class="language-python">from sklearn.linear_model import LinearRegression
+
+reg = LinearRegression() # 均使用默认参数
+</code></pre>
+<p>拟合数据：</p>
+<pre><code class="language-python">reg.fit(X, Y)
+</code></pre>
+<p><code>coef_</code> 属性是特征系数列表：</p>
+<pre><code class="language-python">&gt;&gt;&gt; reg.coef_
+array([0.94909091, 1.41454545])
+</code></pre>
+<p><code>intercept_</code> 属性是截距 <code>b0</code> 的值：</p>
+<pre><code class="language-python">&gt;&gt;&gt; reg.intercept_
+-0.014545454545452863
+</code></pre>
+<p>通过<code>coef_</code> 和<code>intercept_</code> 属性可以看到，使用 <strong>LinearRegression</strong> 类和使用 <strong>NumPy</strong> 得到的结果是一样的。</p>
+<p>需要注意的是，只有当数据集的特征集与目标集是<strong>线性关系</strong>时，才能使用线性回归拟合出一个不错的结果。如果不是线性关系，则拟合结果一般不会很好。</p>
+<p>对于<strong>非线性关系的</strong>回归问题，可以使用<a href="https://scikit-learn.org/stable/modules/tree.html#regression">树回归</a>等其它模型。</p>
+<p>那如何判断特征集与目标集是否是线性关系呢？有两个指标：</p>
+<ul>
+<li><strong>决定系数 R2</strong>：该指标使用了回归平方和与总平方和之比，是反映模型拟合度的重要指标。
+<ul>
+<li>它的取值在 0 到 1 之间，越接近于 1 表示拟合的程度越好、数据分布越接近线性关系。</li>
+</ul>
+</li>
+<li><strong>校正的决定系数 Rc2</strong>：如果特征非常多，那么Rc2 指标将更加可靠。</li>
+</ul>
+<p><strong>LinearRegression</strong> 类中的 <code>score</code> 方法就是<strong>R2 指标</strong>的实现：</p>
+<pre><code class="language-python">&gt;&gt;&gt; reg.score(X, Y)
+1.0 # 结果是 1，说明特征集与目标集是非常好的线性关系。
+</code></pre>
+<h3 id="7对波士顿房价进行线性分析">7，对波士顿房价进行线性分析</h3>
+<p>对于<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/boston_house_prices.csv">波士顿房价数据集</a>，之前的文章中，已经多次使用过，这次我们对其使用<strong>线性回归模型</strong>进行分析。</p>
+<p>首先加载数据：</p>
+<pre><code class="language-python">from sklearn.datasets import load_boston
+
+boston = load_boston()
+features = boston.data # 特征集
+prices = boston.target # 目标集
+</code></pre>
+<p>创建线性回归对象：</p>
+<pre><code class="language-python">from sklearn.linear_model import LinearRegression
+
+# 在拟合之前对数据进行标准化处理
+reg = LinearRegression(normalize=True)
+</code></pre>
+<p>拟合数据：</p>
+<pre><code class="language-python">reg.fit(features, prices)
+</code></pre>
+<p>对模型进行评分：</p>
+<pre><code class="language-python">&gt;&gt;&gt; reg.score(features, prices)
+0.7406426641094095
+</code></pre>
+<p>通过评分可知，最终的准确率为<strong>74.1%</strong>，虽谈不上很高，但也还说得过去。</p>
+<h3 id="8总结">8，总结</h3>
+<p>使用<strong>最小二乘法</strong>训练出的<a href="https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares">线性回归模型</a>是最简单基础的一种线性模型，只有当特征集与目标集呈<strong>线性关系</strong>时，它才能拟合出比较好的结果。</p>
+<p>在它的基础之上，还有很多改进版的线性模型，比如：局部加权线性回归，<a href="https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification">岭回归</a>，<a href="https://scikit-learn.org/stable/modules/linear_model.html#lasso">lasso</a> 等，你可以在 <a href="https://scikit-learn.org/stable/modules/linear_model.html">Sklearn  Linear Models</a> 进一步了解和学习。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/ml-adaboost">AdaBoost 算法-分析波士顿房价数据集</a></p>
+<p><a href="/2020/12/ml-em">EM 算法-对鸢尾花数据进行聚类</a></p>
+<p><a href="/2020/12/ml-apriori">Apriori 算法-如何进行关联规则挖掘</a></p>
+<p><a href="/2020/11/ml-page-rank">PageRank 算法-Google 如何给网页排名</a></p>
+<p><a href="/2020/12/ml-kmean">K 均值算法-如何让数据自动分组</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/ml-adaboost/">
+            <span class="next-text nav-default">AdaBoost 算法-分析波士顿房价数据集</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/ml-linear-regression/" class="leancloud_visitors" data-flag-title="线性回归-如何对数据进行回归分析">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
