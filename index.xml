@@ -58,6 +58,15 @@
     </item>
     
     <item>
+      <title>Logistic 回归-原理及应用</title>
+      <link>https://codeshellme.github.io/2020/12/ml-logistic-regression/</link>
+      <pubDate>Sun, 20 Dec 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/ml-logistic-regression/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 上一篇文章介绍了线性回归模型，它用于处理回归问题。 这次</description>
+    </item>
+    
+    <item>
       <title>线性回归-如何对数据进行回归分析</title>
       <link>https://codeshellme.github.io/2020/12/ml-linear-regression/</link>
       <pubDate>Sat, 19 Dec 2020 22:38:52 +0800</pubDate>
