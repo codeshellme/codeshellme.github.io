@@ -18,7 +18,7 @@
       <pubDate>Thu, 12 Nov 2020 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/dp/</guid>
-      <description>这里是设计模式相关文章。 设计模式之高质量代码</description>
+      <description>这里是设计模式相关文章。 设计模式之高质量代码 单例模式的五种实现方式及优缺点</description>
     </item>
     
     <item>
@@ -40,21 +40,21 @@
     </item>
     
     <item>
-      <title>音乐</title>
-      <link>https://codeshellme.github.io/love-music/</link>
-      <pubDate>Thu, 09 Apr 2020 21:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/love-music/</guid>
-      <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
-    </item>
-    
-    <item>
       <title>关于</title>
       <link>https://codeshellme.github.io/about/</link>
       <pubDate>Fri, 20 Mar 2020 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/about/</guid>
       <description>更多技术干货，尽在本站微信公众号，欢迎关注！ 你的支持，是我最大的动力！ --</description>
+    </item>
+    
+    <item>
+      <title>单例模式的五种实现方式及优缺点</title>
+      <link>https://codeshellme.github.io/2020/12/dp-singleton/</link>
+      <pubDate>Tue, 22 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-singleton/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 当我们需要使得某个类只能有一个实例时，可以使用单例模式</description>
     </item>
     
     <item>
@@ -595,6 +595,15 @@
       
       <guid>https://codeshellme.github.io/2020/04/0-basics-py/</guid>
       <description>1，什么是Python 人与人的交流需要人类语言，人与计算机交流（控制计算机）需要计算机语言。 Python 是众多计算机语言中的一种，每种计算机语言都有它</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://codeshellme.github.io/love-music/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://codeshellme.github.io/love-music/</guid>
+      <description>这是一份歌单，排名不分先后。 国语 1，周深 大鱼 相思 亲爱的旅人啊 愿得一人心 来不及勇敢 漂洋过海来看你 卷珠帘 一缕执念 2，许巍 生活不止眼前的苟且 蓝莲花</description>
     </item>
     
   </channel>

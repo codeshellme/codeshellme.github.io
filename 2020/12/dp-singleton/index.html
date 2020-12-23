@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>单例模式的五种实现方式及优缺点 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 当我们需要使得某个类只能有一个实例时，可以使用单例模式" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-singleton/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="单例模式的五种实现方式及优缺点" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 当我们需要使得某个类只能有一个实例时，可以使用单例模式" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-singleton/" />
+<meta property="article:published_time" content="2020-12-22T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-22T21:41:52+08:00" />
+<meta itemprop="name" content="单例模式的五种实现方式及优缺点">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 当我们需要使得某个类只能有一个实例时，可以使用单例模式">
+<meta itemprop="datePublished" content="2020-12-22T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-22T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2173">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="单例模式的五种实现方式及优缺点"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 当我们需要使得某个类只能有一个实例时，可以使用单例模式"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">单例模式的五种实现方式及优缺点</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-22 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 2173 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1饿汉式">1，饿汉式</a></li>
+        <li><a href="#2懒汉式">2，懒汉式</a></li>
+        <li><a href="#3双重检测">3，双重检测</a></li>
+        <li><a href="#4静态内部类">4，静态内部类</a></li>
+        <li><a href="#5枚举">5，枚举</a></li>
+        <li><a href="#6多例模式">6，多例模式</a></li>
+        <li><a href="#7线程唯一的单例">7，线程唯一的单例</a></li>
+        <li><a href="#8使用场景">8，使用场景</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>当我们需要使得某个类只能有一个实例时，可以使用<strong>单例模式</strong>。</p>
+<p><strong>单例模式</strong>（<em>Singleton Design Pattern</em>）保证一个类只能有一个实例，并提供一个全局访问点。</p>
+<p>单例模式的实现需要<strong>三个必要的条件</strong>：</p>
+<ol>
+<li>单例类的<strong>构造函数</strong>必须是<strong>私有的</strong>，这样才能将类的创建权控制在类的内部，从而使得类的外部不能创建类的实例。</li>
+<li>单例类通过一个<strong>私有的静态变量</strong>来存储其唯一实例。</li>
+<li>单例类通过提供一个<strong>公开的静态方法</strong>，使得外部使用者可以访问类的唯一实例。</li>
+</ol>
+<blockquote>
+<p><strong>注意：</strong>
+因为单例类的构造函数是私有的，所以单例类不能被继承。</p>
+</blockquote>
+<p>另外，实现单例类时，还需要考虑三个问题：</p>
+<ul>
+<li>创建单例对象时，是否线程安全。</li>
+<li>单例对象的创建，是否延时加载。</li>
+<li>获取单例对象时，是否需要加锁（锁会导致低性能）。</li>
+</ul>
+<p>下面介绍五种实现单例模式的方式。</p>
+<h3 id="1饿汉式">1，饿汉式</h3>
+<p><strong>饿汉式</strong>的单例实现比较简单，其在类加载的时候，静态实例<code>instance</code> 就已创建并初始化好了。</p>
+<p>代码如下：</p>
+<pre><code class="language-java">public class Singleton { 
+  private static final Singleton instance = new Singleton();
+  
+  private Singleton () {}
+  
+  public static Singleton getInstance() {
+    return instance;
+  }
+}
+</code></pre>
+<p>饿汉式单例优缺点：</p>
+<ul>
+<li>优点：
+<ul>
+<li>单例对象的创建是线程安全的；</li>
+<li>获取单例对象时不需要加锁。</li>
+</ul>
+</li>
+<li>缺点：单例对象的创建，不是延时加载。</li>
+</ul>
+<p>一般认为延时加载可以节省内存资源。但是延时加载是不是真正的好，要看实际的应用场景，而不一定所有的应用场景都需要延时加载。</p>
+<h3 id="2懒汉式">2，懒汉式</h3>
+<p>与饿汉式对应的是<strong>懒汉式</strong>，懒汉式为了支持延时加载，将对象的创建延迟到了获取对象的时候，但为了线程安全，不得不为获取对象的操作加锁，这就导致了低性能。</p>
+<p>并且这把锁只有在第一次创建对象时有用，而之后每次获取对象，这把锁都是一个累赘（<strong>双重检测</strong>对此进行了改进）。</p>
+<p>代码如下：</p>
+<pre><code class="language-java">public class Singleton { 
+  private static final Singleton instance;
+  
+  private Singleton () {}
+  
+  public static synchronized Singleton getInstance() {    
+    if (instance == null) {      
+      instance = new Singleton();    
+    }    
+
+    return instance;  
+  }
+}
+</code></pre>
+<p>懒汉式单例优缺点：</p>
+<ul>
+<li>优点：
+<ul>
+<li>对象的创建是线程安全的。</li>
+<li>支持延时加载。</li>
+</ul>
+</li>
+<li>缺点：获取对象的操作被加上了锁，影响了并发度。
+<ul>
+<li>如果单例对象需要频繁使用，那这个缺点就是无法接受的。</li>
+<li>如果单例对象不需要频繁使用，那这个缺点也无伤大雅。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3双重检测">3，双重检测</h3>
+<p>饿汉式和懒汉式的单例都有缺点，双重检测的实现方式解决了这两者的缺点。</p>
+<p>双重检测将懒汉式中的 <code>synchronized</code> 方法改成了 <code>synchronized</code> 代码块。如下：</p>
+<pre><code class="language-java">public class Singleton { 
+  private static Singleton instance;
+  
+  private Singleton () {}
+  
+  public static Singleton getInstance() {
+    if (instance == null) {
+      synchronized(Singleton.class) { // 注意这里是类级别的锁
+        if (instance == null) {       // 这里的检测避免多线程并发时多次创建对象
+          instance = new Singleton();
+        }
+      }
+    }
+    return instance;
+  }
+}
+</code></pre>
+<p>这种实现方式在 <strong>Java 1.4</strong> 及更早的版本中有些问题，就是指令重排序，可能会导致 <code>Singleton</code> 对象被 <code>new</code> 出来，并且赋值给 <code>instance</code> 之后，还没来得及初始化，就被另一个线程使用了。</p>
+<p>要解决这个问题，需要给 <code>instance</code> 成员变量加上 <code>volatile</code> 关键字，从而禁止指令重排序。</p>
+<p>而高版本的 <strong>Java</strong> 已在 <strong>JDK</strong> 内部解决了这个问题，所以高版本的 <strong>Java</strong> 不需要关注这个问题。</p>
+<p>双重检测单例优点：</p>
+<ul>
+<li>对象的创建是线程安全的。</li>
+<li>支持延时加载。</li>
+<li>获取对象时不需要加锁。</li>
+</ul>
+<h3 id="4静态内部类">4，静态内部类</h3>
+<p>用静态内部类的方式实现单例类，利用了Java 静态内部类的特性：</p>
+<ul>
+<li><em>Java 加载外部类的时候，不会创建内部类的实例，只有在外部类使用到内部类的时候才会创建内部类实例</em>。</li>
+</ul>
+<p>代码如下：</p>
+<pre><code class="language-java">public class Singleton { 
+  private Singleton () {}
+
+  private static class SingletonInner {
+    private static final Singleton instance = new Singleton();
+  }
+  
+  public static Singleton getInstance() {
+    return SingletonInner.instance;
+  }
+}
+</code></pre>
+<p><code>SingletonInner</code> 是一个静态内部类，当外部类 <code>Singleton</code> 被加载的时候，并不会创建 <code>SingletonInner</code> 实例对象。</p>
+<p>只有当调用 <code>getInstance()</code> 方法时，<code>SingletonInner</code> 才会被加载，这个时候才会创建 <code>instance</code>。<code>instance</code> 的唯一性、创建过程的线程安全性，都由 JVM 来保证。</p>
+<p>静态内部类单例优点：</p>
+<ul>
+<li>对象的创建是线程安全的。</li>
+<li>支持延时加载。</li>
+<li>获取对象时不需要加锁。</li>
+</ul>
+<h3 id="5枚举">5，枚举</h3>
+<p>用枚举来实现单例，是最简单的方式。这种实现方式通过 <strong>Java</strong> 枚举类型本身的特性，保证了实例创建的线程安全性和实例的唯一性。</p>
+<pre><code class="language-java">public enum Singleton {
+  INSTANCE; // 该对象全局唯一
+}
+</code></pre>
+<h3 id="6多例模式">6，多例模式</h3>
+<p>上面介绍了5 种单例模式的实现方式，下面作为对单例模式的扩展，再来介绍一下<strong>多例模式</strong>以及<strong>线程间唯一的单例模式</strong>。先来看下多例模式。</p>
+<p>单例模式是指，一个类只能创建一个对象。那么<strong>多例模式</strong>就是，一个类可以创建多个对象，但是对象个数可以控制。</p>
+<p>对于多例模式，我们可以将类的实例都编上号，然后将实例存放在一个 <code>Map</code> 中。</p>
+<p>代码如下：</p>
+<pre><code class="language-java">public class MultiInstance {
+    // 实例编号
+    private long instanceNum;
+
+    // 用于存放实例
+    private static final Map&lt;Long, MultiInstance&gt; ins = new HashMap&lt;&gt;();
+
+    static {
+        // 存放 3 个实例
+        ins.put(1L, new MultiInstance(1));
+        ins.put(2L, new MultiInstance(2));
+        ins.put(3L, new MultiInstance(3));
+    }
+
+    private MultiInstance(long n) {
+        this.instanceNum = n;
+    }
+
+    public MultiInstance getInstance(long n) {
+        return ins.get(n);
+    }
+}
+</code></pre>
+<p>实际上，<strong>Java</strong> 中的枚举就是一个“天然”的多例模式，其中的每一项代表一个实例，如下：</p>
+<pre><code class="language-java">public enum MultiInstance {
+    ONE,
+    TWO,
+    THREE;
+}
+</code></pre>
+<h3 id="7线程唯一的单例">7，线程唯一的单例</h3>
+<p>一般情况下，我们所说的单例的作用范围是进程唯一的，就是在一个进程范围内，一个类只允许创建一个对象，进程内的多个线程之间也是共享同一个实例。</p>
+<blockquote>
+<p>实际上，在Java 中，每个<strong>类加载器</strong>都定义了一个<strong>命名空间</strong>。所以我们这里实现的单例是依赖<strong>类加载器</strong>的，也就是在同一个类加载器中，我们实现的单例就是真正的单例模式。否则如果有多个类加载器，就会有多个单例出现了。一个解决办法是：自行指定类加载器，并且指定同一个类加载器。</p>
+</blockquote>
+<p>那么<strong>线程唯一的单例</strong>就是，一个实例只能被一个线程拥有，一个进程内的多个线程拥有不同的类实例。</p>
+<p>我们同样可以用 <code>Map</code> 来实现，代码如下：</p>
+<pre><code class="language-java">public class ThreadSingleton {
+    private static final ConcurrentHashMap&lt;Long, ThreadSingleton&gt; instances
+            = new ConcurrentHashMap&lt;&gt;();
+
+    private ThreadSingleton() {}
+
+    public static ThreadSingleton getInstance() {
+        Long id = Thread.currentThread().getId();
+        instances.putIfAbsent(id, new ThreadSingleton());
+        return instances.get(id);
+    }
+}
+</code></pre>
+<h3 id="8使用场景">8，使用场景</h3>
+<p>单例模式可以用来管理一些共享资源，比如数据库连接池，线程池；解决资源冲突问题，比如日志打印。节省内存空间，比如配置信息类。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/dp1">设计模式之高质量代码</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/ml-logistic-regression/">
+            <span class="next-text nav-default">Logistic 回归-原理及应用</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/dp-singleton/" class="leancloud_visitors" data-flag-title="单例模式的五种实现方式及优缺点">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
