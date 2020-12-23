@@ -1,7 +1,6 @@
-public class SimpleFactory {
+public class FactoryMethod {
     public static void main(String[] args) {
-        SimpleDrinkFactory factory = new SimpleDrinkFactory();
-        DrinkStore store = new DrinkStore(factory);
+        DrinkStore store = new DrinkStore();
 
         Drink appleDrink = store.sellDrink("apple");
         Drink bananaDrink = store.sellDrink("banana");
@@ -13,26 +12,27 @@ public class SimpleFactory {
     }
 }
 
+abstract class DrinkStoreAbstract {
 
-class DrinkStore {
-    private SimpleDrinkFactory factory;
+    // final 防止子类覆盖
+    public final Drink sellDrink(String flavor) {
 
-    public DrinkStore(SimpleDrinkFactory factory) {
-        this.factory = factory;
-    }
-
-    public Drink sellDrink(String flavor) {
-        Drink drink = factory.createDrink(flavor);
+        Drink drink = factoryMethod(flavor);    // 使用实例
 
         drink.packing();
 
         return drink;
     }
+
+    // 子类必须实现
+    protected abstract Drink factoryMethod(String flavor);
 }
 
 
-class SimpleDrinkFactory {
-    public Drink createDrink(String flavor) {
+class DrinkStore extends DrinkStoreAbstract {
+
+    @Override
+    public Drink factoryMethod(String flavor) {
         Drink drink;
 
         if (flavor.equals("apple")) {
