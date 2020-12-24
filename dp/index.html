@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="@码农充电站" /><meta name="description" content="这里是设计模式相关文章。 设计模式之高质量代码 单例模式的五种实现方式及优缺点" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+<meta name="author" content="@码农充电站" /><meta name="description" content="(从左到右：Ralph Johnson，Richard Helm，Erich Gamma，John Vlissides) 建筑大师Christopher Alexande" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -39,22 +39,22 @@
 
 
 <meta property="og:title" content="设计模式" />
-<meta property="og:description" content="这里是设计模式相关文章。 设计模式之高质量代码 单例模式的五种实现方式及优缺点" />
+<meta property="og:description" content="(从左到右：Ralph Johnson，Richard Helm，Erich Gamma，John Vlissides) 建筑大师Christopher Alexande" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://codeshellme.github.io/dp/" />
 <meta property="article:published_time" content="2020-11-12T21:38:52+08:00" />
 <meta property="article:modified_time" content="2020-11-12T21:41:52+08:00" />
 <meta itemprop="name" content="设计模式">
-<meta itemprop="description" content="这里是设计模式相关文章。 设计模式之高质量代码 单例模式的五种实现方式及优缺点">
+<meta itemprop="description" content="(从左到右：Ralph Johnson，Richard Helm，Erich Gamma，John Vlissides) 建筑大师Christopher Alexande">
 <meta itemprop="datePublished" content="2020-11-12T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-11-12T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="37">
+<meta itemprop="wordCount" content="600">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="设计模式"/>
-<meta name="twitter:description" content="这里是设计模式相关文章。 设计模式之高质量代码 单例模式的五种实现方式及优缺点"/>
+<meta name="twitter:description" content="(从左到右：Ralph Johnson，Richard Helm，Erich Gamma，John Vlissides) 建筑大师Christopher Alexande"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -135,11 +135,42 @@
         <div id="content" class="content">
           <article class="post">
   <div class="post-content">
-    <blockquote>
-<p><strong>这里是设计模式相关文章。</strong></p>
+    <p><img src="/pics/GoF.png" alt=""></p>
+<p>(<font size=1><strong>从左到右</strong></font>：<strong><code>Ralph Johnson</code></strong>，<strong><code>Richard Helm</code></strong>，<strong><code>Erich Gamma</code></strong>，<strong><code>John Vlissides</code></strong>)</p>
+<p>建筑大师<code>Christopher Alexander</code>说过：“每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的解决方案的核心。这样，你就能一次又一次地使用该方案而不必做重复劳动”。</p>
+<p>1991-1992 年，以“四人组(<code>Gang of Four</code>，简称 <code>GoF</code>)”自称的四位著名软件工程学者将<strong>模式</strong>的思想引入软件工程方法学。</p>
+<p>1994 年，<strong><code>GoF</code></strong> 出版了《<code>设计模式</code>》一书，其中包含了 23 种常用的设计模式。<strong>GoF</strong> 在该书中指出：</p>
+<ul>
+<li><em><font size=2><strong>设计模式</strong>描述了在面向对象软件设计过程中针对特定问题的简洁而优雅的解决方案。设计模式捕获了随时间进化与发展的问题的求解方法，因此它们并不是人们从一开始就采用的设计方案。它们反映了不为人知的重新设计和重新编码的成果，而这些都来自软件开发者为了设计出灵活可复用的软件而长时间进行的艰苦努力。设计模式捕获了这些解决方案，并用简洁易用的方式表达出来。</font></em></li>
+</ul>
+<p><strong>GoF</strong> 的建议:</p>
+<ul>
+<li>
+<p>模式是工具而不是规则，需要被适当地调整以符合你的需求。—— <strong><code>Erich Gamma</code></strong></p>
+</li>
+<li>
+<p>为实际需要的扩展使用模式。不要只是为了假想的需要而使用模式。—— <strong><code>Richard Helm</code></strong></p>
+</li>
+<li>
+<p>简单才是王道。如果你不用模式就能够设计出更简单的方案，那就去做吧。—— <strong><code>Ralph Johnson</code></strong></p>
+</li>
+<li>
+<p>今天的模式比《设计模式》一书中的更多，你都应有所了解。—— <strong><code>John Vlissides</code></strong></p>
+</li>
+</ul>
+<blockquote>
+<p>下面是关于设计模式的文章。</p>
 </blockquote>
-<p><a href="/2020/11/dp1">设计模式之高质量代码</a></p>
-<p><a href="/2020/12/dp-singleton">单例模式的五种实现方式及优缺点</a></p>
+<p><strong>前言：</strong></p>
+<ul>
+<li><a href="/2020/11/dp1">设计模式之高质量代码</a></li>
+</ul>
+<p><strong>创建型：</strong></p>
+<ul>
+<li><a href="/2020/12/dp-singleton">单例模式-让一个类只有一个实例</a></li>
+</ul>
+<p><strong>结构型：</strong></p>
+<p><strong>行为型：</strong></p>
 
   </div>
 </article>
