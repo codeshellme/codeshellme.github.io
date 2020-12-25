@@ -49,7 +49,16 @@
     </item>
     
     <item>
-      <title>单例模式的五种实现方式及优缺点</title>
+      <title>工厂模式-将对象的创建封装起来</title>
+      <link>https://codeshellme.github.io/2020/12/dp-factory/</link>
+      <pubDate>Wed, 23 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-factory/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 工厂模式（Factory Design Pattern）可细分为三种</description>
+    </item>
+    
+    <item>
+      <title>单例模式-让一个类只有一个实例</title>
       <link>https://codeshellme.github.io/2020/12/dp-singleton/</link>
       <pubDate>Tue, 22 Dec 2020 21:38:52 +0800</pubDate>
       

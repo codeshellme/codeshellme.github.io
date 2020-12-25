@@ -31,27 +31,34 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2020-12-22T21:41:52+08:00</lastmod>
+    <lastmod>2020-12-23T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2020-12-22T21:41:52+08:00</lastmod>
+    <lastmod>2020-12-23T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/2020/12/dp-singleton/</loc>
-    <lastmod>2020-12-22T21:41:52+08:00</lastmod>
+    <loc>https://codeshellme.github.io/2020/12/dp-factory/</loc>
+    <lastmod>2020-12-23T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2020-12-23T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2020/12/dp-singleton/</loc>
     <lastmod>2020-12-22T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

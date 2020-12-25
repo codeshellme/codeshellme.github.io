@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>工厂模式-将对象的创建封装起来 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 工厂模式（Factory Design Pattern）可细分为三种" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-factory/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="工厂模式-将对象的创建封装起来" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 工厂模式（Factory Design Pattern）可细分为三种" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-factory/" />
+<meta property="article:published_time" content="2020-12-23T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-23T21:41:52+08:00" />
+<meta itemprop="name" content="工厂模式-将对象的创建封装起来">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 工厂模式（Factory Design Pattern）可细分为三种">
+<meta itemprop="datePublished" content="2020-12-23T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-23T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3632">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="工厂模式-将对象的创建封装起来"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 工厂模式（Factory Design Pattern）可细分为三种"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">工厂模式-将对象的创建封装起来</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-23 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 3632 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1简单工厂模式">1，简单工厂模式</a></li>
+        <li><a href="#2工厂方法模式">2，工厂方法模式</a></li>
+        <li><a href="#3依赖倒置原则">3，依赖倒置原则</a></li>
+        <li><a href="#4抽象工厂模式">4，抽象工厂模式</a></li>
+        <li><a href="#5总结">5，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>工厂模式（<em>Factory Design Pattern</em>）可细分为三种，分别是<strong>简单工厂</strong>，<strong>工厂方法</strong>和<strong>抽象工厂</strong>，它们都是为了更好的创建对象。</p>
+<p>所谓的“工厂”，就是用来将<strong>创建对象的代码</strong>封装起来，因为这部分代码将来变动的几率很大，所以这里的“工厂”的实质作用就是“封装变化”，以便于维护。</p>
+<p>其中用到了“<strong>针对接口编程，而非针对实现编程</strong>”的设计原则。</p>
+<p>下面通过一个销售饮料的例子，来对这三种工厂模式进行介绍。</p>
+<h3 id="1简单工厂模式">1，简单工厂模式</h3>
+<p>假如现在有一位老板，想开一家饮料店，该店销售各种口味的饮料，比如苹果味，香蕉味，橙子味等。</p>
+<p>将这些饮料用代码来表示，如下：</p>
+<pre><code class="language-java">class Drink {
+    public void packing() {
+        //
+    }
+}
+
+class DrinkApple extends Drink {
+}
+
+class DrinkBanana extends Drink {
+}
+
+class DrinkOrange extends Drink {
+}
+</code></pre>
+<p><code>Drink</code> 类为所有其它味道的饮料的父类。</p>
+<p>当有顾客来购买饮料的时候，顾客需要说明想买哪种口味的饮料，然后服务员就去将该口味的饮料取过来，包装好，然后交给顾客。</p>
+<p>下面我们用最简单直接的代码，来模拟饮料店和卖饮料的过程，如下：</p>
+<pre><code class="language-java">class DrinkStore {
+
+    public Drink sellDrink(String flavor) {
+        Drink drink;
+
+        if (flavor.equals(&quot;apple&quot;)) {
+            drink = new DrinkApple();
+        } else if (flavor.equals(&quot;banana&quot;)) {
+            drink = new DrinkBanana();
+        } else if (flavor.equals(&quot;orange&quot;)) {
+            drink = new DrinkOrange();
+        } else {
+            drink = new Drink();
+        }
+
+        drink.packing();
+
+        return drink;
+    }
+}
+</code></pre>
+<p>但是这种实现方式有个问题，就是当需要下架旧饮料或上架新饮料的时候，会导致下面这部分代码被频繁的修改：</p>
+<pre><code class="language-java">if (flavor.equals(&quot;apple&quot;)) {
+    drink = new DrinkApple();
+} else if (flavor.equals(&quot;banana&quot;)) {
+    drink = new DrinkBanana();
+} else if (flavor.equals(&quot;orange&quot;)) {
+    drink = new DrinkOrange();
+} else {
+    drink = new Drink();
+}
+</code></pre>
+<p>那这就违背了设计原则中的<strong>开闭原则</strong>：<em>代码应该对扩展开发，对修改关闭</em>。所以我们需要对该代码进行改进，那如何修改呢？</p>
+<p><strong>简单工厂模式</strong>告诉我们要将类似这样的代码封装到一个<strong>类</strong>里边，这个类就叫做<strong>简单工厂类</strong>，该类中提供一个<strong>方法</strong>，它可以<strong>生产</strong>我们所需要的各种对象。</p>
+<p>下面用代码来模拟这个<strong>简单工厂类</strong>，如下：</p>
+<pre><code class="language-java">class SimpleDrinkFactory {
+    public Drink createDrink(String flavor) {
+        Drink drink;
+
+        // 这段容易被频繁修改的代码，被封装到了工厂类中
+        if (flavor.equals(&quot;apple&quot;)) {
+            drink = new DrinkApple();
+        } else if (flavor.equals(&quot;banana&quot;)) {
+            drink = new DrinkBanana();
+        } else if (flavor.equals(&quot;orange&quot;)) {
+            drink = new DrinkOrange();
+        } else {
+            drink = new Drink();
+        }
+
+        return drink;
+    }
+}
+</code></pre>
+<p>可以看到，<code>createDrink</code> 方法完成了创建 <code>Drink</code> 的任务。</p>
+<p><code>createDrink</code> 方法也可以定义成<strong>静态方法</strong>，优点是在使用 <code>createDrink</code> 方法时不需要再创建对象，缺点是不能再通过继承的方式来改变 <code>createDrink</code> 方法的行为。</p>
+<p>下面来看如何使用 <code>SimpleDrinkFactory</code> 类：</p>
+<pre><code class="language-java">class DrinkStore {
+    private SimpleDrinkFactory factory;
+
+    public DrinkStore(SimpleDrinkFactory factory) {
+        this.factory = factory;
+    }
+
+    public Drink sellDrink(String flavor) {
+        Drink drink = factory.createDrink(flavor);
+
+        drink.packing();
+
+        return drink;
+    }
+}
+</code></pre>
+<p>可以看到，我们将 <code>SimpleDrinkFactory </code> 类的对象作为 <code>DrinkStore</code> 类的一个属性，经过改进后的 <code>sellDrink</code> 方法就不需要再被频繁修改了。如果再需要上架下架饮料，则去修改简单工厂类 <code>SimpleDrinkFactory</code>  即可。</p>
+<p>我将完整的<strong>简单工厂</strong>代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/SimpleFactory.java">这里</a>，供大家参考，类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201223163058254.png?" alt="在这里插入图片描述"></p>
+<h3 id="2工厂方法模式">2，工厂方法模式</h3>
+<p>简单工厂模式从严格意义来说并不是一个设计模式，而更像一种编程习惯。</p>
+<p><strong>工厂方法模式</strong>定义了一个创建对象的接口（该接口是一个抽象方法，也叫做“工厂方法”），但由子类（实现抽象方法）决定要实例化的类是哪个。</p>
+<p>在工厂方法模式中，父类并不关心子类的具体实现，但是父类给了子类一个“规范”，让子类必须“生成”父类想要的东西。</p>
+<p>工厂方法将类的实例化推迟到了子类中，让子类来控制实例化的细节，也就是将创建对象的过程<strong>封装</strong>了起来。而真正使用<strong>实例</strong>的是父类，这样就将实例的“实现”从“使用”中解耦出来。因此，工厂方法模式比简单工厂模式更加有“弹性”。</p>
+<p>下面我们来看下如何用<strong>工厂方法模式</strong>来改进上面的代码。</p>
+<p>首先，定义 <code>DrinkStoreAbstract </code>，它是一个抽象父类：</p>
+<pre><code class="language-java">abstract class DrinkStoreAbstract {
+
+    // final 防止子类覆盖
+    public final Drink sellDrink(String flavor) {
+
+        Drink drink = factoryMethod(flavor);    // 使用实例
+
+        drink.packing();
+
+        return drink;
+    }
+
+    // 子类必须实现
+    protected abstract Drink factoryMethod(String flavor);
+}
+</code></pre>
+<p>上面代码中 <code>factoryMethod</code> 方法就是所谓的工厂方法，它是一个抽象方法，子类必须实现该方法。</p>
+<p><code>factoryMethod</code> 方法负责生成对象，使用对象的是父类，而实际生成对象的则是子类。</p>
+<p>接下来定义一个具体的 <code>DrinkStore</code> 类，它是 <code>DrinkStoreAbstract</code>  的子类：</p>
+<pre><code class="language-java">class DrinkStore extends DrinkStoreAbstract {
+
+    @Override
+    public Drink factoryMethod(String flavor) {
+        Drink drink;
+
+        if (flavor.equals(&quot;apple&quot;)) {
+            drink = new DrinkApple();
+        } else if (flavor.equals(&quot;banana&quot;)) {
+            drink = new DrinkBanana();
+        } else if (flavor.equals(&quot;orange&quot;)) {
+            drink = new DrinkOrange();
+        } else {
+            drink = new Drink();
+        }
+
+        return drink;
+    }
+}
+</code></pre>
+<p>可以看到，子类中的 <code>factoryMethod</code> 方法有了具体的实现。</p>
+<p>如果需要上架下架饮料，则去修改子类中的工厂方法 <code>factoryMethod</code>  即可。而 <code>DrinkStoreAbstract</code> 作为一个“框架”，无须改动。</p>
+<p>完整的<strong>工厂方法</strong>代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/FactoryMethod.java">这里</a>，供大家参考，类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201224005001606.png?" alt="在这里插入图片描述"></p>
+<p>图中的粉色区域是工厂方法模式的重点关注区。</p>
+<h3 id="3依赖倒置原则">3，依赖倒置原则</h3>
+<p>在介绍<strong>抽象工厂模式</strong>之前，我们先来看看什么是<strong>依赖倒置原则</strong>。</p>
+<p><strong>依赖倒置</strong>包含了<strong>依赖</strong>和<strong>倒置</strong>两个词。</p>
+<p>我们先来看看“依赖”，“依赖”是指类与类之间的依赖关系。</p>
+<p>在本文刚开始时的 <code>sellDrink</code> 方法是这么写的：</p>
+<pre><code class="language-java">public Drink sellDrink(String flavor) {
+      Drink drink;
+
+      if (flavor.equals(&quot;apple&quot;)) {
+          drink = new DrinkApple();
+      } else if (flavor.equals(&quot;banana&quot;)) {
+          drink = new DrinkBanana();
+      } else if (flavor.equals(&quot;orange&quot;)) {
+          drink = new DrinkOrange();
+      } else {
+          drink = new Drink();
+      }
+
+      drink.packing();
+
+      return drink;
+  }
+</code></pre>
+<p><code>sellDrink</code> 方法依赖了三个<strong>具体类</strong>，如果饮料的味道继续增加的话，那么 <code>sellDrink</code> 方法将依赖更多的<strong>具体类</strong>。</p>
+<p>这会导致只要任意一个具体类发生改变，<code>sellDrink</code> 方法就不得不去改变，也就是类 <strong>A</strong> 需要改变（A 也是一个具体类）。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201223185509535.png?" alt="在这里插入图片描述"></p>
+<p>在上面这个关系图中，<code>A</code> 称为<strong>高层组件</strong>，各个具体类称为<strong>低层组件</strong>，所以在这幅图中，高层组件依赖了低层组件。</p>
+<p><strong>依赖倒置原则</strong>是指“<strong>要依赖抽象，而不依赖具体类</strong>”。更具体来说就是，<strong>高层组件不应该依赖低层组件，高层组件和低层组件都应该依赖抽象类</strong>。</p>
+<p>那么怎样才能达到<strong>依赖倒置原则</strong>呢？<strong>工厂方法</strong>就可以！</p>
+<p>在经过工厂方法模式的改造之后，最终的 <code>DrinkStoreAbstract</code> 类中的 <code>sellDrink</code> 方法变成了下面这样：</p>
+<pre><code class="language-java">public final Drink sellDrink(String flavor) {
+
+      Drink drink = factoryMethod(flavor);    // 使用实例
+
+      drink.packing();
+
+      return drink;
+  }
+</code></pre>
+<p>这使得 <code>sellDrink</code> 的所在类不再依赖于具体类，而依赖于一个抽象方法 <code>factoryMethod</code>，而 <code>factoryMethod</code> 方法依赖于 <code>Drink</code>，然后，各个具体类也依赖于 <code>Drink</code>，<code>Drink</code> 是一个广义上的“抽象接口”。</p>
+<p>这样，高层组件和低层组件都依赖于 <code>Drink</code> 抽象，关系图变成了下面这样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201223213201639.png?" alt="在这里插入图片描述"></p>
+<p>之前各个具体类的箭头是向下指的，而现在各个具体类的箭头是向上指的，箭头的方向<strong>倒了过来</strong>，这就是所谓的<strong>依赖倒置</strong>。</p>
+<p><strong>依赖倒置原则</strong>使得高层组件和低层组件都依赖于同一个抽象。</p>
+<p>那怎样才能避免违反<strong>依赖倒置原则</strong>呢？有下面三个指导方针：</p>
+<ul>
+<li>变量不要持有具体类的引用。
+<ul>
+<li>需要 new 对象的地方，要改为工厂方法。</li>
+</ul>
+</li>
+<li>类不要派生自具体类，而要从抽象类或接口派生。
+<ul>
+<li>派生自具体类，就会依赖具体类。</li>
+</ul>
+</li>
+<li>子类不要覆盖父类中已实现的方法。
+<ul>
+<li>父类中已实现的方法应该被所有子类共享，而不是覆盖。</li>
+</ul>
+</li>
+</ul>
+<p>当然事情没有绝对的，上面三个指导方针，是应该<strong>尽量做到</strong>，而<strong>不是必须做到</strong>。</p>
+<h3 id="4抽象工厂模式">4，抽象工厂模式</h3>
+<p>下面来介绍<strong>抽象工厂模式</strong>。</p>
+<p>假如临近春节，饮料店老板为了更好的销售饮料，准备购买一批礼盒，来包装饮料。为了保证礼盒的质量，规定礼盒只能从特定的地方批发，比如北京，上海等。</p>
+<p>那我们就定义一个接口，让所有的礼盒都派生自这个接口，如下：</p>
+<pre><code class="language-java">interface DrinkBoxFactory {
+    String createBox();
+}
+
+class BeiJingBoxFactory implements DrinkBoxFactory {
+
+    @Override
+    public String createBox() {
+        return &quot;BeijingBox&quot;;
+    }
+}
+
+class ShangHaiBoxFactory implements DrinkBoxFactory {
+
+    @Override
+    public String createBox() {
+        return &quot;ShangHaiBox&quot;;
+    }
+}
+</code></pre>
+<p>下面需要编写 <code>Drink</code> 类，我们让 <code>Drink</code> 类是一个抽象类，如下：</p>
+<pre><code class="language-java">abstract class Drink {
+    String flavor;
+    protected abstract void packing();
+}
+</code></pre>
+<p>需要注意的是，在抽象类 <code>Drink</code> 中有一个抽象方法 <code>packing</code>，<code>Drink</code> 将 <code>packing</code> 的具体实现交给每个派生类。<code>Drink</code> 类只规定派生类中需要实现一个 <code>packing</code>，但并不关心它的具体实现。</p>
+<p>下面编写每种口味的饮料，如下：</p>
+<pre><code class="language-java">class DrinkApple extends Drink {
+    DrinkBoxFactory boxFactory;
+
+    public DrinkApple(DrinkBoxFactory boxFactory) {
+        this.boxFactory = boxFactory;
+        this.flavor = &quot;DrinkApple&quot;;
+    }
+
+    @Override
+    public void packing() {
+        System.out.println(flavor + boxFactory.createBox());
+    }
+}
+
+class DrinkBanana extends Drink {
+    DrinkBoxFactory boxFactory;
+
+    public DrinkBanana(DrinkBoxFactory boxFactory) {
+        this.boxFactory = boxFactory;
+        this.flavor = &quot;DrinkBanana&quot;;
+    }
+
+    @Override
+    public void packing() {
+        System.out.println(flavor + boxFactory.createBox());
+    }
+}
+
+class DrinkOrange extends Drink {
+    DrinkBoxFactory boxFactory;
+
+    public DrinkOrange(DrinkBoxFactory boxFactory) {
+        this.boxFactory = boxFactory;
+        this.flavor = &quot;DrinkOrange&quot;;
+    }
+
+    @Override
+    public void packing() {
+        System.out.println(flavor + boxFactory.createBox());
+    }
+}
+</code></pre>
+<p>可以看到每种口味的饮料中都有一个 <code>boxFactory</code> 对象，在 <code>packing</code> 时，从 <code>boxFactory</code> 中获取礼盒。</p>
+<p>注意 <code>boxFactory</code> 是一个接口类对象，而不是一个具体类对象，因此，<code>boxFactory</code> 的具体对象是由客户决定的。</p>
+<p>然后，<code>DrinkStoreAbstract</code> 还是沿用工厂方法模式中的定义，如下：</p>
+<pre><code class="language-java">abstract class DrinkStoreAbstract {
+
+    // final 防止子类覆盖
+    public final Drink sellDrink(String flavor) {
+
+        Drink drink = factoryMethod(flavor);    // 使用实例
+
+        drink.packing();
+
+        return drink;
+    }
+
+    // 子类必须实现
+    protected abstract Drink factoryMethod(String flavor);
+}
+</code></pre>
+<p>然后我们实现使用北京礼盒包装的<strong>Store</strong> 和使用上海礼盒包装的<strong>Store</strong>，如下：</p>
+<pre><code class="language-java">class BeijingDrinkStore extends DrinkStoreAbstract {
+    
+    @Override
+    protected Drink factoryMethod(String flavor) {
+        Drink drink = null;
+        DrinkBoxFactory factory = new BeiJingBoxFactory();
+
+        if (flavor.equals(&quot;apple&quot;)) {
+            drink = new DrinkApple(factory);
+        } else if (flavor.equals(&quot;banana&quot;)) {
+            drink = new DrinkBanana(factory);
+        } else if (flavor.equals(&quot;orange&quot;)) {
+            drink = new DrinkOrange(factory);
+        } 
+                
+        return drink;
+    }
+}
+
+class ShangHaiDrinkStore extends DrinkStoreAbstract {
+
+    @Override
+    protected Drink factoryMethod(String flavor) {
+        Drink drink = null;
+        DrinkBoxFactory factory = new ShangHaiBoxFactory();
+
+        if (flavor.equals(&quot;apple&quot;)) {
+            drink = new DrinkApple(factory);
+        } else if (flavor.equals(&quot;banana&quot;)) {
+            drink = new DrinkBanana(factory);
+        } else if (flavor.equals(&quot;orange&quot;)) {
+            drink = new DrinkOrange(factory);
+        }
+
+        return drink;
+    }
+}
+</code></pre>
+<p>经过这么一些列的改动，我们到底做了些什么呢？事情的起因是老板需要一些礼盒来包装饮料，这就是需求增加了。</p>
+<p>因此我们引入了一个<strong>抽象工厂</strong>，即 <code>DrinkBoxFactory </code>，这个接口是所有礼盒工厂的父类，它给了所有子类一个“规范”。</p>
+<p><strong>抽象工厂模式</strong>提供了一个接口，用于创建相关对象的家族。<strong>该模式旨在为客户提供一个抽象接口</strong>（本例中就是 <code>DrinkBoxFactory </code> 接口），从而去创建一些列相关的对象，而不需关心实际生产的具体产品是什么，这样做的好处是<strong>让客户从具体的产品中解耦</strong>。</p>
+<p>最终，客户是这样使用 <code>DrinkStoreAbstract</code> 的，如下：</p>
+<pre><code class="language-java">public class AbstractMethod {
+    public static void main(String[] args) {
+        DrinkStoreAbstract beiStore = new BeijingDrinkStore();
+        beiStore.sellDrink(&quot;apple&quot;);
+        beiStore.sellDrink(&quot;banana&quot;);
+        beiStore.sellDrink(&quot;orange&quot;);
+
+        DrinkStoreAbstract shangStore = new ShangHaiDrinkStore();
+        shangStore.sellDrink(&quot;apple&quot;);
+        shangStore.sellDrink(&quot;banana&quot;);
+        shangStore.sellDrink(&quot;orange&quot;);
+    }
+}
+</code></pre>
+<p>完整的<strong>抽象工厂模式</strong>代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/AbstractMethod.java">这里</a>，供大家参考，类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201224004608162.png?" alt="在这里插入图片描述"></p>
+<p>从该图可以看出，抽象工厂模式比工厂方法模式更复杂了一些，另外仔细观察它们两个的类图，<strong>各自所关注的地方（粉红色区域）也是不一样的</strong>。</p>
+<p>工厂方法与抽象工厂的相同点都是将对象的创建封装起来。不同点是：</p>
+<ul>
+<li><strong>工厂方法主要关注将类的实例化推迟到子类中</strong>。</li>
+<li><strong>抽象工厂主要关注创建一些列相关的产品家族</strong>。</li>
+</ul>
+<h3 id="5总结">5，总结</h3>
+<p>工厂模式使用到的设计原则有：</p>
+<ul>
+<li>针对接口编程，而非针对实现编程。</li>
+<li>开闭原则。</li>
+<li>依赖倒置原则。</li>
+<li>封装变化。</li>
+</ul>
+<p>本篇文章介绍了三种工厂模式，工厂模式在实际应用中非常广泛，比如 <strong>Java</strong> 工具类中的 <strong>Calendar</strong> 和 <strong>DateFormat</strong> 等。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/dp1">单例模式-让一个类只有一个实例</a></p>
+<p><a href="/2020/12/dp-singleton">设计模式之高质量代码</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/dp-singleton/">
+            <span class="next-text nav-default">单例模式-让一个类只有一个实例</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/dp-factory/" class="leancloud_visitors" data-flag-title="工厂模式-将对象的创建封装起来">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
