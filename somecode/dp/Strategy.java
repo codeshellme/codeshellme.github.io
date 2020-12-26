@@ -25,7 +25,7 @@ abstract class Animal {
         System.out.println("I can drink water.");
     }
 
-    protected void eatGrass() {
+    public void eatGrass() {
         if (eg != null) {
             eg.eatGrass();
         }

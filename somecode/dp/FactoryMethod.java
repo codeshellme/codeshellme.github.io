@@ -31,7 +31,6 @@ abstract class DrinkStoreAbstract {
 
 class DrinkStore extends DrinkStoreAbstract {
 
-    @Override
     public Drink factoryMethod(String flavor) {
         Drink drink;
 

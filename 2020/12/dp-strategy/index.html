@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>策略模式-定义一个算法族 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇类介绍策略模式（Strategy Design Pattern）" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-strategy/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="策略模式-定义一个算法族" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇类介绍策略模式（Strategy Design Pattern）" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-strategy/" />
+<meta property="article:published_time" content="2020-12-25T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-25T21:41:52+08:00" />
+<meta itemprop="name" content="策略模式-定义一个算法族">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇类介绍策略模式（Strategy Design Pattern）">
+<meta itemprop="datePublished" content="2020-12-25T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-25T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2028">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="策略模式-定义一个算法族"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇类介绍策略模式（Strategy Design Pattern）"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">策略模式-定义一个算法族</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-25 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 2028 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1使用继承">1，使用继承</a></li>
+        <li><a href="#2使用接口">2，使用接口</a></li>
+        <li><a href="#3使用行为类">3，使用行为类</a></li>
+        <li><a href="#4策略模式">4，策略模式</a></li>
+        <li><a href="#5继承与组合">5，继承与组合</a></li>
+        <li><a href="#6动态设定行为">6，动态设定行为</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本篇类介绍策略模式（<strong>Strategy Design Pattern</strong>）。</p>
+<p>假设我们要为动物进行建模，比如狗，猪，兔子等，每种动物的能力是不同的。</p>
+<h3 id="1使用继承">1，使用继承</h3>
+<p>首先你可能想到用继承的方式来实现，所以我们编写了下面这个 <code>Animal</code> 类：</p>
+<pre><code class="language-java">abstract class Animal {
+    public void run() {
+        System.out.println(&quot;I can run.&quot;);
+    }
+
+    public void drinkWater() {
+        System.out.println(&quot;I can drink water.&quot;);
+    }
+
+    protected abstract String type();
+}
+</code></pre>
+<p><code>Animal</code> 是一个抽象类，其中包括了动物的能力，每种能力用一个方法表示：</p>
+<ul>
+<li><em>run</em>：奔跑能力。</li>
+<li><em>drinkWater</em>：喝水能力。</li>
+<li><em>type</em>：返回动物的种类，比如“狗”，“兔子”。这是一个抽象方法，子类要去实现。</li>
+</ul>
+<p>然后我们编写 <code>Dog</code>，<code>Pig</code> 和 <code>Rabbit</code>：</p>
+<pre><code class="language-java">class Dog extends Animal {
+    public String type() {
+        return &quot;Dog&quot;;
+    }
+}
+
+class Pig extends Animal {
+    public String type() {
+        return &quot;Pig&quot;;
+    }
+}
+
+class Rabbit extends Animal {
+    public String type() {
+        return &quot;Rabbit&quot;;
+    }
+}
+</code></pre>
+<p>上面的三种动物都继承了 <code>Animal</code> 中的 <em>run</em> 和 <em>drinkWater</em>，并且都实现了自己的 <em>type</em> 方法。</p>
+<p>现在我们想给 <code>Pig</code> 和 <code>Rabbit</code> 加入<code>吃草</code>的能力，最直接的办法是分别在这两个类中加入 <em>eatGrass</em> 方法，如下：</p>
+<pre><code class="language-java">class Pig extends Animal {
+    public void eatGrass() {
+        System.out.println(&quot;I can eat grass.&quot;);
+    }
+
+    public String type() {
+        return &quot;Pig&quot;;
+    }
+}
+
+class Rabbit extends Animal {
+    public void eatGrass() {
+        System.out.println(&quot;I can eat grass.&quot;);
+    }
+
+    public String type() {
+        return &quot;Rabbit&quot;;
+    }
+}
+</code></pre>
+<p>上面代码能够达到目的，但是不够好，因为<code>Pig</code> 和 <code>Rabbit</code> 中的 <em>eatGrass</em> 一模一样，是重复代码，代码没能复用。</p>
+<p>为了解决代码复用，我们可以将 <em>eatGrass</em> 方法放到 <code>Animal</code> 中，利用继承的特性，<code>Pig</code> 和 <code>Rabbit</code> 中就不需要编写 <em>eatGrass</em> 方法，而直接从 <code>Animal</code> 中继承就行。</p>
+<p>但是，这样还是有问题，因为如果将 <em>eatGrass</em> 放在 <code>Animal</code> 中，<code>Dog</code> 中也会有 <em>eatGrass</em> ，而我们并不想让 <code>Dog</code> 拥有<code>吃草</code>的能力。</p>
+<p>也许你会说，我们可以在 <code>Dog</code> 中将 <em>eatGrass</em> 覆盖重写，让 <em>eatGrass</em> 不具有实际的能力，就像这样：</p>
+<pre><code class="language-java">class Dog extends Animal {
+    public void eatGrass() {
+        // 什么都不写，就没有了吃草的能力
+    }
+
+    public String type() {
+        return &quot;Rabbit&quot;;
+    }
+}
+</code></pre>
+<p>这样做虽然能到达目的，但是并不优雅。如果 <code>Animal</code> 的子类特别多的话，就会有很多子类都得这样覆盖 <em>eatGrass</em> 方法。</p>
+<p>所以，将 <em>eatGrass</em> 放在 <code>Animal</code> 中也不是一个好的方案。</p>
+<h3 id="2使用接口">2，使用接口</h3>
+<p>那是否可以将 <em>eatGrass</em> 方法提取出来，作为一个接口？</p>
+<p>就像这样：</p>
+<pre><code class="language-java">interface EatGrassable {
+    void eatGrass();
+}
+</code></pre>
+<p>然后，让需要有<code>吃草</code>能力的动物都去实现该接口，就像这样：</p>
+<pre><code class="language-java">class Rabbit extends Animal implements EatGrassable {
+    public void eatGrass() {
+        System.out.println(&quot;I can eat grass.&quot;);
+    }
+
+    public String type() {
+        return &quot;Rabbit&quot;;
+    }
+}
+</code></pre>
+<p>这样做可以达到目的，但是，缺点是每个需要<code>吃草</code>能力的动物之间就会有重复的代码，依然没有达到代码复用的目的。</p>
+<p>所以，这种方式还是不能很好的解决问题。</p>
+<h3 id="3使用行为类">3，使用行为类</h3>
+<p>我们可以将<code>吃草</code>的能力看作一种“行为”，然后使用“行为类”来实现。那么需要有<code>吃草</code>能力的动物，就将<code>吃草类</code>的对象，作为自己的属性。</p>
+<p>这些行为类就像一个个的组件，哪些类需要某种功能的组件，就直接拿来用。</p>
+<p>下面我们编写“吃草类”：</p>
+<pre><code class="language-java">interface EatGrassable {
+    void eatGrass();
+}
+
+class EatGreenGrass implements EatGrassable {
+    // 吃绿草
+    public void eatGrass() {
+        System.out.println(&quot;I can eat green grass.&quot;);
+    }
+}
+
+class EatDogtailGrass implements EatGrassable {
+    // 吃狗尾草
+    public void eatGrass() {
+        System.out.println(&quot;I can eat dogtail grass.&quot;);
+    }
+}
+
+class EatNoGrass implements EatGrassable {
+    // 不是真的吃草
+    public void eatGrass() {
+        System.out.println(&quot;I can not eat grass.&quot;);
+    }
+}
+</code></pre>
+<p>首先创建了一个 <code>EatGrassable</code> 接口，但是不用动物类来实现该接口，而是我们创建了一些行为类 <code>EatGreenGrass</code> ，<code>EatDogtailGrass</code> 和 <code>EatNoGrass</code>。</p>
+<p>这样，需要吃草的动物，不但能够吃草，而且可以吃不同种类的草。</p>
+<p>那么，该如何使用 <code>EatGrassable</code> 接口呢？需要将 <code>EatGrassable</code> 作为 <code>Animal</code> 的属性，如下：</p>
+<pre><code class="language-java">abstract class Animal {
+
+    // EatGrassable 对象作为 Animal 的属性
+    protected EatGrassable eg;
+
+    public Animal() {
+        eg = null;
+    }
+
+    public void run() {
+        System.out.println(&quot;I can run.&quot;);
+    }
+
+    public void drinkWater() {
+        System.out.println(&quot;I can drink water.&quot;);
+    }
+
+    public void eatGrass() {
+        if (eg != null) {
+            eg.eatGrass();
+        }
+    }
+
+    protected abstract String type();
+}
+</code></pre>
+<p>可以看到，<code>Animal</code> 中增加了 <code>eg</code> 属性和 <code>eatGrass</code> 方法。</p>
+<p>其它动物类在<strong>构造函数</strong>中，要初始化 <code>eg</code> 属性：</p>
+<pre><code class="language-java">class Dog extends Animal {
+    public Dog() {
+        // Dog 不能吃草
+        eg = new EatNoGrass();    
+    }
+    
+    public String type() {
+        return &quot;Dog&quot;;
+    }
+}
+
+class Pig extends Animal {
+    public Pig() {
+        eg = new EatGreenGrass();
+    }
+    
+    public String type() {
+        return &quot;Pig&quot;;
+    }
+}
+
+class Rabbit extends Animal {
+    public Rabbit() {
+        eg = new EatDogtailGrass();
+    }
+    
+    public String type() {
+        return &quot;Rabbit&quot;;
+    }
+}
+</code></pre>
+<p>对代码测试：</p>
+<pre><code class="language-java">public class Strategy {
+    public static void main(String[] args) {
+        Animal dog = new Dog();
+        Animal pig = new Pig();
+        Animal rabbit = new Rabbit();
+
+        dog.eatGrass();    // I can not eat grass.
+        pig.eatGrass();    // I can eat green grass.
+        rabbit.eatGrass(); // I can eat dogtail grass.
+    }
+}
+</code></pre>
+<h3 id="4策略模式">4，策略模式</h3>
+<p>实际上，上面的实现方式使用的就是<strong>策略模式</strong>。重点在于 <code>EatGrassable </code> 接口与三个行为类 <code>EatGreenGrass</code>，<code>EatDogtailGrass</code> 和 <code>EatNoGrass</code>。在策略模式中，这些行为类被称为<strong>算法族</strong>，所谓的“策略”，可以理解为“算法”，这些算法可以互相替换。</p>
+<p><strong>策略模式定义了一系列算法族，并封装在类中，它们之间可以互相替换，此模式让算法的变化独立于使用算法的客户</strong>。</p>
+<p>我将完整的代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/Strategy.java">这里</a>，供大家参考，类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201225103107536.png?" alt="在这里插入图片描述"></p>
+<h3 id="5继承与组合">5，继承与组合</h3>
+<p>在一开始的设计中，我们使用的是<strong>继承（Is-a）</strong> 的方式，但是效果并不是很好。</p>
+<p>最终的方案使用了策略模式，它是一种<strong>组合（Has-a）</strong> 关系，即 <code>Animal</code> 与 <code>EatGrassable</code> 之间的关系。</p>
+<p>这也是一种设计原则：<strong>多用组合，少用继承</strong>，组合关系比继承关系有更好的弹性。</p>
+<h3 id="6动态设定行为">6，动态设定行为</h3>
+<p>策略模式不仅重在创建一组算法（行为类），能够动态的让这些算法互相替换，也是策略模式典型应用。</p>
+<p>所谓的“动态”是指，在程序的运行期间，根据配置，用户输入等方式，动态的设置算法。</p>
+<p>只需要在 <code>Animal</code> 中加入 <code>setter</code> 方法即可，如下：</p>
+<pre><code class="language-java">abstract class Animal {
+    // 省略了其它代码
+    
+    public void setEatGrassable(EatGrassable eg) {
+        this.eg = eg;
+    }
+</code></pre>
+<p>使用 <code>setter</code> 方法：</p>
+<pre><code class="language-java">Animal pig = new Pig();
+pig.eatGrass();	// I can eat green grass.
+
+pig.setEatGrassable(new EatDogtailGrass()); // 设置新的算法
+pig.eatGrass();	// I can eat dogtail grass.
+</code></pre>
+<p>本来 <code>pig</code> 吃的是<code>绿草</code>，我们通过 <code>setter</code> 方法将 <code>绿草</code> 换成了 <code>狗尾草</code>，可以看到，算法的切换非常方便。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/dp1">设计模式之高质量代码</a></p>
+<p><a href="/2020/12/dp-singleton">单例模式-让一个类只有一个实例</a></p>
+<p><a href="/2020/12/dp-factory">工厂模式-将对象的创建封装起来</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/dp-code-interface/">
+            <span class="next-text nav-default">针对接口编程，而不是针对实现编程</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/dp-strategy/" class="leancloud_visitors" data-flag-title="策略模式-定义一个算法族">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

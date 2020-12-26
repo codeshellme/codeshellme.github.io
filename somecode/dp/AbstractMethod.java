@@ -30,8 +30,7 @@ abstract class DrinkStoreAbstract {
 
 class BeijingDrinkStore extends DrinkStoreAbstract {
 
-    @Override
-    protected Drink factoryMethod(String flavor) {
+    public Drink factoryMethod(String flavor) {
         Drink drink = null;
         DrinkBoxFactory factory = new BeiJingBoxFactory();
 
@@ -50,8 +49,7 @@ class BeijingDrinkStore extends DrinkStoreAbstract {
 
 class ShangHaiDrinkStore extends DrinkStoreAbstract {
 
-    @Override
-    protected Drink factoryMethod(String flavor) {
+    public Drink factoryMethod(String flavor) {
         Drink drink = null;
         DrinkBoxFactory factory = new ShangHaiBoxFactory();
 
@@ -74,8 +72,6 @@ interface DrinkBoxFactory {
 
 
 class BeiJingBoxFactory implements DrinkBoxFactory {
-
-    @Override
     public String createBox() {
         return "BeijingBox";
     }
@@ -83,8 +79,6 @@ class BeiJingBoxFactory implements DrinkBoxFactory {
 
 
 class ShangHaiBoxFactory implements DrinkBoxFactory {
-
-    @Override
     public String createBox() {
         return "ShangHaiBox";
     }
@@ -105,7 +99,6 @@ class DrinkApple extends Drink {
         this.flavor = "DrinkApple";
     }
 
-    @Override
     public void packing() {
         System.out.println(flavor + boxFactory.createBox());
     }
@@ -120,7 +113,6 @@ class DrinkBanana extends Drink {
         this.flavor = "DrinkBanana";
     }
 
-    @Override
     public void packing() {
         System.out.println(flavor + boxFactory.createBox());
     }
@@ -135,7 +127,6 @@ class DrinkOrange extends Drink {
         this.flavor = "DrinkOrange";
     }
 
-    @Override
     public void packing() {
         System.out.println(flavor + boxFactory.createBox());
     }

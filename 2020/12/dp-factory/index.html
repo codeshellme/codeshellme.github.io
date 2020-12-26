@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 工厂模式（Factory Design Pattern）可细分为三种">
 <meta itemprop="datePublished" content="2020-12-23T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-12-23T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="3632">
+<meta itemprop="wordCount" content="3624">
 
 
 
@@ -143,7 +143,7 @@
         <div class="post-category">
             <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
             </div>
-          <span class="more-meta"> 3632 字 </span>
+          <span class="more-meta"> 3624 字 </span>
           <span class="more-meta"> 阅读约需 8 分钟 </span>
         
 
@@ -302,7 +302,6 @@ class DrinkOrange extends Drink {
 <p>接下来定义一个具体的 <code>DrinkStore</code> 类，它是 <code>DrinkStoreAbstract</code>  的子类：</p>
 <pre><code class="language-java">class DrinkStore extends DrinkStoreAbstract {
 
-    @Override
     public Drink factoryMethod(String flavor) {
         Drink drink;
 
@@ -397,16 +396,12 @@ class DrinkOrange extends Drink {
 }
 
 class BeiJingBoxFactory implements DrinkBoxFactory {
-
-    @Override
     public String createBox() {
         return &quot;BeijingBox&quot;;
     }
 }
 
 class ShangHaiBoxFactory implements DrinkBoxFactory {
-
-    @Override
     public String createBox() {
         return &quot;ShangHaiBox&quot;;
     }
@@ -428,7 +423,6 @@ class ShangHaiBoxFactory implements DrinkBoxFactory {
         this.flavor = &quot;DrinkApple&quot;;
     }
 
-    @Override
     public void packing() {
         System.out.println(flavor + boxFactory.createBox());
     }
@@ -442,7 +436,6 @@ class DrinkBanana extends Drink {
         this.flavor = &quot;DrinkBanana&quot;;
     }
 
-    @Override
     public void packing() {
         System.out.println(flavor + boxFactory.createBox());
     }
@@ -456,7 +449,6 @@ class DrinkOrange extends Drink {
         this.flavor = &quot;DrinkOrange&quot;;
     }
 
-    @Override
     public void packing() {
         System.out.println(flavor + boxFactory.createBox());
     }
@@ -484,8 +476,7 @@ class DrinkOrange extends Drink {
 <p>然后我们实现使用北京礼盒包装的<strong>Store</strong> 和使用上海礼盒包装的<strong>Store</strong>，如下：</p>
 <pre><code class="language-java">class BeijingDrinkStore extends DrinkStoreAbstract {
     
-    @Override
-    protected Drink factoryMethod(String flavor) {
+    public Drink factoryMethod(String flavor) {
         Drink drink = null;
         DrinkBoxFactory factory = new BeiJingBoxFactory();
 
@@ -503,8 +494,7 @@ class DrinkOrange extends Drink {
 
 class ShangHaiDrinkStore extends DrinkStoreAbstract {
 
-    @Override
-    protected Drink factoryMethod(String flavor) {
+    public Drink factoryMethod(String flavor) {
         Drink drink = null;
         DrinkBoxFactory factory = new ShangHaiBoxFactory();
 

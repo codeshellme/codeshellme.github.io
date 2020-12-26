@@ -49,6 +49,15 @@
     </item>
     
     <item>
+      <title>策略模式-定义一个算法族</title>
+      <link>https://codeshellme.github.io/2020/12/dp-strategy/</link>
+      <pubDate>Fri, 25 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-strategy/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇类介绍策略模式（Strategy Design Pattern）</description>
+    </item>
+    
+    <item>
       <title>针对接口编程，而不是针对实现编程</title>
       <link>https://codeshellme.github.io/2020/12/dp-code-interface/</link>
       <pubDate>Wed, 23 Dec 2020 22:38:52 +0800</pubDate>
