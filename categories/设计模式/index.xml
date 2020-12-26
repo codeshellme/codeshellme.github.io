@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Wed, 23 Dec 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 23 Dec 2020 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>针对接口编程，而不是针对实现编程</title>
+      <link>https://codeshellme.github.io/2020/12/dp-code-interface/</link>
+      <pubDate>Wed, 23 Dec 2020 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-code-interface/</guid>
+      <description>“针对接口编程”的真正含义是“针对超类型编程”，它利用了多态的特性。 更明确的来说就是，一个变量 a 的声明类型应该是超类型A，所谓的超类型一般是</description>
+    </item>
     
     <item>
       <title>工厂模式-将对象的创建封装起来</title>
