@@ -49,6 +49,15 @@
     </item>
     
     <item>
+      <title>装饰者模式-动态的包装原有对象的行为</title>
+      <link>https://codeshellme.github.io/2020/12/dp-decorator/</link>
+      <pubDate>Tue, 29 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-decorator/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍装饰者模式（Decorator Design Patter</description>
+    </item>
+    
+    <item>
       <title>观察者模式-将消息通知给观察者</title>
       <link>https://codeshellme.github.io/2020/12/dp-observer/</link>
       <pubDate>Mon, 28 Dec 2020 21:38:52 +0800</pubDate>

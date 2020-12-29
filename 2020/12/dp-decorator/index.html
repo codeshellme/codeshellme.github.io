@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>装饰者模式-动态的包装原有对象的行为 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍装饰者模式（Decorator Design Patter" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-decorator/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="装饰者模式-动态的包装原有对象的行为" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍装饰者模式（Decorator Design Patter" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-decorator/" />
+<meta property="article:published_time" content="2020-12-29T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-29T21:41:52+08:00" />
+<meta itemprop="name" content="装饰者模式-动态的包装原有对象的行为">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍装饰者模式（Decorator Design Patter">
+<meta itemprop="datePublished" content="2020-12-29T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-29T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2319">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="装饰者模式-动态的包装原有对象的行为"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍装饰者模式（Decorator Design Patter"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">装饰者模式-动态的包装原有对象的行为</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-29 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 2319 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1结账系统需求分析">1，结账系统需求分析</a></li>
+        <li><a href="#2装饰者模式">2，装饰者模式</a></li>
+        <li><a href="#3实现结账系统">3，实现结账系统</a></li>
+        <li><a href="#4测试结账系统">4，测试结账系统</a></li>
+        <li><a href="#5装饰者模式的使用场景">5，装饰者模式的使用场景</a></li>
+        <li><a href="#6装饰者模式的缺点">6，装饰者模式的缺点</a></li>
+        <li><a href="#7总结">7，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>今天来介绍<strong>装饰者模式</strong>（<em>Decorator Design Pattern</em>）。</p>
+<p>假设我们需要给一家<strong>火锅店</strong>设计一套<strong>结账系统</strong>，也就是统计顾客消费的<strong>总价格</strong>。怎样才能设计出一个好的系统呢？</p>
+<h3 id="1结账系统需求分析">1，结账系统需求分析</h3>
+<p>既然要设计一个结账系统，当然需要知道火锅店都有哪些食品及食品的价格，假如我们从火锅店老板那里得到以下食品清单：</p>
+<ul>
+<li>锅底类：
+<ul>
+<li>清汤锅底：5 元</li>
+<li>麻辣锅底：7 元</li>
+<li>其它</li>
+</ul>
+</li>
+<li>配菜类：
+<ul>
+<li>青菜：3 元</li>
+<li>羊肉：6 元</li>
+<li>其它</li>
+</ul>
+</li>
+<li>饮料类：
+<ul>
+<li>可乐：2 元</li>
+<li>其它</li>
+</ul>
+</li>
+</ul>
+<p>可以看到，食品共有三大类，分别是：锅底类，配菜类和饮料类，每个大类下边都有很多具体的食品。</p>
+<p>为了设计出一个可维护，可扩展，有弹性的系统，应该怎样设计呢？</p>
+<p>我们可以这样看待食品之间的关系，将锅底类看作<strong>主品</strong>，所有其它的都为<strong>副品</strong>，也就是<strong>附加</strong>在主品之上的食品。</p>
+<p><strong>副品以主品为中心，围绕在主品周围，包裹着主品，一层层的往外扩展</strong>。</p>
+<p>如下图所表达的一样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201227103940292.png?" alt="在这里插入图片描述"></p>
+<h3 id="2装饰者模式">2，装饰者模式</h3>
+<p>像这种，<strong>需要在原来（主品）的基础上，附加其它的东西（副品）</strong>，这样的业务场景都可以使用<strong>装饰者模式</strong>。</p>
+<p><strong>装饰者模式</strong>的定义为：<strong>动态的给一个对象添加其它功能。从扩展性来说，这种方式比继承更有弹性，更加灵活，可作为替代继承的方案</strong>。</p>
+<p>装饰者模式的<strong>优点</strong>在于，它能够更灵活的，<strong>动态</strong>的给对象<strong>添加其它功能</strong>，而不需要修改任何现有的底层代码。也就是不需要通过<strong>修改</strong>代码，而是通过<strong>扩展</strong>代码，来完成新的业务需求。</p>
+<p>这就非常符合我们所说的设计原则中的<strong>开闭原则</strong>：<strong>对扩展开放，对修改关闭</strong>。也就是尽量不要修改原有代码，而是通过扩展代码来完成任务。这样做的好处是可以减少对原有系统的修改，从而减少引入 <strong>bug</strong> 的风险。</p>
+<p>装饰者模式的类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201227111352538.png?" alt="在这里插入图片描述"></p>
+<p><strong>ConcreteComponent</strong> 为被装饰者，<strong>Decorator</strong> 是所有装饰者的超类。</p>
+<p>装饰者和被装饰者有着共同的超类型，这一点很重要，因为装饰者必须能够取代被装饰者。这样，装饰者才能在被装饰者的基础上，加上自己的行为，以<strong>增强</strong>被装饰者的能力。</p>
+<p>一个被装饰者可以被多个装饰者依次包装，这个包装行为是动态的，不限次数的。</p>
+<h3 id="3实现结账系统">3，实现结账系统</h3>
+<p>那么根据装饰者模式的类图，我们可以设计出火锅店结账系统的类图，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201227115159443.png?" alt="在这里插入图片描述"></p>
+<p>火锅的锅底作为被装饰者，配菜和饮料作为装饰者。</p>
+<p>每个类都有两个方法：</p>
+<ul>
+<li>describe：返回当前火锅的描述。</li>
+<li>cost：返回当前火锅的价格。</li>
+</ul>
+<p>首先编写 <code>HotPot</code> 类：</p>
+<pre><code class="language-java">class HotPot {
+    protected String desc = &quot;HotPot&quot;;
+    protected double price = 0;
+
+    public String description() {
+        return desc;
+    }
+
+    public double cost() {
+        return price;
+    }
+ 
+    public void printMenu() {
+        System.out.println(&quot;菜单：&quot; + description() + &quot; 消费总价：&quot; + cost());
+    }
+}
+</code></pre>
+<p><code>HotPot</code> 类中有两个属性 	<code>desc</code> 和 <code>price</code>，还有三个方法 <code>description</code>，<code>cost</code> 和 <code>printMenu</code>。<code>printMenu</code> 用于输出菜单和消费总价。</p>
+<p>再编写 <code>SideDish</code>  类：</p>
+<pre><code class="language-java">class SideDish extends HotPot {
+    protected HotPot hotpot;
+    
+    public double cost() {
+        return hotpot.cost() + price;
+    };
+
+    public String description() {
+        return hotpot.description() +&quot; + &quot;+ desc;
+    };
+}
+</code></pre>
+<p><code>SideDish</code> 继承了 <code>HotPot</code>，添加了自己的属性 <code>hotpot</code>，并且重写了两个方法 <code>description</code> 和 <code>cost</code>。</p>
+<p><strong>注意</strong>：<code>SideDish</code> 类对两个方法  <code>description</code> 和 <code>cost</code> 进行了重写，这非常重要，这体现出了装饰者与被装饰者的区别，装饰者能在被装饰者的基础上附加自己的行为，<strong>原因就在这里</strong>。</p>
+<p>编写两个锅底类：</p>
+<pre><code class="language-java">class SoupPot extends HotPot {
+    public SoupPot() {
+        desc = &quot;Soup&quot;;
+        price = 5;
+    }
+}
+
+class SpicyPot extends HotPot {
+    public SpicyPot() {
+        desc = &quot;Spicy&quot;;
+        price = 7;
+    }
+}
+</code></pre>
+<p>这两个类都继承<code>HotPot</code>，并分别在构造方法中设置自己的 <code>desc</code> 和 <code>price</code>。</p>
+<p>再编写三个配菜类：</p>
+<pre><code class="language-java">class VegetablesDish extends SideDish {
+    public VegetablesDish(HotPot hotpot) {
+        this.hotpot = hotpot;
+        desc = &quot;Vegetables&quot;;
+        price = 3;
+    }
+}
+
+class MuttonDish extends SideDish {
+    public MuttonDish(HotPot hotpot) {
+        this.hotpot = hotpot;
+        desc = &quot;Mutton&quot;;
+        price = 6;
+    }
+}
+
+class ColaDish extends SideDish {
+    public ColaDish(HotPot hotpot) {
+        this.hotpot = hotpot;
+        desc = &quot;Cola&quot;;
+        price = 2;
+    }
+}
+</code></pre>
+<p>这三个类都继承 <code>SideDish</code>，并分别在构造方法中设置自己的<code>hotpot</code>，<code>desc</code> 和 <code>price</code>。</p>
+<h3 id="4测试结账系统">4，测试结账系统</h3>
+<p>用如下代码来测试：</p>
+<pre><code class="language-java">// 只有一份清汤锅底
+HotPot hotpot = new SoupPot(); // 被装饰者不需装饰者包装也可以使用
+hotpot.printMenu();
+
+// 清汤锅底 + 蔬菜
+hotpot = new VegetablesDish(hotpot);
+hotpot.printMenu();
+
+// 清汤锅底 + 蔬菜 + 羊肉
+hotpot = new MuttonDish(hotpot);
+hotpot.printMenu();
+
+// 清汤锅底 + 蔬菜 + 羊肉 + 可乐
+hotpot = new ColaDish(hotpot);
+hotpot.printMenu();
+
+// 清汤锅底 + 蔬菜 + 羊肉 + 可乐 + 蔬菜
+hotpot = new VegetablesDish(hotpot);
+hotpot.printMenu();
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-java">菜单：Soup 消费总价：5.0
+菜单：Soup + Vegetables 消费总价：8.0
+菜单：Soup + Vegetables + Mutton 消费总价：14.0
+菜单：Soup + Vegetables + Mutton + Cola 消费总价：16.0
+菜单：Soup + Vegetables + Mutton + Cola + Vegetables 消费总价：19.0
+</code></pre>
+<p>计算总价时，会从最外层的装饰者，朝着被装饰者的方向，依次调用每一层的 <code>cost</code> 方法，直到被装饰者为止。</p>
+<p>然后再朝着最外层装饰者的方向，依次计算出每一层的价格，最后得出的价格就是消费总价。</p>
+<p>计算过程如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201227214806696.png?" alt="在这里插入图片描述"></p>
+<p>我将完整的<strong>装饰者模式</strong>代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/Decorator.java">这里</a>，供大家参考。</p>
+<h3 id="5装饰者模式的使用场景">5，装饰者模式的使用场景</h3>
+<p>装饰者模式主要用于，在不修改原有类的前提下，动态的修改原有类的功能。</p>
+<p><strong>Java JDK</strong> 中大量使用了装饰者模式，尤其是 <strong>Java I/O</strong> 框架。</p>
+<p><strong>Java IO</strong> 框架的继承关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201227220514192.png?" alt="在这里插入图片描述"></p>
+<p>可以看到，<strong>Java IO</strong> 框架包含了非常多的类，这对初学者并不是很友好，很难弄明白每个类的作用是什么，也不容易了解设计者的意图。</p>
+<p><strong>Java IO</strong> 主要分为<strong>字节流</strong>和<strong>字符流</strong>两大类。我们以 <strong>InputStream</strong> 为例，画出其类图结构，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201227230347289.png?" alt="在这里插入图片描述"></p>
+<p>从该图能够看出，<strong>Java IO</strong> 与我们上文中的装饰者模式的类图基本一模一样，所以 <strong>Java IO</strong> 其实就是使用了装饰者模式，明白了这一点，再使用它就非常方便了。</p>
+<h3 id="6装饰者模式的缺点">6，装饰者模式的缺点</h3>
+<p>装饰者模式有一个比较明显的缺点，从上文中你也许已经发现了，就是它会引入非常多的<strong>小类</strong>，这样会让使用者弄不明白类之间的关系。</p>
+<p>当了解了装饰者的原理，也就比较容易使用了。</p>
+<h3 id="7总结">7，总结</h3>
+<p>从装饰者模式中，能充分的看到<strong>开闭原则</strong>的使用。利用装饰者模式，可以让我们在不修改原有代码的情况下，扩展原有类的功能。但是也不能过度使用它，因为容易引入非常多的小类。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/11/dp1">设计模式之高质量代码</a></p>
+<p><a href="/2020/12/dp-singleton">单例模式-让一个类只有一个对象</a></p>
+<p><a href="/2020/12/dp-factory">工厂模式-将对象的创建封装起来</a></p>
+<p><a href="/2020/12/dp-strategy">策略模式-定义一个算法族</a></p>
+<p><a href="/2020/12/dp-observer">观察者模式-将消息通知给观察者</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/dp-observer/">
+            <span class="next-text nav-default">观察者模式-将消息通知给观察者</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/dp-decorator/" class="leancloud_visitors" data-flag-title="装饰者模式-动态的包装原有对象的行为">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
