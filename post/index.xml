@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Fri, 25 Dec 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Dec 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>观察者模式-将消息通知给观察者</title>
+      <link>https://codeshellme.github.io/2020/12/dp-observer/</link>
+      <pubDate>Mon, 28 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-observer/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 观察者模式（Observer Design Pattern）也被称为</description>
+    </item>
     
     <item>
       <title>策略模式-定义一个算法族</title>
@@ -18,7 +27,7 @@
       <pubDate>Fri, 25 Dec 2020 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/2020/12/dp-strategy/</guid>
-      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇介绍策略模式（Strategy Design Pattern）。</description>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍策略模式（Strategy Design Pattern）</description>
     </item>
     
     <item>
