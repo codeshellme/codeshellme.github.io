@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>命令模式-将请求封装成对象 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍命令模式（Command Design Pattern），" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-command/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="命令模式-将请求封装成对象" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍命令模式（Command Design Pattern），" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-command/" />
+<meta property="article:published_time" content="2020-12-30T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-30T21:41:52+08:00" />
+<meta itemprop="name" content="命令模式-将请求封装成对象">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍命令模式（Command Design Pattern），">
+<meta itemprop="datePublished" content="2020-12-30T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-30T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1730">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="命令模式-将请求封装成对象"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍命令模式（Command Design Pattern），"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">命令模式-将请求封装成对象</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-30 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 1730 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1一次购物流程">1，一次购物流程</a></li>
+        <li><a href="#2模拟购物流程">2，模拟购物流程</a></li>
+        <li><a href="#3命令模式">3，命令模式</a></li>
+        <li><a href="#4请求服务">4，请求服务</a></li>
+        <li><a href="#5请求队列">5，请求队列</a></li>
+        <li><a href="#6请求日志">6，请求日志</a></li>
+        <li><a href="#7总结">7，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本篇来介绍<strong>命令模式</strong>（<em>Command Design Pattern</em>），它将“请求”封装成对象，从而将“请求”的创建者与“请求”的执行者解耦。</p>
+<h3 id="1一次购物流程">1，一次购物流程</h3>
+<p>相信大家都在网上买过东西，我们以<strong>淘宝</strong>为例来介绍命令模式。</p>
+<p>我们假设这样一个简单的场景：</p>
+<ul>
+<li><strong>淘宝网</strong>有很多<strong>商店</strong>，商店售卖各种各样的商品，顾客购买商品需要先在淘宝下<strong>订单</strong>。</li>
+<li>一位<strong>顾客</strong>想在淘宝购买一部<strong>华为手机</strong>，他下了一个订单：“一部华为手机”。</li>
+<li>淘宝网将该订单发送到华为商店。</li>
+<li>华为商店将华为手机寄给了顾客。</li>
+</ul>
+<p>在这个过程中，淘宝网并不关心每家商店的具体情况，它只知道每家商店都能完成它所派发的订单。</p>
+<p>那么，我们怎样为这个场景建模呢？</p>
+<h3 id="2模拟购物流程">2，模拟购物流程</h3>
+<p>从上面购物流程中，我们能看出来，连接<strong>顾客</strong>，<strong>淘宝网</strong>与<strong>商店</strong>的中间桥梁是<strong>订单</strong>：</p>
+<ul>
+<li>顾客在淘宝网生成一个订单。</li>
+<li>淘宝网将订单发给具体商店。</li>
+<li>商店将商品寄给顾客以完成订单。</li>
+</ul>
+<p>首先，我们需要定义一个 <code>Order</code> 接口：</p>
+<pre><code class="language-java">interface Order {
+    void execute();
+}
+</code></pre>
+<p><code>Order </code> 接口中只有一个 <code>execute</code> 方法，需要派生类来实现。</p>
+<p>然后定义一个华为商店：</p>
+<pre><code class="language-java">abstract class Shops {
+    protected String shopName; 
+    protected abstract String sell();
+}
+
+class HuaWeiShop extends Shops {
+
+    public HuaWeiShop() {
+        this.shopName = &quot;HUAWEI&quot;;
+    }
+
+    public String sell() {
+        return &quot;HuaWei Phone&quot;;
+    }
+}
+</code></pre>
+<p>上面代码中，<code>Shops</code> 是一个抽象类，表示商店，商店可以销售商品。<code>HuaWeiShop</code> 类继承了 <code>Shops</code> 接口，实现了 <code>sell</code> 方法。</p>
+<p>然后定义一个 <code>GoodsOrder</code> 类，它继承了 <code>Order</code> 接口，并实现了 <code>execute</code> 方法：</p>
+<pre><code class="language-java">class GoodsOrder implements Order {
+    private Shops shop;
+
+    public GoodsOrder(Shops shop) {
+        this.shop = shop;
+    }
+
+    public void execute() {
+        String goods = shop.sell();
+        System.out.println(goods);
+    }
+}
+</code></pre>
+<p>然后定义 <code>Client</code> 类，用于生成订单：</p>
+<pre><code class="language-java">class Client {
+    public Order createOrder() {
+        Shops phone = new HuaWeiShop();
+        Order phoneOrder = new GoodsOrder(phone);
+        return phoneOrder;
+    }
+}
+</code></pre>
+<p>下面定义淘宝网，它可以接收订单和处理订单：</p>
+<pre><code class="language-java">class Taobao {
+    private Order order;
+
+    public void receiveOrder(Order order) {
+        this.order = order;
+    }
+
+    // 处理订单
+    public void handleOrder() {
+        order.execute();
+    }
+}
+</code></pre>
+<p>最后来测试代码：</p>
+<pre><code class="language-java">Client c = new Client();
+Order order = c.createOrder(); // 顾客生成订单
+
+Taobao t = new Taobao();       
+t.receiveOrder(order);         // 淘宝接收订单
+t.handleOrder();               // 淘宝处理订单
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-shell">HuaWei Phone
+</code></pre>
+<p>输出表示顾客成功买到了手机。</p>
+<p>我们画出上面代码的类图，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201230100103832.png?" alt="在这里插入图片描述"></p>
+<p>我将完整的命令模式代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/Command.java">这里</a>，供大家参考。</p>
+<h3 id="3命令模式">3，命令模式</h3>
+<p>实际上，上面代码的实现方式就是<strong>命令模式</strong>。</p>
+<p><strong>命令模式将请求（命令）封装为一个对象，这样可以将不同请求注入到其他对象，并且能够支持请求（命令）的排队执行、记录日志、撤销等功能</strong>。</p>
+<p>命令模式中包含以下几个组件（并把组件类比到上面的购物场景中）：</p>
+<ul>
+<li><strong>Invoker</strong>：请求的调用者，相当于 <strong>Taobao</strong>。</li>
+<li><strong>Command</strong>：一个抽象接口，定义了所有具体请求必须实现的方法，相当于 <strong>Order</strong>。</li>
+<li><strong>ConcreteCommand</strong>：一个具体的请求，相当于 <strong>GoodsOrder</strong>。</li>
+<li><strong>Receiver</strong>：请求的接收者，用于真正的执行请求，相当于 <strong>HuaWeiShop</strong>。</li>
+<li><strong>Client</strong>：请求的创建者。</li>
+</ul>
+<p>命令模式的类图如下（与上面购物代码的类图一致）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201230095939838.png?" alt="在这里插入图片描述"></p>
+<p>上图的 <strong>Command</strong> 接口中有一个 <code>undo</code> 方法，它是 <code>execute</code> 方法的反操作，用于实现<strong>撤销功能</strong>。</p>
+<p>命令模式通过将请求封装成对象，将请求的创建者，请求的调用者和请求的执行者，这三者之间彻底解耦：</p>
+<ul>
+<li><strong>Client</strong> 只负责请求的创建，而不关心请求何时何地被真正的执行。</li>
+<li><strong>Invoker</strong> 只负责调用请求，而不关心请求是谁创建的，也不关心请求的真正执行者是谁。
+<ul>
+<li><strong>Invoker</strong> 也可以将一个请求抛弃掉，不去调用它 。</li>
+</ul>
+</li>
+<li><strong>Receiver</strong> 只负责执行请求，而不关心请求是谁创建的，也不关心请求是被谁调用的。</li>
+</ul>
+<h3 id="4请求服务">4，请求服务</h3>
+<p><strong>请求服务</strong>是一种由客户端发出请求，然后由服务端去处理的一种程序架构，不同的客户端之间互不干扰。</p>
+<p>我们上面模拟的购物程序可以说使用的就是这种架构，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201230120809479.png?" alt="在这里插入图片描述"></p>
+<p>比如 <strong>Redis Server</strong> 处理 <strong>Client</strong> 命令的方式使用的就是这种架构。</p>
+<h3 id="5请求队列">5，请求队列</h3>
+<p>请求被封装成对象后，可将其放在<strong>请求队列</strong>中，然后由<strong>工作线程</strong>将其取出，再执行。</p>
+<p>这种架构也相当于一个<strong>生产者-消费者</strong>架构。</p>
+<p><img src="https://img-blog.csdnimg.cn/2020123012163351.png?" alt="在这里插入图片描述"></p>
+<h3 id="6请求日志">6，请求日志</h3>
+<p>请求被封装成对象后，也可以将其记录在日志中。如果服务意外崩溃，服务重启后就可以使用请求日志，将服务恢复到崩溃之前的状态。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201230122324569.png?" alt="在这里插入图片描述"></p>
+<p>比如 <strong>Redis</strong> 的 <strong>AOF 持久化</strong>使用的就是这种方式。</p>
+<h3 id="7总结">7，总结</h3>
+<p>命令模式将请求封装成对象，有两个优点：</p>
+<ul>
+<li>使得<strong>请求的创建者</strong>与请求的<strong>调用/执行者</strong>解耦。</li>
+<li>使得请求可以轻松的被<strong>传递和存储</strong>。</li>
+</ul>
+<p>命令模式的这些优点，使得我们可以实现请求的排队执行、记录日志等功能。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/dp-singleton">单例模式-让一个类只有一个对象</a></p>
+<p><a href="/2020/12/dp-factory">工厂模式-将对象的创建封装起来</a></p>
+<p><a href="/2020/12/dp-strategy">策略模式-定义一个算法族</a></p>
+<p><a href="/2020/12/dp-observer">观察者模式-将消息通知给观察者</a></p>
+<p><a href="/2020/12/dp-decorator">装饰者模式-动态的包装原有对象的行为</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2020-12-30
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/12/dp-decorator/">
+            <span class="next-text nav-default">装饰者模式-动态的包装原有对象的行为</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2020/12/dp-command/" class="leancloud_visitors" data-flag-title="命令模式-将请求封装成对象">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

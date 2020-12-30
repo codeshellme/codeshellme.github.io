@@ -49,6 +49,15 @@
     </item>
     
     <item>
+      <title>命令模式-将请求封装成对象</title>
+      <link>https://codeshellme.github.io/2020/12/dp-command/</link>
+      <pubDate>Wed, 30 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-command/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍命令模式（Command Design Pattern），</description>
+    </item>
+    
+    <item>
       <title>装饰者模式-动态的包装原有对象的行为</title>
       <link>https://codeshellme.github.io/2020/12/dp-decorator/</link>
       <pubDate>Tue, 29 Dec 2020 21:38:52 +0800</pubDate>
