@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Wed, 30 Dec 2020 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 31 Dec 2020 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>适配器模式-让不兼容的接口得以适配</title>
+      <link>https://codeshellme.github.io/2020/12/dp-adapter/</link>
+      <pubDate>Thu, 31 Dec 2020 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2020/12/dp-adapter/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）</description>
+    </item>
     
     <item>
       <title>命令模式-将请求封装成对象</title>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Python 简明教程 --- 2，第一个Python 程序 - 码农充电站</title>
+  <title>适配器模式-让不兼容的接口得以适配 - 码农充电站</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="@码农加油站" /><meta name="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那你肯定是用错方法了" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
-<link rel="canonical" href="https://codeshellme.github.io/2020/05/python-learn2/" />
+<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-adapter/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -38,23 +38,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="Python 简明教程 --- 2，第一个Python 程序" />
-<meta property="og:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那你肯定是用错方法了" />
+<meta property="og:title" content="适配器模式-让不兼容的接口得以适配" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://codeshellme.github.io/2020/05/python-learn2/" />
-<meta property="article:published_time" content="2020-05-13T21:38:52+08:00" />
-<meta property="article:modified_time" content="2020-05-13T21:41:52+08:00" />
-<meta itemprop="name" content="Python 简明教程 --- 2，第一个Python 程序">
-<meta itemprop="description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那你肯定是用错方法了">
-<meta itemprop="datePublished" content="2020-05-13T21:38:52&#43;08:00" />
-<meta itemprop="dateModified" content="2020-05-13T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="1140">
+<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-adapter/" />
+<meta property="article:published_time" content="2020-12-31T21:38:52+08:00" />
+<meta property="article:modified_time" content="2020-12-31T21:41:52+08:00" />
+<meta itemprop="name" content="适配器模式-让不兼容的接口得以适配">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）">
+<meta itemprop="datePublished" content="2020-12-31T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-31T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1095">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Python 简明教程 --- 2，第一个Python 程序"/>
-<meta name="twitter:description" content="微信公众号：码农充电站pro 个人主页：https://codeshellme.github.io 如果你发现特殊情况太多，那你肯定是用错方法了"/>
+<meta name="twitter:title" content="适配器模式-让不兼容的接口得以适配"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -136,14 +136,14 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">Python 简明教程 --- 2，第一个Python 程序</h1>
+      <h1 class="post-title">适配器模式-让不兼容的接口得以适配</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2020-05-13 </span>
+        <span class="post-time"> 2020-12-31 </span>
         <div class="post-category">
-            <a href="/categories/python%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B/"> Python简明教程 </a>
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
             </div>
-          <span class="more-meta"> 1140 字 </span>
+          <span class="more-meta"> 1095 字 </span>
           <span class="more-meta"> 阅读约需 3 分钟 </span>
         
 
@@ -157,9 +157,10 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#1使用python-交互式终端">1，使用Python 交互式终端</a></li>
-        <li><a href="#2将python-代码写在文件中">2，将Python 代码写在文件中</a></li>
-        <li><a href="#3python-可执行文件">3，Python 可执行文件</a></li>
+        <li><a href="#1生活中的适配器">1，生活中的适配器</a></li>
+        <li><a href="#2适配器模式">2，适配器模式</a></li>
+        <li><a href="#3适配器模式举例">3，适配器模式举例</a></li>
+        <li><a href="#4总结">4，总结</a></li>
       </ul>
     </li>
   </ul>
@@ -168,87 +169,111 @@
 </div>
     <div class="post-content">
       <blockquote>
-<p><strong>微信公众号：码农充电站pro</strong></p>
-<p><strong>个人主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
 </blockquote>
-<blockquote>
-<p><strong>如果你发现特殊情况太多，那你肯定是用错方法了。</strong></p>
-<p>—— Carig Zerouni</p>
-</blockquote>
-<p>当你在自己的电脑上<a href="https://codeshellme.github.io/2020/05/python-learn1">安装</a>好Python 后，就可以编写Python 程序了。</p>
-<p>你可以使用Python 交互式终端，也可以将代码写在文件中，然后用Python 解释器来运行代码。</p>
-<h3 id="1使用python-交互式终端">1，使用Python 交互式终端</h3>
-<p>Python 解释器就是一个<code>交互式终端</code>，所谓交互式终端，就是你输入的代码，会被立即执行，并将结果反馈给你。</p>
-<p>直接运行Python 解释器就会进入交互模式：</p>
-<pre><code class="language-shell">$ python3
-____________________________________________
-Python 3.8.0 (default, Oct 28 2019, 16:14:01) 
-[GCC 8.3.0] on linux
-Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
-&gt;&gt;&gt; 100 + 200      # 计算 100 + 200
-300                # 计算结果
-&gt;&gt;&gt; 
-&gt;&gt;&gt; print('Hello Python.')  # 输出 &quot;Hello Python.&quot;
-Hello Python.               # 输出结果
-&gt;&gt;&gt;
-&gt;&gt;&gt; exit()                  # 退出终端，quit() 亦可
-</code></pre>
-<p>其中的符号<code>&gt;&gt;&gt;</code>  后面可以输入Python 代码，按<code>回车键</code> 后，解释器会执行你输入的代码，并将执行结果显示出来。</p>
-<p>使用<code>print()</code> 函数可以输出字符串，字符串需要<code>单引号</code>或<code>双引号</code>引住。</p>
-<p>使用<code>exit()</code> 或 <code>quit()</code> 函数可以退出终端。</p>
-<h3 id="2将python-代码写在文件中">2，将Python 代码写在文件中</h3>
-<p>一般交互式终端比较适合<code>验证/测试</code>你的想法，其并不适合编写大段的代码，写在交互式终端内的代码也无法保存下来。</p>
-<p>一个完整的程序代码都需要写在文件中，那么一个顺手的代码编辑器便可起到事半功倍的效果。</p>
-<h4 id="21python-ide-推荐">2.1，Python IDE 推荐</h4>
-<p>如果你使用的是类Unix 系统，<a href="https://blog.csdn.net/LUAOHAN/article/details/105440462">Vim</a> 是个不错的代码编辑器，但Vim 对初学者并不是很友好，你可以选择一款喜欢的IDE。</p>
-<p>IDE 即<code>集成开发工具</code>，一般都具备编写代码，代码高亮，调试代码，运行代码等功能。</p>
-<p>这里推荐两款不错的Python IDE：</p>
+<p>本篇来介绍<strong>适配器模式</strong>（<em>Adapter Design Pattern</em>），它可以将两个不兼容的接口变得兼容，而不需改变原有代码。</p>
+<h3 id="1生活中的适配器">1，生活中的适配器</h3>
+<p>生活中有很多常用的适配器，比如<strong>接口转换器</strong>和<strong>电源转换器</strong>。</p>
+<p>接口转换器可以将两个不匹配的多媒体接口变得匹配；电源转换器可以将两个不匹配的插头和插座变得匹配。</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231100102698.png?" alt="在这里插入图片描述"></p>
+<p>我们可以将适配器的作用抽象成下面的图。下图中的两个系统是不兼容的：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231112018629.png?" alt="在这里插入图片描述"></p>
+<p>这时可以创建一个适配器：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231112055788.png" alt="在这里插入图片描述"></p>
+<p>经过这个适配器，可以将两个不兼容的系统兼容在一起：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231112117302.png?" alt="在这里插入图片描述"></p>
+<p>适配器的好处在于，它并没有修改原来的系统，而是再创建一个新的组件来达到我们的需求。</p>
+<h3 id="2适配器模式">2，适配器模式</h3>
+<p><strong>适配器模式将一个类的接口转换成客户期望的另一个接口，使得原本接口不兼容的类可以相互合作</strong>。</p>
+<p>适配器模式可以分为<strong>对象适配器</strong>和<strong>类适配器</strong>两种，每种适配器中都有四个重要的组件：</p>
 <ul>
-<li><a href="https://code.visualstudio.com/">Visual Studio Code</a></li>
-<li><a href="https://www.jetbrains.com/pycharm/">PyCharm</a></li>
+<li><strong>Client</strong>：客户，只认识目标接口。</li>
+<li><strong>Target</strong>：目标接口。</li>
+<li><strong>Adapter</strong>：适配器。</li>
+<li><strong>Adaptee</strong>：被适配者。</li>
 </ul>
-<h4 id="22编写python-代码">2.2，编写Python 代码</h4>
-<p>我们编写如下代码，文件名为<code>hello.py</code>：</p>
-<pre><code class="language-python">print('Hello Python.')
+<p>适配器将被适配者转换成目标接口，以供客户使用。</p>
+<p><strong>对象适配器使用组合的方式</strong>，其类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231155732353.png?" alt="在这里插入图片描述"></p>
+<p>因为对象适配器使用组合的方式实现，所以，对于 <strong>Adaptee</strong> 的所有子类，<strong>Adapter</strong> 都可以进行适配。</p>
+<p><strong>类适配器使用多继承的方式</strong>，其类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231155932399.png?" alt="在这里插入图片描述"></p>
+<h3 id="3适配器模式举例">3，适配器模式举例</h3>
+<p>下面列举一个对象适配器的例子，来体会一下如何使用适配器模式。</p>
+<p>假如，我们有一个<strong>汽车类</strong>和一个<strong>自行车类</strong>：</p>
+<pre><code class="language-java">interface BicycleInterface {
+    void ride();
+}
+
+class Bicycle implements BicycleInterface {
+    public void ride() {
+        System.out.println(&quot;I am riding a bicycle.&quot;);
+    }
+}
+
+interface CarInterface {
+    void drive();
+}
+
+class Car implements CarInterface {
+    public void drive() {
+        System.out.println(&quot;I am driving a car.&quot;);
+    }
+}
 </code></pre>
-<blockquote>
-<p>注意：Python 代码的文件名后缀为<code>.py</code></p>
-</blockquote>
-<h4 id="23运行python-代码">2.3，运行Python 代码</h4>
-<p>使用Python 解释器，后跟文件名，可以运行Python 代码，如下：</p>
-<pre><code class="language-shell">$ python3 hello.py `执行Python 代码`
-Hello Python.	   `输出字符串`
+<p>小明只会骑自行车而不会开汽车：</p>
+<pre><code class="language-java">public class Adapter {
+
+    // 小明只会骑自行车
+    public static void xiaoMing(BicycleInterface b) {
+        b.ride();
+    }
+
+    public static void main(String[] args) {
+        Bicycle b = new Bicycle();
+        Car c = new Car();
+        
+        xiaoMing(b);    // I am riding a bicycle.
+        // xiaoMing(c); // 类型不匹配，不会开汽车
+    }
+}
 </code></pre>
-<h3 id="3python-可执行文件">3，Python 可执行文件</h3>
-<p>一般在一个Python 代码文件的第一行会有一行特殊的代码<code>#! /usr/bin/env python3</code>，例如<code>hello.py</code>：</p>
-<pre><code class="language-python">#! /usr/bin/env python3
-print('Hello Python.')
+<p>为了不改变 <code>xiaoMing</code> 方法，也就是小明不用学会开汽车，也能用骑自行车的方式开汽车，我们构造了一个 <code>CarAdapter</code> ，<code>CarAdapter</code> 继承了 <code>BicycleInterface </code> 接口，如下：</p>
+<pre><code class="language-java">class CarAdapter implements BicycleInterface {
+    private CarInterface car;
+
+    public CarAdapter(CarInterface car) {
+        this.car = car;
+    }
+
+    public void ride() {
+        car.drive();
+    }
+}
 </code></pre>
-<p>仅仅这一行代码并没有什么意义，你需要对该文件添加可执行权限，如下：</p>
-<pre><code class="language-shell">chmod +x hello.py
+<p><code>CarAdapter</code> 可以将 <code>Car</code> 适配成 <code>Bicycle</code>，这样小明在 <code>CarAdapter</code> 的帮助下也能开汽车了：</p>
+<pre><code class="language-java">CarAdapter ca = new CarAdapter(c); // 将 Car 适配成 Bicycle
+xiaoMing(ca); // 小明可以开汽车了
 </code></pre>
-<p>此时<code>hello.py</code> 文件就是一个可执行的Python 脚本，<code>file</code> 命令可以查看一个文件的类型：</p>
-<pre><code class="language-shell">$ file hello.py 
-hello.py: a /usr/bin/env python3 script, ASCII text executable
-</code></pre>
-<p>这样就可以像如下方式执行Python 程序：</p>
-<pre><code class="language-shell">$ ./hello.py 
-Hello Python.
-</code></pre>
-<blockquote>
-<p>注意：</p>
-<ol>
-<li><code>#! /usr/bin/env python3</code> 这行代码的实际作用是告诉系统，当使用<code>./hello.py</code> 来执行代码的时候，使用<code>系统环境中的python3</code> 来执行该文件。</li>
-<li><code>Python 可执行文件</code>只对类Unix 系统有效，对Windows 系统无效。</li>
-</ol>
-</blockquote>
-<p>（完。）</p>
+<p>我将完整的代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/Adapter.java">这里</a>，供大家参考。</p>
+<h3 id="4总结">4，总结</h3>
+<p>也许你已经看出来了，其实适配器模式也是一种装饰对象的方式，就像装饰者模式一样。它们不同点是：</p>
+<ul>
+<li>适配器模式的主要目的是解决接口的<strong>不兼容问题</strong>。</li>
+<li>装饰者模式的主要目的是<strong>增强原有对象的行为</strong>。</li>
+</ul>
+<p>所以，这两种模式的设计意图是不同的。</p>
+<p>（本节完。）</p>
 <hr>
 <p><strong>推荐阅读：</strong></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn0/">Python 简明教程 &mdash; 0，前言</a></p>
-<p><a href="https://codeshellme.github.io/2020/05/python-learn1/">Python 简明教程 &mdash; 1，搭建Python 环境</a></p>
+<p><a href="/2020/12/dp-factory">工厂模式-将对象的创建封装起来</a></p>
+<p><a href="/2020/12/dp-strategy">策略模式-定义一个算法族</a></p>
+<p><a href="/2020/12/dp-observer">观察者模式-将消息通知给观察者</a></p>
+<p><a href="/2020/12/dp-decorator">装饰者模式-动态的包装原有对象的行为</a></p>
+<p><a href="/2020/12/dp-command">命令模式-将请求封装成对象</a></p>
 <hr>
-<p>欢迎关注作者公众号，获取更多技术干货。</p>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
 <p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
 
     </div>
@@ -261,7 +286,7 @@ Hello Python.
   <p class="copyright-item">
     <span class="item-title">上次更改</span>
     <span class="item-content">
-        2020-05-13
+        2020-12-31
         
     </span>
   </p>
@@ -271,13 +296,9 @@ Hello Python.
 <footer class="post-footer">
       
       <nav class="post-nav">
-        <a class="prev" href="/2020/05/python-learn3/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Python 简明教程 --- 3，Python 基础概念</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/2020/05/python-learn1/">
-            <span class="next-text nav-default">Python 简明教程 --- 1，搭建Python 环境</span>
+        
+        <a class="next" href="/2020/12/dp-command/">
+            <span class="next-text nav-default">命令模式-将请求封装成对象</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>
@@ -287,7 +308,7 @@ Hello Python.
         </div>
         
 
-  <span id="/2020/05/python-learn2/" class="leancloud_visitors" data-flag-title="Python 简明教程 --- 2，第一个Python 程序">
+  <span id="/2020/12/dp-adapter/" class="leancloud_visitors" data-flag-title="适配器模式-让不兼容的接口得以适配">
 		<span class="post-meta-item-text">文章阅读量 </span>
 		<span class="leancloud-visitors-count">0</span>
 		<p></p>

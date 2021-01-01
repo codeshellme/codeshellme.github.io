@@ -16,9 +16,9 @@ public class Adapter {
 }
 
 class CarAdapter implements BicycleInterface {
-    private Car car;
+    private CarInterface car;
 
-    public CarAdapter(Car car) {
+    public CarAdapter(CarInterface car) {
         this.car = car;
     }
 
