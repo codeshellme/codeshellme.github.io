@@ -49,6 +49,15 @@
     </item>
     
     <item>
+      <title>外观模式-简化子系统的复杂性</title>
+      <link>https://codeshellme.github.io/2021/01/dp-facade/</link>
+      <pubDate>Sun, 03 Jan 2021 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/01/dp-facade/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍外观模式（Facade Design Pattern）。 1</description>
+    </item>
+    
+    <item>
       <title>适配器模式-让不兼容的接口得以适配</title>
       <link>https://codeshellme.github.io/2020/12/dp-adapter/</link>
       <pubDate>Thu, 31 Dec 2020 21:38:52 +0800</pubDate>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>适配器模式-让不兼容的接口得以适配 - 码农充电站</title>
+  <title>外观模式-简化子系统的复杂性 - 码农充电站</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍外观模式（Facade Design Pattern）。 1" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
-<link rel="canonical" href="https://codeshellme.github.io/2020/12/dp-adapter/" />
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/dp-facade/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -38,23 +38,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="适配器模式-让不兼容的接口得以适配" />
-<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）" />
+<meta property="og:title" content="外观模式-简化子系统的复杂性" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍外观模式（Facade Design Pattern）。 1" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://codeshellme.github.io/2020/12/dp-adapter/" />
-<meta property="article:published_time" content="2020-12-31T21:38:52+08:00" />
-<meta property="article:modified_time" content="2020-12-31T21:41:52+08:00" />
-<meta itemprop="name" content="适配器模式-让不兼容的接口得以适配">
-<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）">
-<meta itemprop="datePublished" content="2020-12-31T21:38:52&#43;08:00" />
-<meta itemprop="dateModified" content="2020-12-31T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="1095">
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/dp-facade/" />
+<meta property="article:published_time" content="2021-01-03T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-03T21:41:52+08:00" />
+<meta itemprop="name" content="外观模式-简化子系统的复杂性">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍外观模式（Facade Design Pattern）。 1">
+<meta itemprop="datePublished" content="2021-01-03T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-03T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1018">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="适配器模式-让不兼容的接口得以适配"/>
-<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍适配器模式（Adapter Design Pattern）"/>
+<meta name="twitter:title" content="外观模式-简化子系统的复杂性"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍外观模式（Facade Design Pattern）。 1"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -136,14 +136,14 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">适配器模式-让不兼容的接口得以适配</h1>
+      <h1 class="post-title">外观模式-简化子系统的复杂性</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2020-12-31 </span>
+        <span class="post-time"> 2021-01-03 </span>
         <div class="post-category">
             <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
             </div>
-          <span class="more-meta"> 1095 字 </span>
+          <span class="more-meta"> 1018 字 </span>
           <span class="more-meta"> 阅读约需 3 分钟 </span>
         
 
@@ -157,9 +157,9 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#1生活中的适配器">1，生活中的适配器</a></li>
-        <li><a href="#2适配器模式">2，适配器模式</a></li>
-        <li><a href="#3适配器模式举例">3，适配器模式举例</a></li>
+        <li><a href="#1外观模式">1，外观模式</a></li>
+        <li><a href="#2最少知识原则">2，最少知识原则</a></li>
+        <li><a href="#3外观模式举例">3，外观模式举例</a></li>
         <li><a href="#4总结">4，总结</a></li>
       </ul>
     </li>
@@ -172,106 +172,144 @@
 <p><strong>公号：码农充电站pro</strong></p>
 <p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
 </blockquote>
-<p>本篇来介绍<strong>适配器模式</strong>（<em>Adapter Design Pattern</em>），它可以将两个不兼容的接口变得兼容，而不需改变原有代码。</p>
-<h3 id="1生活中的适配器">1，生活中的适配器</h3>
-<p>生活中有很多常用的适配器，比如<strong>接口转换器</strong>和<strong>电源转换器</strong>。</p>
-<p>接口转换器可以将两个不匹配的多媒体接口变得匹配；电源转换器可以将两个不匹配的插头和插座变得匹配。</p>
-<p><img src="https://img-blog.csdnimg.cn/20201231100102698.png?" alt="在这里插入图片描述"></p>
-<p>我们可以将适配器的作用抽象成下面的图。下图中的两个系统是不兼容的：</p>
-<p><img src="https://img-blog.csdnimg.cn/20201231112018629.png?" alt="在这里插入图片描述"></p>
-<p>这时可以创建一个适配器：</p>
-<p><img src="https://img-blog.csdnimg.cn/20201231112055788.png" alt="在这里插入图片描述"></p>
-<p>经过这个适配器，可以将两个不兼容的系统兼容在一起：</p>
-<p><img src="https://img-blog.csdnimg.cn/20201231112117302.png?" alt="在这里插入图片描述"></p>
-<p>适配器的好处在于，它并没有修改原来的系统，而是再创建一个新的组件来达到我们的需求。</p>
-<h3 id="2适配器模式">2，适配器模式</h3>
-<p><strong>适配器模式将一个类的接口转换成客户期望的另一个接口，使得原本接口不兼容的类可以相互合作</strong>。</p>
-<p>适配器模式可以分为<strong>对象适配器</strong>和<strong>类适配器</strong>两种，每种适配器中都有四个重要的组件：</p>
-<ul>
-<li><strong>Client</strong>：客户，只认识目标接口。</li>
-<li><strong>Target</strong>：目标接口。</li>
-<li><strong>Adapter</strong>：适配器。</li>
-<li><strong>Adaptee</strong>：被适配者。</li>
-</ul>
-<p>适配器将被适配者转换成目标接口，以供客户使用。</p>
-<p><strong>对象适配器使用组合的方式</strong>，其类图如下：</p>
-<p><img src="https://img-blog.csdnimg.cn/20201231155732353.png?" alt="在这里插入图片描述"></p>
-<p>因为对象适配器使用组合的方式实现，所以，对于 <strong>Adaptee</strong> 的所有子类，<strong>Adapter</strong> 都可以进行适配。</p>
-<p><strong>类适配器使用多继承的方式</strong>，其类图如下：</p>
-<p><img src="https://img-blog.csdnimg.cn/20201231155932399.png?" alt="在这里插入图片描述"></p>
-<h3 id="3适配器模式举例">3，适配器模式举例</h3>
-<p>下面列举一个对象适配器的例子，来体会一下如何使用适配器模式。</p>
-<p>假如，我们有一个<strong>汽车类</strong>和一个<strong>自行车类</strong>：</p>
-<pre><code class="language-java">interface BicycleInterface {
-    void ride();
-}
+<p>今天来介绍<strong>外观模式</strong>（<em>Facade Design Pattern</em>）。</p>
+<h3 id="1外观模式">1，外观模式</h3>
+<p><strong>外观模式</strong>又叫<strong>门面模式</strong>，它提供了一个统一的（高层）接口，用来访问子系统中的一群接口，使得子系统更容易使用。</p>
+<p>外观模式的类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201231174329357.png?" alt="在这里插入图片描述"></p>
+<p><strong>Facede</strong> 简化了原来的非常复杂的子系统，使得子系统更易使用，<strong>Client</strong> 只需依赖 <strong>Facede</strong> 即可。</p>
+<p>虽然有了 <strong>Facede</strong> ，但 <strong>Facede</strong> 并影响原来的子系统，也就是其它客户依然可以使用原有系统。</p>
+<h3 id="2最少知识原则">2，最少知识原则</h3>
+<p><strong>最少知识原则</strong>告诉我们，应该尽量减少对象之间的交互，只与自己最需要的接口建立关系。</p>
+<p>在设计系统时，不应该让太多的类耦合在一起，以免一小部分的改动，而影响到整个系统的使用。</p>
+<p>这也就是我们俗话说的：<strong>牵一发而动全身</strong>，最少知识原则的就是让我们避免这种情况的发生。</p>
+<p>外观模式则使用了最少知识原则。</p>
+<h3 id="3外观模式举例">3，外观模式举例</h3>
+<p>下面举一个简单的例子，来体会下外观模式的使用。俗话说：民以食为天。我们来举一个吃饭的例子。</p>
+<p>话说，小明每次吃饭都要经过以下步骤：</p>
+<ol>
+<li>去超市买菜。</li>
+<li>回到家后，洗菜。</li>
+<li>炒菜。</li>
+<li>煮饭。</li>
+<li>将饭菜盛到碗里。</li>
+<li>吃饭。</li>
+<li>洗碗。</li>
+</ol>
+<p>可见小明吃一顿饭真的很麻烦。</p>
+<p>我们用代码来模拟上面的过程，首先创建了三个类，分别是关于<strong>菜，饭，碗</strong>的操作：</p>
+<pre><code class="language-java">class Vegetables {
+    public void bugVegetables() {
+        System.out.println(&quot;buying vegetables.&quot;);
+    }
 
-class Bicycle implements BicycleInterface {
-    public void ride() {
-        System.out.println(&quot;I am riding a bicycle.&quot;);
+    public void washVegetables() {
+        System.out.println(&quot;washing vegetables.&quot;);
+    }
+
+    public void fryVegetables() {
+        System.out.println(&quot;frying vegetables.&quot;);
+    }
+
+    public void toBowl() {
+        System.out.println(&quot;putting the vegetables into the bowl.&quot;);
     }
 }
 
-interface CarInterface {
-    void drive();
-}
+class Rice {
+    public void fryRice() {
+        System.out.println(&quot;frying rice.&quot;);
+    }
 
-class Car implements CarInterface {
-    public void drive() {
-        System.out.println(&quot;I am driving a car.&quot;);
+    public void toBowl() {
+        System.out.println(&quot;putting the rice into the bowl.&quot;);
     }
 }
-</code></pre>
-<p>小明只会骑自行车而不会开汽车：</p>
-<pre><code class="language-java">public class Adapter {
 
-    // 小明只会骑自行车
-    public static void xiaoMing(BicycleInterface b) {
-        b.ride();
+class Bowl {
+    private Vegetables vegetables;
+    private Rice rice;
+
+    public Bowl(Vegetables vegetables, Rice rice) {
+        this.vegetables = vegetables;
+        this.rice = rice;
     }
 
-    public static void main(String[] args) {
-        Bicycle b = new Bicycle();
-        Car c = new Car();
-        
-        xiaoMing(b);    // I am riding a bicycle.
-        // xiaoMing(c); // 类型不匹配，不会开汽车
-    }
-}
-</code></pre>
-<p>为了不改变 <code>xiaoMing</code> 方法，也就是小明不用学会开汽车，也能用骑自行车的方式开汽车，我们构造了一个 <code>CarAdapter</code> ，<code>CarAdapter</code> 继承了 <code>BicycleInterface </code> 接口，如下：</p>
-<pre><code class="language-java">class CarAdapter implements BicycleInterface {
-    private CarInterface car;
-
-    public CarAdapter(CarInterface car) {
-        this.car = car;
+    // 盛好饭菜
+    public void prepare() {
+        vegetables.toBowl();
+        rice.toBowl();
     }
 
-    public void ride() {
-        car.drive();
+    public void washBowl() {
+        System.out.println(&quot;washing bowl.&quot;);
     }
 }
 </code></pre>
-<p><code>CarAdapter</code> 可以将 <code>Car</code> 适配成 <code>Bicycle</code>，这样小明在 <code>CarAdapter</code> 的帮助下也能开汽车了：</p>
-<pre><code class="language-java">CarAdapter ca = new CarAdapter(c); // 将 Car 适配成 Bicycle
-xiaoMing(ca); // 小明可以开汽车了
+<p>小明每次吃饭都需要与上面三个类做交互，而且需要很多步骤，如下：</p>
+<pre><code class="language-java">Vegetables v = new Vegetables();
+v.bugVegetables();
+v.washVegetables();
+v.fryVegetables();
+
+Rice r = new Rice();
+r.fryRice();
+
+Bowl b = new Bowl(v, r);
+b.prepare();
+
+System.out.println(&quot;xiao ming is having a meal.&quot;);
+
+b.washBowl();
 </code></pre>
-<p>我将完整的代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/Adapter.java">这里</a>，供大家参考。</p>
+<p>后来，小明请了一位保姆，来帮他做饭洗碗等。所以我们创建了 <code>Nanny</code> 类：</p>
+<pre><code class="language-java">class Nanny {
+    private Vegetables v;
+    private Rice r;
+    private Bowl b;
+
+    public Nanny() {
+        v = new Vegetables();
+        r = new Rice();
+        b = new Bowl(v, r);
+    }
+
+    public void prepareMeal() {
+        v.bugVegetables();
+        v.washVegetables();
+        v.fryVegetables();
+
+        r.fryRice();
+
+        b.prepare();
+    }
+
+    public void cleanUp() {
+        b.washBowl();
+    }
+}
+</code></pre>
+<p>这样，小明再吃饭的时候就只需要跟保姆说一声，保姆就帮他做好了所有的事情：</p>
+<pre><code class="language-java">Nanny n = new Nanny();
+n.prepareMeal();
+
+System.out.println(&quot;xiao ming is having a meal.&quot;);
+
+n.cleanUp();
+</code></pre>
+<p>这样大大简化了小明吃饭的步骤，也节约了很多时间。</p>
+<p>我将完整的代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/Facede.java">这里</a>，供大家参考。</p>
 <h3 id="4总结">4，总结</h3>
-<p>也许你已经看出来了，其实适配器模式也是一种装饰对象的方式，就像<a href="/2020/12/dp-decorator">装饰者模式</a>一样。它们不同点是：</p>
-<ul>
-<li>适配器模式的主要目的是解决接口的<strong>不兼容问题</strong>。</li>
-<li>装饰者模式的主要目的是<strong>增强原有对象的行为</strong>。</li>
-</ul>
-<p>所以，这两种模式的设计意图是不同的。</p>
+<p>外观模式主要用于简化系统的复杂度，为客户提供更易使用的接口，减少客户对复杂系统的依赖。</p>
+<p>从外观模式中我们也能看到最少知识原则的运用。</p>
 <p>（本节完。）</p>
 <hr>
 <p><strong>推荐阅读：</strong></p>
-<p><a href="/2020/12/dp-factory">工厂模式-将对象的创建封装起来</a></p>
 <p><a href="/2020/12/dp-strategy">策略模式-定义一个算法族</a></p>
 <p><a href="/2020/12/dp-observer">观察者模式-将消息通知给观察者</a></p>
 <p><a href="/2020/12/dp-decorator">装饰者模式-动态的包装原有对象的行为</a></p>
 <p><a href="/2020/12/dp-command">命令模式-将请求封装成对象</a></p>
+<p><a href="/2020/12/dp-adapter">适配器模式-让不兼容的接口得以适配</a></p>
 <hr>
 <p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
 <p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
@@ -286,7 +324,7 @@ xiaoMing(ca); // 小明可以开汽车了
   <p class="copyright-item">
     <span class="item-title">上次更改</span>
     <span class="item-content">
-        2020-12-31
+        2021-01-03
         
     </span>
   </p>
@@ -296,13 +334,9 @@ xiaoMing(ca); // 小明可以开汽车了
 <footer class="post-footer">
       
       <nav class="post-nav">
-        <a class="prev" href="/2021/01/dp-facade/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">外观模式-简化子系统的复杂性</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/2020/12/dp-command/">
-            <span class="next-text nav-default">命令模式-将请求封装成对象</span>
+        
+        <a class="next" href="/2020/12/dp-adapter/">
+            <span class="next-text nav-default">适配器模式-让不兼容的接口得以适配</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>
@@ -312,7 +346,7 @@ xiaoMing(ca); // 小明可以开汽车了
         </div>
         
 
-  <span id="/2020/12/dp-adapter/" class="leancloud_visitors" data-flag-title="适配器模式-让不兼容的接口得以适配">
+  <span id="/2021/01/dp-facade/" class="leancloud_visitors" data-flag-title="外观模式-简化子系统的复杂性">
 		<span class="post-meta-item-text">文章阅读量 </span>
 		<span class="leancloud-visitors-count">0</span>
 		<p></p>
