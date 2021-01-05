@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>模板方法模式-封装一套算法流程 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍模板方法模式（Template Method Design Patte" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/dp-template-method/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="模板方法模式-封装一套算法流程" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍模板方法模式（Template Method Design Patte" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/dp-template-method/" />
+<meta property="article:published_time" content="2021-01-04T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-04T21:41:52+08:00" />
+<meta itemprop="name" content="模板方法模式-封装一套算法流程">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍模板方法模式（Template Method Design Patte">
+<meta itemprop="datePublished" content="2021-01-04T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-04T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1904">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="模板方法模式-封装一套算法流程"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍模板方法模式（Template Method Design Patte"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">模板方法模式-封装一套算法流程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-04 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 1904 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1制作饮料的过程">1，制作饮料的过程</a></li>
+        <li><a href="#2模拟制作饮料">2，模拟制作饮料</a></li>
+        <li><a href="#3分析代码">3，分析代码</a></li>
+        <li><a href="#4改进代码">4，改进代码</a></li>
+        <li><a href="#5模板方法">5，模板方法</a></li>
+        <li><a href="#6总结">6，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>今天来介绍<strong>模板方法模式</strong>（<em>Template Method Design Pattern</em>）。</p>
+<h3 id="1制作饮料的过程">1，制作饮料的过程</h3>
+<p><img src="https://img-blog.csdnimg.cn/20210101113704489.png?" alt="在这里插入图片描述"></p>
+<p>假如我们要制作两种饮料：苹果饮料和橙子饮料。这两种饮料的制作流程如下：</p>
+<ul>
+<li><strong>苹果饮料制作流程</strong>：
+<ul>
+<li>把苹果榨成苹果汁</li>
+<li>将苹果汁倒入杯中</li>
+<li>向杯中倒入水</li>
+<li>根据客户喜好是否放入白糖
+<ul>
+<li>喜欢则放入白糖，否则不放白糖</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>橙子饮料制作流程</strong>：
+<ul>
+<li>把橙子榨成橙汁</li>
+<li>将橙汁倒入杯中</li>
+<li>向杯中倒入水</li>
+<li>根据客户喜好是否放入白糖
+<ul>
+<li>喜欢则放入白糖，否则不放白糖</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2模拟制作饮料">2，模拟制作饮料</h3>
+<p>如果要模拟饮料的制作过程，按照最直接的想法，我们创建两个类 <strong>AppleBeverage</strong> 和 <strong>OrangeBeverage</strong> 分别用于制作苹果饮料和橙子饮料。</p>
+<p>首先根据苹果饮料的制作流程编写 <strong>AppleBeverage</strong> 类：</p>
+<pre><code class="language-java">class AppleBeverage {
+    private boolean isSweet;
+
+    public AppleBeverage(boolean isSweet) {
+        this.isSweet = isSweet;
+    }
+
+    // 把苹果榨成苹果汁
+    public void squeezeAppleJuice() {
+        System.out.println(&quot;squeeze apple juice&quot;);
+    }
+
+    // 将苹果汁倒入杯中
+    public void appleJuiceToCup() {
+        System.out.println(&quot;pour the apple juice into the cup&quot;);
+    }
+
+    // 向杯中倒入水
+    public void waterToCup() {
+        System.out.println(&quot;pour water into the cup&quot;);
+    }
+
+    // 向杯中倒入白糖
+    public void sugarToCup() {
+        System.out.println(&quot;pour sugar into the cup&quot;);
+    }
+
+    // 制作苹果饮料
+    public void makeAppleBeverage() {
+        squeezeAppleJuice();
+        appleJuiceToCup();
+        waterToCup();
+
+        if (isSweet) {
+            sugarToCup();
+        }
+    }
+}
+</code></pre>
+<p>再根据橙子饮料的制作流程编写 <strong>OrangeBeverage</strong> 类：</p>
+<pre><code class="language-java">class OrangeBeverage {
+    private boolean isSweet;
+
+    public OrangeBeverage(boolean isSweet) {
+        this.isSweet = isSweet;
+    }
+
+    // 把橙子榨成橙汁
+    public void squeezeOrangeJuice() {
+        System.out.println(&quot;squeeze orange juice&quot;);
+    }
+
+    // 将橙汁倒入杯中
+    public void orangeJuiceToCup() {
+        System.out.println(&quot;pour the orange juice into the cup&quot;);
+    }
+
+    // 向杯中倒入水
+    public void waterToCup() {
+        System.out.println(&quot;pour water into the cup&quot;);
+    }
+
+    // 向杯中倒入白糖
+    public void sugarToCup() {
+        System.out.println(&quot;pour sugar into the cup&quot;);
+    }
+
+    // 制作橙子饮料
+    public void makeOrangeBeverage() {
+        squeezeOrangeJuice();
+        orangeJuiceToCup();
+        waterToCup();
+
+        if (isSweet) {
+            sugarToCup();
+        }
+    }
+}
+</code></pre>
+<h3 id="3分析代码">3，分析代码</h3>
+<p>可以看到上面两个类的代码非常简单，为了更加详细的分析，我画出了这两个类的类图：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021010117003838.png" alt="在这里插入图片描述"></p>
+<p>我将这两个类中的方法相同的部分用<strong>蓝色</strong>标了出来，可以看到，这两个类中的 <code>waterToCup</code> 和 <code>sugarToCup</code> 方法一模一样，其它三个方法也是非常的相似。</p>
+<p>这样的代码显然是没有<strong>复用</strong>已有的代码。</p>
+<h3 id="4改进代码">4，改进代码</h3>
+<p>那么，自然而然，我们可以将两个类中相同的部分，抽象出来放入一个父类中，然后不同的部分让子类去实现。</p>
+<p>因此，我们可以编写出父类，如下：</p>
+<pre><code class="language-java">abstract class Beverage {
+    protected boolean isSweet;
+
+    // 榨果汁
+    public abstract void squeezeJuice();
+    
+    // 将果汁倒入杯中
+    public abstract void juiceToCup();
+    
+    // 向杯中倒入水
+    public void waterToCup() {
+        System.out.println(&quot;pour water into the cup&quot;);
+    }
+
+    // 向杯中倒入白糖
+    public void sugarToCup() {
+        System.out.println(&quot;pour sugar into the cup&quot;);
+    }
+
+    // 制作苹果饮料
+    public final void makeBeverage() {
+        squeezeJuice();
+        juiceToCup();
+        waterToCup();
+        
+        // 根据喜好是否加白糖
+        if (isSweet) {
+            sugarToCup();
+        }
+    }
+}
+</code></pre>
+<p>我们将所有相同的代码都抽取到了 <code>Beverage</code> 类中，相同的部分有：</p>
+<ul>
+<li><code>isSweet</code> 变量</li>
+<li><code>waterToCup</code> 方法</li>
+<li><code>sugarToCup</code> 方法</li>
+<li><code>makeBeverage</code> 方法</li>
+</ul>
+<p>其中 <code>makeBeverage</code> 方法使用了 <code>final</code> 关键字来修饰，表示我们不希望子类去修改它。</p>
+<p>不同的部分有：</p>
+<ul>
+<li><code>squeezeJuice</code> 方法</li>
+<li><code>juiceToCup</code> 方法</li>
+</ul>
+<p>这两个方法都是抽象方法，表示我们希望子类根据自己的需求去实现。最终在子类中调用 <code>makeBeverage</code> 方法时，<code>makeBeverage</code>  会依据<strong>多态性</strong>来调用正确的 <code>squeezeJuice</code> 和 <code>juiceToCup</code> 方法。</p>
+<p>下面编写 <strong>AppleBeverage</strong> 类：</p>
+<pre><code class="language-java">class AppleBeverage extends Beverage {
+    public AppleBeverage(boolean isSweet) {
+        this.isSweet = isSweet;
+    }
+
+    public void squeezeJuice() {
+        System.out.println(&quot;squeeze apple juice&quot;);
+    }
+
+    public void juiceToCup() {
+        System.out.println(&quot;pour the apple juice into the cup&quot;);
+    }
+}
+</code></pre>
+<p><strong>AppleBeverage</strong> 继承了 <strong>Beverage</strong>，并且实现了 <code>squeezeJuice</code> 和 <code>juiceToCup</code> 方法。</p>
+<p>再编写 <strong>OrangeBeverage</strong> 类：</p>
+<pre><code class="language-java">class OrangeBeverage extends Beverage {
+    public OrangeBeverage(boolean isSweet) {
+        this.isSweet = isSweet;
+    }
+
+    public void squeezeJuice() {
+        System.out.println(&quot;squeeze orange juice&quot;);
+    }
+
+    public void juiceToCup() {
+        System.out.println(&quot;pour the orange juice into the cup&quot;);
+    }
+}
+</code></pre>
+<p><strong>OrangeBeverage</strong> 继承了 <strong>Beverage</strong>，并且实现了 <code>squeezeJuice</code> 和 <code>juiceToCup</code> 方法。</p>
+<p>经过改进后的代码类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210102101253500.png?" alt="在这里插入图片描述"></p>
+<p>可以看到经过改进的代码，重复的代码都抽取到了父类中，能复用的代码都进行了复用，子类只需根据自己的需要实现父类的抽象方法就行。</p>
+<p>我将所有代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/TemplateMethod.java">这里</a>，供大家参考。</p>
+<h3 id="5模板方法">5，模板方法</h3>
+<p>实际上，上面代码的实现方式就使用到了<strong>模板方法模式</strong>。</p>
+<p><strong>模板方法模式在一个方法中定义一个算法的骨架，而将一些步骤延迟到子类中，使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤</strong>。</p>
+<blockquote>
+<p>这里的<strong>算法</strong>指的是实际项目中的<strong>业务逻辑</strong>。</p>
+</blockquote>
+<p>模板方法的类图很简单，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210102110204907.png?" alt="在这里插入图片描述"></p>
+<p>模板方法模式的重点在于，它在父类中定义了一个通用的<strong>算法框架</strong>（<em>templateMethod</em>），也就是上面代码中的 <code>makeBeverage</code> 方法，这个方法就是<strong>模板方法</strong>，一般用 <code>final</code> 修饰，用于防止子类覆盖。</p>
+<p>另外还有一些抽象方法，这些抽象方法都用 <code>abstract</code> 进行了修饰，表示必须由子类实现。算法框架调用了这些抽象方法，这样就相当于子类<strong>重新定义</strong>了算法中的某些步骤。</p>
+<p>在上面代码的 <code>makeBeverage</code> 方法中还用到了一个变量 <code>isSweet</code>，这个变量在子类对象中的不同取值，会影响到 <code>makeBeverage</code> 的执行流程。</p>
+<p>这个 <code>isSweet</code> 变量叫作“<strong>钩子</strong>”，钩子可以是一个变量，也可以是一个方法，它可以改变模板方法的执行流程。</p>
+<h3 id="6总结">6，总结</h3>
+<p>模板方法模式提供了一个算法步骤，从中我们能看到代码复用的技巧。</p>
+<p>模板方法模式中的抽象方法由子类实现，这意味着父类定义了算法的框架流程，而将算法的实现延迟到了子类中。</p>
+<p>我们通常会将<strong>模板方法</strong>与<a href="https://blog.csdn.net/LUAOHAN/article/details/111577673"><strong>工厂方法</strong></a>放在一起比较，这两个模式有一个明显的不同点，就是<strong>模板方法模式</strong>将一个算法流程中的某些步骤的具体实现延迟到了子类中，而<strong>工厂方法模式</strong>是将对象的创建延迟到了子类中。</p>
+<p>在 <strong>Java JDK</strong> 中，我们能看到很多模板方法的应用案例，比如 <code>InputStream.read(byte b[], int off, int len)</code> 方法。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/dp-observer">观察者模式-将消息通知给观察者</a></p>
+<p><a href="/2020/12/dp-decorator">装饰者模式-动态的包装原有对象的行为</a></p>
+<p><a href="/2020/12/dp-command">命令模式-将请求封装成对象</a></p>
+<p><a href="/2020/12/dp-adapter">适配器模式-让不兼容的接口得以适配</a></p>
+<p><a href="/2021/01/dp-facade">外观模式-简化子系统的复杂性</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-04
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/01/dp-facade/">
+            <span class="next-text nav-default">外观模式-简化子系统的复杂性</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/dp-template-method/" class="leancloud_visitors" data-flag-title="模板方法模式-封装一套算法流程">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
