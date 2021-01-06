@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>迭代器模式-统一集合的遍历方式 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍迭代器模式（Iterator Design Pattern" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/dp-iterator/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="迭代器模式-统一集合的遍历方式" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍迭代器模式（Iterator Design Pattern" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/dp-iterator/" />
+<meta property="article:published_time" content="2021-01-05T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-05T21:41:52+08:00" />
+<meta itemprop="name" content="迭代器模式-统一集合的遍历方式">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍迭代器模式（Iterator Design Pattern">
+<meta itemprop="datePublished" content="2021-01-05T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-05T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1621">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="迭代器模式-统一集合的遍历方式"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 今天来介绍迭代器模式（Iterator Design Pattern"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">迭代器模式-统一集合的遍历方式</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-05 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 1621 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1遍历集合元素">1，遍历集合元素</a></li>
+        <li><a href="#2迭代器模式">2，迭代器模式</a></li>
+        <li><a href="#3迭代器不支持增删">3，迭代器不支持增删</a></li>
+        <li><a href="#4总结">4，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>今天来介绍<strong>迭代器模式</strong>（<code>Iterator Design Pattern</code>），它还有另一个名字，叫作<strong>游标模式</strong>（<code>Cursor Design Pattern</code>）。</p>
+<h3 id="1遍历集合元素">1，遍历集合元素</h3>
+<p>现在的高级语言（比如 <code>C++</code>，<code>Java</code>，<code>Python</code> 等）都支持很多种<strong>集合</strong>（比如 <code>List</code>，<code>Map</code>，<code>Set</code> 等），用于存储对象。</p>
+<p>同时这些高级语言也都原生支持了<strong>迭代器</strong>，这使得<strong>遍历</strong>集合变得非常简单。</p>
+<p>下面我们来看下，如果不使用迭代器，如何遍历集合。</p>
+<p>以 <code>Java ArrayList</code> 为例，创建 <code>list</code>，并加入 5 个元素：</p>
+<pre><code class="language-java">ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+list.add(1);
+list.add(2);
+list.add(3);
+list.add(4);
+list.add(5);
+</code></pre>
+<p>用 for 循环遍历 <code>list</code>：</p>
+<pre><code class="language-java">for (int i = 0; i &lt; list.size(); i++) {
+    System.out.println(list.get(i));
+}
+</code></pre>
+<p>如果不用迭代器，只能使用 <code>get</code> 方法，将集合中的元素一个个取出。</p>
+<p>如果使用迭代器遍历元素，就可以像下面这样：</p>
+<pre><code class="language-java">Iterator&lt;Integer&gt; i = list.iterator();
+while (i.hasNext()) {
+    System.out.println(i.next());
+}
+</code></pre>
+<p>先用 <code>iterator</code> 方法返回迭代器，再用 <code>hasNext</code> 方法查看迭代器中是否还有元素，如果有元素则用 <code>next</code> 方法取出元素。</p>
+<p>更简单的方式是使用 <code>forEeah</code> 循环：</p>
+<pre><code class="language-java">for (Object i: list) {
+    System.out.println(i);
+}
+</code></pre>
+<blockquote>
+<p><strong>forEach 循环</strong>（对迭代器的一种包装）是 <strong>Java 5</strong> 中引入的遍历集合的方式，这种方式不再需要获取<strong>迭代器</strong>，甚至不需要知道所遍历的是哪种数据结构，也不需知道其中存储的是什么类型的数据。</p>
+</blockquote>
+<p><em><strong>Java 集合框架与迭代器</strong></em></p>
+<p>Java 中的 <code>Set</code>，<code>List</code>，<code>Queue</code> 都实现了 <code>Collection</code> 接口，该接口中的 <code>iterator</code> 方法返回一个迭代器，用于遍历集合中的元素。</p>
+<p>这使得所有的 <code>Collection</code> 对象的遍历都变得非常简单，使用 <code>forEach</code> 循环即可：</p>
+<pre><code class="language-java">for (Object o: collection) {
+    // 遍历元素
+}
+</code></pre>
+<h3 id="2迭代器模式">2，迭代器模式</h3>
+<p><strong>迭代器模式提供了一种方法，用于遍历集合对象中的元素，而又不暴露其内部的细节</strong>。</p>
+<p>一般的<strong>迭代器都要实现一个迭代器接口</strong>，该接口至少包含两个方法，即 <code>hasNext</code> 和 <code>next</code>：</p>
+<pre><code class="language-java">public interface Iterator {
+    boolean hasNext();
+    Object next();
+}
+</code></pre>
+<p><code>hasNext</code> 方法用于查看集合中是否还有下一个元素；<code>next</code> 方法用于返回集合中的下一个元素，并移动指向元素的游标。</p>
+<blockquote>
+<p><strong>Java</strong> 中的 <strong>Iterator</strong> 接口中还有一个 <code>remove</code> 方法，其实这个方法的必要性并不大，所以它的默认实现是抛出 <code>UnsupportedOperationException</code> 异常。因此，对于 <code>remove</code> 方法，不需要给予太多的关注。</p>
+</blockquote>
+<p>这使得每个集合中的元素的访问方式都是统一的。</p>
+<p>一个完整的迭代器模式一般会包含<strong>集合</strong>与<strong>迭代器</strong>两部分，为了达到<strong>基于接口而非实现编程</strong>的原则，还抽象出了两个接口，其类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021010317052726.png?" alt="在这里插入图片描述"></p>
+<p><strong>Collection</strong> 中的 <code>iterator</code> 方法用于返回当前对象的迭代器，从而遍历集合中的元素。</p>
+<p>迭代器模式将集合对象的遍历操作从集合类中拆分出来，放到迭代器类中，使得两者的职责更加单一。</p>
+<blockquote>
+<p>这其实用到了<strong>单一职责原则</strong>：一个类应该只有一个引起变化的原因。</p>
+</blockquote>
+<h3 id="3迭代器不支持增删">3，迭代器不支持增删</h3>
+<p>迭代器的目的是为了方便元素的<strong>遍历</strong>，而如果在遍历的过程中<strong>增删元素</strong>，则会导致元素<strong>重复遍历</strong>或者<strong>遍历不到</strong>。</p>
+<p>下面来看下这种错误是如何产生的。</p>
+<p>假设一个列表中有 <code>a</code>，<code>b</code>，<code>c</code>，<code>d</code> 四个元素，我们从前往后遍历。刚开始时，游标 <code>cursor</code> 指向 <code>a</code>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210103174805252.png" alt="在这里插入图片描述"></p>
+<p>当遍历到 <code>b</code> 时，<code>cursor</code> 指向 <code>b</code>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210103174858699.png" alt="在这里插入图片描述"></p>
+<p><em><strong>遍历时删除元素</strong></em></p>
+<p>如果此时将 <code>a</code> 元素删除，那么所有其它元素都会前移一个位置：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210103182519453.png" alt="在这里插入图片描述"></p>
+<p>从而，这时的游标就会指向 <code>c</code>，这就会导致 <code>b</code> 没有被遍历到。</p>
+<p><em><strong>遍历时增加元素</strong></em></p>
+<p>如果在遍历到 <code>b</code> 的时候，在表头增加一个元素 <code>x</code>，那么所有的元素都会后移一个位置：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210103182053225.png" alt="在这里插入图片描述"></p>
+<p>从而，这时的游标依然是指向 <code>a</code>，这就会导致 <code>a</code> 被重复遍历了。</p>
+<p>因此，在使用迭代器遍历元素的时候都会禁止增删元素。</p>
+<p><em><strong>Java 如何禁止增删元素</strong></em></p>
+<p>为了禁止在遍历时增删元素，Java 的做法是，在遍历元素时会进行 <code>checkForXXX</code> 操作，目的是检查是否有元素增删，如果有增删的情况，则抛出异常。</p>
+<h3 id="4总结">4，总结</h3>
+<p>迭代器模式是为了方便元素的遍历，它统一了集合的遍历方式。它将元素的遍历操作从集合中拆分出来，从而使得两者得以解耦。</p>
+<p>大部分高级语言都原生支持迭代器，这使得开发人员可以专注于业务实现，而不用过多的关心底层实现。</p>
+<p>如果在迭代器的遍历过程中增删元素，则会导致元素的遍历发生错误，因此迭代器中一般不支持增删元素。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/dp-observer">观察者模式-将消息通知给观察者</a></p>
+<p><a href="/2020/12/dp-decorator">装饰者模式-动态的包装原有对象的行为</a></p>
+<p><a href="/2020/12/dp-command">命令模式-将请求封装成对象</a></p>
+<p><a href="/2020/12/dp-adapter">适配器模式-让不兼容的接口得以适配</a></p>
+<p><a href="/2021/01/dp-facade">外观模式-简化子系统的复杂性</a></p>
+<p><a href="/2021/01/dp-template-method">模板方法模式-封装一套算法流程</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/01/dp-template-method/">
+            <span class="next-text nav-default">模板方法模式-封装一套算法流程</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/dp-iterator/" class="leancloud_visitors" data-flag-title="迭代器模式-统一集合的遍历方式">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
