@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，什么是决策树？ 决策树是一种机器学习算法，我们可以使">
 <meta itemprop="datePublished" content="2020-11-08T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-11-08T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="3953">
+<meta itemprop="wordCount" content="4049">
 
 
 
@@ -143,8 +143,8 @@
         <div class="post-category">
             <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
             </div>
-          <span class="more-meta"> 3953 字 </span>
-          <span class="more-meta"> 阅读约需 8 分钟 </span>
+          <span class="more-meta"> 4049 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
         
 
       </div>
@@ -164,6 +164,7 @@
         <li><a href="#5id3-算法">5，ID3 算法</a></li>
         <li><a href="#6c45-算法">6，C4.5 算法</a></li>
         <li><a href="#7cart-算法">7，CART 算法</a></li>
+        <li><a href="#8总结">8，总结</a></li>
       </ul>
     </li>
   </ul>
@@ -520,7 +521,11 @@ print(ent)	# 0.811278124459
 <p>当然C4.5 算法也并不是没有缺点，由于 C4.5算法需要对数据集进行多次扫描，所以算法效率相对较低。</p>
 <p>ID3 和C4.5 都是基于信息熵，所以涉及大量的对数运算。而 CART 算法基于基尼系数，不涉及对数运算。</p>
 <h3 id="7cart-算法">7，CART 算法</h3>
-<p>CART 算法全称为<strong>分类回归树</strong>，基于基尼系数。</p>
+<p><strong>CART 算法</strong>全称为<strong>分类回归树</strong>，它即可以用于<strong>分类问题</strong>，也可以用于<strong>回归问题</strong>，CART 算法基于基尼系数。</p>
+<blockquote>
+<p>回归问题根据数据的特征，可分为<strong>线性回归</strong>和<strong>非线性回归</strong>。</p>
+<p>CART 算法主要用于处理非线性回归问题，至于线性回归问题，可使用<a href="/2020/12/ml-linear-regression">线性回归模型</a>来处理。</p>
+</blockquote>
 <p>基尼系数的计算公式如下：</p>
 <p><img src="https://img-blog.csdnimg.cn/20201110231426221.png#pic_center" alt="在这里插入图片描述"></p>
 <p>该公式表示的含义是：</p>
@@ -529,8 +534,9 @@ print(ent)	# 0.811278124459
 <li>第 n 个类别的概率为 Pn。</li>
 </ul>
 <p>基尼系数的效果与熵模型高度近似，而且避免了对数运算，因此CART 算法的执行效率较高。</p>
+<h3 id="8总结">8，总结</h3>
 <p>本篇文章主要介绍了决策树的基本原理，决策树的算法一般有三种，分别是ID3  算法，C4.5 算法，CART 算法，其中重点介绍了ID3 算法的计算过程。</p>
-<p>下篇会介绍如何用决策树来解决实际问题。</p>
+<p><a href="/2020/11/ml-decisiontree2">下篇</a>会介绍如何用决策树来解决实际问题。</p>
 <p>（完。）</p>
 <hr>
 <p>欢迎关注作者公众号，获取更多技术干货。</p>

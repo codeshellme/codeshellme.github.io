@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>状态模式-将状态和行为封装成对象 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍状态模式（State Design Pattern），" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/dp-state/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="状态模式-将状态和行为封装成对象" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍状态模式（State Design Pattern），" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/dp-state/" />
+<meta property="article:published_time" content="2021-01-06T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-06T21:41:52+08:00" />
+<meta itemprop="name" content="状态模式-将状态和行为封装成对象">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍状态模式（State Design Pattern），">
+<meta itemprop="datePublished" content="2021-01-06T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-06T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1689">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="状态模式-将状态和行为封装成对象"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍状态模式（State Design Pattern），"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">状态模式-将状态和行为封装成对象</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-06 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 1689 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1状态模式">1，状态模式</a></li>
+        <li><a href="#2游戏需求">2，游戏需求</a></li>
+        <li><a href="#3编写代码">3，编写代码</a></li>
+        <li><a href="#4测试代码">4，测试代码</a></li>
+        <li><a href="#5总结">5，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本篇文章来介绍<strong>状态模式</strong>（<code>State Design Pattern</code>），状态模式常用来实现<strong>状态机</strong>，状态机常用在游戏开发等领域。</p>
+<h3 id="1状态模式">1，状态模式</h3>
+<p><strong>状态模式</strong>的定义为：允许对象在内部状态改变时，改变它的行为，对象看起来好像改变了它的类。</p>
+<p>状态模式将状态和行为封装成对象，不同的对象有着不同的行为。对象的状态会因某个行为的发生而改变，对象的状态一旦改变，那么对象的行为也会发生改变。</p>
+<p>对象的状态和行为，可以用下面这个图来解释。假如一个事物有三种状态 <strong>1，2，3</strong>，状态之间的转换关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210104120235116.png?" alt="在这里插入图片描述"></p>
+<p>在上面的状态转换图中，每种状态对应着不同的行为：</p>
+<ul>
+<li>状态 <strong>1</strong>：有两种行为 <code>a</code> 和 <code>b</code>
+<ul>
+<li>状态 <strong>1</strong> 经过 <code>a</code> 行为可转换到状态 <strong>2</strong></li>
+<li>状态 <strong>1</strong> 经过 <code>b</code> 行为可转换到状态 <strong>3</strong></li>
+</ul>
+</li>
+<li>状态 <strong>2</strong>：有两种行为 <code>c</code> 和 <code>d</code>
+<ul>
+<li>状态 <strong>2</strong> 经过 <code>c</code> 行为可转换到状态 <strong>1</strong></li>
+<li>状态 <strong>2</strong> 经过 <code>d</code> 行为可转换到状态 <strong>3</strong></li>
+</ul>
+</li>
+<li>状态 <strong>3</strong>：有一种行为 <code>e</code>
+<ul>
+<li>状态 <strong>3</strong> 经过 <code>e</code> 行为可转换到状态 <strong>1</strong></li>
+</ul>
+</li>
+</ul>
+<p>状态模式的类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210104122456541.png?" alt="在这里插入图片描述"></p>
+<p><strong>State</strong> 接口定义了<strong>状态</strong>可能拥有的所有行为，每个具体的状态都实现了这个接口，这样就使得状态之间可以互相替换。</p>
+<p>每个具体状态对 <strong>State</strong> 接口中的每个行为的实现是不一样的，这就相当于每个具体状态的行为是不一样的。</p>
+<p><strong>StateMachine</strong> 是一个状态机，它拥有着一个状态对象，这个状态对象会不断的改变。</p>
+<h3 id="2游戏需求">2，游戏需求</h3>
+<p>假设我们要为一款游戏中的角色编写状态转换的程序，并且游戏角色有积分：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021010417351168.png?" alt="在这里插入图片描述"></p>
+<p>该游戏中的角色共有 <strong>4</strong> 种状态 <strong>A，B，C，D</strong>，共有 <strong>3</strong> 种操作 <strong>x，y，z</strong>：</p>
+<ul>
+<li>状态 <strong>A</strong>：只能进行 <strong>x</strong> 操作，转化到状态 <strong>B</strong>
+<ul>
+<li>状态 <strong>A</strong> 为初始状态</li>
+</ul>
+</li>
+<li>状态 <strong>B</strong>：有两种操作：
+<ul>
+<li><strong>x</strong> 操作：转化到状态 <strong>C</strong></li>
+<li><strong>y</strong> 操作：转化到状态 <strong>D</strong></li>
+</ul>
+</li>
+<li>状态 <strong>C</strong>：有两种操作
+<ul>
+<li><strong>x</strong> 操作：转化到状态 <strong>D</strong></li>
+<li><strong>z</strong> 操作：转化到状态 <strong>A</strong></li>
+</ul>
+</li>
+<li>状态 <strong>D</strong>：只能进行 <strong>z</strong> 操作，转化到状态 <strong>C</strong></li>
+</ul>
+<p>积分变化：</p>
+<ul>
+<li>操作 <strong>x</strong> 会使角色增加 <code>100</code> 积分</li>
+<li>操作 <strong>y</strong> 会使角色增加 <code>200</code> 积分</li>
+<li>操作 <strong>z</strong> 会使角色减少 <code>50</code> 积分</li>
+</ul>
+<h3 id="3编写代码">3，编写代码</h3>
+<p>下面我们使用状态模式来编写角色的状态转换程序。</p>
+<p>首先根据状态模式的类图，我们需要有一个 <strong>State</strong> 接口，该接口包含角色所有的操作，并且包含一个状态机的引用。</p>
+<p>这里我将 <strong>State</strong> 作为一个抽象类，每个操作的默认实现是 <code>do nothing</code>，每个具体状态可以根据自己的需要进行覆盖。</p>
+<p>代码如下：</p>
+<pre><code class="language-java">abstract class State {
+    protected String stateName;
+    protected RoleStateMachine machine;
+    
+    void x() {
+        // do nothing
+    }
+    
+    void y() {
+        // do nothing
+    }
+    
+    void z() {
+        // do nothing
+    }
+
+    // 获取当前状态名
+    public String getStateName() {
+        return stateName;
+    }
+}
+</code></pre>
+<p>接下来编写<strong>角色状态机</strong>类，代码中也都写了注释：</p>
+<pre><code class="language-java">class RoleStateMachine {
+    private State currentState; // 当前状态
+    private int score;          // 积分
+
+    public RoleStateMachine() {
+        this.score = 0; // 初始积分为 0
+        // 初始状态为 A
+        this.currentState = new StateA(this);
+    }
+
+    // 当发生某个操作时需要转化到相应的状态
+    // 用该方法进行设置
+    public void setCurrentState(State state) {
+        currentState = state;
+    }
+
+    // 获取当前状态
+    public String getCurrentState() {
+        return currentState.getStateName();
+    }
+
+    // 获取积分
+    public int getScore() {
+        return score;
+    }
+
+    // 增加积分
+    public void addScore(int score) {
+        this.score += score;
+    }
+    
+    // 减少积分
+    public void delScore(int score) {
+        this.score -= score;
+    }
+
+    // 状态机中也包含状态中的所有操作
+    // 每个操作都委托给当前状态的相应操作来完成
+
+    public void x() {
+        currentState.x();
+    }
+
+    public void y() {
+        currentState.y();
+    }
+
+    public void z() {
+        currentState.z();
+    }
+}
+</code></pre>
+<p>下面编写 <strong>4</strong> 个状态类，每个状态类都继承 <strong>State</strong> 接口，并且每个状态类中要持有一个<strong>状态机的引用</strong>，由构造函数引入：</p>
+<pre><code class="language-java">class StateA extends State {
+    public StateA(RoleStateMachine machine) {
+        this.machine = machine;
+        this.stateName = &quot;StateA&quot;;
+    }
+
+    public void x() {
+        machine.addScore(100);
+        machine.setCurrentState(new StateB(machine));
+    }
+}
+
+class StateB extends State {
+    public StateB(RoleStateMachine machine) {
+        this.machine = machine;
+        this.stateName = &quot;StateB&quot;;
+    }
+
+    public void x() {
+        machine.addScore(100);
+        machine.setCurrentState(new StateC(machine));
+    }
+
+    public void y() {
+        machine.addScore(200);
+        machine.setCurrentState(new StateD(machine));
+    }
+}
+
+class StateC extends State {
+    public StateC(RoleStateMachine machine) {
+        this.machine = machine;
+        this.stateName = &quot;StateC&quot;;
+    }
+
+    public void x() {
+        machine.addScore(100);
+        machine.setCurrentState(new StateD(machine));
+    }
+
+    public void z() {
+        machine.delScore(50);
+        machine.setCurrentState(new StateA(machine));
+    }
+}
+
+class StateD extends State {
+    public StateD(RoleStateMachine machine) {
+        this.machine = machine;
+        this.stateName = &quot;StateD&quot;;
+    }
+
+    public void z() {
+        machine.delScore(50);
+        machine.setCurrentState(new StateC(machine));
+    }
+}
+</code></pre>
+<h3 id="4测试代码">4，测试代码</h3>
+<p>下面来测试代码：</p>
+<pre><code class="language-java">RoleStateMachine role = new RoleStateMachine();
+
+// 初始状态为 StateA，积分为 0
+assert role.getCurrentState().equals(&quot;StateA&quot;);
+assert role.getScore() == 0;
+
+role.y(); // 在状态 A 进行 y 操作
+
+// 在状态 A 时，没有 y 操作
+// 所以如果进行 y 操作，状态和积分都保持不变
+assert role.getCurrentState().equals(&quot;StateA&quot;);
+assert role.getScore() == 0;
+
+role.x(); // 在状态 A 进行 x 操作
+assert role.getCurrentState().equals(&quot;StateB&quot;);
+assert role.getScore() == 100;
+
+role.y(); // 在状态 B，进行 y 操作
+assert role.getCurrentState().equals(&quot;StateD&quot;);
+assert role.getScore() == 300;
+
+role.z(); // 在状态 D，进行 z 操作
+assert role.getCurrentState().equals(&quot;StateC&quot;);
+assert role.getScore() == 250;
+
+role.z(); // 在状态 C，进行 z 操作
+assert role.getCurrentState().equals(&quot;StateA&quot;);
+assert role.getScore() == 200;
+
+System.out.println(&quot;Test OK.&quot;);
+</code></pre>
+<p>注意，使用 <strong>Java assert</strong> 时，记得用 <code>-ea</code> 参数打开断言功能。</p>
+<p>我将完整的代码放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/dp/StatePattern.java">这里</a>，供大家参考。</p>
+<h3 id="5总结">5，总结</h3>
+<p>状态模式将状态和行为封装成对象，不同的状态有着不同的行为。这种设计使得处理<strong>状态转换</strong>这一类的逻辑变得非常有条理，而且不易出错。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/dp-command">命令模式-将请求封装成对象</a></p>
+<p><a href="/2020/12/dp-adapter">适配器模式-让不兼容的接口得以适配</a></p>
+<p><a href="/2021/01/dp-facade">外观模式-简化子系统的复杂性</a></p>
+<p><a href="/2021/01/dp-template-method">模板方法模式-封装一套算法流程</a></p>
+<p><a href="/2021/01/dp-iterator">迭代器模式-统一集合的遍历方式</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-06
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/01/dp-iterator/">
+            <span class="next-text nav-default">迭代器模式-统一集合的遍历方式</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/dp-state/" class="leancloud_visitors" data-flag-title="状态模式-将状态和行为封装成对象">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
