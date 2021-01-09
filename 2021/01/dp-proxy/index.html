@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>代理模式-访问对象的代理而非其本身 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍代理模式（Proxy Design Pattern），通过" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/dp-proxy/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="代理模式-访问对象的代理而非其本身" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍代理模式（Proxy Design Pattern），通过" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/dp-proxy/" />
+<meta property="article:published_time" content="2021-01-07T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-07T21:41:52+08:00" />
+<meta itemprop="name" content="代理模式-访问对象的代理而非其本身">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍代理模式（Proxy Design Pattern），通过">
+<meta itemprop="datePublished" content="2021-01-07T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-07T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2123">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="代理模式-访问对象的代理而非其本身"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍代理模式（Proxy Design Pattern），通过"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">代理模式-访问对象的代理而非其本身</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-07 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
+            </div>
+          <span class="more-meta"> 2123 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1代理模式">1，代理模式</a></li>
+        <li><a href="#2代理模式示例">2，代理模式示例</a></li>
+        <li><a href="#3代理模式的应用">3，代理模式的应用</a></li>
+        <li><a href="#4动态代理">4，动态代理</a></li>
+        <li><a href="#5总结">5，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本篇来介绍<strong>代理模式</strong>（<em>Proxy Design Pattern</em>），通过代理模式可以控制和管理对象的访问。</p>
+<h3 id="1代理模式">1，代理模式</h3>
+<p><strong>代理模式为对象提供一个代理，来控制对该对象的访问</strong>。代理代表了原始对象，而不是真实的对象本身。</p>
+<p>代理模式在不改变原始类代码的情况下，通过引入<strong>代理类</strong>来给原始类附加功能。</p>
+<p>代理模式的类图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210105182656328.png?" alt="在这里插入图片描述"></p>
+<p><strong>RealSubject</strong> 是原始类，<strong>Proxy</strong> 代理类，它们都实现了 <strong>Subject</strong> 接口，这使得代理类可以取代原始类。</p>
+<p>原始类通常在代理类的后面，客户端不会直接访问原始类，而是只访问代理类。代理类在收到客户端的请求之后，会替客户端去访问原始类，然后将结果返回给客户端。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210105184208959.png" alt="在这里插入图片描述"></p>
+<p>代理类中保存了原始类对象的引用，代理类的实际操作还是通过调用原始类来完成，但代理类除了完成原始类的基本功能之外，还可以添加一些其它必要的功能。</p>
+<blockquote>
+<p>这看起来，代理模式很像装饰器模式，但它们的设计意图是不一样的。代理模式的目的是为了控制和管理原始对象的访问；而装饰器模式是为了增强原有对象的能力，而且往往一个对象会被一个或多个装饰器多次包装。</p>
+</blockquote>
+<h3 id="2代理模式示例">2，代理模式示例</h3>
+<p>下面通过一个简单的例子，来看下如何使用代理模式。</p>
+<p>假如我们现在有一个类 <strong>Server</strong>：</p>
+<pre><code class="language-java">class Server {
+    public void handleRequest() {
+        // 处理过程
+        System.out.println(&quot;handle client request.&quot;);
+    }
+}
+</code></pre>
+<p><strong>Server</strong> 类中有一个 <code>handleRequest</code> 方法，用于处理客户端请求。</p>
+<p>现在我们想统计处理客户端请求需要的时间，最简单直接的做法是在 <code>handleRequest</code> 方法中添加计算时间的代码，如下：</p>
+<pre><code class="language-java">public void handleRequest() {
+    long startTime = System.currentTimeMillis();
+
+	// 处理过程
+    System.out.println(&quot;handle client request.&quot;);
+
+    long endTime = System.currentTimeMillis();
+
+    long reqTime = endTime - startTime;
+    System.out.println(reqTime);
+}
+</code></pre>
+<p>这样做的缺点是，在正常的业务处理流程中，添加了一些无关代码，使得统计代码与业务代码耦合在一起。</p>
+<p>这种情况，就可以使用代理模式来处理，而无需改动原有代码。</p>
+<p>首选创建一个接口 <strong>ServerInterface</strong>，让代理类和原始类都继承该接口。</p>
+<pre><code class="language-java">interface ServerInterface {
+    void handleRequest();
+}
+</code></pre>
+<p>原始类实现 <strong>ServerInterface</strong> 接口，<strong>Server</strong> 只需专注业务处理：</p>
+<pre><code class="language-java">class Server implements ServerInterface {
+    public void handleRequest() {
+        // 处理过程
+        System.out.println(&quot;handle client request.&quot;);
+    }
+}
+</code></pre>
+<p>下面创建代理类，负责统计时间：</p>
+<pre><code class="language-java">class ServerProxy implements ServerInterface {
+    private Server server;
+
+    public ServerProxy(Server server) {
+        this.server = server;
+    }
+
+    public void handleRequest() {
+        long startTime = System.currentTimeMillis();
+
+        // 调用原始类
+        server.handleRequest();
+
+        long endTime = System.currentTimeMillis();
+
+        long reqTime = endTime - startTime;
+        System.out.println(reqTime);
+    }
+}
+</code></pre>
+<p><strong>ServerProxy</strong> 中保存了 <strong>Server</strong> 对象的引用，会在必要的时候调用原始类，从而完成原始类的功能。</p>
+<p>之后，客户端只需要与代理交互，而不需要跟原始类交互。</p>
+<p>可以看到，这种实现方式并没有直接修改 <strong>Server</strong>，而是创建了 <strong>Server</strong> 的代理，避免给 <strong>Server</strong> 带来不必要的麻烦。</p>
+<p><em><strong>使用继承的方式来实现代理</strong></em></p>
+<p>上面这种代理的实现方式，使用的是组合的方式，也就是代理类中保存了一个原始类对象的引用。</p>
+<p>如果在实际的项目中，原始类来自第三方库，这样就不能让原始类实现一个接口，因为我们不能修改第三方库。</p>
+<p>此时，为了使用代理模式，可以继承的方式，也就是让代理类继承原始类，如下：</p>
+<pre><code class="language-java">class ServerProxy extends Server {
+    public void handleRequest() { 
+        long startTime = System.currentTimeMillis();
+
+        // 调用原始类
+        super.handleRequest();
+
+        long endTime = System.currentTimeMillis();
+
+        long reqTime = endTime - startTime;
+        System.out.println(reqTime);
+    }
+}
+</code></pre>
+<p>此时，代理模式的类图就变成了下面这样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210105193818975.png" alt="在这里插入图片描述"></p>
+<h3 id="3代理模式的应用">3，代理模式的应用</h3>
+<p>代理模式有很多的应用场景，下面来看一些常用的。</p>
+<p><em><strong>远程代理</strong></em></p>
+<p><strong>远程代理</strong>用于控制访问远程对象，客户端与原始类在不同的地址空间中，远程代理通过网络来为客户端提供服务。</p>
+<p>远程代理的架构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210105221715602.png?" alt="在这里插入图片描述"></p>
+<p>上图中的客户辅助对象就是代理，客户端将请求发给代理，代理将请求通过网络转发给服务辅助对象。</p>
+<p>服务辅助对象接收代理的请求后，再将请求转给真实的服务对象，服务对象处理完请求后，再将处理结果一步步的传给客户端。</p>
+<p>在 <strong>Java</strong> 中可以通过 <strong>RMI</strong> 来构建远程代理服务。</p>
+<p><em><strong>虚拟代理</strong></em></p>
+<p><strong>虚拟代理</strong>用于控制访问<strong>创建开销大的资源</strong>，它作为创建开销大的对象的代表。</p>
+<p>在虚拟代理中，只有我们真正需要一个对象的时候，才会创建它。</p>
+<p>在对象创建完成之前，由虚拟代理来处理客户端的访问；在对象创建之后，虚拟代理将客户端的请求委托给真实对象处理。</p>
+<p><em><strong>保护代理</strong></em></p>
+<p><strong>保护代理</strong>基于访问权限来控制对资源的访问，<strong>保护代理</strong>可以不让客户端访问某些资源。</p>
+<p><em><strong>防火墙代理</strong></em></p>
+<p>防火墙代理用于控制网络资源的访问，使资源免于“坏客户”的攻击。</p>
+<p><em><strong>智能引用代理</strong></em></p>
+<p>当资源被引用时，计算资源被引用的次数。</p>
+<p><em><strong>缓存代理</strong></em></p>
+<p>为开销大的资源提供暂存服务，以减少计算和网络延迟。</p>
+<h3 id="4动态代理">4，动态代理</h3>
+<p>代理模式有一个缺点，就是需要在代理类中实现原始类的所有方法，而且如果原始类很多的话，就需要创建很多的代理类，从而导致项目中类的数量倍增。如果代理类的功能相近的话，还会导致许多重复代码。</p>
+<p>为了解决这个问题，可以使用<strong>动态代理</strong>。动态代理不需要事先为每个原始类编写代理类，而是在运行时，<strong>动态的为原始类创建代理类</strong>，然后用代理类来替换原始类。</p>
+<p>在 <strong>Java</strong> 中可以使用 <code>java.lang.reflect</code> 包中的 <strong>Proxy</strong> 类和 <strong>InvocationHandler</strong> 接口来实现动态代理，其中用到了<strong>Java 反射</strong>的原理。</p>
+<h3 id="5总结">5，总结</h3>
+<p>代理模式提供了一个原有服务的代理，这样使得客户不直接访问原有服务，而是通过代理间接访问原服务，达到了控制原有服务访问的目的。</p>
+<p>代理模式可以用组合与继承两种方式来实现。代理模式有时候会导致代理类过多和代码重复的问题，这个问题可以用动态代理来解决。</p>
+<p>有时候代理模式看起来像是<a href="https://blog.csdn.net/LUAOHAN/article/details/111769426">装饰者模式</a>，但它们的设计意图是不一样的。</p>
+<p>代理模式的应用场景有很多，比如远程代理，虚拟代理，保护代理等。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/dp-adapter">适配器模式-让不兼容的接口得以适配</a></p>
+<p><a href="/2021/01/dp-facade">外观模式-简化子系统的复杂性</a></p>
+<p><a href="/2021/01/dp-template-method">模板方法模式-封装一套算法流程</a></p>
+<p><a href="/2021/01/dp-iterator">迭代器模式-统一集合的遍历方式</a></p>
+<p><a href="/2021/01/dp-state">状态模式-将状态和行为封装成对象</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-07
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/01/dp-composite/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">组合模式-统一的处理个别对象与组合对象</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/01/dp-state/">
+            <span class="next-text nav-default">状态模式-将状态和行为封装成对象</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/dp-proxy/" class="leancloud_visitors" data-flag-title="代理模式-访问对象的代理而非其本身">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
