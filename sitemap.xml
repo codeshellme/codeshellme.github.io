@@ -31,14 +31,35 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2021-01-08T21:41:52+08:00</lastmod>
+    <lastmod>2021-01-18T22:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2021-01-08T21:41:52+08:00</lastmod>
+    <lastmod>2021-01-18T22:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/01/ml-svm1/</loc>
+    <lastmod>2021-01-18T22:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2021-01-18T22:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/01/ml-randomforest/</loc>
+    <lastmod>2021-01-17T22:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -150,13 +171,6 @@
   
   <url>
     <loc>https://codeshellme.github.io/2020/12/ml-logistic-regression/</loc>
-    <lastmod>2020-12-20T22:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2020-12-20T22:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

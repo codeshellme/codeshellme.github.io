@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>RandomForest 随机森林算法与模型参数的调优 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍随机森林（RandomForest）算法" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/ml-randomforest/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="RandomForest 随机森林算法与模型参数的调优" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍随机森林（RandomForest）算法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/ml-randomforest/" />
+<meta property="article:published_time" content="2021-01-17T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-17T22:41:52+08:00" />
+<meta itemprop="name" content="RandomForest 随机森林算法与模型参数的调优">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍随机森林（RandomForest）算法">
+<meta itemprop="datePublished" content="2021-01-17T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-17T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1696">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="RandomForest 随机森林算法与模型参数的调优"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍随机森林（RandomForest）算法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">RandomForest 随机森林算法与模型参数的调优</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-17 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 1696 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1集成算法之-bagging-算法">1，集成算法之 bagging 算法</a></li>
+        <li><a href="#2随机森林算法">2，随机森林算法</a></li>
+        <li><a href="#3随机森林算法的实现">3，随机森林算法的实现</a></li>
+        <li><a href="#4随机森林算法的使用">4，随机森林算法的使用</a></li>
+        <li><a href="#5模型参数调优">5，模型参数调优</a></li>
+        <li><a href="#6总结">6，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本篇文章来介绍<strong>随机森林</strong>（<em>RandomForest</em>）算法。</p>
+<h3 id="1集成算法之-bagging-算法">1，集成算法之 bagging 算法</h3>
+<p>在前边的文章《<a href="/2020/12/ml-adaboost">AdaBoost 算法-分析波士顿房价数据集</a>》中，我们介绍过<strong>集成算法</strong>。集成算法中有一类算法叫做 <strong>bagging</strong> 算法。</p>
+<p><strong>bagging</strong> 算法是将一个原始数据集随机抽样成 <strong>N</strong> 个新的数据集。然后将这 <strong>N</strong> 个新的数据集作用于同一个机器学习算法，从而得到 <strong>N</strong> 个模型，最终集成一个综合模型。</p>
+<p>在对新的数据进行预测时，需要经过这 <strong>N</strong> 个模型（每个模型互不依赖干扰）的预测（投票），最终综合 <strong>N</strong> 个投票结果，来形成最后的预测结果。</p>
+<p><strong>bagging</strong> 算法的流程可用下图来表示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20201215133730473.png?" alt=""></p>
+<h3 id="2随机森林算法">2，随机森林算法</h3>
+<p>随机森林算法是 <strong>bagging</strong> 算法中比较出名的一种。</p>
+<p>随机森林算法由多个决策树分类器组成，每一个子分类器都是一棵 <strong>CART</strong> 分类回归树，所以随机森林既可以做分类，又可以做回归。</p>
+<p>当随机森林算法处理分类问题的时候，分类的最终结果是由所有的子分类器投票而成，投票最多的那个结果就是最终的分类结果。</p>
+<p>当随机森林算法处理回归问题的时候，最终的结果是每棵 <strong>CART</strong> 树的回归结果的平均值。</p>
+<h3 id="3随机森林算法的实现">3，随机森林算法的实现</h3>
+<p><strong>sklearn</strong> 库即实现了<strong>随机森林分类树</strong>，又实现了<strong>随机森林回归树</strong>：</p>
+<ul>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">RandomForestClassifier</a>：分类树</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html">RandomForestRegressor</a>：回归树</li>
+</ul>
+<p><strong>RandomForestClassifier</strong> 类的原型如下：</p>
+<pre><code class="language-python">RandomForestClassifier(n_estimators=100, 
+  criterion='gini', max_depth=None, 
+  min_samples_split=2, min_samples_leaf=1, 
+  min_weight_fraction_leaf=0.0, 
+  max_features='auto', max_leaf_nodes=None, 
+  min_impurity_decrease=0.0, 
+  min_impurity_split=None, 
+  bootstrap=True, oob_score=False, 
+  n_jobs=None, random_state=None, 
+  verbose=0, warm_start=False, 
+  class_weight=None, ccp_alpha=0.0, 
+  max_samples=None)
+</code></pre>
+<p>可以看到分类树的参数特别多，我们来介绍几个重要的参数：</p>
+<ul>
+<li><strong>n_estimators</strong>：随机森林中决策树的个数，默认为 100。</li>
+<li><strong>criterion</strong>：随机森林中决策树的算法，可选的有两种：
+<ul>
+<li><strong>gini</strong>：基尼系数，也就是 <strong>CART 算法</strong>，为默认值。</li>
+<li><strong>entropy</strong>：信息熵，也就是 <strong>ID3 算法</strong>。</li>
+</ul>
+</li>
+<li><strong>max_depth</strong>：决策树的最大深度。</li>
+</ul>
+<p><strong>RandomForestRegressor</strong> 类的原型如下：</p>
+<pre><code class="language-python">RandomForestRegressor(n_estimators=100, 
+  criterion='mse', max_depth=None, 
+  min_samples_split=2, min_samples_leaf=1, 
+  min_weight_fraction_leaf=0.0, 
+  max_features='auto', max_leaf_nodes=None, 
+  min_impurity_decrease=0.0, 
+  min_impurity_split=None, 
+  bootstrap=True, oob_score=False, 
+  n_jobs=None, random_state=None, 
+  verbose=0, warm_start=False, 
+  ccp_alpha=0.0, max_samples=None)
+</code></pre>
+<p>回归树中的参数与分类树中的参数基本相同，但 <strong>criterion</strong> 参数的取值不同。</p>
+<p>在回归树中，<strong>criterion</strong> 参数有下面两种取值：</p>
+<ul>
+<li><strong>mse</strong>：表示<strong>均方误差算法</strong>，为默认值。</li>
+<li><strong>mae</strong>：表示<strong>平均误差算法</strong>。</li>
+</ul>
+<h3 id="4随机森林算法的使用">4，随机森林算法的使用</h3>
+<p>下面使用随机森林分类树来处理<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/iris.csv">鸢尾花数据集</a>，该数据集在《<a href="/2020/11/ml-decisiontree2">决策树算法-实战篇</a>》中介绍过，这里不再介绍，我们直接使用它。</p>
+<p>首先加载数据集：</p>
+<pre><code class="language-python">from sklearn.datasets import load_iris
+
+iris = load_iris()   	# 准备数据集
+features = iris.data	# 获取特征集
+labels = iris.target    # 获取目标集
+</code></pre>
+<p>将数据分成<strong>训练集</strong>和<strong>测试集</strong>：</p>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+
+train_features, test_features, train_labels, test_labels = 
+	train_test_split(features, labels, test_size=0.33, random_state=0)
+</code></pre>
+<p>接下来构造随机森林分类树：</p>
+<pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+
+# 这里均使用默认参数
+rfc = RandomForestClassifier()
+
+# 训练模型
+rfc.fit(train_features, train_labels)
+</code></pre>
+<p><code>estimators_</code> 属性中存储了训练出来的所有的子分类器，来看下子分类器的个数：</p>
+<pre><code class="language-python">&gt;&gt;&gt; len(rfc.estimators_)
+100
+</code></pre>
+<p>预测数据：</p>
+<pre><code class="language-python">test_predict = rfc.predict(test_features)
+</code></pre>
+<p>测试准确率：</p>
+<pre><code class="language-python">&gt;&gt;&gt; from sklearn.metrics import accuracy_score
+&gt;&gt;&gt; accuracy_score(test_labels, test_predict)
+0.96
+</code></pre>
+<h3 id="5模型参数调优">5，模型参数调优</h3>
+<p>在机器学习算法模型中，一般都有很多参数，每个参数都有不同的取值。如何才能让模型达到最好的效果呢？这就需要参数调优。</p>
+<p><strong>sklearn</strong> 库中有一个 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html">GridSearchCV</a> 类，可以帮助我们进行参数调优。</p>
+<p>我们只要告诉它想要调优的参数有哪些，以及参数的取值范围，它就会把所有的情况都跑一遍，然后告诉我们参数的最优取值。</p>
+<p>先来看下 <strong>GridSearchCV</strong> 类的原型：</p>
+<pre><code class="language-python">GridSearchCV(estimator, 
+  param_grid, scoring=None,
+  n_jobs=None, refit=True, 
+  cv=None, verbose=0, 
+  pre_dispatch='2*n_jobs', 
+  error_score=nan, 
+  return_train_score=False)
+</code></pre>
+<p>其中有几个重要的参数：</p>
+<ul>
+<li><strong>estimator</strong>：表示为哪种机器学习算法进行调优，比如随机森林，决策树，SVM 等。</li>
+<li><strong>param_grid</strong>：要优化的参数及取值，输入的形式是<strong>字典或列表</strong>。</li>
+<li><strong>scoring</strong>：准确度的评价标准。</li>
+<li><strong>cv</strong>：交叉验证的折数，默认是三折交叉验证。</li>
+</ul>
+<p>下面我们对随机森林分类树进行参数调优，还是使用<strong>鸢尾花数据集</strong>。</p>
+<p>首先载入数据：</p>
+<pre><code class="language-python">from sklearn.datasets import load_iris
+
+iris = load_iris()
+</code></pre>
+<p>构造分类树：</p>
+<pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+
+rfc = RandomForestClassifier()
+</code></pre>
+<p>如果我们要对分类树的 <code>n_estimators</code> 参数进行调优，调优的范围是 <code>[1, 10]</code>，则准备变量：</p>
+<pre><code class="language-python">param = {&quot;n_estimators&quot;: range(1,11)}
+</code></pre>
+<p>创建 <strong>GridSearchCV</strong> 对象，并调优：</p>
+<pre><code class="language-python">from sklearn.model_selection import GridSearchCV
+
+gs = GridSearchCV(estimator=rfc, param_grid=param)
+
+# 对iris数据集进行分类
+gs.fit(iris.data, iris.target)
+</code></pre>
+<p>输出最优准确率和最优参数：</p>
+<pre><code class="language-python">&gt;&gt;&gt; gs.best_score_
+0.9666666666666668
+&gt;&gt;&gt; gs.best_params_
+{'n_estimators': 7}
+</code></pre>
+<p>可以看到，最优的结果是 <code>n_estimators</code> 取 <strong>7</strong>，也就是随机森林的子决策树的个数是 <strong>7</strong> 时，随机森林的准确度最高，为 <strong>0.9667</strong>。</p>
+<h3 id="6总结">6，总结</h3>
+<p>本篇文章主要介绍了随机森林算法的原理及应用，并展示了如何使用 <strong>GridSearchCV</strong> 进行参数调优。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/ml-adaboost">AdaBoost 算法-分析波士顿房价数据集</a></p>
+<p><a href="/2020/11/ml-decisiontree2">决策树算法-实战篇-鸢尾花及波士顿房价预测</a></p>
+<p><a href="/2020/12/ml-em">EM 算法-对鸢尾花数据进行聚类</a></p>
+<p><a href="/2020/12/ml-apriori">Apriori 算法-如何进行关联规则挖掘</a></p>
+<p><a href="/2020/12/ml-logistic-regression">Logistic 回归-原理及应用</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-17
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/01/ml-svm1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">SVM 支持向量机算法-原理篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/01/dp-composite/">
+            <span class="next-text nav-default">组合模式-统一的处理个别对象与组合对象</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/ml-randomforest/" class="leancloud_visitors" data-flag-title="RandomForest 随机森林算法与模型参数的调优">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

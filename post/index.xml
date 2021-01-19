@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Fri, 08 Jan 2021 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 18 Jan 2021 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SVM 支持向量机算法-原理篇</title>
+      <link>https://codeshellme.github.io/2021/01/ml-svm1/</link>
+      <pubDate>Mon, 18 Jan 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/01/ml-svm1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍SVM 算法，它的英文全称是 Support Vector Machine</description>
+    </item>
+    
+    <item>
+      <title>RandomForest 随机森林算法与模型参数的调优</title>
+      <link>https://codeshellme.github.io/2021/01/ml-randomforest/</link>
+      <pubDate>Sun, 17 Jan 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/01/ml-randomforest/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本篇文章来介绍随机森林（RandomForest）算法</description>
+    </item>
     
     <item>
       <title>组合模式-统一的处理个别对象与组合对象</title>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SVM 支持向量机算法-原理篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍SVM 算法，它的英文全称是 Support Vector Machine" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/ml-svm1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SVM 支持向量机算法-原理篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍SVM 算法，它的英文全称是 Support Vector Machine" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/ml-svm1/" />
+<meta property="article:published_time" content="2021-01-18T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-18T22:41:52+08:00" />
+<meta itemprop="name" content="SVM 支持向量机算法-原理篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍SVM 算法，它的英文全称是 Support Vector Machine">
+<meta itemprop="datePublished" content="2021-01-18T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-18T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="3379">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SVM 支持向量机算法-原理篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本篇来介绍SVM 算法，它的英文全称是 Support Vector Machine"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SVM 支持向量机算法-原理篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 3379 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1svm-算法的历史">1，SVM 算法的历史</a></li>
+        <li><a href="#2线性可分的-svm">2，线性可分的 SVM</a></li>
+        <li><a href="#3找到最好的直线">3，找到最好的直线</a></li>
+        <li><a href="#4svm-算法">4，SVM 算法</a></li>
+        <li><a href="#5线性-svm">5，线性 SVM</a></li>
+        <li><a href="#6非线性问题">6，非线性问题</a></li>
+        <li><a href="#7核函数">7，核函数</a></li>
+        <li><a href="#8多分类问题">8，多分类问题</a></li>
+        <li><a href="#9总结">9，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本篇来介绍<strong>SVM 算法</strong>，它的英文全称是 <em>Support Vector Machine</em>，中文翻译为<strong>支持向量机</strong>。</p>
+<p>之所以叫作支持向量机，是因为该算法最终训练出来的模型，由一些<strong>支持向量</strong>决定。所谓的支持向量，也就是能够决定最终模型的向量。</p>
+<p><strong>SVM 算法</strong>最初是用来解决<strong>二分类问题</strong>的，而在这个基础上进行扩展，也能够处理<strong>多分类问题</strong>以及<strong>回归问题</strong>。</p>
+<h3 id="1svm-算法的历史">1，SVM 算法的历史</h3>
+<p>早在1963 年，著名的前苏联统计学家<strong>弗拉基米尔·瓦普尼克</strong>在读博士期间，就和他的同事<strong>阿列克谢·切尔沃宁基斯</strong>共同提出了支持向量机的概念。</p>
+<p>但由于当时的国际环境影响，他们用俄文发表的论文，并没有受到国际学术界的关注。</p>
+<p>直到 20 世纪 90 年代，<strong>瓦普尼克</strong>随着移民潮来到美国，而后又发表了 <strong>SVM 理论</strong>。此后，<strong>SVM 算法</strong>才受到应有的重视。如今，<strong>SVM 算法</strong>被称为最好的监督学习算法之一。</p>
+<h3 id="2线性可分的-svm">2，线性可分的 SVM</h3>
+<p>SVM 算法最初用于解决二分类问题，下面我们以最简单的<strong>二维平面</strong>上的，<strong>线性可分的数据点</strong>来介绍支持向量机。</p>
+<p>假设平面上有一些不同颜色的圆圈，这些圆圈是线性可分的，也就是可用一条直线分开。如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108132751513.png?" alt="在这里插入图片描述"></p>
+<p>现在想在平面上画出一条直线，将这些圆圈分开。通过观察，你很容易就能画出一条直线，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108133041687.png?" alt="在这里插入图片描述"></p>
+<p>但是这样的直线会有很多，它们都能正确的划分两类圆圈，就像下面这幅图中的一样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108134306989.png?" alt="在这里插入图片描述"></p>
+<p>那么哪条直线才是最好的呢？通过肉眼我们无法找到那条最好的直线。但是就上图中的三条直线而言，明显你会觉得中间那条红线，会比两侧的两条线要更好。</p>
+<p>因为，如果有一些圆圈往中间靠拢，那么两侧的那两条直线就不能将两种圆圈划分开了。而中间那条直线依然可以划分两种圆圈。如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108134604222.png?" alt="在这里插入图片描述"></p>
+<p>因此，中间那条红线会比两侧的两条直线更好，更安全。</p>
+<p>虽然通过肉眼我们能知道哪条直线<strong>更好</strong>，但是怎样才能找到<strong>最好</strong>的那条直线呢？而 SVM 算法就可以帮我们找到那条最好的直线。</p>
+<h3 id="3找到最好的直线">3，找到最好的直线</h3>
+<p>下面我们来看下如何找到最好的那条直线。</p>
+<p>首先，找<strong>两条平行线</strong>，其中一条线经过一个绿色圆圈，剩下的所有绿色圆圈都在这条线的左侧；另一条线经过一个淡蓝色的圆圈，剩下的所有淡蓝色圆圈都在这条线的右侧。</p>
+<p>如下图所示的两条平行线 <strong>L1</strong> 和 <strong>L2</strong>，<strong>L1</strong> 经过了 <strong>A</strong> 圆圈，<strong>L2</strong> 经过了 <strong>B</strong> 圆圈：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108141615887.png?" alt="在这里插入图片描述"></p>
+<p>接下来，让 <strong>L1</strong> 以 <strong>A</strong> 为中心进行旋转，<strong>L2</strong> 以 <strong>B</strong> 为中心进行旋转，在旋转的过程中，要保证下面两个原则：</p>
+<ul>
+<li>L1 与 L2 保持平行。</li>
+<li>除 A 之外的所有绿色圆圈都在 L1 的左侧，除 B之外的所有淡蓝色圆圈都在 L2 的右侧。</li>
+</ul>
+<p>在保证上面两个原则的前提下旋转，直到其中的一条线经过第三个圆圈为止。如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108143312346.png?" alt="在这里插入图片描述"></p>
+<p>此时，<strong>L2</strong> 经过了第三个圆圈 <strong>C</strong>。</p>
+<p>到此为止，我们要找的那条最好的，能够划分两种圆圈的直线，就是 <strong>L1</strong> 和 <strong>L2</strong> 中间的那条直线，如下图中的 <strong>L3</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108143728595.png?" alt="在这里插入图片描述"></p>
+<h3 id="4svm-算法">4，SVM 算法</h3>
+<p><strong>SVM 算法</strong>的求解过程，就是寻找那条最佳直线的过程。</p>
+<p>在 SVM 算法中，上面的 <strong>A，B，C</strong> 三个点叫作<strong>支持向量</strong>，直线 <strong>L3</strong> 是最佳直线，扩展到多维空间，这条直线叫作<strong>超平面</strong>。SVM 算法的目的就是找到这个<strong>超平面</strong>，这个超平面是划分数据点的最佳平面。</p>
+<p>关于<strong>支持向量</strong>，更重要的是，<strong>SVM</strong> 训练出的最终模型，<strong>只与支持向量有关</strong>，这也是<strong>支持向量机</strong>的名称来源。就像 SVM 的发明者瓦普尼克所说的那样：<em>支持向量机这个名字强调了这类算法的关键是如何根据支持向量构建出解，算法的复杂度也主要取决于<strong>支持向量的数目</strong></em>。</p>
+<p>直线 <strong>L1</strong> 和 <strong>L2</strong> 之间有<strong>无数条平行直线</strong>都可以将两类圆圈分开，支持向量到这些平行直线的距离叫作<strong>分类间隔</strong>，而<strong>间隔最大</strong>的那条直线就是最佳直线，也就是 <strong>L3</strong>。</p>
+<p>多维空间中的超平面可以用线性方程来表示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108153433114.png" alt="在这里插入图片描述"></p>
+<p>其中的 <strong>W</strong> 为法向量，它决定了超平面的方向。<strong>b</strong> 为截距，它决定了超平面与空间原点的距离。</p>
+<p>超平面将特征空间分为两部分，法向量所指向的一侧的数据为正类，标记为 <strong>+1</strong>；另一侧的数据为负类，标记为 <strong>-1</strong>。</p>
+<p>二维坐标系中的线性方程如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108153713537.png?" alt="在这里插入图片描述"></p>
+<p>支持向量机的学习过程是一个<strong>凸二次规划问题</strong>，可以用 <strong>SMO 算法</strong>高效求解。</p>
+<blockquote>
+<p><strong>SMO</strong> 全称为 <em>Sequential Minimal Optimization</em>，中文称为<strong>序列最小优化</strong>，由 <strong>John Platt</strong> 于 <strong>1996</strong> 年发表。</p>
+</blockquote>
+<h3 id="5线性-svm">5，线性 SVM</h3>
+<p>上文中介绍到的两类圆圈是<strong>线性可分</strong>的，也就是可以用一条直线将所有不同的圆圈划分开，而不允许有一个例外。如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108155656608.png?" alt="在这里插入图片描述"></p>
+<p>但现实生活中的数据，往往是线性<strong>不可分</strong>的，如下图中的两类圆圈，就不可能找到一条<strong>直线</strong>将其分开：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108160028722.png?" alt="在这里插入图片描述"></p>
+<p>使用<strong>线性可分的 SVM</strong> 是无法解决线性不可分问题的。要想解决线性不可分问题，就得将支持向量机一般化，这种向量机称为<strong>线性 SVM</strong>（去掉了<strong>可分</strong>二字）。</p>
+<p><strong>线性 SVM</strong> 比<strong>线性可分SVM</strong> 更具<strong>通用性</strong>。<strong>线性可分SVM</strong> 寻求的是<strong>硬间隔</strong>最大化，而<strong>线性 SVM</strong>寻求的是<strong>软间隔</strong>最大化。</p>
+<p>硬件隔不允许有一个例外的点被错分，而软间隔则允许个别（不会很多）的点被错分。</p>
+<p>在线性不可分的数据集中，导致不可分的只是<strong>少量异常点</strong>，只要把这些异常点去掉，余下的大部分样本点依然满足线性可分的条件。如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108161219606.png?" alt="在这里插入图片描述"></p>
+<h3 id="6非线性问题">6，非线性问题</h3>
+<p>不管是<strong>线性可分 SVM</strong> 还是<strong>线性 SVM</strong>，它们都只能处理<strong>线性问题</strong>：</p>
+<ul>
+<li>线性可分 SVM：存在一条直线将<strong>所有的点</strong>正确划分。</li>
+<li>线性 SVM：存在一条直线将<strong>绝大部分点</strong>正确划分，而允许<strong>极个别点</strong>错分。这些极个别点可称为<strong>噪点</strong>或<strong>异常点</strong>。</li>
+</ul>
+<p>与线性问题相对应的是<strong>非线性问题</strong>，比如下面两种情况都是非线性问题：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108162756104.png?" alt="在这里插入图片描述"></p>
+<p>如何让 SVM 处理非线性问题呢？</p>
+<h3 id="7核函数">7，核函数</h3>
+<p>既然在二维空间中，不能找到一条直线来处理非线性问题。那么是否可以将二维空间映射成三维空间，从而找到一个平面，来处理二维空间不能处理的问题呢？</p>
+<p>答案是肯定的，<strong>如果样本的属性数有限，那么就一定存在一个高维特征空间使样本线性可分</strong>。</p>
+<p>如下图所示，在二维空间时，不能找到一条直线将其正确的分类；将其映射到三维空间后，可以找到一个平面，将其正确分类：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108231938159.png?" alt="在这里插入图片描述"></p>
+<p>从下面这幅动图可直观的看到，二维空间的线性不可分映射到三维空间线性可分的转换过程：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108165721277.gif#pic_center" alt="在这里插入图片描述"></p>
+<p>将原始低维空间上的非线性问题转化为新的高维空间上的线性问题，这就是<strong>核技巧</strong>的基本思想。</p>
+<blockquote>
+<p>支持向量机诞生于 1963 年，核技巧诞生于 1995 年。</p>
+</blockquote>
+<p>在支持向量机中，<strong>核函数</strong>可以将样本从低维空间映射到高维空间，从而使得 <strong>SVM</strong> 可以处理非线性问题。<strong>常用的核函数</strong>有以下几种：</p>
+<ul>
+<li>线性核函数</li>
+<li>多项式核函数</li>
+<li>高斯核函数</li>
+<li>拉普拉斯核函数</li>
+<li>Sigmoid 核函数</li>
+</ul>
+<p>不同的核函数对应不同的映射方式。在SVM 算法中，核函数的选择非常关键，好的核函数会将样本映射到合适的特征空间，从而训练出更优的模型。</p>
+<p>核函数将<strong>线性SVM</strong> 扩展成了<strong>非线性 SVM</strong>，使得 SVM 更具普适性。</p>
+<h3 id="8多分类问题">8，多分类问题</h3>
+<p>SVM 算法最初用于处理二分类问题，那它如何处理多分类问题呢？</p>
+<p>对于多分类问题，可以将多个二分类器组合起来形成一个多分类器，常见的方法有<strong>一对多法</strong>和<strong>一对一法</strong>。</p>
+<p><em><strong>一对多法</strong></em></p>
+<p>对于有 <strong>K</strong> 个分类的数据集，把其中的一类作为正集，其它的 <strong>K-1</strong> 类作为负集，这样就把数据集分了正负两类。</p>
+<p>比如我们有一个数据集，该数据集有三个分类 <strong>A，B，C</strong>，那么将训练出三个分类器：</p>
+<ul>
+<li>将分类 A 作为正集，B，C 作为负集，训练出一个分类器。</li>
+<li>将分类 B 作为正集，A，C 作为负集，训练出一个分类器。</li>
+<li>将分类 C 作为正集，A，B 作为负集，训练出一个分类器。</li>
+</ul>
+<p>如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108225324858.png?" alt="在这里插入图片描述"></p>
+<p>对于 K 个分类的数据集，一对多法会训练出 K 个分类器。缺点是，每次训练分类器时，负样本数都大大多于正样本数，造成样本分布不均。</p>
+<p><em><strong>一对一法</strong></em></p>
+<p>对于有 <strong>K</strong> 个分类的数据集，任选其中的两类样本，然后训练出一个分类器。</p>
+<p>比如我们有一个数据集，该数据集有三个分类 <strong>A，B，C</strong>，那么将训练出三个分类器：</p>
+<ul>
+<li>选 A，B 两类数据，训练出一个分类器。</li>
+<li>选 A，C 两类数据，训练出一个分类器。</li>
+<li>选 B，C 两类数据，训练出一个分类器。</li>
+</ul>
+<p>如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210108225649844.png?" alt="在这里插入图片描述"></p>
+<p>那么这种方法将会训练出 <strong>C(K, 2)</strong> 个分类器，因此这种方法的缺点是，如果数据集的分类较多的话，训练出的分类器将会非常多。</p>
+<h3 id="9总结">9，总结</h3>
+<p><strong>SVM 算法</strong>通过寻找一个<strong>超平面</strong>来处理分类问题。这个超平面只与几个<strong>支持向量</strong>有关，而不会受其它的普通向量的影响。</p>
+<p><strong>SVM</strong> 可分为<strong>线性 SVM</strong> 和<strong>非线性 SVM</strong>，线性 SVM 只能处理线性问题，而不能处理非线性问题。</p>
+<p><strong>核函数</strong>可以将低维空间的非线性问题，转化为高维空间的线性问题，这就将线性 SVM 扩展成了非线性 SVM，从而使得 SVM 可以处理非线性问题。</p>
+<p><strong>SVM 算法</strong>最初用来处理<strong>二分类问题</strong>，对于<strong>多分类问题</strong>，可以将多个二分类器组合在一起成为一个多分类器，从而处理多分类问题。方法有<strong>一对多法</strong>和<strong>一对一法</strong>。</p>
+<p>下一节将介绍如何用 SVM 处理实际问题。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2020/12/ml-adaboost">AdaBoost 算法-分析波士顿房价数据集</a></p>
+<p><a href="/2021/01/ml-randomforest">RandomForest 随机森林算法与模型参数的调优</a></p>
+<p><a href="/2020/11/ml-decisiontree2">决策树算法-实战篇-鸢尾花及波士顿房价预测</a></p>
+<p><a href="/2020/12/ml-apriori">Apriori 算法-如何进行关联规则挖掘</a></p>
+<p><a href="/2020/12/ml-logistic-regression">Logistic 回归-原理及应用</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/01/ml-randomforest/">
+            <span class="next-text nav-default">RandomForest 随机森林算法与模型参数的调优</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/ml-svm1/" class="leancloud_visitors" data-flag-title="SVM 支持向量机算法-原理篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
