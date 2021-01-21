@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>SVM 支持向量机算法-实战篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上一篇介绍了 SVM 的原理和一些基本概念，本篇来介绍如何用 SVM" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/01/ml-svm2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="SVM 支持向量机算法-实战篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上一篇介绍了 SVM 的原理和一些基本概念，本篇来介绍如何用 SVM" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/01/ml-svm2/" />
+<meta property="article:published_time" content="2021-01-19T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-01-19T22:41:52+08:00" />
+<meta itemprop="name" content="SVM 支持向量机算法-实战篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上一篇介绍了 SVM 的原理和一些基本概念，本篇来介绍如何用 SVM">
+<meta itemprop="datePublished" content="2021-01-19T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-19T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="2381">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SVM 支持向量机算法-实战篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 上一篇介绍了 SVM 的原理和一些基本概念，本篇来介绍如何用 SVM"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SVM 支持向量机算法-实战篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-19 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"> 机器学习 </a>
+            </div>
+          <span class="more-meta"> 2381 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1svm-的实现">1，SVM 的实现</a></li>
+        <li><a href="#2准备数据集">2，准备数据集</a></li>
+        <li><a href="#3数据预处理">3，数据预处理</a></li>
+        <li><a href="#4构造分类器">4，构造分类器</a></li>
+        <li><a href="#5总结">5，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><a href="/2021/01/ml-svm1">上一篇</a>介绍了 SVM 的原理和一些基本概念，本篇来介绍如何用 SVM 处理实际问题。</p>
+<h3 id="1svm-的实现">1，SVM 的实现</h3>
+<p><strong>SVM 算法</strong>即可以处理分类问题，也可以处理回归问题。</p>
+<p><strong>sklearn</strong> 库的 <strong>svm</strong> 包中实现了下面四种 SVM 算法：</p>
+<ul>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html">LinearSVC</a>：用于处理<strong>线性分类</strong>问题。</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">SVC</a>：用于处理<strong>非线性分类</strong>问题。</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html">LinearSVR</a>：用于处理<strong>线性回归</strong>问题。</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html">SVR</a>：用于处理<strong>非线性回归</strong>问题。</li>
+</ul>
+<p><strong>LinearSVC/R</strong> 中默认使用了<strong>线性核函数</strong>来出处理线性问题。</p>
+<p><strong>SVC/R</strong> 可以让我们选择是使用线性核函数还是<strong>高维核函数</strong>，当选择线性核函数时，就可以处理线性问题；当选择高维核函数时，就可以处理非线性问题。</p>
+<p>对于线性问题，<strong>LinearSVC/R</strong> 比 <strong>SVC/R</strong> 更优秀，因为 <strong>LinearSVC/R</strong> 中做了优化，效率更高。</p>
+<p>如果不知道数据集是否线性可分，可以使用 <strong>SVC/R</strong> 来处理。</p>
+<p>下面主要介绍分类器，回归器的使用跟分类器大同小异。</p>
+<p>先来看下 <strong>SVC</strong> 类的原型：</p>
+<pre><code class="language-java">SVC(C=1.0, kernel='rbf',
+  degree=3, gamma='scale', 
+  coef0=0.0, shrinking=True, 
+  probability=False, 
+  tol=0.001, cache_size=200, 
+  class_weight=None, 
+  verbose=False, max_iter=- 1, 
+  decision_function_shape='ovr', 
+  break_ties=False, 
+  random_state=None)
+</code></pre>
+<p>其中有几个重要的参数：</p>
+<ul>
+<li>kernel：代表核函数，它有四种选择：
+<ul>
+<li>linear：线性核函数，用于处理线性问题。</li>
+<li>poly：多项式核函数，用于处理非线性问题。</li>
+<li>rbf：高斯核函数，为默认值。用于处理非线性问题，性能比 poly 更好。</li>
+<li>sigmoid：sigmoid 核函数，用于实现多层神经网络 SVM，处理非线性问题。</li>
+</ul>
+</li>
+<li>C：代表目标函数的惩罚系数，惩罚系数指的是分错样本时的惩罚程度，默认为 1.0。
+<ul>
+<li>当 C 越大的时候，分类器的准确性越高，但容错率会越低，泛化能力会变差。</li>
+<li>当 C 越小的时候，泛化能力越强，但是准确性会降低。</li>
+</ul>
+</li>
+<li>gamma：代表核函数的系数，默认为样本特征数的倒数。</li>
+</ul>
+<p>再来看下 <strong>LinearSVC</strong> 类的原型：</p>
+<pre><code class="language-java">LinearSVC(penalty='l2', 
+  loss='squared_hinge', 
+  dual=True, tol=0.0001, 
+  C=1.0, multi_class='ovr', 
+  fit_intercept=True, 
+  intercept_scaling=1, 
+  class_weight=None, 
+  verbose=0, 
+  random_state=None, 
+  max_iter=1000)
+</code></pre>
+<p>在 LinearSVC 类中没有 kernel 参数，因为默认使用了线性核函数。</p>
+<h3 id="2准备数据集">2，准备数据集</h3>
+<p><strong>sklearn</strong> 库中自带了一份<a href="https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/data/breast_cancer.csv">乳腺癌数据集</a>，下面就使用该数据来构造 SVM 分类器。</p>
+<p>这份数据集中采集了一些患者的特征，共包含 569 份数据，每份数据包含 31 个字段，用逗号隔开。在 569 份数据中，一共有 357 个是良性，212 个是恶性。</p>
+<p>下面随机抽取了 3 份数据，来看下：</p>
+<pre><code class="language-shell">16.13,20.68,108.1,798.8,0.117,0.2022,0.1722,0.1028,0.2164,0.07356,0.5692,1.073,3.854,54.18,0.007026,0.02501,0.03188,0.01297,0.01689,0.004142,20.96,31.48,136.8,1315,0.1789,0.4233,0.4784,0.2073,0.3706,0.1142,0
+19.81,22.15,130,1260,0.09831,0.1027,0.1479,0.09498,0.1582,0.05395,0.7582,1.017,5.865,112.4,0.006494,0.01893,0.03391,0.01521,0.01356,0.001997,27.32,30.88,186.8,2398,0.1512,0.315,0.5372,0.2388,0.2768,0.07615,0
+13.54,14.36,87.46,566.3,0.09779,0.08129,0.06664,0.04781,0.1885,0.05766,0.2699,0.7886,2.058,23.56,0.008462,0.0146,0.02387,0.01315,0.0198,0.0023,15.11,19.26,99.7,711.2,0.144,0.1773,0.239,0.1288,0.2977,0.07259,1
+</code></pre>
+<p>下面表格给出了每一列数据代表的含义：</p>
+<table>
+<thead>
+<tr>
+<th>列数</th>
+<th>含义</th>
+<th>列数</th>
+<th>含义</th>
+<th>列数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>半径平均值</td>
+<td>11</td>
+<td>半径标准差</td>
+<td>21</td>
+<td>半径最大值</td>
+</tr>
+<tr>
+<td>2</td>
+<td>文理平均值</td>
+<td>12</td>
+<td>文理标准差</td>
+<td>22</td>
+<td>文理最大值</td>
+</tr>
+<tr>
+<td>3</td>
+<td>周长平均值</td>
+<td>13</td>
+<td>周长标准差</td>
+<td>23</td>
+<td>周长最大值</td>
+</tr>
+<tr>
+<td>4</td>
+<td>面积平均值</td>
+<td>14</td>
+<td>面积标准差</td>
+<td>24</td>
+<td>面积最大值</td>
+</tr>
+<tr>
+<td>5</td>
+<td>平滑程度平均值</td>
+<td>15</td>
+<td>平滑程度标准差</td>
+<td>25</td>
+<td>平滑程度最大值</td>
+</tr>
+<tr>
+<td>6</td>
+<td>紧密度平均值</td>
+<td>16</td>
+<td>紧密度标准差</td>
+<td>26</td>
+<td>紧密度最大值</td>
+</tr>
+<tr>
+<td>7</td>
+<td>凹度平均值</td>
+<td>17</td>
+<td>凹度标准差</td>
+<td>27</td>
+<td>凹度最大值</td>
+</tr>
+<tr>
+<td>8</td>
+<td>凹缝平均值</td>
+<td>18</td>
+<td>凹缝标准差</td>
+<td>28</td>
+<td>凹缝最大值</td>
+</tr>
+<tr>
+<td>9</td>
+<td>对称性平均值</td>
+<td>19</td>
+<td>对称性标准差</td>
+<td>29</td>
+<td>对称性最大值</td>
+</tr>
+<tr>
+<td>10</td>
+<td>分形维数平均值</td>
+<td>20</td>
+<td>分形维数标准差</td>
+<td>30</td>
+<td>分形维数最大值</td>
+</tr>
+</tbody>
+</table>
+<p>最后一列的含义表示：是否是良性肿瘤，0 表示恶性肿瘤，1 表示是良性肿瘤。</p>
+<p>我们可以用 <code>load_breast_cancer</code> 函数来加载该数据集：</p>
+<pre><code class="language-python">from sklearn.datasets import load_breast_cancer
+data = load_breast_cancer()
+</code></pre>
+<p><code>feature_names</code> 属性存储了每列数据的含义：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print data.feature_names
+['mean radius' 'mean texture' 'mean perimeter' 'mean area'
+ 'mean smoothness' 'mean compactness' 'mean concavity'
+ 'mean concave points' 'mean symmetry' 'mean fractal dimension'
+ 'radius error' 'texture error' 'perimeter error' 'area error'
+ 'smoothness error' 'compactness error' 'concavity error'
+ 'concave points error' 'symmetry error' 'fractal dimension error'
+ 'worst radius' 'worst texture' 'worst perimeter' 'worst area'
+ 'worst smoothness' 'worst compactness' 'worst concavity'
+ 'worst concave points' 'worst symmetry' 'worst fractal dimension']
+</code></pre>
+<p><code>data</code> 属性存储了特征值：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print data.data
+[[1.799e+01 1.038e+01 1.228e+02 ... 2.654e-01 4.601e-01 1.189e-01]
+ [2.057e+01 1.777e+01 1.329e+02 ... 1.860e-01 2.750e-01 8.902e-02]
+ [1.969e+01 2.125e+01 1.300e+02 ... 2.430e-01 3.613e-01 8.758e-02]
+ ...
+ [1.660e+01 2.808e+01 1.083e+02 ... 1.418e-01 2.218e-01 7.820e-02]
+ [2.060e+01 2.933e+01 1.401e+02 ... 2.650e-01 4.087e-01 1.240e-01]
+ [7.760e+00 2.454e+01 4.792e+01 ... 0.000e+00 2.871e-01 7.039e-02]]
+</code></pre>
+<p><code>target</code> 属性存储了目标值：</p>
+<pre><code class="language-python">&gt;&gt;&gt; print data.target
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 1 0 0 0 0 0 0 0 0 1 0 1 1 1 1 1 0 0 1 0 0 1 1 1 1 0 1 0 0 1 1 1 1 0 1 0 0
+ 1 0 1 0 0 1 1 1 0 0 1 0 0 0 1 1 1 0 1 1 0 0 1 1 1 0 0 1 1 1 1 0 1 1 0 1 1
+ 1 1 1 1 1 1 0 0 0 1 0 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 1 1 0 1 1 1 1 0 1
+ 1 1 1 1 1 1 1 1 0 1 1 1 1 0 0 1 0 1 1 0 0 1 1 0 0 1 1 1 1 0 1 1 0 0 0 1 0
+ 1 0 1 1 1 0 1 1 0 0 1 0 0 0 0 1 0 0 0 1 0 1 0 1 1 0 1 0 0 0 0 1 1 0 0 1 1
+ 1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 1 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 1 1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 0 1 1
+ 1 1 0 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 0
+ 0 1 0 0 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1
+ 1 0 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 0 1 1 1 1 1 0 1 1
+ 0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1
+ 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 0 0 1 0 1 0 1 1 1 1 1 0 1 1 0 1 0 1 0 0
+ 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 0 0 0 0 0 0 1]
+</code></pre>
+<h3 id="3数据预处理">3，数据预处理</h3>
+<p>我们知道数据集的前 30 列是特征值，最后一列是目标值。通过观察特征值可知，30 列的特征值，共有10 个维度，可以分为三大类：</p>
+<ul>
+<li>前 10 列是每个维度的平均值。</li>
+<li>中 10 列是每个维度的标准差。</li>
+<li>后 10 列是每个维度的最大值。</li>
+</ul>
+<p>因此，我们在训练 SVM 模型时，可以只选择其中一类作为训练集时的特征值。</p>
+<p>比如，这里我们选择前 10 列特征作为训练特征（后 20 列忽略）：</p>
+<pre><code class="language-python">&gt;&gt;&gt; features = data.data[:,0:10] # 特征集
+&gt;&gt;&gt; labels = data.target         # 目标集 
+</code></pre>
+<p>将数据拆分为训练集和测试集：</p>
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+
+train_features, test_features, train_labels, test_labels = 
+    train_test_split(features, labels, test_size=0.33, random_state=0)
+</code></pre>
+<p>采用 Z-Score 规范化数据：</p>
+<pre><code class="language-python">from sklearn.preprocessing import StandardScaler
+
+ss = StandardScaler()
+train_features = ss.fit_transform(train_features)
+test_features = ss.transform(test_features)
+</code></pre>
+<h3 id="4构造分类器">4，构造分类器</h3>
+<p>下面使用 SVC 类构造 SVM 分类器：</p>
+<pre><code class="language-python">from sklearn.svm import SVC
+svc = svm.SVC() # 均使用默认参数
+</code></pre>
+<p>训练模型：</p>
+<pre><code class="language-python">svc.fit(train_features, train_labels)
+</code></pre>
+<p>用模型做预测：</p>
+<pre><code class="language-python">prediction = svc.predict(test_features)
+</code></pre>
+<p>判断模型准确率：</p>
+<pre><code class="language-python">from sklearn.metrics import accuracy_score
+score = accuracy_score(test_labels, prediction)
+&gt;&gt;&gt; print score
+0.9414893617021277
+</code></pre>
+<p>可以看到准确率为 <strong>94%</strong>，说明训练效果还是很不错的。</p>
+<p><a href="https://scikit-learn.org/stable/auto_examples/svm/plot_linearsvc_support_vectors.html">这里</a>是一个关于线性分类器  <strong>LinearSVC</strong> 的示例，你可以了解一下。</p>
+<h3 id="5总结">5，总结</h3>
+<p><strong>sklearn</strong> 中实现了 SVM 算法，这里我们展示了如何用它处理实际问题。</p>
+<p>除了 <strong>sklearn</strong>，<a href="https://www.csie.ntu.edu.tw/~cjlin/libsvm/index.html">LIBSVM</a> 也实现了 SVM 算法，这也是一个非常出名的库，你可以自行研究一下。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/01/ml-svm1">SVM 支持向量机算法-原理篇</a></p>
+<p><a href="/2020/12/ml-adaboost">AdaBoost 算法-分析波士顿房价数据集</a></p>
+<p><a href="/2021/01/ml-randomforest">RandomForest 随机森林算法与模型参数的调优</a></p>
+<p><a href="/2020/11/ml-decisiontree2">决策树算法-实战篇-鸢尾花及波士顿房价预测</a></p>
+<p><a href="/2020/12/ml-apriori">Apriori 算法-如何进行关联规则挖掘</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-01-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/01/ml-svm1/">
+            <span class="next-text nav-default">SVM 支持向量机算法-原理篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/01/ml-svm2/" class="leancloud_visitors" data-flag-title="SVM 支持向量机算法-实战篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
