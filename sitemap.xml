@@ -23,6 +23,13 @@
   </url>
   
   <url>
+    <loc>https://codeshellme.github.io/es/</loc>
+    <lastmod>2021-02-02T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://codeshellme.github.io/about/</loc>
     <lastmod>2020-03-28T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -31,14 +38,35 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2021-01-19T22:41:52+08:00</lastmod>
+    <lastmod>2021-02-02T22:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/02/es-introduction/</loc>
+    <lastmod>2021-02-02T22:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/categories/es-%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2021-02-02T22:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2021-01-19T22:41:52+08:00</lastmod>
+    <lastmod>2021-02-02T22:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/</loc>
+    <lastmod>2021-02-02T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -298,13 +326,6 @@
   <url>
     <loc>https://codeshellme.github.io/2020/11/ml-decisiontree2/</loc>
     <lastmod>2020-11-15T21:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/</loc>
-    <lastmod>2020-11-12T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

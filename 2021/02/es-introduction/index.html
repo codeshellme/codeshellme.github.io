@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 入门简介 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 E" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-introduction/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 入门简介" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 E" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-introduction/" />
+<meta property="article:published_time" content="2021-02-02T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-02T22:41:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 入门简介">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 E">
+<meta itemprop="datePublished" content="2021-02-02T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-02T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1419">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 入门简介"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 E"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 入门简介</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-02 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 1419 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1es-的诞生与发展">1，ES 的诞生与发展</a></li>
+        <li><a href="#2es-产品家族">2，ES 产品家族</a></li>
+        <li><a href="#3es-使用架构">3，ES 使用架构</a></li>
+        <li><a href="#4es-的竞争对手">4，ES 的竞争对手</a></li>
+        <li><a href="#5es-的应用">5，ES 的应用</a></li>
+        <li><a href="#6es-官方文档">6，ES 官方文档</a></li>
+        <li><a href="#7总结">7，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210110152155468.png?" alt="在这里插入图片描述"></p>
+<p><a href="https://www.elastic.co/cn/elasticsearch/">ElasticSearch</a> 是一款<strong>强大的、开源的、分布式</strong>的<strong>搜索与分析引擎</strong>，简称 <strong>ES</strong>，它提供了<strong>实时搜索</strong>与<strong>聚合分析</strong>两大功能。</p>
+<p>使用 ES 可以构建可扩展的<strong>搜索应用</strong>，从而帮助我们在海量数据中，快速找到想要的内容。</p>
+<blockquote>
+<p><strong>elastic</strong> 的含义是灵活的，有弹性的。</p>
+</blockquote>
+<h3 id="1es-的诞生与发展">1，ES 的诞生与发展</h3>
+<p><strong>ES</strong> 是基于 <strong>Lucene</strong> 开发的一款搜索应用。</p>
+<p><a href="https://lucene.apache.org/">Lucene</a> 是一个基于 <strong>Java</strong> 语言的搜索引擎库，它由 <strong>Doug Cutting</strong> 创建于 1995 年，并于 2005 年成为 <strong>Apache</strong> 顶级开源项目。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210113115113985.png?" alt="Doug Cutting"></p>
+<p>（上图为 <code>Doug Cutting</code> ）</p>
+<blockquote>
+<p><strong>Doug Cutting</strong> 就是大名鼎鼎的 <strong>Hadoop</strong> 之父。</p>
+</blockquote>
+<p>虽然 Lucene 非常强大，但它只是一个 Java 类库，而且学习成本较高。</p>
+<p>ES 的创始人 <strong>Shay Banon</strong> 在 2004 年，基于 Lucene 创建了一个开源项目 <strong>Compass</strong>，后于 2010 年改名为 ElasticSearch。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210113115706180.png?" alt="在这里插入图片描述"></p>
+<p>（上图为 <code>Shay Banon</code> ）</p>
+<p>从一开始 ES 就具备了可扩展，分布式，易用的特点，ES 的这些优点使得它很快的流行开来。</p>
+<p>Shay Banon 在 2010 年发布了 ES 的第一个版本，并于 2012 年成立了公司，来提供更加完善的产品和服务。</p>
+<p>2015年，公司名称从 Elasticsearch 改为 <a href="https://www.elastic.co/cn">Elastic</a>。因为此时，公司的杀手级产品已经不仅仅是 Elasticsearch 了，而且还包括了 <a href="https://www.elastic.co/cn/logstash">Logstash</a> 和 <a href="https://www.elastic.co/cn/kibana">Kibana</a>，这三款应用统称为 <strong>ELK</strong>。</p>
+<p>2018年，Elastic 在<strong>纽交所</strong>成功上市，如今的市值早已过百亿美元。</p>
+<p><em><strong>ES 的重要版本发布时间表</strong></em></p>
+<table>
+<thead>
+<tr>
+<th>发布时间</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2010 年 2 月</td>
+<td>第一个版本 0.4 发布</td>
+</tr>
+<tr>
+<td>2014 年 1 月</td>
+<td>1.0 版</td>
+</tr>
+<tr>
+<td>2015 年 10 月</td>
+<td>2.0 版</td>
+</tr>
+<tr>
+<td>2016 年 10 月</td>
+<td>5.0 版</td>
+</tr>
+<tr>
+<td>2017 年 10 月</td>
+<td>6.0 版</td>
+</tr>
+<tr>
+<td>2019 年 4 月</td>
+<td>7.0 版</td>
+</tr>
+</tbody>
+</table>
+<p>关于 Elastic 产品的生命周期可参考<a href="https://www.elastic.co/cn/support/eol">这里</a>。</p>
+<h3 id="2es-产品家族">2，ES 产品家族</h3>
+<p>Elastic 公司围绕 ElasticSearch，有着丰富的产品家族，叫作 <a href="https://www.elastic.co/cn/what-is/elk-stack">ELK Stack</a>，其中包含了 4 个产品：</p>
+<ul>
+<li><a href="https://www.elastic.co/cn/kibana">Kibana</a>：用于数据可视化。
+<ul>
+<li>由 <strong>Rashid Khan</strong> 创建，2013 年被 Elastic 收购。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/cn/elasticsearch/">ElasticSearch</a>：ELK Stack 的核心组件，具有数据搜索与聚合能力。</li>
+<li><a href="https://www.elastic.co/cn/beats/">Beats</a>：轻量型数据采集器，基于 <strong>Golang</strong> 开发。</li>
+<li><a href="https://www.elastic.co/cn/logstash">Logstash</a>：用于数据采集，支持从不同的数据源采集数据及转换数据。
+<ul>
+<li>由 <strong>Jordan Sisel</strong> 创建于 2009 年，2013 年被 Elastic 收购。</li>
+</ul>
+</li>
+</ul>
+<p>这四款产品的层级关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110200111863.png?" alt="在这里插入图片描述"></p>
+<h3 id="3es-使用架构">3，ES 使用架构</h3>
+<p>将 ES 应用到项目中时，可以有两种架构，一种是使用 ES 作为唯一的后端；另一种是 ES 与数据库系统配合，一同作为后端。</p>
+<p><em><strong>ES 作为唯一后端</strong></em></p>
+<p>ES 作为一个<strong>现代化的搜索引擎</strong>，它本身除了拥有<strong>检索功能</strong>外，还拥有<strong>存储功能</strong>。因此，在一个不复杂的项目中，可以将 ES 作为唯一的后端来使用。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110203540462.png?" alt="在这里插入图片描述"></p>
+<p><em><strong>ES 与数据库系统配合</strong></em></p>
+<p>在比较复杂的项目中，ES 无法提供传统数据库的所有功能（比如<strong>事务处理</strong>），因此需要将 ES 和传统数据库来配合使用。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110204254115.png?" alt="在这里插入图片描述"></p>
+<h3 id="4es-的竞争对手">4，ES 的竞争对手</h3>
+<p>ES 主要有 <strong>Solr</strong> 和 <strong>Splunk</strong> 两个竞争对手。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110210947999.png" alt="在这里插入图片描述"></p>
+<p><a href="https://lucene.apache.org/solr/">Solr</a> 也是基于 Lucene 的一款搜索引擎，Lucene 与 Solr 已于 2010 年合并成为 Apache 的顶级项目。</p>
+<p><a href="https://www.splunk.com/">Splunk</a> 是一个专业的数据处理平台。</p>
+<p>目前在 <a href="https://db-engines.com/">DB-Engines</a> 的搜索引擎排名中，SE、Splunk、Solr 分别位于第一、二、三名。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110211637158.png?" alt="在这里插入图片描述"></p>
+<h3 id="5es-的应用">5，ES 的应用</h3>
+<p><em><strong>ES 客户端接口</strong></em></p>
+<p>ES 支持丰富的 <a href="https://www.elastic.co/guide/en/elasticsearch/client/index.html">Clients 接口</a>可与其进行交互，使得开发者可以用多种编程语言，多种方式进行接入。</p>
+<p><em><strong>ES 企业应用</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/20210203100125589.png" alt="在这里插入图片描述"></p>
+<p>目前你所熟知的<a href="https://www.elastic.co/cn/customers/">很多应用</a>都使用了 ES 来提供搜索功能，比如 GitHub，Wikipedia 等。</p>
+<p><em><strong>ES 云服务商</strong></em></p>
+<p>很多大的云服务商都提供了 <a href="https://www.elastic.co/cn/cloud/">ES 托管服务</a>，比如谷歌，微软，亚马逊，阿里巴巴等。</p>
+<h3 id="6es-官方文档">6，ES 官方文档</h3>
+<p><a href="https://www.elastic.co/guide/index.html">这里</a>是 Elastic 所有产品的学习文档。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210113175245515.png?" alt="在这里插入图片描述"></p>
+<h3 id="7总结">7，总结</h3>
+<p>ES 是一款强大的搜索引擎系统，我们可以基于它为用户提供搜索功能。</p>
+<p>ES 提供了丰富的客户端接口和 ELK Stack 产品家族供开发者使用，极大的降低了企业构建搜索服务的难度。</p>
+<p>ELK Stack 被广泛应用于<strong>搜索、日志管理、安全分析、指标分析、业务分析、性能监控</strong>等领域。</p>
+<p>下一节将介绍 ES 的安装及简单使用。</p>
+<p>（本节完。）</p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-02
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/01/ml-svm2/">
+            <span class="next-text nav-default">SVM 支持向量机算法-实战篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-introduction/" class="leancloud_visitors" data-flag-title="ElasticSearch 入门简介">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
