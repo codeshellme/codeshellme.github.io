@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 安装与运行 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节来介绍 ES 的安装。 1，下载 ES ES 是基于 Java 语言开发的，因" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-install/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 安装与运行" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节来介绍 ES 的安装。 1，下载 ES ES 是基于 Java 语言开发的，因" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-install/" />
+<meta property="article:published_time" content="2021-02-03T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-03T22:41:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 安装与运行">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节来介绍 ES 的安装。 1，下载 ES ES 是基于 Java 语言开发的，因">
+<meta itemprop="datePublished" content="2021-02-03T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-03T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1348">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 安装与运行"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节来介绍 ES 的安装。 1，下载 ES ES 是基于 Java 语言开发的，因"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 安装与运行</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-03 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 1348 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1下载-es">1，下载 ES</a></li>
+        <li><a href="#2启动-es">2，启动 ES</a></li>
+        <li><a href="#3安装-es-插件">3，安装 ES 插件</a></li>
+        <li><a href="#4运行-es-集群">4，运行 ES 集群</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本节来介绍 ES 的安装。</p>
+<h3 id="1下载-es">1，下载 ES</h3>
+<p>ES 是基于 Java 语言开发的，因此，要安装 ES，首先需要有 Java 环境。</p>
+<p>从 ES 7.0 开始，ES 内置了 Java 环境，所以如果安装的是 7.0 及以上版本的 ES，就不需要额外安装 Java 环境了。</p>
+<p>我们可以到 <a href="https://www.elastic.co/downloads/elasticsearch">ES 的下载页面</a>去下载 ES 安装包，你可以根据你的系统，选择不同的安装包进行安装。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110221825916.png?" alt="在这里插入图片描述"></p>
+<p>我这里选择的是 Windows 版本，下载好压缩包后，将其解压。解压后的目录如下所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011022305034.png?" alt="在这里插入图片描述"></p>
+<p>来看下每个目录的作用：</p>
+<ul>
+<li><strong>bin</strong> 目录中是一些工具命令。</li>
+<li><strong>data</strong> 目录存储数据文件。</li>
+<li><strong>jdk</strong> 目录是 Java 运行环境。</li>
+<li><strong>lib</strong> 目录是 Java 开发类库。</li>
+<li><strong>logs</strong> 目录用于存放日志。</li>
+<li><strong>modules</strong> 目录中包含了所有的 ES 模块。</li>
+<li><strong>plugins</strong> 目录包含所有已安装的插件。</li>
+<li><strong>config</strong> 目录是一些配置文件。
+<ul>
+<li><code>elasticsearch.yml</code> 文件用于配置 ES 服务。</li>
+<li><code>jvm.options</code> 文件用于配置 JVM 参数。
+<ul>
+<li>其中 Xmx 和 Xms 建议设置的大小一样，且不超过机器内存的一半。</li>
+<li>Xmx 和 Xms 默认为 1g。</li>
+<li><a href="https://www.elastic.co/cn/blog/a-heap-of-trouble">这里</a>有一些介绍，你可以参考一下。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2启动-es">2，启动 ES</h3>
+<p><strong>bin</strong> 目录中有一个 <code>elasticsearch</code> 命令，用于运行 ES 实例。我们可以通过 <code>--help</code> 参数查看其帮助：</p>
+<pre><code class="language-shell">&gt; bin\elasticsearch --help
+Starts Elasticsearch
+
+Option                Description
+------                -----------
+-E &lt;KeyValuePair&gt;     Configure a setting
+-V, --version         Prints Elasticsearch version information and exits
+-d, --daemonize       Starts Elasticsearch in the background `在后台运行`
+-h, --help            Show help
+-p, --pidfile &lt;Path&gt;  Creates a pid file in the specified path on start
+-q, --quiet           Turns off standard output/error streams logging in console
+-s, --silent          Show minimal output
+-v, --verbose         Show verbose output
+</code></pre>
+<p>进入到解压后的目录中，在 Windows 系统中用下面命令来启动 ES：</p>
+<pre><code class="language-shell">bin\elasticsearch
+</code></pre>
+<p>在 Linux 系统中使用下面命令启动 ES：</p>
+<pre><code class="language-shell">bin/elasticsearch
+</code></pre>
+<p>如果启动成功，ES Server 将在本机的 9200 端口监听服务。</p>
+<p>我们可以使用 <strong>curl</strong> 命令访问本机 9200 端口，查看 ES 是否启动成功。如果输出像下面这样，则说明启动成功：</p>
+<pre><code class="language-shell">&gt; curl http://localhost:9200/ 
+{
+  &quot;name&quot; : &quot;LAPTOP-VH778PAK&quot;,
+  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,
+  &quot;cluster_uuid&quot; : &quot;trxvXvAfQ5GxWe3D4vEIXA&quot;,
+  &quot;version&quot; : {
+    &quot;number&quot; : &quot;7.10.1&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;zip&quot;,
+    &quot;build_hash&quot; : &quot;1c34507e66d7db1211f66f3513706fdf548736aa&quot;,
+    &quot;build_date&quot; : &quot;2020-12-05T01:00:33.671820Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;8.7.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;6.8.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;6.0.0-beta1&quot;
+  },
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+}
+</code></pre>
+<p>你也可以在浏览器中访问服务地址，来查看是否启动成功：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210110224041565.png?" alt="在这里插入图片描述"></p>
+<h3 id="3安装-es-插件">3，安装 ES 插件</h3>
+<p>我们可以通过安装 ES 插件来为 ES 扩展功能。</p>
+<p><strong>bin</strong> 目录中有一个 <code>elasticsearch-plugin.bat</code> 命令，是关于 <strong>ES 插件</strong>的命令，可以使用 <code>--help</code> 参数来查看其用法：</p>
+<pre><code class="language-shell">&gt; bin\elasticsearch-plugin --help
+A tool for managing installed elasticsearch plugins
+
+Commands
+--------
+list - Lists installed elasticsearch plugins
+install - Install a plugin
+remove - removes a plugin from Elasticsearch
+
+Non-option arguments:
+command
+
+Option             Description
+------             -----------
+-E &lt;KeyValuePair&gt;  Configure a setting
+-h, --help         Show help
+-s, --silent       Show minimal output
+-v, --verbose      Show verbose output
+</code></pre>
+<p>使用 <code>list</code> 参数查看是否有插件：</p>
+<pre><code class="language-shell">&gt; bin\elasticsearch-plugin list
+</code></pre>
+<p>没有任何输出，说明没有插件。</p>
+<p>下面演示安装 <code>analysis-icu</code> 插件，这是一个分词插件：</p>
+<pre><code class="language-shell">&gt; bin\elasticsearch-plugin install analysis-icu
+-&gt; Installing analysis-icu
+-&gt; Downloading analysis-icu from elastic
+[=================================================] 100%
+-&gt; Installed analysis-icu
+</code></pre>
+<p>安装完成后，再次查看插件列表：</p>
+<pre><code class="language-shell">&gt; bin\elasticsearch-plugin list
+analysis-icu
+</code></pre>
+<p>可以看到，这时有了一个插件。</p>
+<p>重新启动 ES 服务后，我们也可以访问 HTTP 接口来查看插件：</p>
+<pre><code class="language-shell">&gt; curl localhost:9200/_cat/plugins
+LAPTOP-VH778PAK analysis-icu 7.10.1
+`服务名称`       `插件名称`    `插件版本`
+</code></pre>
+<p>添加 <code>?v</code> 后缀可以查看字段的解释：</p>
+<pre><code class="language-shell">&gt; curl localhost:9200/_cat/plugins?v
+name            component    version  `解释`
+LAPTOP-VH778PAK analysis-icu 7.10.1
+</code></pre>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/plugins/current/index.html">这里</a>是关于 ES 插件的介绍，你可以了解一下。</p>
+<h3 id="4运行-es-集群">4，运行 ES 集群</h3>
+<p>我们可以运行多个 ES 实例，将其组成一个 ES 集群，命令如下：</p>
+<pre><code class="language-shell">&gt; bin\elasticsearch -E node.name=node1 -E cluster.name=escluster -E path.data=node1_data -d
+&gt; bin\elasticsearch -E node.name=node2 -E cluster.name=escluster -E path.data=node2_data -d
+&gt; bin\elasticsearch -E node.name=node3 -E cluster.name=escluster -E path.data=node3_data -d
+</code></pre>
+<p>其中 <code>-E</code> 用于指定命令参数，<code>node.name</code> 表示节点名称，<code>cluster.name</code> 表示集群名称，<code>path.data</code> 表示数据目录，<code>-d</code> 表示在后台运行实例。</p>
+<p>查看集群中的节点：</p>
+<pre><code class="language-shell">&gt; curl localhost:9200/_cat/nodes?v
+ip        heap.percent ram.percent cpu  node.role  master name
+127.0.0.1           30          91   9  cdhilmrstw -      node2
+127.0.0.1           28          91   9  cdhilmrstw -      node3
+127.0.0.1           34          91   9  cdhilmrstw *      node1
+</code></pre>
+<p>可以看到有 3 个节点，分别是 node1，node2，node3。其中标有星号 <code>*</code> 的节点为主节点。</p>
+<blockquote>
+<p>默认情况下，集群中启动的第一个节点，会将自己选举为 <strong>Master 节点</strong>。</p>
+</blockquote>
+<p>查看集群健康状态：</p>
+<pre><code class="language-shell">&gt; curl localhost:9200/_cluster/health
+{
+    &quot;cluster_name&quot;:&quot;escluster&quot;,   `集群名称`
+    &quot;status&quot;:&quot;green&quot;,             `健康状态`
+    &quot;timed_out&quot;:false,            `是否超时`
+    &quot;number_of_nodes&quot;:3,          `节点数量`
+    &quot;number_of_data_nodes&quot;:3,     `数据节点数量` 
+    &quot;active_primary_shards&quot;:0,
+    &quot;active_shards&quot;:0,
+    &quot;relocating_shards&quot;:0,
+    &quot;initializing_shards&quot;:0,
+    &quot;unassigned_shards&quot;:0,
+    &quot;delayed_unassigned_shards&quot;:0,
+    &quot;number_of_pending_tasks&quot;:0,
+    &quot;number_of_in_flight_fetch&quot;:0,
+    &quot;task_max_waiting_in_queue_millis&quot;:0,
+    &quot;active_shards_percent_as_number&quot;:100
+}
+</code></pre>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-introduction">ElasticSearch 入门简介</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-introduction/">
+            <span class="next-text nav-default">ElasticSearch 入门简介</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-install/" class="leancloud_visitors" data-flag-title="ElasticSearch 安装与运行">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
