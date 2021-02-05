@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Wed, 03 Feb 2021 22:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 04 Feb 2021 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kibana，Logstash 和 Cerebro 的安装运行</title>
+      <link>https://codeshellme.github.io/2021/02/others-install/</link>
+      <pubDate>Thu, 04 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/others-install/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，安装 Kibana Kibana 用于数据可视化，我们可以进入到 Kibana 下载页面下</description>
+    </item>
     
     <item>
       <title>ElasticSearch 安装与运行</title>

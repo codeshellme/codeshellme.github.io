@@ -45,7 +45,7 @@
       <pubDate>Tue, 02 Feb 2021 21:38:52 +0800</pubDate>
       
       <guid>https://codeshellme.github.io/es/</guid>
-      <description>目录 1，ElasticSearch 入门简介 2，ElasticSearch 安装与运行</description>
+      <description>目录 1，ElasticSearch 入门简介 2，ElasticSearch 安装与运行 3，Kibana，Logstash 和 Cerebro 的安装运行</description>
     </item>
     
     <item>
@@ -55,6 +55,15 @@
       
       <guid>https://codeshellme.github.io/about/</guid>
       <description>更多技术干货，尽在本站微信公众号，欢迎关注！ 你的支持，是我最大的动力！ --</description>
+    </item>
+    
+    <item>
+      <title>Kibana，Logstash 和 Cerebro 的安装运行</title>
+      <link>https://codeshellme.github.io/2021/02/others-install/</link>
+      <pubDate>Thu, 04 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/others-install/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，安装 Kibana Kibana 用于数据可视化，我们可以进入到 Kibana 下载页面下</description>
     </item>
     
     <item>

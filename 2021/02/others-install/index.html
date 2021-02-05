@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Kibana，Logstash 和 Cerebro 的安装运行 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，安装 Kibana Kibana 用于数据可视化，我们可以进入到 Kibana 下载页面下" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/others-install/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Kibana，Logstash 和 Cerebro 的安装运行" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，安装 Kibana Kibana 用于数据可视化，我们可以进入到 Kibana 下载页面下" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/others-install/" />
+<meta property="article:published_time" content="2021-02-04T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-05T22:41:52+08:00" />
+<meta itemprop="name" content="Kibana，Logstash 和 Cerebro 的安装运行">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，安装 Kibana Kibana 用于数据可视化，我们可以进入到 Kibana 下载页面下">
+<meta itemprop="datePublished" content="2021-02-04T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-05T22:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1294">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kibana，Logstash 和 Cerebro 的安装运行"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，安装 Kibana Kibana 用于数据可视化，我们可以进入到 Kibana 下载页面下"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Kibana，Logstash 和 Cerebro 的安装运行</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-04 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 1294 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1安装-kibana">1，安装 Kibana</a></li>
+        <li><a href="#2简单使用-kibana">2，简单使用 Kibana</a></li>
+        <li><a href="#3deve-tools">3，Deve Tools</a></li>
+        <li><a href="#4kibana-插件">4，Kibana 插件</a></li>
+        <li><a href="#5安装-logstash">5，安装 Logstash</a></li>
+        <li><a href="#6使用-logstash">6，使用 Logstash</a></li>
+        <li><a href="#7使用-kibana-查看导入的数据">7，使用 Kibana 查看导入的数据</a></li>
+        <li><a href="#8安装及运行-cerebro">8，安装及运行 Cerebro</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1安装-kibana">1，安装 Kibana</h3>
+<p><strong>Kibana</strong> 用于数据可视化，我们可以进入到 <a href="https://www.elastic.co/cn/downloads/kibana">Kibana 下载页面</a>下载 Kibana，如下所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111170141424.png?" alt="在这里插入图片描述"></p>
+<p>接下来根据自己的系统，下载相应的版本，然后进行解压，得到如下文件夹：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111170855471.png?" alt="在这里插入图片描述"></p>
+<p>其中 <strong>bin</strong> 目录是一些工具命令，<strong>config</strong> 目录中是配置文件。</p>
+<p><strong>bin</strong> 目录中的 <strong>kibana.bat</strong> 是 <strong>Kibana</strong> 的启动程序，先来使用 <code>--help</code> 参数查看其用法：</p>
+<pre><code class="language-shell">&gt; bin\kibana --help
+
+  Usage: bin/kibana [command=serve] [options]
+
+  Kibana is an open source (Apache Licensed), browser based analytics and search dashboard for Elasticsearch.
+
+  Commands:
+    serve  [options]  Run the kibana server
+    help  &lt;command&gt;   Get the help for a specific command
+
+  &quot;serve&quot; Options:
+
+    -e, --elasticsearch &lt;uri1,uri2&gt;  Elasticsearch instances
+    -c, --config &lt;path&gt;              Path to the config file, use multiple --config args to include multiple config files
+    -p, --port &lt;port&gt;                The port to bind to
+    -q, --quiet                      Prevent all logging except errors
+    -Q, --silent                     Prevent all logging
+    --verbose                        Turns on verbose logging
+    -H, --host &lt;host&gt;                The host to bind to
+    -l, --log-file &lt;path&gt;            The file to log to
+    --plugin-dir &lt;path&gt;              A path to scan for plugins, this can be specified multiple times to specify multiple directories
+    --plugin-path &lt;path&gt;             A path to a plugin which should be included by the server, this can be specified multiple times to specify multiple paths
+    --plugins &lt;path&gt;                 an alias for --plugin-dir
+    --optimize                       Deprecated, running the optimizer is no longer required
+    -h, --help                       output usage information
+</code></pre>
+<p>配置文件无须做任何修改就可以运行，使用 <code>bin\kibana</code> 命令启动一个 <strong>Kibana</strong> 实例，如果运行成功，Kibana 将在 <strong>5601</strong> 端口监听服务。</p>
+<blockquote>
+<p>在运行 <strong>Kibana</strong> 之前要使 <strong>ES</strong> 处于运行状态。</p>
+</blockquote>
+<p>使用浏览器访问本地的 5601 端口，查看 Kibana 是否启动成功，如果像下面这样，说明启动成功：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111172731438.png?" alt="在这里插入图片描述"></p>
+<h3 id="2简单使用-kibana">2，简单使用 Kibana</h3>
+<p>点击下面的框框，可以添加数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111173023338.png" alt="在这里插入图片描述"></p>
+<p>这里有一些测试数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011117320148.png?" alt="在这里插入图片描述"></p>
+<p>点击 <code>Add data</code> 可以将数据添加到系统中（这些数据其实是添加到了 ES 中）。</p>
+<p>添加数据成功后，可以到 <code>Dashboard</code> 页面查看数据。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111173643664.png?" alt="在这里插入图片描述"></p>
+<h3 id="3deve-tools">3，Deve Tools</h3>
+<p>Kibana 中的 <code>Dev Tools</code> 是个有用的工具：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111174205142.png?" alt="在这里插入图片描述"></p>
+<p>在 <code>Dev tools</code> 中可以执行 ES 命令：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111174430959.png?" alt="在这里插入图片描述"></p>
+<h3 id="4kibana-插件">4，Kibana 插件</h3>
+<p>使用 <code>bin\kibana-plugin</code> 命令可以安装 Kibana 插件：</p>
+<pre><code class="language-shell">&gt; bin\kibana-plugin --help
+
+  Usage: bin/kibana-plugin [command] [options]
+
+  The Kibana plugin manager enables you to install and remove plugins that provide additional functionality to Kibana
+
+  Commands:
+    list                            list installed plugins
+    install  [options] &lt;plugin/url&gt; install a plugin
+    remove  [options] &lt;plugin&gt;      remove a plugin
+    help  &lt;command&gt;                 get the help for a specific command
+</code></pre>
+<h3 id="5安装-logstash">5，安装 Logstash</h3>
+<p>Logstash 用于向 ES 中导入数据。首先进入到 <a href="https://www.elastic.co/cn/downloads/logstash">Logstash 下载页面</a>下载 logstash：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111180651160.png?" alt="在这里插入图片描述"></p>
+<p>接下来是根据自己的系统下载相应的版本，下载完成后，解压后可得到如下目录：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210111182017981.png?" alt="cerebro"></p>
+<p>其中 <strong>bin</strong> 目录中是一些工具命令，<strong>config</strong> 目录中是配置文件，<code>config\logstash-sample.conf</code> 文件是 logstash 的配置文件示例。</p>
+<h3 id="6使用-logstash">6，使用 Logstash</h3>
+<p><a href="http://files.grouplens.org/datasets/movielens/ml-latest-small.zip">这里</a>是一份 <strong>MovieLens</strong> 数据集，我们将其下载下来，并用 logstash 将其导入 ES。</p>
+<p>使用 logstash 导入文件时，要为其指定配置文件，我们将下面内容命名为 logstash.conf，并将其放在 config 目录中。</p>
+<pre><code class="language-shell">input {
+  file {
+    path =&gt; &quot;C:/logstash-7.10.1/ml-latest-small/movies.csv&quot;
+    start_position =&gt; &quot;beginning&quot;
+  }
+}
+filter {
+  csv {
+    separator =&gt; &quot;,&quot;
+    columns =&gt; [&quot;id&quot;,&quot;content&quot;,&quot;genre&quot;]
+  }
+
+  mutate {
+    split =&gt; { &quot;genre&quot; =&gt; &quot;|&quot; }
+    remove_field =&gt; [&quot;path&quot;, &quot;host&quot;,&quot;@timestamp&quot;,&quot;message&quot;]
+  }
+
+  mutate {
+    split =&gt; [&quot;content&quot;, &quot;(&quot;]
+    add_field =&gt; { &quot;title&quot; =&gt; &quot;%{[content][0]}&quot;}
+    add_field =&gt; { &quot;year&quot; =&gt; &quot;%{[content][1]}&quot;}
+  }
+
+  mutate {
+    convert =&gt; {
+      &quot;year&quot; =&gt; &quot;integer&quot;
+    }
+    strip =&gt; [&quot;title&quot;]
+    remove_field =&gt; [&quot;path&quot;, &quot;host&quot;,&quot;@timestamp&quot;,&quot;message&quot;,&quot;content&quot;]
+  }
+}
+output {
+   elasticsearch {
+     hosts =&gt; &quot;http://localhost:9200&quot;
+     index =&gt; &quot;movies&quot;
+     document_id =&gt; &quot;%{id}&quot;
+   }
+  stdout {}
+}
+</code></pre>
+<p>这个配置文件中的内容，你不必全部看懂，只需要知道下面两点：</p>
+<ul>
+<li><code>input.file.path</code> 表示要导入的文件路径。</li>
+<li><code>output.elasticsearch.hosts</code> 表示 ES 的地址。</li>
+</ul>
+<p>下面使用 <code>bin\logstash</code> 命令将 <code>movies.csv</code> 文件中的数据导入 ES，使用 <code>-f</code> 指定配置文件：</p>
+<pre><code class="language-shell">&gt; bin\logstash -f config\logstash.conf
+</code></pre>
+<h3 id="7使用-kibana-查看导入的数据">7，使用 Kibana 查看导入的数据</h3>
+<p>当导入完成后，可以使用 Kibana 查看导入的数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011317204796.png?" alt="在这里插入图片描述"></p>
+<p>然后点击<strong>索引管理</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210113172335717.png?" alt="在这里插入图片描述"></p>
+<p>然后可以看到下面的页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210113173349348.png?" alt="在这里插入图片描述"></p>
+<p>点击 movies 索引，可以看到它的详细数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210113173622913.png?" alt="在这里插入图片描述"></p>
+<p>还可以查看 <strong>Setting</strong>，<strong>Mapping</strong> 等数据。</p>
+<h3 id="8安装及运行-cerebro">8，安装及运行 Cerebro</h3>
+<p><a href="https://github.com/lmenezes/cerebro">Cerebro</a> 是一个开源的 ElasticSearch 管理工具。</p>
+<p>在 Windows 系统中可以使用 <strong>choco</strong> 来安装：</p>
+<pre><code class="language-shell">choco install cerebro-es
+</code></pre>
+<p>也可以在<a href="https://github.com/lmenezes/cerebro/releases">下载页</a>下载安装包。</p>
+<p>下载 <strong>/</strong> 安装好之后，使用 <strong>bin/cerebro</strong> 运行程序，启动成功后，它会在 9000 端口监听服务。</p>
+<p>使用浏览器访问 9000 端口：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119212258177.png" alt="在这里插入图片描述"></p>
+<p>然后填入 ES 地址，点击 <strong>Connect</strong>，可以看到 ES 的管理界面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119213456425.png" alt="在这里插入图片描述"></p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-introduction">ElasticSearch 入门简介</a></p>
+<p><a href="/2021/02/es-install">ElasticSearch 安装与运行</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-install/">
+            <span class="next-text nav-default">ElasticSearch 安装与运行</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/others-install/" class="leancloud_visitors" data-flag-title="Kibana，Logstash 和 Cerebro 的安装运行">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
