@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 搜索引擎概念简介 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，倒排索引 倒排索引是一种数据结构，经常用在搜索引擎的" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-s/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 搜索引擎概念简介" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，倒排索引 倒排索引是一种数据结构，经常用在搜索引擎的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-s/" />
+<meta property="article:published_time" content="2021-02-05T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-05T22:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 搜索引擎概念简介">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，倒排索引 倒排索引是一种数据结构，经常用在搜索引擎的">
+<meta itemprop="datePublished" content="2021-02-05T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-05T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="776">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 搜索引擎概念简介"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，倒排索引 倒排索引是一种数据结构，经常用在搜索引擎的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 搜索引擎概念简介</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-05 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 776 字 </span>
+          <span class="more-meta"> 阅读约需 2 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1倒排索引">1，倒排索引</a></li>
+        <li><a href="#2搜索相关性">2，搜索相关性</a></li>
+        <li><a href="#3一个搜索过程">3，一个搜索过程</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1倒排索引">1，倒排索引</h3>
+<p>倒排索引是一种数据结构，经常用在搜索引擎的实现中，用于快速找到某个单词所在的文档。</p>
+<p>倒排索引会记录一个<strong>单词词典</strong>（Term Dictionary）和一个<strong>倒排列表</strong>：</p>
+<ul>
+<li>单词词典：包含了所有文档包含的所有 Term。</li>
+<li>倒排列表：由一系列的倒排索引项组成，每个倒排索引项包含 4 项内容，分别是：
+<ul>
+<li>文档 ID</li>
+<li>词频 TF：Term 在文档中出现的次数，用于相关性评分。</li>
+<li>位置 Position：Term 在文档中出现的位置，用于语句搜索。</li>
+<li>偏移 Offset：记录单词的开始结束位置，用于实现高亮显示。</li>
+</ul>
+</li>
+</ul>
+<p>假设我们有 3 篇文档：</p>
+<table>
+<thead>
+<tr>
+<th>文档 ID</th>
+<th>文档内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>hello world</td>
+</tr>
+<tr>
+<td>2</td>
+<td>hello Java</td>
+</tr>
+<tr>
+<td>3</td>
+<td>hello elasticsearch</td>
+</tr>
+</tbody>
+</table>
+<p>上面表格记录的是一种<strong>正向关系</strong>，叫做<strong>正排索引</strong>。</p>
+<p>倒排索引记录的是一种<strong>反向关系</strong>，如下：</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>文档 ID</th>
+<th>词频 TF</th>
+<th>Position</th>
+<th>Offset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hello</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>&lt;0, 5&gt;</td>
+</tr>
+<tr>
+<td>hello</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>&lt;0, 5&gt;</td>
+</tr>
+<tr>
+<td>hello</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>&lt;0, 5&gt;</td>
+</tr>
+<tr>
+<td>world</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>&lt;6, 5&gt;</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>&lt;6, 4&gt;</td>
+</tr>
+<tr>
+<td>elasticsearch</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>&lt;6, 19&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>ES 默认会对所有文档的所有字段建立倒排索引；也可以通过设置不对某些字段建立倒排索引，优点是节省空间，缺点是这些字段的内容无法被搜索。</p>
+<h3 id="2搜索相关性">2，搜索相关性</h3>
+<p><strong>搜索相关性</strong>用于描述<strong>文档</strong>与<strong>搜索字符串</strong>的匹配程度（ES 会计算出一个评分），目的是为文档进行排序，从而将最符合用户需求的文档排在前面。</p>
+<p>搜索相关性算法有 <strong>TF-IDF</strong> 算法和 <strong>BM25</strong> 算法。</p>
+<blockquote>
+<p>文章 <a href="https://blog.csdn.net/LUAOHAN/article/details/109749300">《朴素贝叶斯分类-实战篇》</a>中介绍到了 <strong>TF-IDF</strong> 算法，可作为参考。</p>
+</blockquote>
+<p><strong>BM25</strong> 与 <strong>TF-IDF</strong> 的比较：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117231018185.png?" alt="在这里插入图片描述"></p>
+<p>当 TF 无限增加的时候，BM25 算分会趋向于一个数值，而不是（像 TF-IDF 一样）无限增长。</p>
+<p>在 <strong>ES 5</strong> 之前，默认使用的是 TF-IDF 算法；在 <strong>ES 5</strong> 之后，默认使用的是 BM 25 算法。</p>
+<h3 id="3一个搜索过程">3，一个搜索过程</h3>
+<p>下图展示了一个搜索过程：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021011723143677.png?" alt="在这里插入图片描述"></p>
+<p>当用户向搜索引擎发送一个搜索请求的时候，搜索引擎经过了以下步骤：</p>
+<ol>
+<li>分词器对搜索字符串进行分词处理。</li>
+<li>在倒排索引表中查到匹配的文档。</li>
+<li>对每个匹配的文档进行相关性评分。</li>
+<li>根据相关性评分对文档进行排序。</li>
+<li>将排好序的文档返回给用户。</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/02/es-analyzers/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">ElasticSearch 分词器</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/02/others-install/">
+            <span class="next-text nav-default">Kibana，Logstash 和 Cerebro 的安装运行</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-s/" class="leancloud_visitors" data-flag-title="ElasticSearch 搜索引擎概念简介">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

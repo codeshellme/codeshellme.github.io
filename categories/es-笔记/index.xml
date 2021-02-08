@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 04 Feb 2021 22:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 06 Feb 2021 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/es-%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ElasticSearch 查询</title>
+      <link>https://codeshellme.github.io/2021/02/es-search/</link>
+      <pubDate>Sat, 06 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-search/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的查询 API 有两种： URI Search：HTTP GET 请求的方</description>
+    </item>
+    
+    <item>
+      <title>ElasticSearch 分词器</title>
+      <link>https://codeshellme.github.io/2021/02/es-analyzers/</link>
+      <pubDate>Fri, 05 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-analyzers/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，精确值与全文本 ES 中有精确值（Exact Values</description>
+    </item>
+    
+    <item>
+      <title>ElasticSearch 搜索引擎概念简介</title>
+      <link>https://codeshellme.github.io/2021/02/es-s/</link>
+      <pubDate>Fri, 05 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-s/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，倒排索引 倒排索引是一种数据结构，经常用在搜索引擎的</description>
+    </item>
     
     <item>
       <title>Kibana，Logstash 和 Cerebro 的安装运行</title>
