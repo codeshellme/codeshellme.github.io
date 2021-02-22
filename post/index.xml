@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Sat, 06 Feb 2021 22:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 21 Feb 2021 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ElasticSearch URI 查询</title>
+      <link>https://codeshellme.github.io/2021/02/es-uri-search/</link>
+      <pubDate>Sun, 21 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-uri-search/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，URI 查询格式 URI 查询的一般格式如下： GET /index_name/_search?q=key:val&amp;amp;df=title&amp;amp;sort=year:desc&amp;amp;from=0&amp;amp;size=10 { &amp;quot;profile&amp;quot;:&amp;quot;true&amp;quot; } 其中</description>
+    </item>
+    
+    <item>
+      <title>ElasticSearch 文档及操作</title>
+      <link>https://codeshellme.github.io/2021/02/es-doc/</link>
+      <pubDate>Sat, 20 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-doc/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 本节介绍 ES 文档，索引及其基本操作。 1，ES 中的文档 在 ES</description>
+    </item>
     
     <item>
       <title>ElasticSearch 查询</title>

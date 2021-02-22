@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 文档及操作 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节介绍 ES 文档，索引及其基本操作。 1，ES 中的文档 在 ES" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-doc/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 文档及操作" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节介绍 ES 文档，索引及其基本操作。 1，ES 中的文档 在 ES" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-doc/" />
+<meta property="article:published_time" content="2021-02-20T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-20T22:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 文档及操作">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节介绍 ES 文档，索引及其基本操作。 1，ES 中的文档 在 ES">
+<meta itemprop="datePublished" content="2021-02-20T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-20T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="5740">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 文档及操作"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节介绍 ES 文档，索引及其基本操作。 1，ES 中的文档 在 ES"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 文档及操作</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-20 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 5740 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1es-中的文档">1，ES 中的文档</a></li>
+        <li><a href="#2es-中的索引">2，ES 中的索引</a></li>
+        <li><a href="#3get-操作">3，GET 操作</a></li>
+        <li><a href="#4post--put-操作">4，POST / PUT 操作</a></li>
+        <li><a href="#5update-操作">5，Update 操作</a></li>
+        <li><a href="#6delete-操作">6，Delete 操作</a></li>
+        <li><a href="#7bulk-批量操作">7，Bulk 批量操作</a></li>
+        <li><a href="#8mget-批量读取">8，Mget 批量读取</a></li>
+        <li><a href="#9msearch-批量查询">9，Msearch 批量查询</a></li>
+        <li><a href="#10es-常见错误码">10，ES 常见错误码</a></li>
+        <li><a href="#11reindex-重建索引">11，Reindex 重建索引</a></li>
+        <li><a href="#12es-的并发控制">12，ES 的并发控制</a></li>
+        <li><a href="#13使用-ingest-节点对数据预处理">13，使用 Ingest 节点对数据预处理</a></li>
+        <li><a href="#14总结">14，总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>本节介绍 ES 文档，索引及其基本操作。</p>
+<h3 id="1es-中的文档">1，ES 中的文档</h3>
+<p>在 ES 中，<strong>文档</strong>（Document）是可搜索数据的最小存储单位，相当于关系数据库中的一条记录。</p>
+<p>文档以 <strong>Json</strong> 数据格式保存在 ES 中，Json 中保存着多个<strong>键值对</strong>，它可以保存不同类型的数据，比如：</p>
+<ul>
+<li>字符串类型</li>
+<li>数字类型</li>
+<li>布尔类型</li>
+<li>数组类型</li>
+<li>日期类型</li>
+<li>二进制类型</li>
+<li>范围类型</li>
+</ul>
+<blockquote>
+<p>Python 语言中的<strong>字典</strong>类型，就是 Json 数据格式。</p>
+</blockquote>
+<p>文档中的数据类型可以指定，也可以由 ES 自动推断。</p>
+<p>每个文档中都有一个 <strong>Unique ID</strong>，用于唯一标识一个文档。Unique ID 可以由用户指定，也可以由 ES 自动生成。</p>
+<blockquote>
+<p><strong>Unique ID</strong> 实际上是一个<strong>字符串</strong>。</p>
+</blockquote>
+<p>比如下面的 Json 就是一个文档：</p>
+<pre><code class="language-python">{
+  &quot;name&quot; : &quot;XiaoMing&quot;,
+  &quot;age&quot; : 19,
+  &quot;gender&quot; : &quot;male&quot;
+}
+</code></pre>
+<h4 id="11文档元数据">1.1，文档元数据</h4>
+<p>将上面那个 Json 数据存储到 ES 后，会像下面这样：</p>
+<pre><code class="language-python">{
+    &quot;_index&quot;: &quot;person&quot;, 
+    &quot;_type&quot;: &quot;_doc&quot;, 
+    &quot;_id&quot;: &quot;2344563&quot;,
+    &quot;_version&quot;: 1, 
+    &quot;_source&quot;: {
+        &quot;name&quot;: &quot;XiaoMing&quot;, 
+        &quot;age&quot;: 19, 
+        &quot;gender&quot;: &quot;male&quot;
+    }
+}
+</code></pre>
+<p>其中以下划线开头的字段就是元数据：</p>
+<ul>
+<li><code>_index</code>：文档所属的索引。</li>
+<li><code>_type</code>：文档的类型。ES 7.0 开始，一个索引只能有一种 <code>_type</code>。</li>
+<li><code>_id</code>：文档的唯一 ID。</li>
+<li><code>_source</code>：文档的原始 Json 数据。</li>
+<li><code>_version</code>：文档更新的次数。</li>
+</ul>
+<p>你可以查看<a href="https://www.elastic.co/cn/blog/moving-from-types-to-typeless-apis-in-elasticsearch-7-0">这里</a>，了解“<strong>为什么单个Index下，不再支持多个Tyeps？</strong>”。</p>
+<p>更多关于元数据的信息，可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-fields.html">这里</a>。</p>
+<h4 id="12文档的删除与更新">1.2，文档的删除与更新</h4>
+<p>ES 中文档的<strong>删除操作不会马上将其删除</strong>，而是会将其标记到 <strong>del</strong> 文件中，在后期合适的时候（比如 Merge 阶段）会真正的删除。</p>
+<p><strong>ES 中的文档是不可变更的</strong>，<strong>更新操作</strong>会将旧的文档标记为删除，同时增加一个新的字段，并且文档的 version 加 1。</p>
+<h4 id="13文档中的字段数">1.3，文档中的字段数</h4>
+<p>在 ES 中，一个文档默认最多可以有 <strong>1000</strong> 个字段，可以通过 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings">index.mapping.total_fields.limit</a> 进行设置。</p>
+<p>注意在设计 ES 中的数据结构时，不要使文档的字段数过多，这样会使得 mapping 很大，增加集群的负担。</p>
+<h3 id="2es-中的索引">2，ES 中的索引</h3>
+<p>ES 中的文档都会存储在某个<strong>索引</strong>（Index）中，索引是文档的容器，是一类文档的集合，相当于关系型数据库中的表的概念。</p>
+<p>ES 中可以创建很多不同的索引，表示不同的文档集合。</p>
+<p>每个索引都可以定义自己的 <strong>Mappings</strong> 和 <strong>Settings</strong>：</p>
+<ul>
+<li><code>Mappings</code>：用于设置文档字段的类型。</li>
+<li><code>Settings</code>：用于设置不同的数据分布。</li>
+</ul>
+<p>对于索引的一些参数设置，有些参数可以动态修改，有些参数在索引创建后不能修改，可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules.html">这里</a>。</p>
+<p><em><strong>ES 与传统数据库类比</strong></em></p>
+<p>如果将 ES 中的基本概念类比到传统数据库中，它们的对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th>ES</th>
+<th>传统数据库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>索引</td>
+<td>表</td>
+</tr>
+<tr>
+<td>文档</td>
+<td>行</td>
+</tr>
+<tr>
+<td>字段</td>
+<td>列</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>表定义</td>
+</tr>
+<tr>
+<td>DSL</td>
+<td>SQL 语句</td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>索引相关 API</strong></em></p>
+<p>下面给出一些查看索引相关信息的 API：</p>
+<pre><code class="language-shell"># 查看索引相关信息
+GET index_name
+
+# 查看索引的文档总数
+GET index_name/_count
+
+# 查看指定索引的前10条文档
+POST index_name/_search
+{
+}
+
+#_cat indices API
+
+# 查看所有的索引名以 index_prefix 为前缀的索引
+GET /_cat/indices/index_prefix*?v&amp;s=index
+
+# 查看状态为 green 的索引
+GET /_cat/indices?v&amp;health=green
+
+# 按照文档个数排序
+GET /_cat/indices?v&amp;s=docs.count:desc
+
+# 查看指定索引的指定信息
+GET /_cat/indices/index_prefix*?pri&amp;v&amp;h=health,index,pri,rep,docs.count,mt
+
+# 查看索引使用的内存大小
+GET /_cat/indices?v&amp;h=i,tm&amp;s=tm:desc
+</code></pre>
+<h3 id="3get-操作">3，GET 操作</h3>
+<p><strong>GET</strong> 操作可以获取指定文档的内容。</p>
+<p><code>GET index_name/_count</code>：获取指定索引中的文档数。</p>
+<p><code>GET index_name/_doc/id</code>：获取指定索引中的指定文档。</p>
+<p><code>GET index_name/_doc</code>：<strong>不允许</strong>该操作。</p>
+<p><code>GET index_name</code>：获取指定索引的 <code>Mappings</code> 和 <code>Settings</code>。</p>
+<h3 id="4post--put-操作">4，POST / PUT 操作</h3>
+<p><strong>POST/PUT</strong> 操作用于创建文档。</p>
+<p><em><strong>按照 POST / PUT 方法来区分</strong></em></p>
+<p><code>POST index_name/_doc</code>：</p>
+<ul>
+<li><code>POST index_name/_doc</code>：不指定 ID，总是会插入新的文档，文档数加 1。</li>
+<li><code>POST/PUT index_name/_doc/id</code>：指定 ID
+<ul>
+<li>当 id 存在时，会覆盖之前的，并且 version 会加 1，文档数不增加。</li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+</ul>
+<p><code>PUT index_name/_create</code>：</p>
+<ul>
+<li><code>PUT index_name/_create</code>：不指定 ID，<strong>不允许</strong>该操作。</li>
+<li><code>PUT index_name/_create/id</code>：指定 ID
+<ul>
+<li>当 id 存在时：<strong>报错</strong>，不会插入新文档。</li>
+<li>当 id 不存在时：，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+</ul>
+<p><code>PUT index_name/_doc</code>：</p>
+<ul>
+<li><code>PUT index_name/_doc</code>：不指定 ID，<strong>不允许</strong>该操作。</li>
+<li><code>PUT/POST index_name/_doc/id</code>：指定 ID
+<ul>
+<li>当 id 存在时，会覆盖之前的，并且 version 会加 1，文档数不增加。</li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+</ul>
+<p><code>PUT index_name/_doc/id?op_type=XXX</code></p>
+<ul>
+<li><code>op_type=create</code>：
+<ul>
+<li>当 id 存在时，<strong>报错</strong>，不会插入新文档。</li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+<li><code>op_type=index</code>：
+<ul>
+<li>当 id 存在时，会覆盖之前的，并且 version 会加 1，文档数不增加。</li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>按照是否指定 ID 来区分</strong></em></p>
+<p><strong>指定 ID</strong>：</p>
+<ul>
+<li><code>POST/PUT index_name/_doc/id</code>：指定 ID，称为 <strong>Index</strong> 操作
+<ul>
+<li>相当于 <code>PUT index_name/_doc/id?op_type=index</code></li>
+<li>当 id 存在时，会覆盖之前的，并且 version 会加 1，文档数不增加。</li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+<li><code>PUT index_name/_doc/id?op_type=create</code>：指定 ID，称为 <strong>Create</strong> 操作
+<ul>
+<li>相当于 <code>PUT index_name/_create/id</code></li>
+<li>当 id 存在时，<strong>报错</strong>，不会插入新文档。</li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1。</li>
+</ul>
+</li>
+</ul>
+<p><strong>不指定 ID</strong>：</p>
+<ul>
+<li><code>POST index_name/_doc</code>：不指定 ID，总是会插入新的文档，文档数加 1。</li>
+<li><code>PUT index_name/_doc</code>：不指定 ID，<strong>不允许</strong>该操作。</li>
+<li><code>PUT index_name/_create</code>：不指定 ID，<strong>不允许</strong>该操作。</li>
+</ul>
+<h3 id="5update-操作">5，Update 操作</h3>
+<p>Update 操作用于更新文档的内容。</p>
+<p><code>POST index_name/_update/id/</code>：更新指定文档的内容。更新的内容要放在 <strong>doc</strong> 字段中，否则会<strong>报错</strong>。</p>
+<ul>
+<li>当 id 不存在时，报错，不更新任何内容。</li>
+<li>当 id 存在时：
+<ul>
+<li>如果更新的字段与<strong>原来的相同</strong>，则不做任何操作。</li>
+<li>如果更新的字段与<strong>原来的不同</strong>，则更新原有内容，并且 version 会加 1。</li>
+</ul>
+</li>
+</ul>
+<p>实际上 ES 中的文档是不可变更的，更新操作会将旧的文档标记为删除，同时增加一个新的字段，并且文档的 version 加 1。</p>
+<h3 id="6delete-操作">6，Delete 操作</h3>
+<p>Delete 操作用于删除索引或文档。</p>
+<p><code>DELETE /index_name/_doc/id</code>：删除某个文档。</p>
+<ul>
+<li>当删除的 id 存在时，会删除该文档。</li>
+<li>当删除的 id 不存在时，ES 会返回 <code>not_found</code>。</li>
+</ul>
+<p><code>DELETE /index_name</code>：删除整个索引，<strong>要谨慎使用</strong>！</p>
+<ul>
+<li>当删除的 index_name 存在时，会删除整个索引内容。</li>
+<li>当删除的 index_name 不存在时，ES 会返回 <code>404</code> 错误。</li>
+</ul>
+<h3 id="7bulk-批量操作">7，Bulk 批量操作</h3>
+<p>批量操作指的是，在一次 API 调用中，对不同的索引进行多次操作。</p>
+<p>每次操作互不影响，即使某个操作出错，也不影响其他操作。</p>
+<p>返回的结果中包含了所有操作的执行结果。</p>
+<p>Bulk 支持的操作有 <code>Index</code>，<code>Create</code>，<code>Update</code>，<code>Delete</code>。</p>
+<p>Bulk 操作的格式如下：</p>
+<pre><code class="language-shell">POST _bulk
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;test&quot;, &quot;_id&quot; : &quot;1&quot; } }
+{ &quot;field1&quot; : &quot;value1&quot; }
+{ &quot;delete&quot; : { &quot;_index&quot; : &quot;test&quot;, &quot;_id&quot; : &quot;2&quot; } }
+{ &quot;create&quot; : { &quot;_index&quot; : &quot;test2&quot;, &quot;_id&quot; : &quot;3&quot; } }
+{ &quot;field1&quot; : &quot;value3&quot; }
+{ &quot;update&quot; : {&quot;_id&quot; : &quot;1&quot;, &quot;_index&quot; : &quot;test&quot;} }
+{ &quot;doc&quot; : {&quot;field2&quot; : &quot;value2&quot;} }
+</code></pre>
+<p>注意 Bulk 请求体的数据量不宜过大，建议在 5~15M。</p>
+<h3 id="8mget-批量读取">8，Mget 批量读取</h3>
+<p><strong>Mget</strong> 一次读取多个文档的内容，设计思想类似 Bulk 操作。</p>
+<p>Mget 操作的格式如下：</p>
+<pre><code class="language-shell">GET _mget
+{
+    &quot;docs&quot; : [
+        {&quot;_index&quot; : &quot;index_name1&quot;, &quot;_id&quot; : &quot;1&quot;},
+        {&quot;_index&quot; : &quot;index_name2&quot;, &quot;_id&quot; : &quot;2&quot;}
+    ]
+}
+</code></pre>
+<p>也可以在 URI 中指定索引名称：</p>
+<pre><code class="language-shell">GET /index_name/_mget
+{
+    &quot;docs&quot; : [
+        {&quot;_id&quot; : &quot;1&quot;},
+        {&quot;_id&quot; : &quot;2&quot;}
+    ]
+}
+</code></pre>
+<p>还可以用 <code>_source</code> 字段来设置返回的内容：</p>
+<pre><code class="language-shell">GET _mget
+{
+    &quot;docs&quot; : [
+        {&quot;_index&quot; : &quot;index_name1&quot;, &quot;_id&quot; : &quot;1&quot;},
+        {&quot;_index&quot; : &quot;index_name2&quot;, &quot;_id&quot; : &quot;2&quot;, &quot;_source&quot; : [&quot;f1&quot;, &quot;f2&quot;]}
+    ]
+}
+</code></pre>
+<h3 id="9msearch-批量查询">9，Msearch 批量查询</h3>
+<p><strong>Msearch</strong> 操作用于批量查询，格式如下：</p>
+<pre><code class="language-shell">POST index_name1/_msearch
+{} # 索引名称，不写的话就是 URI 中的索引
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:1}
+{&quot;index&quot; : &quot;index_name2&quot;} # 改变了索引名称
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:2}
+</code></pre>
+<p>URI 中也可以不写索引名称，此时<strong>请求体</strong>里必须写索引名称：</p>
+<pre><code class="language-shell">POST _msearch
+{&quot;index&quot; : &quot;index_name1&quot;} # 索引名称
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:1}
+{&quot;index&quot; : &quot;index_name2&quot;} # 索引名称
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:2}
+</code></pre>
+<p>上文中介绍了 3 种批量操作，分别是 Bulk，Mget，Msearch。注意在使用批量操作时，数据量不宜过大，避免出现<strong>性能问题</strong>。</p>
+<h3 id="10es-常见错误码">10，ES 常见错误码</h3>
+<p>当我们的请求发生错误的时候，ES 会返回相应的<strong>错误码</strong>，常见的错误码如下：</p>
+<table>
+<thead>
+<tr>
+<th>错误码</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>429</td>
+<td>集群过于繁忙</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>请求格式错误</td>
+</tr>
+<tr>
+<td>500</td>
+<td>集群内部错误</td>
+</tr>
+</tbody>
+</table>
+<h3 id="11reindex-重建索引">11，Reindex 重建索引</h3>
+<p>有时候我们需要<strong>重建索引</strong>，比如以下情况：</p>
+<ul>
+<li>索引的 <code>mappings</code> 发生改变：比如字段类型或者分词器等发生更改。</li>
+<li>索引的 <code>settings</code> 发生改变：比如索引的主分片数发生更改。</li>
+<li>集群内或集群间需要做<strong>数据迁移</strong>。</li>
+</ul>
+<p>ES 中提供两种重建 API：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html">Update by query</a>：在现有索引上重建索引。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html">Reindex</a>：在其它索引上重建索引。</li>
+</ul>
+<h4 id="111添加子字段">11.1，添加子字段</h4>
+<p>先在一个索引中插入数据：</p>
+<pre><code class="language-shell">DELETE blogs/
+
+# 写入文档
+PUT blogs/_doc/1
+{
+  &quot;content&quot;:&quot;Hadoop is cool&quot;,
+  &quot;keyword&quot;:&quot;hadoop&quot;
+}
+
+# 查看自动生成的 Mapping
+GET blogs/_mapping
+
+# 查询文档
+POST blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;Hadoop&quot;
+    }
+  }
+}
+
+# 可以查到数据
+</code></pre>
+<p>现在修改 <strong>mapping</strong>（<strong>添加子字段</strong>是允许的），为 <strong>content</strong> 字段加入一个子字段：</p>
+<pre><code class="language-shell"># 修改 Mapping，增加子字段，使用英文分词器
+PUT blogs/_mapping
+{
+  &quot;properties&quot; : {
+    &quot;content&quot; : {      # content 字段
+      &quot;type&quot; : &quot;text&quot;,
+      &quot;fields&quot; : {     # 加入一个子字段
+        &quot;english&quot; : {  # 子字段名称
+          &quot;type&quot; : &quot;text&quot;,      # 子字段类型
+          &quot;analyzer&quot;:&quot;english&quot;  # 子字段分词器
+        }
+      }
+    }
+  }
+}
+
+# 查看新的 Mapping
+GET blogs/_mapping
+</code></pre>
+<p>修改 <strong>mapping</strong> 之后再查询文档：</p>
+<pre><code class="language-shell"># 使用 english 子字段查询 Mapping 变更前写入的文档
+# 查不到文档
+POST blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content.english&quot;: &quot;Hadoop&quot;
+    }
+  }
+}
+
+# 注意：不使用 english 子字段是可以查询到之前的文档的
+POST blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;Hadoop&quot;
+    }
+  }
+}
+</code></pre>
+<p>结果发现，使用 <strong>english</strong> 子字段是查不到之前的文档的。这时候就需要<strong>重建索引</strong>。</p>
+<h4 id="112update-by-query">11.2，Update by query</h4>
+<p>下面使用 <code>Update by query</code> 对索引进行重建：</p>
+<pre><code class="language-shell"># Update所有文档
+POST blogs/_update_by_query
+{
+
+}
+</code></pre>
+<p>重建索引之后，不管是使用 <strong>english</strong> 子字段还是不使用，都可以查出文档。</p>
+<p><code>Update by query</code> 操作还可以设置一些条件：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html#docs-update-by-query-api-query-params">uri-params</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html#docs-update-by-query-api-request-body">request-body</a>：通过设置一个 <strong>query</strong> 条件，来指定对哪些数据进行重建。</li>
+</ul>
+<p><strong>request-body</strong> 示例：</p>
+<pre><code class="language-shell">POST tech_blogs/_update_by_query?pipeline=blog_pipeline
+{
+    &quot;query&quot;: {      # 将 query 的查询结果进行重建
+        &quot;bool&quot;: {
+            &quot;must_not&quot;: {
+                &quot;exists&quot;: {&quot;field&quot;: &quot;views&quot;}
+            }
+        }
+    }
+}
+</code></pre>
+<h4 id="113修改字段类型">11.3，修改字段类型</h4>
+<p>在原有 <strong>mapping</strong> 上，<strong>修改字段类型</strong>是不允许的：</p>
+<pre><code class="language-shell"># 会发生错误
+PUT blogs/_mapping
+{
+  &quot;properties&quot; : {
+    &quot;content&quot; : {
+      &quot;type&quot; : &quot;text&quot;,
+      &quot;fields&quot; : {
+        &quot;english&quot; : {
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;analyzer&quot; : &quot;english&quot;
+        }
+      }
+    },
+    &quot;keyword&quot; : {  # 修改 keyword 字段的类型
+      &quot;type&quot; : &quot;keyword&quot;
+    }
+  }
+}
+</code></pre>
+<p>这时候只能创建一个新的索引，设置正确的字段类型，然后再将原有索引中的数据，重建到新索引中。</p>
+<p>建立一个新的索引 <strong>blogs_new</strong>：</p>
+<pre><code class="language-shell"># 创建新的索引并且设定新的Mapping
+PUT blogs_new/
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot; : {
+      &quot;content&quot; : {
+        &quot;type&quot; : &quot;text&quot;,
+        &quot;fields&quot; : {
+          &quot;english&quot; : {
+            &quot;type&quot; : &quot;text&quot;,
+            &quot;analyzer&quot; : &quot;english&quot;
+          }
+        }
+      },
+      &quot;keyword&quot; : {
+        &quot;type&quot; : &quot;keyword&quot;
+      }
+    }    
+  }
+}
+</code></pre>
+<h4 id="114reindex">11.4，Reindex</h4>
+<p>下面使用 <strong>Reindex</strong> 将原来索引中的数据，导入到新的索引中：</p>
+<pre><code class="language-shell"># Reindx API
+POST _reindex
+{
+  &quot;source&quot;: { # 指定原有索引
+    &quot;index&quot;: &quot;blogs&quot;
+  },
+  &quot;dest&quot;: {   # 指定目标索引
+    &quot;index&quot;: &quot;blogs_new&quot;
+  }
+}
+</code></pre>
+<p><strong>Reindex</strong> API 中的 <strong>source</strong> 字段和 <strong>dest</strong> 字段还有很多参数可以设置，具体可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html#docs-reindex-api-request-body">其官方文档</a>。</p>
+<p>另外 <strong>Reindex</strong> 请求的 URI 中也可以设置参数，可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html#docs-reindex-api-query-params">这里</a>。</p>
+<h3 id="12es-的并发控制">12，ES 的并发控制</h3>
+<p>同一个资源在多并发处理的时候，会发生冲突的问题。</p>
+<p>传统数据库（比如 MySQL）会采用<strong>锁</strong>的方式，在更新数据的时候对数据进行加锁，来防止冲突。</p>
+<p>而 ES 并没有采用锁，而是将并发问题交给了用户处理。</p>
+<p>在 ES 中可以采用两种方式：</p>
+<ul>
+<li>内部版本控制（ES 自带的 version）：在 URI 中使用 <code>if_seq_no</code> 和 <code>if_primary_term</code></li>
+<li>外部版本控制（由用户指定 version）：在 URI 中使用 <code>version</code> 和 <code>version_type=external</code></li>
+</ul>
+<p>示例，首先插入数据：</p>
+<pre><code class="language-shell">DELETE products
+PUT products/_doc/1
+{
+  &quot;title&quot;:&quot;iphone&quot;,
+  &quot;count&quot;:100
+}
+
+# 上面的插入操作会返回 4 个字段：
+#{
+#  &quot;_id&quot; : &quot;1&quot;,
+#  &quot;_version&quot; : 1,
+#  &quot;_seq_no&quot; : 0,
+#  &quot;_primary_term&quot; : 1
+#}
+</code></pre>
+<h4 id="121内部版本控制方式">12.1，内部版本控制方式</h4>
+<p>使用内部版本控制的方式：</p>
+<pre><code class="language-shell">PUT products/_doc/1?if_seq_no=0&amp;if_primary_term=1
+{
+  &quot;title&quot;:&quot;iphone&quot;,
+  &quot;count&quot;:100
+}
+
+# 上面的更新操作返回下面内容：
+#{
+#  &quot;_id&quot; : &quot;1&quot;,
+#  &quot;_version&quot; : 2,       # 加 1
+#  &quot;_seq_no&quot; : 1,        # 加 1
+#  &quot;_primary_term&quot; : 1   # 不变
+#}
+</code></pre>
+<p>如果再次执行这句更新操作，则会出错，<strong>出错之后由用户决定如何处理</strong>，<strong>这就达到了解决冲突的目的</strong>。</p>
+<pre><code class="language-shell"># 再执行则会出错，因为 seq_no=0 且 primary_term=1 的数据已经不存在了
+PUT products/_doc/1?if_seq_no=0&amp;if_primary_term=1
+</code></pre>
+<h4 id="122外部版本控制方式">12.2，外部版本控制方式</h4>
+<p>先看下数据库中的数据：</p>
+<pre><code class="language-shell">GET products/_doc/1
+
+# 返回：
+{
+  &quot;_index&quot; : &quot;products&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,            # id
+  &quot;_version&quot; : 2,         # version
+  &quot;_seq_no&quot; : 1,
+  &quot;_primary_term&quot; : 1,
+  &quot;found&quot; : true,
+  &quot;_source&quot; : {
+    &quot;title&quot; : &quot;iphone&quot;,
+    &quot;count&quot; : 100
+  }
+}
+</code></pre>
+<p>使用外部版本控制的方式：</p>
+<pre><code class="language-shell"># 如果 URI 中的 version 值与 ES 中的 version 值相等，则出错
+# 下面这句操作会出错，出错之后，由用户决定如何处理
+PUT products/_doc/1?version=2&amp;version_type=external
+{
+  &quot;title&quot;:&quot;iphone&quot;,
+  &quot;count&quot;:1000
+}
+
+# 如果 URI 中的 version 值与 ES 中的 version 值不相等，则成功
+# 下面这句操作会成功
+PUT products/_doc/1?version=3&amp;version_type=external
+{
+  &quot;title&quot;:&quot;iphone&quot;,
+  &quot;count&quot;:1000
+}
+</code></pre>
+<h3 id="13使用-ingest-节点对数据预处理">13，使用 Ingest 节点对数据预处理</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/ingest.html">Ingest 节点</a>用于对<strong>数据预处理</strong>，它是在 <strong>ES 5.0</strong> 后引入的一种节点类型，可以达到一定的 <strong>Logstash</strong> 的功能。</p>
+<p>默认情况下，所有的节点都是 <strong>Ingest</strong> 节点。</p>
+<p><strong>Ingest</strong> 节点通过添加一些 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/ingest-processors.html">processors</a> 来完成特定的处理，<strong>Pipeline</strong> 可以看做是一组 processors 的顺序执行。</p>
+<p><strong>Ingest</strong> 节点的处理阶段如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210123184845767.png" alt="在这里插入图片描述"></p>
+<h4 id="130ingest-节点与-logstash-对比">13.0，Ingest 节点与 Logstash 对比</h4>
+<p><img src="https://img-blog.csdnimg.cn/20210123232248395.png" alt="在这里插入图片描述"></p>
+<h4 id="131内置的-processors">13.1，内置的 Processors</h4>
+<p>ES 中内置了很多现成的 <strong>Processors</strong> 供我们使用：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/append-processor.html">Append</a>：向一个<strong>数组类型</strong>的字段加入更多的值。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/split-processor.html">Split</a>：将字符串拆分成数组。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/set-processor.html">Set</a>：设置一个字段。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/uppercase-processor.html">Uppercase</a>：大写转换。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/lowercase-processor.html">Lowercase</a>：小写转换。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/remove-processor.html">Remove</a>：移除一个已存在的字段。如果字段不存在，将抛出异常。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/rename-processor.html">Rename</a>：为一个字段重命名。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/convert-processor.html">Convert</a>：转换一个字段的数据类型。比如将字符串类型转换成整数类型。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/date-processor.html">Date</a>：日期格式转换。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/json-processor.html">JSON</a>：将 json 字符串转换成 <strong>JSON</strong> 类型。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/date-index-name-processor.html">Date-index-name</a>：将通过该处理器的文档，分配到指定时间格式的索引中。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/fail-processor.html">Fail</a>：当出现异常的时候，将指定的信息返回给用户。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/foreach-processor.html">Foreach</a>：用于处理数组类型的数据。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/pipeline-processor.html">Pipeline</a>：引用另一个 Pipeline。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/trim-processor.html">Trim</a>：删除字符换的前置和后置空格。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-processor.html">Sort</a>：对数组中的元素排序。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/urldecode-processor.html">Url-decode</a>：对字符串进行 URL 解码。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/user-agent-processor.html">User-agent</a>：用于解析 User-Agent 信息。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/htmlstrip-processor.html">Html-strip</a>：用于移除 HTML 标签。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/script-processor.html">Script</a>：用 <a href="https://www.elastic.co/guide/en/elasticsearch/painless/current/index.html">Painless</a> 语言编写脚本，以支持更复杂的功能。
+<ul>
+<li><strong>Painless</strong> 语言是专门为 ES 设计的，在 <strong>ES 5.x</strong> 引入，具有高性能和安全性。</li>
+<li><strong>ES 6.0</strong> 开始，ES 只支持 Painless 脚本，不再支持其它语言脚本（比如 JavaScript，Python 等）。</li>
+<li><strong>Painless</strong> 基于 <strong>Java</strong> 语言，并支持所有的 Java 数据类型。</li>
+</ul>
+</li>
+<li>等</li>
+</ul>
+<h4 id="132测试-processors">13.2，测试 Processors</h4>
+<p>ES 中提供了一个 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/simulate-pipeline-api.html">simulate</a> 接口，用于测试 Processors。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST _ingest/pipeline/_simulate
+{
+  &quot;pipeline&quot;: {        # 定义 pipeline
+    &quot;description&quot;: &quot;to split blog tags&quot;, # 描述
+    &quot;processors&quot;: [    # 一系列的 processors
+      {
+        &quot;split&quot;: {     # 一个 split processor
+          &quot;field&quot;: &quot;tags&quot;,
+          &quot;separator&quot;: &quot;,&quot;  # 用逗号分隔
+         }
+       },
+       {
+        &quot;set&quot;:{        # 可以设置多个 processor
+          &quot;field&quot;: &quot;views&quot;,
+          &quot;value&quot;: 0
+        }
+      }
+     ]
+   },
+  &quot;docs&quot;: [            # 测试的文档
+    {                  # 第 1 个文档
+      &quot;_index&quot;: &quot;index&quot;,
+      &quot;_id&quot;: &quot;id&quot;,
+      &quot;_source&quot;: {
+        &quot;title&quot;: &quot;Introducing big data......&quot;,
+        &quot;tags&quot;: &quot;hadoop,elasticsearch,spark&quot;,
+        &quot;content&quot;: &quot;You konw, for big data&quot;
+       }
+    },
+    {                 # 第 2 个文档
+      &quot;_index&quot;: &quot;index&quot;,
+      &quot;_id&quot;: &quot;idxx&quot;,
+      &quot;_source&quot;: {
+        &quot;title&quot;: &quot;Introducing cloud computering&quot;,
+        &quot;tags&quot;: &quot;openstack,k8s&quot;,
+        &quot;content&quot;: &quot;You konw, for cloud&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<h4 id="133添加一个-pipeline">13.3，添加一个 Pipeline</h4>
+<p>当 Processors 测试通过后，可以向 ES 中添加（设置）一个 Pipeline，语法：</p>
+<pre><code class="language-shell"># blog_pipeline 为 pipeline 名称
+PUT _ingest/pipeline/blog_pipeline
+{
+  &quot;description&quot;: &quot;a blog pipeline&quot;,
+  &quot;processors&quot;: [
+      {
+        &quot;split&quot;: {  # 第 1个 Processor
+          &quot;field&quot;: &quot;tags&quot;,
+          &quot;separator&quot;: &quot;,&quot;
+        }
+      },
+      {
+        &quot;set&quot;:{     # 第 2个 Processor
+          &quot;field&quot;: &quot;views&quot;,
+          &quot;value&quot;: 0
+        }
+      }
+   ]
+}
+</code></pre>
+<h4 id="134查看-pipeline">13.4，查看 Pipeline</h4>
+<pre><code class="language-shell"># 查看 Pipleline
+GET _ingest/pipeline/blog_pipeline
+
+# 删除 Pipleline
+DELETE _ingest/pipeline/blog_pipeline
+</code></pre>
+<h4 id="135测试-pipeline">13.5，测试 Pipeline</h4>
+<pre><code class="language-shell"># blog_pipeline 是 Pipeline 名称
+POST _ingest/pipeline/blog_pipeline/_simulate
+{
+  &quot;docs&quot;: [
+    {     # 一个文档
+      &quot;_source&quot;: {
+        &quot;title&quot;: &quot;Introducing cloud computering&quot;,
+        &quot;tags&quot;: &quot;openstack,k8s&quot;,
+        &quot;content&quot;: &quot;You konw, for cloud&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<h4 id="136使用-pipeline">13.6，使用 Pipeline</h4>
+<p>使用 <strong>Pipeline</strong> 插入文档时，文档会先经过 Pipeline 的处理，然后再插入到 ES 中。</p>
+<pre><code class="language-shell"># URI 中指定了 Pipeline 的名字
+PUT tech_blogs/_doc/2?pipeline=blog_pipeline
+{
+  &quot;title&quot;: &quot;Introducing cloud computering&quot;,
+  &quot;tags&quot;: &quot;openstack,k8s&quot;,
+  &quot;content&quot;: &quot;You konw, for cloud&quot;
+}
+</code></pre>
+<p>最终插入的文档是这样的：</p>
+<pre><code class="language-shell">{
+  &quot;title&quot;: &quot;Introducing cloud computering&quot;,
+  &quot;tags&quot;: [&quot;openstack&quot;, &quot;k8s&quot;],
+  &quot;content&quot;: &quot;You konw, for cloud&quot;,
+  &quot;views&quot;: 0
+}
+</code></pre>
+<p>另外 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html">update-by-query</a>（重建索引）的 URI 中也可以设置 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html#docs-update-by-query-api-query-params">pipeline 参数</a>来使用一个 <strong>Pipeline</strong>。</p>
+<h3 id="14总结">14，总结</h3>
+<p>上文介绍到的所有操作，可以参考 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html">ES 的官方文档</a>。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-search">ElasticSearch 查询</a></p>
+<p><a href="/2021/02/es-analyzers">ElasticSearch 分词器</a></p>
+<p><a href="/2021/02/es-s">ElasticSearch 搜索引擎概念简介</a></p>
+<p><a href="/2021/02/others-install">Kibana，Logstash 和 Cerebro 的安装运行</a></p>
+<p><a href="/2021/02/es-install">ElasticSearch 安装与运行</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/02/es-uri-search/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">ElasticSearch URI 查询</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/02/es-search/">
+            <span class="next-text nav-default">ElasticSearch 查询</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-doc/" class="leancloud_visitors" data-flag-title="ElasticSearch 文档及操作">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

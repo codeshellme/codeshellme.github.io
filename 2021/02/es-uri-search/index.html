@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>ElasticSearch 查询 - 码农充电站</title>
+  <title>ElasticSearch URI 查询 - 码农充电站</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的查询 API 有两种： URI Search：HTTP GET 请求的方" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，URI 查询格式 URI 查询的一般格式如下： GET /index_name/_search?q=key:val&amp;amp;df=title&amp;amp;sort=year:desc&amp;amp;from=0&amp;amp;size=10 { &amp;quot;profile&amp;quot;:&amp;quot;true&amp;quot; } 其中" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.68.3 with theme even" />
 
 
-<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-search/" />
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-uri-search/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -38,23 +38,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="ElasticSearch 查询" />
-<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的查询 API 有两种： URI Search：HTTP GET 请求的方" />
+<meta property="og:title" content="ElasticSearch URI 查询" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，URI 查询格式 URI 查询的一般格式如下： GET /index_name/_search?q=key:val&amp;df=title&amp;sort=year:desc&amp;from=0&amp;size=10 { &quot;profile&quot;:&quot;true&quot; } 其中" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-search/" />
-<meta property="article:published_time" content="2021-02-06T22:38:52+08:00" />
-<meta property="article:modified_time" content="2021-02-06T22:42:52+08:00" />
-<meta itemprop="name" content="ElasticSearch 查询">
-<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的查询 API 有两种： URI Search：HTTP GET 请求的方">
-<meta itemprop="datePublished" content="2021-02-06T22:38:52&#43;08:00" />
-<meta itemprop="dateModified" content="2021-02-06T22:42:52&#43;08:00" />
-<meta itemprop="wordCount" content="637">
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-uri-search/" />
+<meta property="article:published_time" content="2021-02-21T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-21T22:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch URI 查询">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，URI 查询格式 URI 查询的一般格式如下： GET /index_name/_search?q=key:val&amp;df=title&amp;sort=year:desc&amp;from=0&amp;size=10 { &quot;profile&quot;:&quot;true&quot; } 其中">
+<meta itemprop="datePublished" content="2021-02-21T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-21T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="1072">
 
 
 
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ElasticSearch 查询"/>
-<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的查询 API 有两种： URI Search：HTTP GET 请求的方"/>
+<meta name="twitter:title" content="ElasticSearch URI 查询"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，URI 查询格式 URI 查询的一般格式如下： GET /index_name/_search?q=key:val&amp;df=title&amp;sort=year:desc&amp;from=0&amp;size=10 { &quot;profile&quot;:&quot;true&quot; } 其中"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -140,15 +140,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">ElasticSearch 查询</h1>
+      <h1 class="post-title">ElasticSearch URI 查询</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2021-02-06 </span>
+        <span class="post-time"> 2021-02-21 </span>
         <div class="post-category">
             <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
             </div>
-          <span class="more-meta"> 637 字 </span>
-          <span class="more-meta"> 阅读约需 2 分钟 </span>
+          <span class="more-meta"> 1072 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
         
 
       </div>
@@ -161,11 +161,15 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#1指定查询范围">1，指定查询范围</a></li>
-        <li><a href="#2uri-查询">2，URI 查询</a></li>
-        <li><a href="#3request-body-查询">3，Request Body 查询</a></li>
-        <li><a href="#4es-查询的响应内容">4，ES 查询的响应内容</a></li>
-        <li><a href="#5相关性指标">5，相关性指标</a></li>
+        <li><a href="#1uri-查询格式">1，URI 查询格式</a></li>
+        <li><a href="#2范查询">2，范查询</a></li>
+        <li><a href="#3term单词查询">3，Term：单词查询</a></li>
+        <li><a href="#4phrase词组查询">4，Phrase：词组查询</a></li>
+        <li><a href="#5查询分组">5，查询分组</a></li>
+        <li><a href="#6布尔查询">6，布尔查询</a></li>
+        <li><a href="#7范围查询">7，范围查询</a></li>
+        <li><a href="#8通配符与正则查询">8，通配符与正则查询</a></li>
+        <li><a href="#9模糊匹配与近似查询">9，模糊匹配与近似查询</a></li>
       </ul>
     </li>
   </ul>
@@ -177,64 +181,98 @@
 <p><strong>公号：码农充电站pro</strong></p>
 <p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
 </blockquote>
-<p>ES 中的查询 API 有两种：</p>
-<ul>
-<li><strong>URI Search</strong>：HTTP GET 请求的方式。</li>
-<li><strong>Request Body Search</strong>：基于 Json 数据格式的 <strong>DSL</strong>（Query Domain Specific Language）。</li>
-</ul>
-<h3 id="1指定查询范围">1，指定查询范围</h3>
-<p>通过 URI 可以指定在哪些索引中进行查询，有下面几种格式：</p>
-<ul>
-<li><code>/_search</code>：在所有的索引中进行搜索。</li>
-<li><code>/index_name/_search</code>：在 <code>index_name</code> 索引中进行搜索。</li>
-<li><code>/index1,index2/_search</code>：在 <code>index1</code> 和 <code>index2</code> 索引中进行搜索。</li>
-<li><code>/index*/_search</code>：在所有的以 <code>index</code> 为前缀的索引中进行搜索。</li>
-</ul>
-<h3 id="2uri-查询">2，URI 查询</h3>
-<p>URI 查询使用 HTTP GET 请求的方式，使用 <code>q</code> 指定查询的内容，格式如下：</p>
-<pre><code class="language-shell">curl -XGET http://localhost:9200/index_name/_search?q=key:val
-</code></pre>
-<p>简写为：</p>
-<pre><code class="language-shell">GET /index_name/_search?q=key:val
-</code></pre>
-<p>其表示的含义是：在 <code>index_name</code> 索引中的所有文档中，查询 <code>key</code> 字段的值为 <code>val</code> 的内容。</p>
-<h3 id="3request-body-查询">3，Request Body 查询</h3>
-<p>Request Body 查询可以使用 GET 或 POST 方式，格式如下：</p>
-<pre><code class="language-shell">curl -XGET/POST http://localhost:9200/index_name/_search -H 'Content-Type: application/json' -d'
+<h3 id="1uri-查询格式">1，URI 查询格式</h3>
+<p>URI 查询的一般格式如下：</p>
+<pre><code class="language-shell">GET /index_name/_search?q=key:val&amp;df=title&amp;sort=year:desc&amp;from=0&amp;size=10
 {
- &quot;query&quot;: {
- &quot;match_all&quot;:{}
- }
-}'
-</code></pre>
-<p>简写为：</p>
-<pre><code class="language-shell">POST index_name/_search
-{
-	&quot;query&quot;: {
-		&quot;match_all&quot;: {}
-	}
+	&quot;profile&quot;:&quot;true&quot;
 }
 </code></pre>
-<h3 id="4es-查询的响应内容">4，ES 查询的响应内容</h3>
-<p>如果查询成功，会返回如下格式的内容：</p>
-<p><img src="https://img-blog.csdnimg.cn/20210115114042706.png?" alt="在这里插入图片描述"></p>
-<p>返回的结果集会以 <code>_score</code> 评分进行排序，<code>_score</code> 评分指的是查询的相关性。</p>
-<h3 id="5相关性指标">5，相关性指标</h3>
-<p>搜索的相关性有 3 种衡量指标：</p>
+<p>其中的参数代表的含义如下：</p>
 <ul>
-<li><strong>查准率</strong>：尽可能返回较少的无关文档。</li>
-<li><strong>查全率</strong>：尽可能返回较多的相关文档。</li>
-<li><strong>结果排名</strong>：查询结果排名是否准确。</li>
+<li>q：用于指定查询语句，它可以是一个<strong>键值对</strong>，也可以只有一个 <strong>val</strong>。
+<ul>
+<li>key 表示在哪个字段中查询。</li>
+<li>val 表示查询的内容。</li>
 </ul>
-<p>在 ES 中可以通过调整查询的参数来改善搜素的查准率和查全率。</p>
+</li>
+<li>df：查询中未定义字段前缀时使用的默认字段。如果不指定，默认会对所有字段进行查询。</li>
+<li>sort：指定排序规则。</li>
+<li>from：与 size 一起用于分页。</li>
+<li>profile：用于查看查询执行的详细过程，可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-profile.html">这里</a>。</li>
+<li>更多的 URI 参数可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-uri-request.html">这里</a>。</li>
+</ul>
+<h3 id="2范查询">2，范查询</h3>
+<p>如果查询时没有指定字段，就会在所有的字段中查询，这叫做<strong>范查询</strong>。例如 <code>q=2012</code>。</p>
+<h3 id="3term单词查询">3，Term：单词查询</h3>
+<p><strong>Term 查询</strong>不需要用引号引住。比如 <code>q=A B</code> 表示包含 <code>A</code> 或 <code>B</code>。</p>
+<h3 id="4phrase词组查询">4，Phrase：词组查询</h3>
+<p><strong>Phrase 查询</strong>需要用引号引住。</p>
+<p>比如 <code>q=&quot;A B&quot;</code>，表示包含 <code>&quot;A B&quot;</code>，并且要求<strong>顺序一致</strong>，实际上此时 <code>&quot;A B&quot;</code> 会被认为是<strong>一个单词</strong>。</p>
+<h3 id="5查询分组">5，查询分组</h3>
+<p>比如 <code>q=title:A B</code>，表示的是 <code>title:A</code> 或 <code>B</code>，会在 <code>title</code> 字段中查询 <code>A</code>，在所有的字段中查询 <code>B</code>。</p>
+<p>而 <code>q=title:(A B)</code>，只会在 <code>title</code> 中查询 <code>A</code> 或 <code>B</code>。<code>(A B)</code> 用括号括住，表示一个分组。</p>
+<h3 id="6布尔查询">6，布尔查询</h3>
+<p>在使用 <code>{&quot;profile&quot;:&quot;true&quot;}</code> 查看执行过程时，会有两个概念 <code>must</code> 和 <code>must_not</code>：</p>
+<ul>
+<li><code>must</code>：表示<strong>必须存在</strong>，用 <code>+</code> 表示。</li>
+<li><code>must not</code>：表示<strong>必须不存在</strong>，用 <code>-</code> 表示。</li>
+</ul>
+<p>布尔查询包含下面三种：</p>
+<ul>
+<li><strong>AND</strong>：且，比如 <code>q=title:(A  AND B)</code>，表示 <code>+title:A +title:B</code>，表示必须包含 <code>A</code>，也必须包含 <code>B</code>。</li>
+<li><strong>OR</strong>：或，比如 <code>q=title:(A  OR B)</code>，等同于 <code>q=title:(A  B)</code>，表示 <code>title:A title:B</code>，表示 <code>title</code> 中包含 <code>A</code> 或包含 <code>B</code>。</li>
+<li><strong>NOT</strong>：非，比如 <code>q=title:(A  NOT B)</code>，表示 <code>title:A -title:B</code>，表示包含 <code>A</code>，但不能包含 <code>B</code>。</li>
+</ul>
+<p>也可以在查询中直接使用 <code>+</code> 或 <code>-</code>， <code>+</code> 用 <code>%2B</code> （URL 编码）表示，比如：</p>
+<ul>
+<li><code>q=title:(%2BA -B)</code>，表示必须包含 A，不能包含  B。</li>
+<li><code>q=title:(-A -B)</code>，表示不能包含 A，也不能包含 B。</li>
+<li><code>q=title:(-A %2BB)</code>，表示不能包含 A，但必须包含 B。</li>
+<li><code>q=title:(A %2BB)</code>，其实等价于 <code>q=title:(%2BB)</code>，表示必须包含 B，A 无所谓。</li>
+</ul>
+<h3 id="7范围查询">7，范围查询</h3>
+<p>用于数字类型：</p>
+<ul>
+<li><code>[]</code> 表示闭区间</li>
+<li><code>{}</code> 表示开区间</li>
+</ul>
+<p>使用的时候用<strong>括号</strong>括住，比如：</p>
+<ul>
+<li><code>year:({2000 TO 2020])</code>，表示 <code>2000 &lt; year &lt;= 2020</code>。</li>
+<li><code>year:([* TO 2018])</code>，表示 <code>year &lt;= 2018</code>。</li>
+<li><code>year:({2016 TO *})</code>，表示 <code>year &gt; 2016</code>。</li>
+</ul>
+<h3 id="8通配符与正则查询">8，通配符与正则查询</h3>
+<p>在通配符查询中：</p>
+<ul>
+<li><code>?</code> 代表 1 个字符</li>
+<li><code>*</code> 代表 0 或多个字符</li>
+</ul>
+<p>一般通配符查询效率较低，占内存大，所以不建议使用，特别是放在最前面。</p>
+<p>通配符查询示例：</p>
+<ul>
+<li><code>title:mi?d</code></li>
+<li><code>title:be*</code></li>
+</ul>
+<p>正则表达式查询示例：</p>
+<ul>
+<li><code>title:[bt]oy</code></li>
+</ul>
+<h3 id="9模糊匹配与近似查询">9，模糊匹配与近似查询</h3>
+<p>示例：</p>
+<ul>
+<li><code>title:beautifl~1</code></li>
+<li><code>title:&quot;Lord Rings&quot;~2</code></li>
+</ul>
 <p>（本节完。）</p>
 <hr>
 <p><strong>推荐阅读：</strong></p>
-<p><a href="/2021/02/es-introduction">ElasticSearch 入门简介</a></p>
-<p><a href="/2021/02/es-install">ElasticSearch 安装与运行</a></p>
-<p><a href="/2021/02/others-install">Kibana，Logstash 和 Cerebro 的安装运行</a></p>
-<p><a href="/2021/02/es-s">ElasticSearch 搜索引擎概念简介</a></p>
+<p><a href="/2021/02/es-search">ElasticSearch 查询</a></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
 <p><a href="/2021/02/es-analyzers">ElasticSearch 分词器</a></p>
+<p><a href="/2021/02/es-s">ElasticSearch 搜索引擎概念简介</a></p>
+<p><a href="/2021/02/others-install">Kibana，Logstash 和 Cerebro 的安装运行</a></p>
 <hr>
 <p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
 <p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
@@ -249,7 +287,7 @@
   <p class="copyright-item">
     <span class="item-title">上次更改</span>
     <span class="item-content">
-        2021-02-06
+        2021-02-21
         
     </span>
   </p>
@@ -259,13 +297,9 @@
 <footer class="post-footer">
       
       <nav class="post-nav">
-        <a class="prev" href="/2021/02/es-doc/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">ElasticSearch 文档及操作</span>
-            <span class="prev-text nav-mobile">Prev</span>
-          </a>
-        <a class="next" href="/2021/02/es-analyzers/">
-            <span class="next-text nav-default">ElasticSearch 分词器</span>
+        
+        <a class="next" href="/2021/02/es-doc/">
+            <span class="next-text nav-default">ElasticSearch 文档及操作</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
           </a>
@@ -275,7 +309,7 @@
         </div>
         
 
-  <span id="/2021/02/es-search/" class="leancloud_visitors" data-flag-title="ElasticSearch 查询">
+  <span id="/2021/02/es-uri-search/" class="leancloud_visitors" data-flag-title="ElasticSearch URI 查询">
 		<span class="post-meta-item-text">文章阅读量 </span>
 		<span class="leancloud-visitors-count">0</span>
 		<p></p>
