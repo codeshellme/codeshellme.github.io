@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 搜索模板与建议 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io Search APIs 用于搜索和聚合存储在 ES 中的数据。 1，搜索模板 Template Search 模" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-search-template-suggest/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 搜索模板与建议" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io Search APIs 用于搜索和聚合存储在 ES 中的数据。 1，搜索模板 Template Search 模" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-search-template-suggest/" />
+<meta property="article:published_time" content="2021-02-22T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-22T22:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 搜索模板与建议">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io Search APIs 用于搜索和聚合存储在 ES 中的数据。 1，搜索模板 Template Search 模">
+<meta itemprop="datePublished" content="2021-02-22T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-22T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="1688">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 搜索模板与建议"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io Search APIs 用于搜索和聚合存储在 ES 中的数据。 1，搜索模板 Template Search 模"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 搜索模板与建议</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-22 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 1688 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1搜索模板-template">1，搜索模板 Template</a></li>
+        <li><a href="#2搜索建议-suggesters">2，搜索建议 Suggesters</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html">Search APIs</a> 用于<strong>搜索</strong>和<strong>聚合</strong>存储在 ES 中的数据。</p>
+<h3 id="1搜索模板-template">1，搜索模板 Template</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html">Search 模板</a>使用 <strong>mustache</strong> 语言来呈现搜索请求，使得搜索请求<strong>参数化</strong>，达到开发人员与搜索工程师解耦的效果。</p>
+<p>示例：</p>
+<pre><code class="language-shell"># 定义一个搜索模板
+POST _scripts/template_name # 模板名称为 template_name 
+{
+  &quot;script&quot;: {           # 固定写法
+    &quot;lang&quot;: &quot;mustache&quot;, # 固定写法
+    &quot;source&quot;: {         # 固定写法
+      &quot;_source&quot;: [&quot;title&quot;, &quot;overview&quot;], # 返回哪些字段
+      &quot;size&quot;: 20,
+      &quot;query&quot;: {       
+        &quot;multi_match&quot;: {
+          &quot;query&quot;: &quot;{{q}}&quot;,     # 搜索参数，参数名为 q
+          &quot;fields&quot;: [&quot;title&quot;, &quot;overview&quot;]
+        }
+      }
+    }
+  }
+}
+
+# 使用模板
+POST template_name/_search/template
+{
+    &quot;id&quot;:&quot;template_name&quot;,
+    &quot;params&quot;: {  # 填写参数 q
+        &quot;q&quot;: &quot;basketball with cartoon aliens&quot;
+    }
+}
+</code></pre>
+<h3 id="2搜索建议-suggesters">2，搜索建议 Suggesters</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters.html">搜索建议</a>帮助用户在输入搜索的过程中，进行自动补全或者纠错，这种功能在 ES 中通过 <strong>Suggesters</strong> 来完成。</p>
+<p><strong>Suggesters</strong> 会将输入的文本分解为 token，然后在索引的字典里查找相似的 Term 并返回。</p>
+<p>ES 提供了 4 种类别的 <strong>Suggesters</strong>：</p>
+<ul>
+<li><strong>Term suggester</strong></li>
+<li><strong>Phrase Suggester</strong></li>
+<li><strong>Completion Suggester</strong></li>
+<li><strong>Context Suggester</strong></li>
+</ul>
+<p><strong>Suggester Mode</strong> 用于指定在什么情况下给出搜索建议：</p>
+<ul>
+<li><strong>missing</strong>：搜索不到内容时，给出搜索建议</li>
+<li><strong>popular</strong>：推荐出现频率更高的词</li>
+<li><strong>always</strong>：无论是否存在，都给出搜索建议</li>
+</ul>
+<h4 id="21term-suggester">2.1，Term suggester</h4>
+<p>示例：</p>
+<pre><code class="language-shell">DELETE articles
+
+# 插入一些文档
+POST articles/_bulk
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;lucene is very cool&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;Elasticsearch builds on top of lucene&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;Elasticsearch rocks&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;elastic is the company behind ELK stack&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;Elk stack rocks&quot;}
+{ &quot;index&quot; : {} }
+</code></pre>
+<p><strong>term-suggestion</strong> 搜索：</p>
+<pre><code class="language-shell">POST /articles/_search
+{
+  &quot;size&quot;: 1,
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;body&quot;: &quot;lucen rock&quot;   # 查询字符串，拼写错误
+    }
+  },
+  &quot;suggest&quot;: {               # 搜索建议
+    &quot;term-suggestion&quot;: {     # suggester 名称，自定义
+      &quot;text&quot;: &quot;lucen rock&quot;,  # 这里也是查询字符串
+      &quot;term&quot;: {              # term-suggestion
+        &quot;suggest_mode&quot;: &quot;missing&quot;,  # 建议模式，在没有搜索到时，到 body 字段搜索
+        &quot;field&quot;: &quot;body&quot;             # 建议字段
+      }
+    }
+  }
+}
+</code></pre>
+<p>一些参数：</p>
+<ul>
+<li><strong>sort</strong>：排序方法，默认按照评分排序，也可以按照 <strong>frequency</strong> 排序。</li>
+<li><strong>prefix_length</strong>：默认情况下，首字母不一致就不会给出建议词。如果将其设置为 0，就会为 hock 建议 rock。</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">POST /articles/_search
+{
+
+  &quot;suggest&quot;: {
+    &quot;term-suggestion&quot;: {
+      &quot;text&quot;: &quot;lucen hocks&quot;,
+      &quot;term&quot;: {
+        &quot;suggest_mode&quot;: &quot;always&quot;,
+        &quot;field&quot;: &quot;body&quot;,
+        &quot;prefix_length&quot;:0,
+        &quot;sort&quot;: &quot;frequency&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="22phrase-suggester">2.2，Phrase Suggester</h4>
+<p><code>Phrase Suggester</code> 在 <code>Term Suggester</code> 的基础上增加了一些额外的逻辑。</p>
+<p>一些参数：</p>
+<ul>
+<li><code>max_errors</code>：最多可以拼错的 Terms 数</li>
+<li><code>confidence</code>：限制返回结果数，默认为 1。值为 0 的话，表示返回前 N 个结果。</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">POST /articles/_search
+{
+  &quot;suggest&quot;: {
+    &quot;my-suggestion&quot;: {  # 一个 Suggester，自定义名称
+      &quot;text&quot;: &quot;lucne and elasticsear rock hello world &quot;, # 搜索字符串
+      &quot;phrase&quot;: {           # phrase-suggestion
+        &quot;field&quot;: &quot;body&quot;,
+        &quot;max_errors&quot;:2,
+        &quot;confidence&quot;:0,
+        &quot;direct_generator&quot;:[{
+          &quot;field&quot;:&quot;body&quot;,
+          &quot;suggest_mode&quot;:&quot;always&quot;
+        }],
+        &quot;highlight&quot;: {
+          &quot;pre_tag&quot;: &quot;&lt;em&gt;&quot;,
+          &quot;post_tag&quot;: &quot;&lt;/em&gt;&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="23completion-suggester">2.3，Completion Suggester</h4>
+<p><code>Completion Suggester</code> 用于自动补全，用户每输入一个字符，就需要即时发送一个查询请求到后端查找匹配项。</p>
+<p>自动补全功能对性能要求比较高， ES 采用了不同的数据结构，而非通过倒排索引来完成。</p>
+<p>自动补全功能将分词数据编码成 FST，与索引放在一起。FST 会被加载到内存中，以加快速度。FSF 的缺点是只能用于<strong>前缀查找</strong>。</p>
+<p>示例：</p>
+<p>首先，字段的类型必须是 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-suggesters.html#completion-suggester">completion</a>，该数据类型用于自动补全功能。</p>
+<pre><code class="language-shell">DELETE articles
+PUT articles
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;title_completion&quot;:{
+        &quot;type&quot;: &quot;completion&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<p>定义好数据类型之后才能插入数据：</p>
+<pre><code class="language-shell">POST articles/_bulk
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;lucene is very cool&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;Elasticsearch builds on top of lucene&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;Elasticsearch rocks&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;elastic is the company behind ELK stack&quot;}
+{ &quot;index&quot; : { } }
+{ &quot;title_completion&quot;: &quot;Elk stack rocks&quot;}
+{ &quot;index&quot; : {} }
+</code></pre>
+<p>查询数据：</p>
+<pre><code class="language-shell">POST articles/_search?pretty
+{
+  &quot;size&quot;: 0,
+  &quot;suggest&quot;: {
+    &quot;article-suggester&quot;: { # 自定义名称
+      &quot;prefix&quot;: &quot;elk &quot;,    # 查询前缀，基于该前缀进行自动补全
+      &quot;completion&quot;: {      # completion 
+        &quot;field&quot;: &quot;title_completion&quot;  # 字段
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="24context-suggester">2.4，Context Suggester</h4>
+<p><code>Context Suggester</code> 是对 <code>Completion Suggester</code> 的扩展，称为<strong>上下文感知推荐</strong>，可以在搜索时提供更多的上下文信息。</p>
+<p>例如，输入 &ldquo;star&rdquo;：</p>
+<ul>
+<li>咖啡相关：建议 &ldquo;starbucks&rdquo;</li>
+<li>电影相关：建议 &ldquo;start wars&rdquo;</li>
+</ul>
+<p>可以定义两种类型的上下文：</p>
+<ul>
+<li>Category：任意字符串</li>
+<li>Geo：地理位置信息</li>
+</ul>
+<p>实现 Context Suggester 的步骤：</p>
+<ol>
+<li>定义一个 Mapping</li>
+<li>索引数据，并且为每个文档加入 Context 信息</li>
+<li>查询</li>
+</ol>
+<p>示例：</p>
+<pre><code class="language-shell"># 设置 Mapping
+PUT comments
+PUT comments/_mapping
+{
+  &quot;properties&quot;: {
+    &quot;comment_autocomplete&quot;:{      # 字段名称
+      &quot;type&quot;: &quot;completion&quot;,       # 字段类型
+      &quot;contexts&quot;:[{               # Context Suggester，是一个数组
+        &quot;type&quot;:&quot;category&quot;,        # 上下文类型
+        &quot;name&quot;:&quot;comment_category&quot; # 名称
+      }]
+    }
+  }
+}
+
+# 写入数据
+POST comments/_doc
+{
+  &quot;comment&quot;:&quot;I love the star war movies&quot;,
+  &quot;comment_autocomplete&quot;:{
+    &quot;input&quot;:[&quot;star wars&quot;],        # 如果请求 movies 类型的数据，就返回 &quot;star wars&quot;
+    &quot;contexts&quot;:{
+      &quot;comment_category&quot;:&quot;movies&quot; # 自定义 movies 类型
+    }
+  }
+}
+
+POST comments/_doc
+{
+  &quot;comment&quot;:&quot;Where can I find a Starbucks&quot;,
+  &quot;comment_autocomplete&quot;:{
+    &quot;input&quot;:[&quot;starbucks&quot;],        # 如果请求 coffee 类型的数据，就返回 &quot;starbucks&quot;
+    &quot;contexts&quot;:{
+      &quot;comment_category&quot;:&quot;coffee&quot; # 自定义 coffee 类型
+      }
+    }
+  }
+}
+
+# 查询
+POST comments/_search
+{
+  &quot;suggest&quot;: {
+    &quot;MY_SUGGESTION&quot;: {     # 自定义名称
+      &quot;prefix&quot;: &quot;sta&quot;,     # 搜索字符串前缀
+      &quot;completion&quot;:{       # 自动补全，固定写法
+        &quot;field&quot;:&quot;comment_autocomplete&quot;,  # 字段名称
+        &quot;contexts&quot;:{      
+          &quot;comment_category&quot;:&quot;coffee&quot;    # 请求 coffee 类型的数据
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="25几种建议的指标比较">2.5，几种建议的指标比较</h4>
+<p>比较：</p>
+<ul>
+<li>精准度： Completion &gt; Phrase &gt; Term</li>
+<li>召回率：Term &gt; Phrase &gt; Completion</li>
+<li>性能：Completion &gt; Phrase &gt; Term</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-search">ElasticSearch 查询</a></p>
+<p><a href="/2021/02/es-uri-search">ElasticSearch URI 查询</a></p>
+<p><a href="/2021/02/es-dsl-search">ElasticSearch DSL 查询</a></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
+<p><a href="/2021/02/es-analyzers">ElasticSearch 分词器</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-22
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-dsl-search/">
+            <span class="next-text nav-default">ElasticSearch DSL 查询</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-search-template-suggest/" class="leancloud_visitors" data-flag-title="ElasticSearch 搜索模板与建议">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

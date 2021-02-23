@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch DSL 查询 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io DSL（Domain Specific Language）查询也叫做 Request Body" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-dsl-search/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch DSL 查询" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io DSL（Domain Specific Language）查询也叫做 Request Body" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-dsl-search/" />
+<meta property="article:published_time" content="2021-02-21T23:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-21T23:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch DSL 查询">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io DSL（Domain Specific Language）查询也叫做 Request Body">
+<meta itemprop="datePublished" content="2021-02-21T23:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-21T23:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="5378">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch DSL 查询"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io DSL（Domain Specific Language）查询也叫做 Request Body"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch DSL 查询</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-21 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 5378 字 </span>
+          <span class="more-meta"> 阅读约需 11 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1分页">1，分页</a></li>
+        <li><a href="#2排序">2，排序</a></li>
+        <li><a href="#3字段过滤">3，字段过滤</a></li>
+        <li><a href="#4脚本字段">4，脚本字段</a></li>
+        <li><a href="#5查询与过滤">5，查询与过滤</a></li>
+        <li><a href="#6全文本查询">6，全文本查询</a></li>
+        <li><a href="#7term-查询">7，Term 查询</a></li>
+        <li><a href="#8复合查询">8，复合查询</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><strong>DSL</strong>（Domain Specific Language）查询也叫做 <strong>Request Body</strong> 查询，它比 <strong>URI 查询</strong>更高阶，能支持更复杂的查询。</p>
+<h3 id="1分页">1，分页</h3>
+<p>默认情况下，查询按照算分排序，返回前 10 条记录。</p>
+<p>ES 也支持分页，分页使用 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.0/search-request-from-size.html">from-size</a>：</p>
+<ul>
+<li><strong>from</strong>：从第几个文档开始返回，默认为 0。</li>
+<li><strong>size</strong>：返回的文档数，默认为 10。</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">POST /index_name/_search
+{
+  &quot;from&quot;:10,
+  &quot;size&quot;:20,
+  &quot;query&quot;:{
+    &quot;match_all&quot;: {}
+  }
+}
+</code></pre>
+<h4 id="11深度分页问题">1.1，深度分页问题</h4>
+<p>ES 是一个分布式系统，数据保存在多个分片中，那么查询时就需要查询多个分片。</p>
+<p>比如一个查询 <code>from = 990; size = 10</code>，那么 ES 需要在每个分片上都获取 1000 个文档：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120232414669.png" alt=""></p>
+<p>然后通过 <strong>Coordinating</strong> 节点汇总结果，最后再通过排序获取前 1000 个文档。</p>
+<p>这种方式，当页数很深的时候，就会占用很多内存，从而给 ES 集群带来很大的开销，这就是<strong>深度分页问题</strong>。</p>
+<p>因此，ES 为了避免此类问题带来的巨大开销，有个默认的限制 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules.html">index.max_result_window</a>，<code>from + size</code> 必须小于等于 10000，否则就会<strong>报错</strong>。</p>
+<p>比如：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;from&quot;: 10000,  # 报错
+  &quot;size&quot;: 1,
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}
+
+POST index_name/_search
+{
+  &quot;from&quot;: 0,  # 报错
+  &quot;size&quot;: 10001,
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}
+</code></pre>
+<p>为了解决深度分页问题，ES 有两种解决方案：<strong>Search After</strong> 和  <strong>Scroll</strong>。</p>
+<h4 id="12search-after">1.2，Search After</h4>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/paginate-search-results.html#search-after">Search After</a> 通过实时获取下一页的文档信息来实现，使用方法：</p>
+<ul>
+<li>第一步搜索需要指定 <strong>sort</strong>，并且保证值是唯一的（通过sort by id 来保证）。</li>
+<li>随后的搜索，都使用上一次搜索的最后一个文档的 sort 值进行搜索。</li>
+</ul>
+<p><strong>Search After</strong> 的方式不支持指定页数，只能一页一页的往下翻。</p>
+<p><strong>Search After</strong> 的原理：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210121000008616.png" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-shell"># 插入一些数据
+DELETE users
+
+POST users/_doc
+{&quot;name&quot;:&quot;user1&quot;,&quot;age&quot;:10}
+
+POST users/_doc
+{&quot;name&quot;:&quot;user2&quot;,&quot;age&quot;:11}
+
+POST users/_doc
+{&quot;name&quot;:&quot;user2&quot;,&quot;age&quot;:12}
+
+POST users/_doc
+{&quot;name&quot;:&quot;user2&quot;,&quot;age&quot;:13}
+
+# 第一次搜索
+POST users/_search
+{
+    &quot;size&quot;: 1,   # size 值
+    &quot;query&quot;: {
+        &quot;match_all&quot;: {}
+    },
+    &quot;sort&quot;: [
+        {&quot;age&quot;: &quot;desc&quot;} ,
+        {&quot;_id&quot;: &quot;asc&quot;}  # sort by id  
+    ]
+}
+
+# 此时返回的文档中有一个 sort 值
+# &quot;sort&quot; : [13, &quot;4dR-IHcB71-f4JZcrL2z&quot;]
+
+# 之后的每一次搜索都需要用到上一次搜索结果的最后一个文档的 sort 值
+POST users/_search
+{
+    &quot;size&quot;: 1,
+    &quot;query&quot;: {
+        &quot;match_all&quot;: {}
+    },
+    &quot;search_after&quot;: [ # 上一次搜索结果的最后一个文档的 sort 值放在这里
+        13, &quot;4dR-IHcB71-f4JZcrL2z&quot;], 
+    &quot;sort&quot;: [
+        {&quot;age&quot;: &quot;desc&quot;} ,
+        {&quot;_id&quot;: &quot;asc&quot;}    
+    ]
+}
+</code></pre>
+<h4 id="13scroll">1.3，Scroll</h4>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/paginate-search-results.html#scroll-search-results">Scroll</a> 通过创建一个<strong>快照</strong>来实现，方法：</p>
+<ul>
+<li>每次查询时，输入上一次的 <code>Scroll Id</code>。</li>
+</ul>
+<p><strong>Scroll</strong> 方式的缺点是，当有新的数据写入时，<strong>新写入的数据无法被查到</strong>（第一次建立快照时有多少数据，就只能查到多少数据）。</p>
+<p>示例：</p>
+<pre><code class="language-shell"># 写入测试数据
+DELETE users
+POST users/_doc
+{&quot;name&quot;:&quot;user1&quot;,&quot;age&quot;:10}
+
+POST users/_doc
+{&quot;name&quot;:&quot;user2&quot;,&quot;age&quot;:20}
+
+# 第一次查询前，先建立快照，快照存在时间为 5 分钟，一般不要太长
+POST /users/_search?scroll=5m
+{
+    &quot;size&quot;: 1,
+    &quot;query&quot;: {
+        &quot;match_all&quot; : {}
+    }
+}
+
+# 返回的结果中会有一个 _scroll_id
+
+# 查询
+POST /_search/scroll
+{
+    &quot;scroll&quot; : &quot;1m&quot;, # 快照的生存时间，这里是 1 分钟
+    &quot;scroll_id&quot; : &quot;xxx==&quot; # 上一次的 _scroll_id 值
+}
+
+# 每次的查询结果都会返回一个 _scroll_id，供下一次查询使用
+# 所有的数据被查完以后，再查询就得不到数据了
+</code></pre>
+<h4 id="14不同分页方式的使用场景">1.4，不同分页方式的使用场景</h4>
+<p>分页方式共 4 种：</p>
+<ul>
+<li>普通查询（不使用分页）：需要实时获取顶部的部分文档。</li>
+<li>From-Size（普通分页）：适用于非深度分页。</li>
+<li>Search After：需要深度分页时使用。</li>
+<li>Scroll：需要全部文档，比如导出全部数据。</li>
+</ul>
+<h3 id="2排序">2，排序</h3>
+<p>ES 默认使用算分进行排序，我们可以使用 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-processor.html">sort-processor</a>（不需要再计算算分）来指定排序规则；可以对某个字段进行排序，最好只对<strong>数字型</strong>和<strong>日期型</strong>字段排序。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST /index_name/_search
+{
+  &quot;sort&quot;:[{&quot;order_date&quot;:&quot;desc&quot;}], # 单字段排序
+  &quot;query&quot;:{
+    &quot;match_all&quot;: {}
+  }
+}
+
+POST /index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  },
+  &quot;sort&quot;: [ # 多字段排序
+    {&quot;order_date&quot;: {&quot;order&quot;: &quot;desc&quot;}},
+    {&quot;_doc&quot;:{&quot;order&quot;: &quot;asc&quot;}},
+    {&quot;_score&quot;:{ &quot;order&quot;: &quot;desc&quot;}} # 如果不指定 _score，那么算分为 null
+  ]
+}
+</code></pre>
+<p>对 <strong>text</strong> 类型的数据进行排序会发生错误，可以通过打开 fielddata 参数（一般<strong>不建议这么做</strong>），来对 <strong>text</strong> 类型进行排序：</p>
+<pre><code class="language-shell"># 打开 text的 fielddata
+PUT index_name/_mapping
+{
+  &quot;properties&quot;: {
+    &quot;customer_full_name&quot; : {       # 字段名称
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fielddata&quot;: true,       # 打开 fielddata
+          &quot;fields&quot; : {
+            &quot;keyword&quot; : {
+              &quot;type&quot; : &quot;keyword&quot;,
+              &quot;ignore_above&quot; : 256
+            }
+          }
+        }
+  }
+}
+</code></pre>
+<h3 id="3字段过滤">3，字段过滤</h3>
+<p>可以使用 <code>_source</code> 设置需要返回哪些字段。示例：</p>
+<pre><code class="language-shell">POST /index_name/_search
+{
+  &quot;_source&quot;:[&quot;order_date&quot;, &quot;xxxxx&quot;],
+  &quot;query&quot;:{
+    &quot;match_all&quot;: {}
+  }
+}
+</code></pre>
+<p><code>_source</code> 中可以使用通配符，比如 <code>[&quot;name*&quot;, &quot;abc*&quot;]</code>。</p>
+<h3 id="4脚本字段">4，脚本字段</h3>
+<p>可以使用脚本进行简单的表达式运算。</p>
+<pre><code class="language-shell">POST /index_name/_search
+{
+  &quot;script_fields&quot;: { # 固定写法
+    &quot;new_field&quot;: {   # 新的字段名称
+      &quot;script&quot;: {    # 固定写法
+        &quot;lang&quot;: &quot;painless&quot;, # 固定写法
+        &quot;source&quot;: &quot;doc['order_date'].value+'hello'&quot; # 脚本语句
+      }
+    }
+  },
+  &quot;query&quot;: {
+    &quot;match_all&quot;: {}
+  }
+}
+</code></pre>
+<h3 id="5查询与过滤">5，查询与过滤</h3>
+<p>查询会有相关性算分；过滤不需要进行算分，可以利用缓存，性能更好。</p>
+<p>参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html">这里</a>。</p>
+<h3 id="6全文本查询">6，全文本查询</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html">全文本</a>（Full text）查询会对搜索字符串进行<strong>分词处理</strong>。</p>
+<p>全文本查询有以下 9 种：</p>
+<ol>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-intervals-query.html">intervals 查询</a>：可以对匹配项的顺序和接近度进行细粒度控制。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html">match 查询</a>：全文本查询中的标准查询，包括模糊匹配、短语和近似查询。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-bool-prefix-query.html">match_bool_prefix 查询</a>：</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html">match_phrase 查询</a>：</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html">match_phrase_prefix 查询</a>：</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html">multi_match 查询</a>：</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-common-terms-query.html">common terms 查询</a>：</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html">query_string 查询</a>：</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html">simple_query_string 查询</a>：</li>
+</ol>
+<h4 id="61match-查询">6.1，Match 查询</h4>
+<p><strong>Match</strong> 查询是全文搜索的标准查询，与下面的几种查询相比，更加强大，灵活性也更大，最常使用。</p>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html">Match 查询</a>会先对输入字符串进行分词，然后对每个词项进行底层查询，最后将结果合并。</p>
+<p>例如对字符串 &ldquo;<strong>Matrix reloaded</strong>&rdquo; 进行查询，会查到包含 &ldquo;Matrix&rdquo; 或者 &ldquo;reloaded&rdquo; 的所有结果。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210117172328528.png?" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;title&quot;: &quot;last christmas&quot; # 表示包含 last 或 christmas
+    }
+  }
+}
+
+POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;title&quot;: { # 表示包含 last 且 包含 christmas，不一定挨着
+        &quot;query&quot;: &quot;last christmas&quot;,
+        &quot;operator&quot;: &quot;and&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="62match-phrase-查询">6.2，Match Phrase 查询</h4>
+<p>使用 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html">match_phrase</a> 关键字。示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match_phrase&quot;: {
+      &quot;title&quot;:{
+        &quot;query&quot;: &quot;one love&quot; # &quot;one love&quot; 相当于一个单词
+      }
+    }
+  }
+}
+
+POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match_phrase&quot;: {
+      &quot;title&quot;:{
+        &quot;query&quot;: &quot;one love&quot;,
+        &quot;slop&quot;: 1 # &quot;one&quot; 和 &quot;love&quot; 之间可以有 1 个字符
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="63query-string-查询">6.3，Query String 查询</h4>
+<p>使用 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html">query_string</a> 关键字。示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;query_string&quot;: {
+      &quot;default_field&quot;: &quot;name&quot;,   # 默认查询字段，相当于 URI 查询中的 df
+      &quot;query&quot;: &quot;Ruan AND Yiming&quot; # 可以使用逻辑运算符
+    }
+  }
+}
+
+# 多 fields 与 分组
+POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;query_string&quot;: {
+      &quot;fields&quot;:[&quot;name&quot;,&quot;about&quot;], # 多个 fields
+      &quot;query&quot;: &quot;(Ruan AND Yiming) OR (Java AND Elasticsearch)&quot; # 支持分组
+    }
+  }
+}
+
+POST index_name/_search
+{
+  &quot;query&quot;:{
+    &quot;query_string&quot;:{
+      &quot;fields&quot;:[&quot;title&quot;,&quot;year&quot;],
+      &quot;query&quot;: &quot;2012&quot;
+     }
+   }
+}
+</code></pre>
+<h4 id="64simple-query-string-查询">6.4，Simple Query String 查询</h4>
+<p>使用 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html">simple_query_string</a> 关键字。</p>
+<p>特点：</p>
+<ul>
+<li><strong>query</strong> 字段中不支持 <code>AND OR NOT</code>，会当成普通字符串。
+<ul>
+<li><code>AND</code> 用 <code>+</code> 替代</li>
+<li><code>OR</code> 用 <code>|</code> 替代</li>
+<li><code>NOT</code> 用 <code>-</code> 替代</li>
+</ul>
+</li>
+<li>Term 之间默认的关系是 <code>OR</code>，可以指定 <code>default_operator</code> 来修改。</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell"># Simple Query 默认的 operator 是 OR
+POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;simple_query_string&quot;: {
+      &quot;query&quot;: &quot;Ruan AND Yiming&quot;, # 这里的 AND 会当成普通的字符串
+      &quot;fields&quot;: [&quot;name&quot;]
+    }
+  }
+}
+
+POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;simple_query_string&quot;: {
+      &quot;query&quot;: &quot;Ruan Yiming&quot;,
+      &quot;fields&quot;: [&quot;name&quot;],
+      &quot;default_operator&quot;: &quot;AND&quot;
+    }
+  }
+}
+
+GET index_name/_search
+{
+	&quot;query&quot;:{
+		&quot;simple_query_string&quot;:{
+			&quot;query&quot;:&quot;Beautiful +mind&quot;,
+			&quot;fields&quot;:[&quot;title&quot;]
+		}
+	}
+}
+</code></pre>
+<h4 id="65multi-match-查询">6.5，Multi-match 查询</h4>
+<p>一个字符串在多个字段中查询的情况，如何匹配最终的结果。（还有一个 <strong>dis-max</strong> 查询也是针对这种情况的）</p>
+<p>一个字符串在多个字段中查询的情况，Multi-match 有 6 种处理方式，如下：</p>
+<ul>
+<li><strong>best_fields</strong>：最终得分为<strong>分数最高</strong>的那个字段，默认的处理方式。</li>
+<li><strong>most_fields</strong>：算分相加。不支持 <strong>AND</strong> 操作。</li>
+<li><strong>cross_fields</strong>：跨字段搜索，将一个查询字符串在<strong>多个字段</strong>（就像一个字段）上搜索。</li>
+<li><strong>phrase</strong>：</li>
+<li><strong>phrase_prefix</strong>：</li>
+<li><strong>bool_prefix</strong>：</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;multi_match&quot; : {              # multi_match 查询
+      &quot;query&quot;:      &quot;brown fox&quot;,   # 查询字符串
+      &quot;type&quot;:       &quot;best_fields&quot;, # 处理方式
+      &quot;fields&quot;:     [ &quot;subject&quot;, &quot;message&quot; ], # 在多个字段中查询，fields 是一个数组
+      &quot;tie_breaker&quot;: 0.3
+    }
+  }
+}
+</code></pre>
+<h3 id="7term-查询">7，Term 查询</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/term-level-queries.html">Term 查询</a>与<strong>全文本</strong>查询不同的是，Term 查询不会对查询字符串进行分词处理，Term 查询会在字段匹配<strong>精确值</strong>。</p>
+<p>Term 查询输入字符串作为一个整体，在倒排索引中查找匹配的词项，并且会计算<strong>相关性评分</strong>。</p>
+<p><strong>Term 查询</strong>包括以下 11 种：</p>
+<ol>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html">exists 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html">fuzzy 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html">ids 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html">prefix 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html">range 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html">regexp 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html">term 查询</a>：如果某个文档的指定字段包含某个<strong>确切值</strong>，则返回该文档。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html">terms 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-set-query.html">terms_set 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-type-query.html">type 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html">wildcard 查询</a></li>
+</ol>
+<h4 id="70结构化数据与查询">7.0，结构化数据与查询</h4>
+<p>结构化查询是对<strong>结构化数据</strong>的查询，可以使用 <strong>Term 语句</strong>进行查询。</p>
+<p>结构化数据有着<strong>固定的格式</strong>，包括：</p>
+<ul>
+<li>日期：日期比较，日期范围运算等。</li>
+<li>布尔值：逻辑运算。</li>
+<li>数字：数字大小比较，范围比较等。</li>
+<li>某些文本数据：比如标签数据，关键词等。</li>
+</ul>
+<p>结构化查询是对结构化数据的逻辑运算，运算结果只有“是”和“否”。</p>
+<h4 id="71term-查询">7.1，term 查询</h4>
+<p>如果某个文档的指定字段<strong>包含</strong>某个<strong>确切值</strong>，则返回该文档。</p>
+<h5 id="1示例-1-精确匹配">1，示例 1 精确匹配</h5>
+<p>下面举一个 term 查询的例子，首先插入一个文档：</p>
+<pre><code class="language-shell">POST /products/_bulk
+{ &quot;index&quot;: { &quot;_id&quot;: 1 }}
+{ &quot;productID&quot; : &quot;XHDK-A-1293-#fJ3&quot;,&quot;desc&quot;:&quot;iPhone&quot; }
+</code></pre>
+<p>该文档插入时，会使用<strong>默认的分词器</strong>进行分词处理。</p>
+<p>使用 term 查询：</p>
+<pre><code class="language-shell">POST /products/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {
+      &quot;desc&quot;: {
+        # &quot;value&quot;: &quot;iPhone&quot; # 会对 iPhone 精确匹配查询。
+                            # 文档插入时，iPhone 变成了 iphone
+                            # 所以查 iPhone 查不到任何内容
+        &quot;value&quot;:&quot;iphone&quot;    # 查 iphone 能查到
+      }
+    }
+  }
+}
+</code></pre>
+<p><em><strong>keyword 子字段</strong></em></p>
+<p>ES  默认会对 <strong>text</strong> 类型的数据建立一个 <strong>keyword</strong> 子字段，用于精确匹配，这称为 ES 的<strong>多字段属性</strong>。</p>
+<p><strong>keyword 子字段</strong>将原始数据原封不动的存储了下来。</p>
+<p>可以通过 <strong>mapping</strong> 查看，如下所示：</p>
+<pre><code class="language-shell">&quot;desc&quot; : {          # 字段名称
+  &quot;type&quot; : &quot;text&quot;,  # text 数据类型
+  &quot;fields&quot; : {
+    &quot;keyword&quot; : {   # keyword 子字段
+      &quot;type&quot; : &quot;keyword&quot;,  # keyword 子类型
+      &quot;ignore_above&quot; : 256
+    }
+  }
+}
+</code></pre>
+<p>下面使用 <strong>keyword</strong> 子字段进行查询：</p>
+<pre><code class="language-shell">POST /products/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {
+      &quot;desc.keyword&quot;: {     # 在 desc 字段的 keyword 子字段中查询
+        &quot;value&quot;: &quot;iPhone&quot;   # 能查到
+        //&quot;value&quot;:&quot;iphone&quot;  # 查不到
+      }
+    }
+  }
+}
+</code></pre>
+<h5 id="2示例-2-查询布尔值">2，示例 2 查询布尔值</h5>
+<p><strong>term 查询</strong>有算分：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {    # 固定写法
+    &quot;term&quot;: {   # term 查询，固定写法
+      &quot;avaliable&quot;: true  # 查询 avaliable 字段的值为 true 的文档
+    }
+  }
+}
+</code></pre>
+<p>如果不需要算分，可以使用  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html">constant_score 查询</a>，示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;constant_score&quot;: {        # constant_score 查询，固定写法
+      &quot;filter&quot;: {              # 固定写法
+        &quot;term&quot;: {              # constant_score 包装一个 term 查询，就没有了算分
+          &quot;avaliable&quot;: true
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="72range-查询">7.2，range 查询</h4>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html">range  查询</a>中有几个常用的比较运算：</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gt</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>gte</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>lt</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>lte</td>
+<td>小于等于</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1数字类型-range-查询">1，数字类型 range 查询</h5>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {       # 固定写法
+    &quot;range&quot;: {     # range 查询
+      &quot;age&quot;: {     # 字段名称
+        &quot;gte&quot;: 10, # 10 &lt;= age &lt;= 20
+        &quot;lte&quot;: 20
+      }
+    }
+  }
+}
+</code></pre>
+<h5 id="2日期类型-range-查询">2，日期类型 range 查询</h5>
+<p>对于日期类型有几个常用的符号：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>y</td>
+<td>年</td>
+</tr>
+<tr>
+<td>M</td>
+<td>月</td>
+</tr>
+<tr>
+<td>w</td>
+<td>周</td>
+</tr>
+<tr>
+<td>d</td>
+<td>天</td>
+</tr>
+<tr>
+<td>H / h</td>
+<td>小时</td>
+</tr>
+<tr>
+<td>m</td>
+<td>分钟</td>
+</tr>
+<tr>
+<td>s</td>
+<td>秒</td>
+</tr>
+<tr>
+<td>now</td>
+<td>现在</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot; : {      # 固定写法
+    &quot;range&quot; : {    # range 查询
+      &quot;date&quot; : {   # 字段名称
+        &quot;gte&quot; : &quot;now-10y&quot;  # 10年之前
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="73exists-查询">7.3，exists 查询</h4>
+<p><strong>exists 语句</strong>可以判断文档是否存在<strong>某个字段</strong>。</p>
+<p>搜索存在某个字段的文档，示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot; : {
+    &quot;exists&quot;: {  # 存在 date 字段的文档
+        &quot;field&quot;: &quot;date&quot;
+      }
+   }
+}
+</code></pre>
+<p>搜索不存在某个字段的文档，需要使用<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html">布尔查询</a>。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {       # 布尔查询
+      &quot;must_not&quot;: { # 不存在
+        &quot;exists&quot;: { # 不存在 date 字段的文档
+          &quot;field&quot;: &quot;date&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="74terms-查询">7.4，terms 查询</h4>
+<p><strong>terms 语句</strong>用于处理多值查询，相当于一个多值版的 <strong>term 语句</strong>，可以一次查询多个值。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;terms&quot;: {  # terms 查询
+      &quot;productID.keyword&quot;: [  # 字段名称
+        &quot;QQPX-R-3956-#aD8&quot;,   # 多个值
+        &quot;JODL-X-1937-#pV7&quot;
+      ]
+    }
+  }
+}
+</code></pre>
+<h3 id="8复合查询">8，复合查询</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html">复合查询</a>（Compound）能够包装其他<strong>复合查询</strong>或<strong>叶查询</strong>，以组合其结果和分数，更改其行为或者将查询转成<strong>过滤</strong>。</p>
+<p>复合查询有以下 5 种：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html">bool 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html">boosting 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html">constant_score 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-dis-max-query.html">dis_max 查询</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html">function_score 查询</a></li>
+</ul>
+<h4 id="81bool-查询">8.1，bool 查询</h4>
+<p><strong>bool 查询</strong>是一个或<strong>多个子查询</strong>的组合，共包含以下 4 种子句：</p>
+<ul>
+<li><strong>must</strong>：必须匹配，<strong>属于查询</strong>，贡献算分。</li>
+<li><strong>filter</strong>：必须匹配，<strong>属于过滤器</strong>，不贡献算分。</li>
+<li><strong>should</strong>：选择性匹配，只要有一个条件匹配即可，<strong>属于查询</strong>，贡献算分。</li>
+<li><strong>must_not</strong>：必须不匹配，<strong>属于过滤器</strong>，不贡献算分。</li>
+</ul>
+<p><strong>bool 查询</strong>的多个子句之间<strong>没有顺序之分</strong>，并且<strong>可以嵌套</strong>。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot; : {
+      &quot;must&quot; : {
+        &quot;term&quot; : { &quot;user.id&quot; : &quot;kimchy&quot; }
+      },
+      &quot;filter&quot;: {
+        &quot;term&quot; : { &quot;tags&quot; : &quot;production&quot; }
+      },
+      &quot;must_not&quot; : {
+        &quot;range&quot; : {
+          &quot;age&quot; : { &quot;gte&quot; : 10, &quot;lte&quot; : 20 }
+        }
+      },
+      &quot;should&quot; : [ # 是一个数组
+        { &quot;term&quot; : { &quot;tags&quot; : &quot;env1&quot; } },
+        { &quot;term&quot; : { &quot;tags&quot; : &quot;deployed&quot; } }
+      ],
+      &quot;minimum_should_match&quot; : 1,
+      &quot;boost&quot; : 1.0
+    }
+  }
+}
+</code></pre>
+<h4 id="82boosting-查询">8.2，boosting 查询</h4>
+<p><strong>boosting 查询</strong>会给不同的查询条件分配不同的级别（<strong>positive / negative</strong>），不同的级别对算分有着不同的印象，从而影响最终的算分。</p>
+<p><strong>positive</strong> 级别会对算分有<strong>正面影响</strong>， <strong>negative</strong> 级别会对算分有<strong>负面影响</strong>。</p>
+<p>我们可以使用 <strong>boosting 查询</strong>给某些文档<strong>降级</strong>（降低算分），而不是将其从搜索结果中<strong>排除</strong>。</p>
+<p>示例：</p>
+<pre><code class="language-shell">GET index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;boosting&quot;: {      # boosting 查询
+      &quot;positive&quot;: {    # positive 级别
+        &quot;term&quot;: {      # 匹配 apple 的会对算分有正面影响
+          &quot;text&quot;: &quot;apple&quot; 
+        }
+      },
+      &quot;negative&quot;: {   # negative 级别
+        &quot;term&quot;: {     # 匹配这个的会对算分有负面影响
+          &quot;text&quot;: &quot;pie tart fruit crumble tree&quot;
+        }
+      },
+      &quot;negative_boost&quot;: 0.5 # 降级的力度
+    }
+  }
+}
+</code></pre>
+<h4 id="83constant_score-查询">8.3，constant_score 查询</h4>
+<p><strong>constant_score 查询</strong>可以将查询转成一个<strong>过滤</strong>，可以避免<strong>算分</strong>（降低开销），并有效利用缓存（提高性能）。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST /index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;constant_score&quot;: {   # constant_score  查询
+      &quot;filter&quot;: {         # 过滤器，固定写法
+        &quot;term&quot;: {         # 包装了一个 term 查询，将 term 查询转成了过滤
+          &quot;productID.keyword&quot;: &quot;XHDK-A-1293-#fJ3&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="84dis_max-查询">8.4，dis_max 查询</h4>
+<p>一个字符串在多个字段中查询的情况，如何匹配最终的结果。（还有一个 <strong>Multi-match</strong> 查询也是针对这种情况的）</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+    &quot;query&quot;: {
+        &quot;bool&quot;: {
+            &quot;should&quot;: [  # should 语句会综合所有的字段的分数，最终给出一个综合分数
+                { &quot;match&quot;: { &quot;title&quot;: &quot;Brown fox&quot; }},
+                { &quot;match&quot;: { &quot;body&quot;:  &quot;Brown fox&quot; }}
+            ]
+        }
+    }
+}
+
+POST index_name/_search
+{
+    &quot;query&quot;: {
+        &quot;dis_max&quot;: {     # dis_max 语句不会综合所有字段的分数，而把每个字段单独来看
+            &quot;queries&quot;: [ # 最终结果是所有的字段中分数最高的
+                { &quot;match&quot;: { &quot;title&quot;: &quot;Quick pets&quot; }},
+                { &quot;match&quot;: { &quot;body&quot;:  &quot;Quick pets&quot; }}
+            ]
+        }
+    }
+}
+</code></pre>
+<h4 id="85function_score-查询">8.5，function_score 查询</h4>
+<p><strong>function_score 查询</strong>可以在查询结束后，对每一个匹配的文档进行<strong>重新算分</strong>，然后再根据新的算分进行排序。</p>
+<p>它提供了以下 5 种算分函数：</p>
+<ul>
+<li><strong>script_score</strong>：自定义脚本。</li>
+<li><strong>weight</strong>：为文档设置一个权重。</li>
+<li><strong>random_score</strong>：随机算分排序。</li>
+<li><strong>field_value_factor</strong>：使用该数值来修改算分。</li>
+<li><strong>decay functions</strong>: gauss, linear, exp：以某个字段为标准，距离某个值越近，得分越高。</li>
+</ul>
+<h5 id="1field_value_factor-示例">1，field_value_factor 示例</h5>
+<p>首先插入测试数据：</p>
+<pre><code class="language-shell">DELETE blogs
+PUT /blogs/_doc/1
+{
+  &quot;title&quot;:   &quot;About popularity&quot;,
+  &quot;content&quot;: &quot;In this post we will talk about...&quot;,
+  &quot;votes&quot;:   0
+}
+
+PUT /blogs/_doc/2
+{
+  &quot;title&quot;:   &quot;About popularity&quot;,
+  &quot;content&quot;: &quot;In this post we will talk about...&quot;,
+  &quot;votes&quot;:   100
+}
+
+PUT /blogs/_doc/3
+{
+  &quot;title&quot;:   &quot;About popularity&quot;,
+  &quot;content&quot;: &quot;In this post we will talk about...&quot;,
+  &quot;votes&quot;:   1000000
+}
+</code></pre>
+<p>查询示例1：</p>
+<p><strong>新的算分 = 老的算分 * 投票数</strong></p>
+<pre><code class="language-shell">POST /blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;function_score&quot;: {
+      &quot;query&quot;: {
+        &quot;multi_match&quot;: { # 该查询会有一个算分
+          &quot;query&quot;:    &quot;popularity&quot;,
+          &quot;fields&quot;: [ &quot;title&quot;, &quot;content&quot; ]
+        }
+      },
+      &quot;field_value_factor&quot;: {  # 最终的算分要乘以 votes 字段的值
+        &quot;field&quot;: &quot;votes&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<p>上面这种算法当出现这两种情况的时候，会出现问题：</p>
+<ul>
+<li>投票数为 0</li>
+<li>投票数特别大</li>
+</ul>
+<p>查询示例2，引入<strong>平滑函数</strong>：</p>
+<p><strong>新的算分 = 老的算分 * 平滑函数(投票数)</strong></p>
+<pre><code class="language-shell">POST /blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;function_score&quot;: {
+      &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+          &quot;query&quot;:    &quot;popularity&quot;,
+          &quot;fields&quot;: [ &quot;title&quot;, &quot;content&quot; ]
+        }
+      },
+      &quot;field_value_factor&quot;: {
+        &quot;field&quot;: &quot;votes&quot;,
+        &quot;modifier&quot;: &quot;log1p&quot;  # 在原来的基础上加了一个平滑函数
+      }                      # 新的算分 = 老的算分 * log(1 + 投票数)
+    }
+  }
+}
+</code></pre>
+<p><strong>平滑函数</strong>有下面这些：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119104333757.png" alt="在这里插入图片描述"></p>
+<p>查询示例3，引入 <strong>factor</strong> ：</p>
+<p><strong>新的算分 = 老的算分 * 平滑函数(factor * 投票数)</strong></p>
+<pre><code class="language-shell">POST /blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;function_score&quot;: {
+      &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+          &quot;query&quot;:    &quot;popularity&quot;,
+          &quot;fields&quot;: [ &quot;title&quot;, &quot;content&quot; ]
+        }
+      },
+      &quot;field_value_factor&quot;: {
+        &quot;field&quot;: &quot;votes&quot;,
+        &quot;modifier&quot;: &quot;log1p&quot; ,
+        &quot;factor&quot;: 0.1
+      }
+    }
+  }
+}
+</code></pre>
+<p>引入 <strong>factor</strong> 之后的算分曲线：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119104829380.png" alt="在这里插入图片描述"></p>
+<h5 id="2boost-mode-和-max-boost-参数">2，Boost Mode 和 Max Boost 参数</h5>
+<p>Boost Mode：</p>
+<ul>
+<li>Multiply：算分与函数值的乘积。</li>
+<li>Sum：算分与函数值的和。</li>
+<li>Min / Max：算分与函数值的最小/最大值。</li>
+<li>Replace：使用函数值替代算分。</li>
+</ul>
+<p>Max Boost 可以将算分控制在一个最大值。</p>
+<p>示例：</p>
+<pre><code class="language-shell">POST /blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;function_score&quot;: {
+      &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+          &quot;query&quot;:    &quot;popularity&quot;,
+          &quot;fields&quot;: [ &quot;title&quot;, &quot;content&quot; ]
+        }
+      },
+      &quot;field_value_factor&quot;: {
+        &quot;field&quot;: &quot;votes&quot;,
+        &quot;modifier&quot;: &quot;log1p&quot; ,
+        &quot;factor&quot;: 0.1
+      },
+      &quot;boost_mode&quot;: &quot;sum&quot;,
+      &quot;max_boost&quot;: 3
+    }
+  }
+}
+</code></pre>
+<h5 id="3random_score-示例">3，random_score 示例</h5>
+<p>示例：</p>
+<pre><code class="language-shell">POST /blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;function_score&quot;: {
+      &quot;random_score&quot;: {  # 将原来的查询结果随机排序
+        &quot;seed&quot;: 911119   # 随机种子
+      }
+    }
+  }
+}
+</code></pre>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-search">ElasticSearch 查询</a></p>
+<p><a href="/2021/02/es-uri-search">ElasticSearch URI 查询</a></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
+<p><a href="/2021/02/es-analyzers">ElasticSearch 分词器</a></p>
+<p><a href="/2021/02/es-s">ElasticSearch 搜索引擎概念简介</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-21
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/02/es-search-template-suggest/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">ElasticSearch 搜索模板与建议</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/02/es-uri-search/">
+            <span class="next-text nav-default">ElasticSearch URI 查询</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-dsl-search/" class="leancloud_visitors" data-flag-title="ElasticSearch DSL 查询">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
