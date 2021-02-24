@@ -58,6 +58,15 @@
     </item>
     
     <item>
+      <title>ElasticSearch 聚合分析</title>
+      <link>https://codeshellme.github.io/2021/02/es-aggregations/</link>
+      <pubDate>Tue, 23 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-aggregations/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的聚合分析（Aggregations）是对数据的统</description>
+    </item>
+    
+    <item>
       <title>ElasticSearch 搜索模板与建议</title>
       <link>https://codeshellme.github.io/2021/02/es-search-template-suggest/</link>
       <pubDate>Mon, 22 Feb 2021 22:38:52 +0800</pubDate>

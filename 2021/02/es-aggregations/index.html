@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 聚合分析 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的聚合分析（Aggregations）是对数据的统" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-aggregations/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 聚合分析" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的聚合分析（Aggregations）是对数据的统" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-aggregations/" />
+<meta property="article:published_time" content="2021-02-23T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-23T22:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 聚合分析">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的聚合分析（Aggregations）是对数据的统">
+<meta itemprop="datePublished" content="2021-02-23T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-23T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="4815">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 聚合分析"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io ES 中的聚合分析（Aggregations）是对数据的统"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 聚合分析</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-23 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 4815 字 </span>
+          <span class="more-meta"> 阅读约需 10 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1聚合的分类">1，聚合的分类</a></li>
+        <li><a href="#2metrics-聚合">2，Metrics 聚合</a></li>
+        <li><a href="#3bucket-聚合">3，Bucket 聚合</a></li>
+        <li><a href="#4pipeline-聚合">4，Pipeline 聚合</a></li>
+        <li><a href="#5聚合的作用范围">5，聚合的作用范围</a></li>
+        <li><a href="#6聚合中的排序">6，聚合中的排序</a></li>
+        <li><a href="#7聚合分析的原理及精准度">7，聚合分析的原理及精准度</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>ES 中的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations.html">聚合分析</a>（Aggregations）是对数据的统计分析功能，它的优点是<strong>实时性较高</strong>，相比于 Hadoop 速度更快。</p>
+<h3 id="1聚合的分类">1，聚合的分类</h3>
+<p>ES 中的聚合分析主要有以下 3 大类，每一类都提供了多种统计方法：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics.html">Metrics</a>：对文档字段进行统计分析（数学运算），多数 <strong>Metrics</strong> 的输出是单个值，部分 <strong>Metrics</strong> 的输出是多个值。
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-sum-aggregation.html">Sum</a>：求和</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-max-aggregation.html">Max</a>：求最大值</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-min-aggregation.html">Min</a>：求最小值</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-avg-aggregation.html">Avg</a>：求平均值</li>
+<li>等</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket.html">Bucket</a>：一些满足特定条件的文档集合（对文档进行<strong>分组</strong>）。
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-terms-aggregation.html">Terms</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-range-aggregation.html">Range</a></li>
+<li>等</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline.html">Pipeline</a>：对其它的聚合结果进行<strong>再聚合</strong>。
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-avg-bucket-aggregation.html">Avg bucket</a>：求平均值</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-max-bucket-aggregation.html">Max bucket</a>：求最大值</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-min-bucket-aggregation.html">Min bucket</a>：求最小值</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-sum-bucket-aggregation.html">Sum bucket</a>：求和</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-stats-bucket-aggregation.html">Stats bucket</a>：综合统计</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-percentiles-bucket-aggregation.html">Percentiles bucket</a>：百分位数统计</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-pipeline-cumulative-sum-aggregation.html">Cumulative sum</a>：累计求和</li>
+<li>等</li>
+</ul>
+</li>
+</ul>
+<p>一般使用聚合分析时，通常将 <strong>size</strong> 设置为 0，表示不需要返回查询结果，只需要返回聚合结果。</p>
+<p>一个示例：</p>
+<pre><code class="language-shell"># 多个 Metric 聚合，找到最低最高和平均工资
+POST index_name/_search
+{
+  &quot;size&quot;: 0,              # size 为 0
+  &quot;aggs&quot;: {
+    &quot;max_salary&quot;: {       # 自定义聚合名称
+      &quot;max&quot;: {            # 聚合类型
+        &quot;field&quot;: &quot;salary&quot; # 聚合字段
+      }
+    },
+    &quot;min_salary&quot;: {       # 自定义聚合名称
+      &quot;min&quot;: {            # 聚合类型
+        &quot;field&quot;: &quot;salary&quot; # 聚合字段
+      }
+    },
+    &quot;avg_salary&quot;: {       # 自定义聚合名称
+      &quot;avg&quot;: {            # 聚合类型
+        &quot;field&quot;: &quot;salary&quot; # 聚合字段
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="2metrics-聚合">2，Metrics 聚合</h3>
+<p>Metrics 聚合可以分为单值分析和多值分析：</p>
+<ul>
+<li>单值分析：分析结果是单个值
+<ul>
+<li>max</li>
+<li>min</li>
+<li>avg</li>
+<li>sum</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-cardinality-aggregation.html">cardinality</a>：类似 distinct count
+<ul>
+<li>注意 cardinality 对 keyword 类型数据和 text 类型数据的区别</li>
+<li>keyword 类型不会进行分词处理，而 text 类型会进行分词处理</li>
+</ul>
+</li>
+<li>等</li>
+</ul>
+</li>
+<li>多值分析：分析结果是多个值
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-stats-aggregation.html">stats</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-extendedstats-aggregation.html">extended stats</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-string-stats-aggregation.html">string stats</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-percentile-aggregation.html">percentiles</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-percentile-rank-aggregation.html">percentile ranks</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-top-hits-aggregation.html">top hits</a>：根据一定的规则排序，选 top N</li>
+<li>等</li>
+</ul>
+</li>
+</ul>
+<h4 id="21示例">2.1，示例</h4>
+<p>示例，一个员工表定义：</p>
+<pre><code class="language-shell">DELETE /employees
+PUT /employees/
+{
+  &quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;age&quot; : {
+          &quot;type&quot; : &quot;integer&quot;
+        },
+        &quot;gender&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;job&quot; : {
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fields&quot; : {
+            &quot;keyword&quot; : {  # 子字段名称
+              &quot;type&quot; : &quot;keyword&quot;, # 子字段类型
+              &quot;ignore_above&quot; : 50
+            }
+          }
+        },
+        &quot;name&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;salary&quot; : {
+          &quot;type&quot; : &quot;integer&quot;
+        }
+      }
+    }
+}
+</code></pre>
+<p>插入一些测试数据：</p>
+<pre><code class="language-shell">PUT /employees/_bulk
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;1&quot; } }
+{ &quot;name&quot; : &quot;Emma&quot;,&quot;age&quot;:32,&quot;job&quot;:&quot;Product Manager&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;:35000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;2&quot; } }
+{ &quot;name&quot; : &quot;Underwood&quot;,&quot;age&quot;:41,&quot;job&quot;:&quot;Dev Manager&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 50000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;3&quot; } }
+{ &quot;name&quot; : &quot;Tran&quot;,&quot;age&quot;:25,&quot;job&quot;:&quot;Web Designer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;:18000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;4&quot; } }
+{ &quot;name&quot; : &quot;Rivera&quot;,&quot;age&quot;:26,&quot;job&quot;:&quot;Web Designer&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;: 22000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;5&quot; } }
+{ &quot;name&quot; : &quot;Rose&quot;,&quot;age&quot;:25,&quot;job&quot;:&quot;QA&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;:18000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;6&quot; } }
+{ &quot;name&quot; : &quot;Lucy&quot;,&quot;age&quot;:31,&quot;job&quot;:&quot;QA&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;: 25000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;7&quot; } }
+{ &quot;name&quot; : &quot;Byrd&quot;,&quot;age&quot;:27,&quot;job&quot;:&quot;QA&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;:20000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;8&quot; } }
+{ &quot;name&quot; : &quot;Foster&quot;,&quot;age&quot;:27,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 20000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;9&quot; } }
+{ &quot;name&quot; : &quot;Gregory&quot;,&quot;age&quot;:32,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;:22000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;10&quot; } }
+{ &quot;name&quot; : &quot;Bryant&quot;,&quot;age&quot;:20,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 9000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;11&quot; } }
+{ &quot;name&quot; : &quot;Jenny&quot;,&quot;age&quot;:36,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;:38000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;12&quot; } }
+{ &quot;name&quot; : &quot;Mcdonald&quot;,&quot;age&quot;:31,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 32000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;13&quot; } }
+{ &quot;name&quot; : &quot;Jonthna&quot;,&quot;age&quot;:30,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;:30000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;14&quot; } }
+{ &quot;name&quot; : &quot;Marshall&quot;,&quot;age&quot;:32,&quot;job&quot;:&quot;Javascript Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 25000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;15&quot; } }
+{ &quot;name&quot; : &quot;King&quot;,&quot;age&quot;:33,&quot;job&quot;:&quot;Java Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;:28000 }
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;16&quot; } }
+{ &quot;name&quot; : &quot;Mccarthy&quot;,&quot;age&quot;:21,&quot;job&quot;:&quot;Javascript Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 16000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;17&quot; } }
+{ &quot;name&quot; : &quot;Goodwin&quot;,&quot;age&quot;:25,&quot;job&quot;:&quot;Javascript Programmer&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 16000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;18&quot; } }
+{ &quot;name&quot; : &quot;Catherine&quot;,&quot;age&quot;:29,&quot;job&quot;:&quot;Javascript Programmer&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;: 20000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;19&quot; } }
+{ &quot;name&quot; : &quot;Boone&quot;,&quot;age&quot;:30,&quot;job&quot;:&quot;DBA&quot;,&quot;gender&quot;:&quot;male&quot;,&quot;salary&quot;: 30000}
+{ &quot;index&quot; : {  &quot;_id&quot; : &quot;20&quot; } }
+{ &quot;name&quot; : &quot;Kathy&quot;,&quot;age&quot;:29,&quot;job&quot;:&quot;DBA&quot;,&quot;gender&quot;:&quot;female&quot;,&quot;salary&quot;: 20000}
+</code></pre>
+<p><strong>min</strong> 聚合分析：</p>
+<pre><code class="language-shell"># Metric 聚合，找到最低的工资
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;min_salary&quot;: {
+      &quot;min&quot;: {    # 聚合类型，求最小值
+        &quot;field&quot;:&quot;salary&quot;
+      }
+    }
+  }
+}
+
+# 返回结果
+&quot;hits&quot;: {
+  &quot;total&quot;: {
+    &quot;value&quot;: 20,      # 一共统计了多少条数据
+    &quot;relation&quot;: &quot;eq&quot;
+  },
+  &quot;max_score&quot;: null,
+  &quot;hits&quot;: [...]       # 因为 size 为 0
+},
+&quot;aggregations&quot;: {
+  &quot;min_salary&quot;: {     # 自定义的聚合名称                       
+    &quot;value&quot;: 9000,
+  }
+}
+</code></pre>
+<p><strong>stats</strong> 聚合分析：</p>
+<pre><code class="language-shell"># 输出多值
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;stats_salary&quot;: {
+      &quot;stats&quot;: {      # stats 聚合
+        &quot;field&quot;:&quot;salary&quot;
+      }
+    }
+  }
+}
+
+# 返回多值结果
+&quot;aggregations&quot;: {
+  &quot;stats_salary&quot;: {  # 自定义的聚合名称                       
+     &quot;count&quot;: 20,
+     &quot;min&quot;: 9000,
+     &quot;max&quot;: 50000,
+     &quot;avg&quot;: 24700,
+     &quot;sum&quot;: 494000
+  }
+}
+</code></pre>
+<h4 id="22top_hits-示例">2.2，top_hits 示例</h4>
+<pre><code class="language-shell"># 指定 size，不同岗位中，年纪最大的3个员工的信息
+POST employees/_search
+{
+    &quot;size&quot;: 0,
+	&quot;aggs&quot;:{  
+       &quot;old_employee&quot;:{  # 聚合名称
+          &quot;top_hits&quot;:{    # top_hits 分桶
+            &quot;size&quot;:3,
+            &quot;sort&quot;:[      # 根据 age 倒序排序，选前 3 个
+              {&quot;age&quot;:{&quot;order&quot;:&quot;desc&quot;}}
+            ]
+          }
+        }
+    }
+}
+</code></pre>
+<h3 id="3bucket-聚合">3，Bucket 聚合</h3>
+<p>Bucket 聚合按照一定的规则，将文档分配到不同的<strong>桶</strong>中，达到分类的目的。</p>
+<p>Bucket 聚合<strong>支持嵌套</strong>，也就是在桶里再次分桶。</p>
+<p>Bucket 聚合算法：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-terms-aggregation.html">Terms</a>：根据关键字（字符串）分桶。<strong>text</strong> 类型的字段需要打开 <strong>fielddata</strong> 配置。
+<ul>
+<li>注意 keyword 类型不会做分词处理，text 类型会做分词处理。</li>
+<li>另外 <strong>size 参数</strong>可以控制<strong>桶的数量</strong>。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-range-aggregation.html">Range</a>：按照范围进行分桶，主要针对<strong>数字类型的数据</strong>。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-daterange-aggregation.html">Date range</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-histogram-aggregation.html">Histogram</a>：直方图分桶，指定一个间隔值，来进行分桶。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-datehistogram-aggregation.html">Date histogram</a></li>
+<li>等</li>
+</ul>
+<h4 id="31terms-示例">3.1，Terms 示例</h4>
+<p>示例：</p>
+<pre><code class="language-shell"># 对 keword 进行聚合
+POST employees/_search
+{
+  &quot;size&quot;: 0,      # size 为 0
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {     # 自定义聚合名称
+      &quot;terms&quot;: {  # terms 聚合
+        &quot;field&quot;:&quot;job.keyword&quot; # job 字段的 keyword 子字段
+      }
+    }
+  }
+}
+
+# 返回值结构示例
+&quot;aggregations&quot;: {
+  &quot;genres&quot;: {
+    &quot;doc_count_error_upper_bound&quot;: 0,   
+    &quot;sum_other_doc_count&quot;: 0,           
+    &quot;buckets&quot;: [     # 很多桶，这是一个数组                    
+      {
+        &quot;key&quot;: &quot;electronic&quot;,
+        &quot;doc_count&quot;: 6
+      },
+      {
+        &quot;key&quot;: &quot;rock&quot;,
+        &quot;doc_count&quot;: 3
+      },
+      {
+        &quot;key&quot;: &quot;jazz&quot;,
+        &quot;doc_count&quot;: 2
+      }
+    ]
+  }
+}
+</code></pre>
+<p>对 Text 字段进行 terms 聚合查询会出错，示例：</p>
+<pre><code class="language-shell"># 对 Text 字段进行 terms 聚合查询
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {
+      &quot;terms&quot;: {
+        &quot;field&quot;:&quot;job&quot;  # job 是 text 类型
+      }
+    }
+  }
+}
+
+# 对 Text 字段打开 fielddata，以支持 terms aggregation
+PUT employees/_mapping
+{
+  &quot;properties&quot; : {
+    &quot;job&quot;:{
+       &quot;type&quot;:     &quot;text&quot;,
+       &quot;fielddata&quot;: true  # 打开 fielddata
+    }
+  }
+}
+</code></pre>
+<h4 id="32terms-性能优化">3.2，Terms 性能优化</h4>
+<p>当某个字段的<strong>写入和 Terms 聚合</strong>比较频繁的时候，可用通过打开 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/tune-for-search-speed.html#_warm_up_global_ordinals">eager_global_ordinals</a> 配置来对 Terms 操作进行优化。</p>
+<p>示例：</p>
+<pre><code class="language-shell">PUT index_name
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;foo&quot;: {  # 字段名称
+        &quot;type&quot;: &quot;keyword&quot;,
+        &quot;eager_global_ordinals&quot;: true # 打开
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="33嵌套聚合示例">3.3，嵌套聚合示例</h4>
+<p>Bucket 聚合支持添加<strong>子聚合</strong>来进一步分析，子聚合可以是一个 <strong>Metrics</strong> 或者 <strong>Bucket</strong>。</p>
+<p>示例 1：</p>
+<pre><code class="language-shell"># 指定 size，不同岗位中，年纪最大的3个员工的信息
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {
+      &quot;terms&quot;: {  # 先做了一个 terms 分桶
+        &quot;field&quot;:&quot;job.keyword&quot;
+      },
+      &quot;aggs&quot;:{   # 嵌套一个聚合，称为子聚合，
+        &quot;old_employee&quot;:{  # 聚合名称
+          &quot;top_hits&quot;:{    # top_hits 分桶
+            &quot;size&quot;:3,
+            &quot;sort&quot;:[      # 根据 age 倒序排序，选前 3 个
+              {&quot;age&quot;:{&quot;order&quot;:&quot;desc&quot;}}
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>示例 2 ：</p>
+<pre><code class="language-shell">POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;Job_salary_stats&quot;: {
+      &quot;terms&quot;: {     # 先做了一个 terms 分桶
+        &quot;field&quot;: &quot;job.keyword&quot;
+      },
+      &quot;aggs&quot;: {
+        &quot;salary&quot;: {
+          &quot;stats&quot;: { # 子聚合是一个 stats 
+            &quot;field&quot;: &quot;salary&quot;
+          }
+        }
+      }
+    }
+  }
+}
+
+# 多次嵌套
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {          # 第 1 层
+    &quot;Job_gender_stats&quot;: {
+      &quot;terms&quot;: {
+        &quot;field&quot;: &quot;job.keyword&quot;  # 先根据岗位分桶
+      },
+      &quot;aggs&quot;: {     # 第 2 层
+        &quot;gender_stats&quot;: {
+          &quot;terms&quot;: {
+            &quot;field&quot;: &quot;gender&quot;   # 再根据性别分桶
+          },
+          &quot;aggs&quot;: { # 第 3 层
+            &quot;salary_stats&quot;: {
+              &quot;stats&quot;: {        # 最后根据工资统计 stats
+                &quot;field&quot;: &quot;salary&quot;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="34range-示例">3.4，Range 示例</h4>
+<p>对员工的工资进行区间聚合：</p>
+<pre><code class="language-shell"># Salary Ranges 分桶，可以自己定义 key
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;salary_range&quot;: {     # 自定义聚合名称
+      &quot;range&quot;: {          # range 聚合
+        &quot;field&quot;:&quot;salary&quot;, # 聚合的字段
+        &quot;ranges&quot;:[        # range 聚合规则/条件
+          {
+            &quot;to&quot;:10000    # salary &lt; 10000
+          },
+          {
+            &quot;from&quot;:10000, # 10000 &lt; salary &lt; 20000
+            &quot;to&quot;:20000
+          },
+          {               # 如果没有定义 key，ES 会自动生成
+            &quot;key&quot;:&quot;可以使用 key 自定义名称&quot;, 
+            &quot;from&quot;:20000  # salary &gt; 20000
+          }
+        ]
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="35histogram-示例">3.5，Histogram 示例</h4>
+<p>示例，工资0到10万，以 <strong>5000一个区间</strong>进行分桶：</p>
+<pre><code class="language-shell"># Salary Histogram
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;salary_histrogram&quot;: {   # 自定义聚合名称
+      &quot;histogram&quot;: {         # histogram 聚合
+        &quot;field&quot;:&quot;salary&quot;,    # 聚合的字段
+        &quot;interval&quot;:5000,     # 区间值
+        &quot;extended_bounds&quot;:{  # 范围
+          &quot;min&quot;:0,
+          &quot;max&quot;:100000
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="4pipeline-聚合">4，Pipeline 聚合</h3>
+<p>Pipeline 聚合用于对其它聚合的结果进行再聚合。</p>
+<p>根据 <strong>Pipeline 聚合</strong>与<strong>原聚合</strong>的位置区别，分为两类：</p>
+<ul>
+<li><strong>Pipeline 聚合</strong>与<strong>原聚合</strong>同级，称为 <strong>Sibling 聚合</strong>
+<ul>
+<li><code>Max_bucket</code>，<code>Min_bucket</code>，<code>Avg_bucket</code>，<code>Sum_bucket</code></li>
+<li><code>Stats_bucket</code>，<code>Extended-Status_bucket</code></li>
+<li><code>Percentiles_bucket</code></li>
+</ul>
+</li>
+<li><strong>Pipeline 聚合</strong>内嵌在<strong>原聚合</strong>之内，称为 <strong>Parent 聚合</strong>
+<ul>
+<li><code>Derivative</code>：求导</li>
+<li><code>Cumulative-sum</code>：累计求和</li>
+<li><code>Moving-function</code>：滑动窗口</li>
+</ul>
+</li>
+</ul>
+<h4 id="41sibling-聚合示例">4.1，Sibling 聚合示例</h4>
+<p>示例：</p>
+<pre><code class="language-shell"># 平均工资最低的工作类型
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {             # 自定义聚合名称
+      &quot;terms&quot;: {
+        &quot;field&quot;: &quot;job.keyword&quot;,  # 先对岗位类型进行分桶
+        &quot;size&quot;: 10
+      },
+      &quot;aggs&quot;: {
+        &quot;avg_salary&quot;: {
+          &quot;avg&quot;: {
+            &quot;field&quot;: &quot;salary&quot;   # 再计算每种工资岗位的平价值
+          }
+        }
+      }
+    },
+    &quot;min_salary_by_job&quot;:{ # 自定义聚合名称
+      &quot;min_bucket&quot;: {     # pipeline 聚合
+        &quot;buckets_path&quot;: &quot;jobs&gt;avg_salary&quot;
+      }                   # 含义是：对 jobs 中的 avg_salary 进行一个 min_bucket 聚合
+    }
+  }
+}
+</code></pre>
+<h4 id="42parent-聚合示例">4.2，Parent 聚合示例</h4>
+<p>示例：</p>
+<pre><code class="language-shell"># 示例 1
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;age&quot;: {   # 自定义聚合名称
+      &quot;histogram&quot;: {
+        &quot;field&quot;: &quot;age&quot;,
+        &quot;min_doc_count&quot;: 1,
+        &quot;interval&quot;: 1
+      },
+      &quot;aggs&quot;: {
+        &quot;avg_salary&quot;: { # 自定义聚合名称
+          &quot;avg&quot;: {
+            &quot;field&quot;: &quot;salary&quot;
+          }
+        },              # 自定义聚合名称
+        &quot;derivative_avg_salary&quot;:{ # 注意 derivative 聚合的位置，与 avg_salary 同级
+          &quot;derivative&quot;: {         # 而不是与 age 同级
+            &quot;buckets_path&quot;: &quot;avg_salary&quot; # 注意这里不再有箭头 &gt; 
+          }
+        }
+      }
+    }
+  }
+}
+
+# 示例 2
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;age&quot;: {
+      &quot;histogram&quot;: {
+        &quot;field&quot;: &quot;age&quot;,
+        &quot;min_doc_count&quot;: 1,
+        &quot;interval&quot;: 1
+      },
+      &quot;aggs&quot;: {
+        &quot;avg_salary&quot;: {
+          &quot;avg&quot;: {
+            &quot;field&quot;: &quot;salary&quot;
+          }
+        },
+        &quot;cumulative_salary&quot;:{
+          &quot;cumulative_sum&quot;: { # 累计求和
+            &quot;buckets_path&quot;: &quot;avg_salary&quot;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="5聚合的作用范围">5，聚合的作用范围</h3>
+<p>ES 聚合的默认作用范围是 Query 的查询结果，如果没有写 Query，那默认就是在索引的所有数据上做聚合。</p>
+<p>比如：</p>
+<pre><code class="language-shell">POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;query&quot;: {    # 在 query 的结果之上做聚合
+    &quot;range&quot;: {
+      &quot;age&quot;: {&quot;gte&quot;: 20}
+    }
+  },
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {
+      &quot;terms&quot;: {&quot;field&quot;:&quot;job.keyword&quot;}
+    }
+  }
+}
+</code></pre>
+<p>ES 支持通过以下方式来改变聚合的作用范围：</p>
+<ul>
+<li>Query：ES 聚合的默认作用范围。
+<ul>
+<li><strong>一般设置 size 为 0</strong>。</li>
+<li>如果没有写 Query，那默认就是在索引的所有数据上做聚合。</li>
+</ul>
+</li>
+<li>Filter：写在某个聚合的内部，只控制某个聚合的作用范围。
+<ul>
+<li><strong>一般设置 size 为 0</strong>。</li>
+</ul>
+</li>
+<li>Post Filter：对聚合没有影响，只是对聚合的结果进行再过滤。
+<ul>
+<li><strong>不再设置 size 为 0</strong>。</li>
+<li><strong>使用场景</strong>：获取聚合信息，并获取符合条件的文档。</li>
+</ul>
+</li>
+<li>Global：会覆盖掉 Query 的影响。</li>
+</ul>
+<h4 id="51filter-示例">5.1，Filter 示例</h4>
+<p>示例：</p>
+<pre><code class="language-shell">POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;older_person&quot;: {  # 自定义聚合名称
+      &quot;filter&quot;:{       # 通过 filter 改变聚合的作用范围
+        &quot;range&quot;:{
+          &quot;age&quot;:{&quot;from&quot;:35}
+        }
+      }, # end older_person
+      &quot;aggs&quot;:{         # 在 filter 的结果之上做聚合
+         &quot;jobs&quot;:{      # 自定义聚合名称
+           &quot;terms&quot;: {&quot;field&quot;:&quot;job.keyword&quot;}
+         }
+       }
+    }, # end older_person
+    &quot;all_jobs&quot;: {     # 又一个聚合，没有 filter
+      &quot;terms&quot;: {&quot;field&quot;:&quot;job.keyword&quot;}
+    }
+  }
+}
+</code></pre>
+<h4 id="52post-filter-示例">5.2，Post Filter 示例</h4>
+<p>示例：</p>
+<pre><code class="language-shell">POST employees/_search
+{
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {       # 自定义聚合名称
+      &quot;terms&quot;: {&quot;field&quot;: &quot;job.keyword&quot;}
+    }
+  }, # end aggs
+  &quot;post_filter&quot;: {  # 一个 post_filter，对聚合的结果进行过滤
+    &quot;match&quot;: {
+      &quot;job.keyword&quot;: &quot;Dev Manager&quot;
+    }
+  }
+}
+</code></pre>
+<h4 id="53global-示例">5.3，Global 示例</h4>
+<pre><code class="language-shell">POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;query&quot;: {    # 一个 query
+    &quot;range&quot;: {
+      &quot;age&quot;: {&quot;gte&quot;: 40}
+    }
+  },
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {   # 一个聚合
+      &quot;terms&quot;: {&quot;field&quot;:&quot;job.keyword&quot;}
+    },
+    &quot;all&quot;:{            # 又一个聚合，名称为 all
+      &quot;global&quot;:{},     # 这里的 global 会覆盖掉上面的 query，使得聚合 all 的作用范围不受 query 的影响
+      &quot;aggs&quot;:{         # 子聚合
+        &quot;salary_avg&quot;:{ # 自定义聚合名称
+          &quot;avg&quot;:{&quot;field&quot;:&quot;salary&quot;}
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="6聚合中的排序">6，聚合中的排序</h3>
+<h4 id="61基于-count-的排序">6.1，基于 count 的排序</h4>
+<p>聚合中的排序使用 <strong>order</strong> 字段，默认按照 <strong>_count</strong> 和 <strong>_key</strong> 进行排序。</p>
+<ul>
+<li><code>_count</code>：表示按照文档数排序，如果不指定 <strong>_count</strong>，默认按照<strong>降序</strong>进行排序。</li>
+<li><code>_key</code>：表示关键字（字符串值），如果文档数相同，再按照 <strong>key</strong> 进行排序。</li>
+</ul>
+<p>示例 1：</p>
+<pre><code class="language-shell"># 使用 count 和 key
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;age&quot;: {&quot;gte&quot;: 20}
+    }
+  },
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {               # 自定义聚合名称
+      &quot;terms&quot;: {            # terms 聚合
+        &quot;field&quot;:&quot;job.keyword&quot;,
+        &quot;order&quot;:[           # order 排序
+          {&quot;_count&quot;:&quot;asc&quot;}, # 先安装文档数排序
+          {&quot;_key&quot;:&quot;desc&quot;}   # 如果文档数相同，再按照 key 排序
+        ]
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="62基于子聚合的排序">6.2，基于子聚合的排序</h4>
+<p>也可以基于子聚合排序。</p>
+<p>示例 2：</p>
+<pre><code class="language-shell"># 先对工作种类进行分桶
+# 再以工作种类的平均工资进行排序
+POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {      # 自定义聚合名称
+      &quot;terms&quot;: {
+        &quot;field&quot;:&quot;job.keyword&quot;,
+        &quot;order&quot;:[  # 基于子聚合的排序
+             {&quot;avg_salary&quot;:&quot;desc&quot;}
+           ]                
+       }, # end terms
+    &quot;aggs&quot;: {         # 子聚合
+      &quot;avg_salary&quot;: { # 子聚合名称
+        &quot;avg&quot;: {&quot;field&quot;:&quot;salary&quot;}
+       }
+      }
+    } # end jobs
+  }
+}
+</code></pre>
+<p>如果子聚合是<strong>多值输出</strong>，也可以基于 <code>子聚合名.属性</code> 来进行排序，如下：</p>
+<pre><code class="language-shell">POST employees/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;jobs&quot;: {
+      &quot;terms&quot;: {
+        &quot;field&quot;:&quot;job.keyword&quot;,
+        &quot;order&quot;:[  # 基于子聚合的属性排序
+            {&quot;stats_salary.min&quot;:&quot;desc&quot;}
+         ]
+     }, # end terms
+    &quot;aggs&quot;: {
+      &quot;stats_salary&quot;: { # 子聚合是多值输出
+        &quot;stats&quot;: {&quot;field&quot;:&quot;salary&quot;}
+        }
+      }
+    } # end jobs
+  }
+}
+</code></pre>
+<h3 id="7聚合分析的原理及精准度">7，聚合分析的原理及精准度</h3>
+<p>下面介绍聚合分析的原理及精准度的问题。</p>
+<h4 id="71分布式系统的三个概念">7.1，分布式系统的三个概念</h4>
+<p>分布式系统中有三个概念：</p>
+<ul>
+<li>数据量</li>
+<li>精准度</li>
+<li>实时性</li>
+</ul>
+<p>对于分布式系统（数据分布在<strong>不同的分片</strong>上），这三个指标不能同时具备，<strong>同时只能满足其中的 2 个条件</strong>：</p>
+<ul>
+<li><strong>Hadoop 离线计算</strong>：可以同时满足<strong>大数据量和精准度</strong>。</li>
+<li><strong>近似计算</strong>：可以同时满足<strong>大数据量和实时性</strong>。</li>
+<li><strong>有限数据计算</strong>：可以同时满足<strong>精准度和实时性</strong>。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210122165649712.png" alt="在这里插入图片描述"></p>
+<p>ES 属于<strong>近似计算</strong>，具备了<strong>数据量</strong>和<strong>实时性</strong>的特点，失去了<strong>精准度</strong>。</p>
+<h4 id="72聚合分析的原理">7.2，聚合分析的原理</h4>
+<p>ES 是一个分布式系统，数据分布在不同的分片上。</p>
+<p>因此，ES 在进行聚合分析时，会先在每个<strong>主分片</strong>上做聚合，然后再将每个主分片上的聚合结果进行<strong>汇总</strong>，从而得到最终的聚合结果。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210122180646970.png" alt="在这里插入图片描述"></p>
+<h4 id="73聚合分析的精准度">7.3，聚合分析的精准度</h4>
+<p>分布式聚合的原理，会天生带来精准度的问题，但并不是所有的聚合分析都有精准度问题：</p>
+<ul>
+<li>比如  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-metrics-min-aggregation.html">Min 聚合</a> 就不会有精准度问题。
+<ul>
+<li>因为<strong>求总的最小值</strong>，与<strong>先在所有主分片求最小值，再汇总每个主分片的最小值</strong>，它们最终的结果是一样的。</li>
+</ul>
+</li>
+<li>比如 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/search-aggregations-bucket-terms-aggregation.html">Terms 聚合</a> 就有精准度问题。</li>
+</ul>
+<p>下面来看下 <strong>Terms</strong> 聚合存在的问题，下图中的：</p>
+<ul>
+<li>A(6) 表示 A 类的文档数有 6 个。</li>
+<li>B(4) 表示 B 类的文档数有 4 个。</li>
+<li>C(4) 表示 C 类的文档数有 4 个。</li>
+<li>D(3) 表示 D 类的文档数有 3 个。</li>
+</ul>
+<p>下图是 Terms 聚合流程：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210122182753831.png" alt="在这里插入图片描述"></p>
+<p>上图中，在进行 Terms 聚合时（最终结果只要按照数量排序的前 3 个），需要分别在分片 <strong>P0</strong> 和 <strong>P1</strong>上做聚合，然后再将它们的聚合结果进行汇总。</p>
+<p>正确的聚合结果应该是 <code>A(12)，B(6)，D(6)</code>，但是由于分片的原因，ES 计算出来的结果是 <code>A(12)，B(6)，C(4)</code>。这就是 <strong>Terms</strong> 聚合存在的精准度问题。</p>
+<h4 id="74show_term_doc_count_error-参数">7.4，show_term_doc_count_error 参数</h4>
+<p>打开 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#_per_bucket_document_count_error">show_term_doc_count_error</a> 配置可以使得 terms 聚合的返回结果中有一个 <code>doc_count_error_upper_bound</code> 值（最小为0），通过该值可以了解精准程度；<strong>该值越小，说明 Terms 的精准度越高</strong>。</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;weather&quot;: {  # 自定义聚合名称
+      &quot;terms&quot;: {  # terms 聚合
+        &quot;field&quot;:&quot;OriginWeather&quot;,
+        &quot;show_term_doc_count_error&quot;:true # 打开
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="75如何提高-terms-精准度">7.5，如何提高 terms 精准度</h4>
+<p>提高 <strong>terms</strong> 聚合的精准度有两种方式：</p>
+<ul>
+<li>将主分片数设置为 1。
+<ul>
+<li>因为 terms 的不准确是由于分片导致的，如果将主分片数设置为 1，就不存在不准确的问题。</li>
+<li>这种方式在数据量不是很大的时候，可以是使用。</li>
+</ul>
+</li>
+<li>将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#_shard_size_3">shard_size</a> 的值尽量调大（意味着从分片上额外获取更多的数据，从而提升准确度）。
+<ul>
+<li><strong>shard_size</strong> 值变大后，会使得计算量变大，进而使得ES 的<strong>整体性能变低，精准度变高</strong>。</li>
+<li>所以需要权衡 <strong>shard_size</strong> 值与精准度的平衡。</li>
+<li><strong>shard_size</strong> 值的默认值是 【<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size"><strong>size</strong></a> * <strong>1.5 + 10</strong>】。</li>
+</ul>
+</li>
+</ul>
+<p>设置 <strong>shard_size</strong> 的语法：</p>
+<pre><code class="language-shell">POST my_flights/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;weather&quot;: {
+      &quot;terms&quot;: {
+        &quot;field&quot;:&quot;OriginWeather&quot;,
+        &quot;size&quot;:1,
+        &quot;shard_size&quot;:1,
+        &quot;show_term_doc_count_error&quot;:true
+      }
+    }
+  }
+}
+</code></pre>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-search">ElasticSearch 查询</a></p>
+<p><a href="/2021/02/es-uri-search">ElasticSearch URI 查询</a></p>
+<p><a href="/2021/02/es-dsl-search">ElasticSearch DSL 查询</a></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
+<p><a href="/2021/02/es-search-template-suggest">ElasticSearch 搜索模板与建议</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-search-template-suggest/">
+            <span class="next-text nav-default">ElasticSearch 搜索模板与建议</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-aggregations/" class="leancloud_visitors" data-flag-title="ElasticSearch 聚合分析">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
