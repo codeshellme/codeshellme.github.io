@@ -58,6 +58,24 @@
     </item>
     
     <item>
+      <title>ElasticSearch 数据建模</title>
+      <link>https://codeshellme.github.io/2021/02/es-datatypes/</link>
+      <pubDate>Wed, 24 Feb 2021 22:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-datatypes/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 通常在使用 ES 构建数据模型时，需要考虑以下几点： 字段类型</description>
+    </item>
+    
+    <item>
+      <title>ElasticSearch 中的 Mapping</title>
+      <link>https://codeshellme.github.io/2021/02/es-mappings/</link>
+      <pubDate>Wed, 24 Feb 2021 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-mappings/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 中的 Mapping ES 中的 Mapping 相当于传统数据库中的表定义，它有</description>
+    </item>
+    
+    <item>
       <title>ElasticSearch 聚合分析</title>
       <link>https://codeshellme.github.io/2021/02/es-aggregations/</link>
       <pubDate>Tue, 23 Feb 2021 22:38:52 +0800</pubDate>

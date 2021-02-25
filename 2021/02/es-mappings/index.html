@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 中的 Mapping - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 中的 Mapping ES 中的 Mapping 相当于传统数据库中的表定义，它有" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-mappings/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 中的 Mapping" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 中的 Mapping ES 中的 Mapping 相当于传统数据库中的表定义，它有" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-mappings/" />
+<meta property="article:published_time" content="2021-02-24T22:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-24T22:42:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 中的 Mapping">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 中的 Mapping ES 中的 Mapping 相当于传统数据库中的表定义，它有">
+<meta itemprop="datePublished" content="2021-02-24T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-24T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="5463">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 中的 Mapping"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 中的 Mapping ES 中的 Mapping 相当于传统数据库中的表定义，它有"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 中的 Mapping</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-24 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 5463 字 </span>
+          <span class="more-meta"> 阅读约需 11 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1es-中的-mapping">1，ES 中的 Mapping</a></li>
+        <li><a href="#2es-字段的-mapping-参数">2，ES 字段的 mapping 参数</a></li>
+        <li><a href="#3es-字段的数据类型">3，ES 字段的数据类型</a></li>
+        <li><a href="#4es-动态-mapping">4，ES 动态 Mapping</a></li>
+        <li><a href="#5修改文档字段类型">5，修改文档字段类型</a></li>
+        <li><a href="#6自定义-mapping">6，自定义 Mapping</a></li>
+        <li><a href="#7控制字段是否可被索引">7，控制字段是否可被索引</a></li>
+        <li><a href="#8控制倒排索引项的内容">8，控制倒排索引项的内容</a></li>
+        <li><a href="#9设置-null-值可被搜索">9，设置 null 值可被搜索</a></li>
+        <li><a href="#10索引模板">10，索引模板</a></li>
+        <li><a href="#11动态模板">11，动态模板</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1es-中的-mapping">1，ES 中的 Mapping</h3>
+<p>ES 中的 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping.html">Mapping</a> 相当于传统数据库中的<strong>表定义</strong>，它有以下作用：</p>
+<ul>
+<li>定义索引中的字段的名字。</li>
+<li>定义索引中的字段的类型，比如字符串，数字等。</li>
+<li>定义索引中的字段是否建立倒排索引。</li>
+</ul>
+<p>一个 Mapping 是针对一个索引中的 Type 定义的：</p>
+<ul>
+<li>ES 中的文档都存储在索引的 Type 中</li>
+<li>在 <strong>ES 7.0</strong> 之前，一个索引可以有多个 Type，所以一个索引可拥有多个 Mapping</li>
+<li>在 <strong>ES 7.0</strong> 之后，一个索引只能有一个 Type，所以一个索引只对应一个 Mapping</li>
+</ul>
+<p>通过下面语法可以获取一个索引的 Mapping 信息：</p>
+<pre><code class="language-shell">GET index_name/_mapping
+</code></pre>
+<h3 id="2es-字段的-mapping-参数">2，ES 字段的 mapping 参数</h3>
+<p>字段的 <strong>mapping</strong> 可以设置很多参数，如下：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/analyzer.html">analyzer</a>：指定分词器，只有 <strong>text</strong> 类型的数据支持。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/enabled.html">enabled</a>：如果设置成 <code>false</code>，表示数据仅做存储，不支持搜索和聚合分析（数据保存在 <strong>_source</strong> 中）。
+<ul>
+<li>默认值为 <code>true</code>。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-index.html">index</a>：字段是否建立倒排索引。
+<ul>
+<li>如果设置成 <code>false</code>，表示不建立倒排索引（节省空间），同时数据也<strong>无法被搜索</strong>，但依然<strong>支持聚合分析</strong>，数据也会出现在 <strong>_source</strong> 中。</li>
+<li>默认值为 <code>true</code>。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/norms.html">norms</a>：字段是否支持算分。
+<ul>
+<li>如果字段只用来过滤和聚合分析，而不需要被搜索（计算算分），那么可以设置为 <code>false</code>，可节省空间。</li>
+<li>默认值为 <code>true</code>。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/doc-values.html">doc_values</a>：如果确定不需要对字段进行排序或聚合，也不需要从脚本访问字段值，则可以将其设置为 <code>false</code>，以节省磁盘空间。
+<ul>
+<li>默认值为 <code>true</code>。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/fielddata.html">fielddata</a>：如果要对 <strong>text</strong> 类型的数据进行排序和聚合分析，则将其设置为 <code>true</code>。
+<ul>
+<li>默认为 <code>false</code>。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-store.html">store</a>：默认值为 <code>false</code>，数据存储在 <strong>_source</strong> 中。
+<ul>
+<li>默认情况下，字段值被编入索引以使其可搜索，但<strong>它们不会被存储</strong>。这意味着可以查询字段，但无法检索原始字段值。</li>
+<li>在某些情况下，存储字段是有意义的。例如，有一个带有标题、日期和非常大的内容字段的文档，只想检索标题和日期，而不必从一个大的源字段中提取这些字段。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-boost.html">boost</a>：可增强字段的算分。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/coerce.html">coerce</a>：是否开启数据类型的自动转换，比如字符串转数字。
+<ul>
+<li>默认是开启的。</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/dynamic.html">dynamic</a>：控制 <strong>mapping</strong> 的自动更新，取值有 <code>true</code>，<code>false</code>，<code>strict</code>。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/eager-global-ordinals.html">eager_global_ordinals</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/multi-fields.html">fields</a>：多字段特性。
+<ul>
+<li>让<strong>一个字段</strong>拥有<strong>多个子字段类型</strong>，使得一个字段能够被多个不同的索引方式进行索引。</li>
+</ul>
+</li>
+<li>copy_to</li>
+<li>format</li>
+<li>ignore_above</li>
+<li>ignore_malformed</li>
+<li>index_options</li>
+<li>index_phrases</li>
+<li>index_prefixes</li>
+<li>meta</li>
+<li>normalizer</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/null-value.html">null_value</a>：定义 <code>null</code> 的值。</li>
+<li>position_increment_gap</li>
+<li>properties</li>
+<li>search_analyzer</li>
+<li>similarity</li>
+<li>term_vector</li>
+</ul>
+<h4 id="21fields-参数">2.1，fields 参数</h4>
+<p>让<strong>一个字段</strong>拥有<strong>多个子字段类型</strong>，使得一个字段能够被多个不同的索引方式进行索引。</p>
+<p>示例 1：</p>
+<pre><code class="language-shell">PUT index_name
+{
+  &quot;mappings&quot;: {         # 设置 mappings
+    &quot;properties&quot;: {     # 属性，固定写法
+      &quot;city&quot;: {         # 字段名
+        &quot;type&quot;: &quot;text&quot;, # city 字段的类型为 text
+        &quot;fields&quot;: {     # 多字段域，固定写法
+          &quot;raw&quot;: {      # 子字段名称
+            &quot;type&quot;:  &quot;keyword&quot;  # 子字段类型
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>示例 2 ：</p>
+<pre><code class="language-shell">PUT index_name
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;title&quot;: {               # 字段名称
+        &quot;type&quot;: &quot;text&quot;,        # 字段类型
+        &quot;analyzer&quot;: &quot;english&quot;, # 字段分词器
+        &quot;fields&quot;: {            # 多字段域，固定写法
+          &quot;std&quot;: {             # 子字段名称
+            &quot;type&quot;: &quot;text&quot;,    # 子字段类型
+            &quot;analyzer&quot;: &quot;standard&quot;  # 子字段分词器
+           }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="3es-字段的数据类型">3，ES 字段的数据类型</h3>
+<p>ES 中字段的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-types.html">数据类型</a>有以下这些：</p>
+<ul>
+<li>简单类型
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/number.html">Numeric</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/boolean.html">Boolean</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/date.html">Date</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/text.html">Text</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/keyword.html">Keyword</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/binary.html">Binary</a></li>
+<li>等</li>
+</ul>
+</li>
+<li>复杂类型
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/object.html">Object</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/array.html">Arrays</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/nested.html">Nested</a>：一种对象数据类型。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/parent-join.html">Join</a>：为同一索引中的文档定义父/子关系。</li>
+</ul>
+</li>
+<li>特殊类型
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/geo-point.html">Geo-point</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/geo-shape.html">Geo-shape</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/percolator.html">Percolator</a></li>
+</ul>
+</li>
+</ul>
+<p><em><strong>text 类型与 keyword 类型</strong></em></p>
+<p>字符串数据可以定义成 <strong>text</strong> 或 <strong>keyword</strong> 类型，<strong>text</strong> 类型数据会做<strong>分词处理</strong>，而 <strong>keyword</strong> 类型数据不会做分词处理。</p>
+<p><em><strong>数组类型</strong></em></p>
+<p>对于数组类型 <strong>Arrays</strong>，ES 并没有提供专门的数组类型，但是<strong>任何字段</strong>都可以包含多个<strong>相同类型</strong>的数据，比如：</p>
+<pre><code class="language-shell">[&quot;one&quot;, &quot;two&quot;] # 一个字符串数组
+[1, 2]         # 一个整数数组
+[1, [ 2, 3 ]]   # 相当于 [ 1, 2, 3 ]
+[{ &quot;name&quot;: &quot;Mary&quot;, &quot;age&quot;: 12 }, { &quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 10 }] # 一个对象数组
+</code></pre>
+<p>当在 Mapping 中查看这些数组的类型时，其实<strong>还是数组中的元素的类型，而不是一个数组类型</strong>。</p>
+<h4 id="31nested-类型">3.1，Nested 类型</h4>
+<p><strong>Nested</strong> 是一种对象类型，它保留了子字段之间的关系。</p>
+<h5 id="1为什么需要-nested-类型">1，为什么需要 Nested 类型</h5>
+<p>假如我们有如下结构的数据：</p>
+<pre><code class="language-shell">POST my_movies/_doc/1
+{
+  &quot;title&quot;:&quot;Speed&quot;,
+  &quot;actors&quot;:[ # actors 是一个数组类型，数组中的元素是对象类型
+    {
+      &quot;first_name&quot;:&quot;Keanu&quot;,
+      &quot;last_name&quot;:&quot;Reeves&quot;
+    },
+    {
+      &quot;first_name&quot;:&quot;Dennis&quot;,
+      &quot;last_name&quot;:&quot;Hopper&quot;
+    }
+  ]
+}
+</code></pre>
+<p>将数据插入 ES 之后，执行下面的查询：</p>
+<pre><code class="language-shell"># 查询电影信息
+POST my_movies/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        {&quot;match&quot;: {&quot;actors.first_name&quot;: &quot;Keanu&quot;}},
+        {&quot;match&quot;: {&quot;actors.last_name&quot;: &quot;Hopper&quot;}}
+      ]
+    }
+  }
+}
+</code></pre>
+<p>按照上面的查询语句，我们想查询的是 <code>first_name=Keanu</code> 且 <code>last_name=Hopper</code> 的数据，所以我们刚才插入的 <strong>id</strong> 为 1 的文档应该不符合这个查询条件。</p>
+<p>但是在 ES 中执行上面的查询语句，却能查出 <strong>id</strong> 为 1 的文档。这是为什么呢？</p>
+<p>这是因为，ES 对于这种 <strong>actors</strong> 字段这样的结构的数据，ES 并没有考虑<strong>对象的边界</strong>。</p>
+<p>实际上，在 ES 内部，<strong>id</strong> 为 1 的那个文档是这样存储的：</p>
+<pre><code class="language-shell">&quot;title&quot;:&quot;Speed&quot;
+&quot;actors.first_name&quot;:[&quot;Keanu&quot;,&quot;Dennis&quot;]
+&quot;actors.last_name&quot;:[&quot;Reeves&quot;,&quot;Hopper&quot;]
+</code></pre>
+<p>所以这种存储方式，并不是我们想象的那样。</p>
+<p>如果我们查看 ES 默认为上面（id 为 1）结构的数据生成的 mappings，如下：</p>
+<pre><code class="language-shell">{
+  &quot;my_movies&quot; : {
+    &quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;actors&quot; : {           # actors 内部又嵌套了一个 properties
+          &quot;properties&quot; : {
+            &quot;first_name&quot; : {   # 定义 first_name 的类型
+              &quot;type&quot; : &quot;text&quot;,
+              &quot;fields&quot; : {
+                &quot;keyword&quot; : {&quot;type&quot; : &quot;keyword&quot;, &quot;ignore_above&quot; : 256}
+              }
+            },
+            &quot;last_name&quot; : {    # 定义 last_name 的类型
+              &quot;type&quot; : &quot;text&quot;,
+              &quot;fields&quot; : {
+                &quot;keyword&quot; : {&quot;type&quot; : &quot;keyword&quot;, &quot;ignore_above&quot; : 256}
+              }
+            }
+          }
+        }, # end actors
+        &quot;title&quot; : {  
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fields&quot; : {
+            &quot;keyword&quot; : {&quot;type&quot; : &quot;keyword&quot;, &quot;ignore_above&quot; : 256}
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>那如何才能真正的表达一个对象类型呢？这就需要使用到 <strong>Nested</strong> 类型。</p>
+<h5 id="2使用-nested-类型">2，使用 Nested 类型</h5>
+<p><strong>Nested</strong> 类型允许对象数组中的对象被独立（看作一个整体）索引。</p>
+<p>我们对 <strong>my_movies</strong> 索引设置这样的 <strong>mappings</strong>：</p>
+<pre><code class="language-shell">DELETE my_movies
+PUT my_movies
+{
+    &quot;mappings&quot; : {
+    &quot;properties&quot; : {
+      &quot;actors&quot; : {
+        &quot;type&quot;: &quot;nested&quot;,  # 将 actors 设置为 nested 类型
+        &quot;properties&quot; : {   # 这时 actors 数组中的每个对象就是一个整体了
+          &quot;first_name&quot; : {&quot;type&quot; : &quot;keyword&quot;},
+          &quot;last_name&quot; : {&quot;type&quot; : &quot;keyword&quot;}
+        }},
+      &quot;title&quot; : {
+        &quot;type&quot; : &quot;text&quot;,
+        &quot;fields&quot; : {&quot;keyword&quot;:{&quot;type&quot;:&quot;keyword&quot;,&quot;ignore_above&quot;:256}}
+      }
+    }
+  }
+}
+</code></pre>
+<p>写入数据后，在进行这样的搜索，就不会搜索出数据了：</p>
+<pre><code class="language-shell"># 查询电影信息
+POST my_movies/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        {&quot;match&quot;: {&quot;actors.first_name&quot;: &quot;Keanu&quot;}},
+        {&quot;match&quot;: {&quot;actors.last_name&quot;: &quot;Hopper&quot;}}
+      ]
+    }
+  }
+}
+</code></pre>
+<p>但是这样的查询也查不出数据：</p>
+<pre><code class="language-shell">POST my_movies/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        {&quot;match&quot;: {&quot;actors.first_name&quot;: &quot;Keanu&quot;}},
+        {&quot;match&quot;: {&quot;actors.last_name&quot;: &quot;Reeves&quot;}}
+      ]
+    }
+  }
+}
+</code></pre>
+<h5 id="3搜索-nested-类型">3，搜索 Nested 类型</h5>
+<p>这是因为，查询 Nested 类型的数据，要像下面这样查询：</p>
+<pre><code class="language-shell">POST my_movies/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        {
+          &quot;nested&quot;: {          # nested 查询
+            &quot;path&quot;: &quot;actors&quot;,  # 自定 actors 字段路径
+            &quot;query&quot;: {         # 查询语句
+              &quot;bool&quot;: {
+                &quot;must&quot;: [
+                  {&quot;match&quot;: {&quot;actors.first_name&quot;: &quot;Keanu&quot;}},
+                  {&quot;match&quot;: {&quot;actors.last_name&quot;: &quot;Hopper&quot;}}
+                ]
+              }
+            }
+          } # end nested
+        }
+      ] # end must
+    } # end bool
+  }
+}
+</code></pre>
+<h5 id="4聚合-nested-类型">4，聚合 Nested 类型</h5>
+<p>对 Nested 类型的数据进行聚合，示例：</p>
+<pre><code class="language-shell"># Nested Aggregation
+POST my_movies/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;actors&quot;: {            # 自定义聚合名称
+      &quot;nested&quot;: {          # 指定 nested 类型
+        &quot;path&quot;: &quot;actors&quot;   # 聚合的字段名称
+      },
+      &quot;aggs&quot;: {            # 子聚合
+        &quot;actor_name&quot;: {    # 自定义子聚合名称
+          &quot;terms&quot;: {       # terms 聚合
+            &quot;field&quot;: &quot;actors.first_name&quot;,  # 子字段名称
+            &quot;size&quot;: 10
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>使用普通的聚合方式则<strong>无法工作</strong>：</p>
+<pre><code class="language-shell">POST my_movies/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;actors&quot;: {     # 自定义聚合名称
+      &quot;terms&quot;: {    # terms 聚合 
+        &quot;field&quot;: &quot;actors.first_name&quot;,
+        &quot;size&quot;: 10
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="32join-类型">3.2，Join 类型</h4>
+<p><strong>Nested</strong> 类型的对象与<strong>其父/子级文档</strong>的关系，使得每次文档有更新的时候需要重建<strong>整个文档</strong>（包括根对象和嵌套对象）的索引。</p>
+<p><strong>Join</strong> 数据类型（类似关系型数据库中的 Join 操作）为同一索引中的文档定义父/子关系。</p>
+<p>Join 数据类型可以维护一个父/子关系，从而分离两个对象，它的优点是：</p>
+<ul>
+<li>父文档和子文档是两个完全独立的文档，这使得更新父文档不会影响到子文档，更新子文档也不会影响到父文档。</li>
+</ul>
+<p><strong>Nested</strong> 类型与 <strong>Join</strong>（Parent/Child） 类型的<strong>优缺点对比</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210123114200494.png" alt="在这里插入图片描述"></p>
+<h5 id="1定义-join-类型">1，定义 Join 类型</h5>
+<p>定义 Join 类型的语法如下：</p>
+<pre><code class="language-shell">DELETE my_blogs
+
+# 设定 Parent/Child Mapping
+PUT my_blogs
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;blog_comments_relation&quot;: {  # 字段名称
+        &quot;type&quot;: &quot;join&quot;,            # 定义 join 类型
+        &quot;relations&quot;: {             # 定义父子关系
+          &quot;blog&quot;: &quot;comment&quot;        # blog 表示父级文档，comment 表示子级文档
+        }
+      },
+      &quot;content&quot;: {
+        &quot;type&quot;: &quot;text&quot;
+      },
+      &quot;title&quot;: {
+        &quot;type&quot;: &quot;keyword&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<h5 id="2插入-join-数据">2，插入 Join 数据</h5>
+<p>先插入两个父文档：</p>
+<pre><code class="language-shell"># 插入 blog1
+PUT my_blogs/_doc/blog1
+{
+  &quot;title&quot;:&quot;Learning Elasticsearch&quot;,
+  &quot;content&quot;:&quot;learning ELK @ geektime&quot;,
+  &quot;blog_comments_relation&quot;:{
+    &quot;name&quot;:&quot;blog&quot;  # name 为 blog 表示父文档
+  }
+}
+
+# 插入 blog2
+PUT my_blogs/_doc/blog2
+{
+  &quot;title&quot;:&quot;Learning Hadoop&quot;,
+  &quot;content&quot;:&quot;learning Hadoop&quot;,
+    &quot;blog_comments_relation&quot;:{
+    &quot;name&quot;:&quot;blog&quot; # name 为 blog 表示父文档
+  }
+}
+</code></pre>
+<p>插入子文档：</p>
+<ul>
+<li>其中需要注意 <strong>routing 的值是父文档 id</strong>；</li>
+<li>这样可以<strong>确保父子文档被索引到相同的分片</strong>，从而<strong>确保 join 查询的性能</strong>。</li>
+</ul>
+<pre><code class="language-shell"># 插入comment1
+PUT my_blogs/_doc/comment1?routing=blog1 # routing 的值是父文档 id
+{                                        # 确保父子文档被索引到相同的分片
+  &quot;comment&quot;:&quot;I am learning ELK&quot;,
+  &quot;username&quot;:&quot;Jack&quot;,
+  &quot;blog_comments_relation&quot;:{
+    &quot;name&quot;:&quot;comment&quot;,  # name 为 comment 表示子文档
+    &quot;parent&quot;:&quot;blog1&quot;   # 指定父文档的 id，表示子文档属于哪个父文档
+  }
+}
+
+# 插入 comment2
+PUT my_blogs/_doc/comment2?routing=blog2 # routing 的值是父文档 id
+{                                        # 确保父子文档被索引到相同的分片
+  &quot;comment&quot;:&quot;I like Hadoop!!!!!&quot;,
+  &quot;username&quot;:&quot;Jack&quot;,
+  &quot;blog_comments_relation&quot;:{
+    &quot;name&quot;:&quot;comment&quot;, # name 为 comment 表示子文档
+    &quot;parent&quot;:&quot;blog2&quot;  # 指定父文档的 id，表示子文档属于哪个父文档
+  }
+}
+
+# 插入 comment3
+PUT my_blogs/_doc/comment3?routing=blog2 # routing 的值是父文档 id
+{                                        # 确保父子文档被索引到相同的分片
+  &quot;comment&quot;:&quot;Hello Hadoop&quot;,
+  &quot;username&quot;:&quot;Bob&quot;,
+  &quot;blog_comments_relation&quot;:{
+    &quot;name&quot;:&quot;comment&quot;, # name 为 comment 表示子文档
+    &quot;parent&quot;:&quot;blog2&quot;  # 指定父文档的 id，表示子文档属于哪个父文档
+  }
+}
+</code></pre>
+<h5 id="3parent_id-查询">3，parent_id 查询</h5>
+<p>根据父文档 id 来查询父文档，<strong>普通的查询</strong>无法查出子文档的信息：</p>
+<pre><code class="language-shell">GET my_blogs/_doc/blog2
+</code></pre>
+<p>如果想查到子文档的信息，需要使用 <strong>parent_id</strong> 查询：</p>
+<pre><code class="language-shell">POST my_blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;parent_id&quot;: {        # parent_id 查询
+      &quot;type&quot;: &quot;comment&quot;,  # comment 表示是子文档，即是表示想查询子文档信息
+      &quot;id&quot;: &quot;blog2&quot;       # 指定父文档的 id
+    }                     # 这样可以查询到 blog2 的所有 comment
+  }
+}
+</code></pre>
+<h5 id="4has_child-查询">4，has_child 查询</h5>
+<p><strong>has_child</strong> 查询可以<strong>通过子文档的信息，查到父文档信息</strong>。</p>
+<pre><code class="language-shell">POST my_blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;has_child&quot;: {       # has_child 查询
+      &quot;type&quot;: &quot;comment&quot;, # 指定子文档类型，表示下面的 query 中的信息要在 comment 子文档中匹配
+      &quot;query&quot; : {        
+          &quot;match&quot;: {&quot;username&quot; : &quot;Jack&quot;}
+      }                  # 在子文档中匹配信息，最终返回所有的相关父文档信息
+    }
+  }
+}
+</code></pre>
+<h5 id="5has_parent-查询">5，has_parent 查询</h5>
+<p><strong>has_parent</strong> 查询可以<strong>通过父文档的信息，查到子文档信息</strong>。</p>
+<pre><code class="language-shell">POST my_blogs/_search
+{
+  &quot;query&quot;: {
+    &quot;has_parent&quot;: {          # has_parent 查询
+      &quot;parent_type&quot;: &quot;blog&quot;, # 指定子文档类型，表示下面的 query 中的信息要在 blog 父文档中匹配
+      &quot;query&quot; : {
+          &quot;match&quot;: {&quot;title&quot; : &quot;Learning Hadoop&quot;}
+      }                      # 在父文档中匹配信息，最终返回所有的相关子文档信息
+    }
+  }
+}
+</code></pre>
+<h5 id="6通过子文档-id-查询子文档信息">6，通过子文档 id 查询子文档信息</h5>
+<p>普通的查询<strong>无法查到</strong>：</p>
+<pre><code class="language-shell">GET my_blogs/_doc/comment3
+</code></pre>
+<p>需要指定 <strong>routing</strong> 参数，提供父文档 <strong>id</strong>：</p>
+<pre><code class="language-shell">GET my_blogs/_doc/comment3?routing=blog2
+</code></pre>
+<h5 id="7更新子文档信息">7，更新子文档信息</h5>
+<p><strong>更新子文档不会影响到父文档</strong>。</p>
+<p>示例：</p>
+<pre><code class="language-shell"># URI 中指定子文档 id，并通过 routing 参数指定父文档 id
+PUT my_blogs/_doc/comment3?routing=blog2
+{
+    &quot;comment&quot;: &quot;Hello Hadoop??&quot;,
+    &quot;blog_comments_relation&quot;: {
+      &quot;name&quot;: &quot;comment&quot;,
+      &quot;parent&quot;: &quot;blog2&quot;
+    }
+}
+</code></pre>
+<h3 id="4es-动态-mapping">4，ES 动态 Mapping</h3>
+<p>ES 中的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/dynamic-mapping.html">动态 Mapping</a> 指的是：</p>
+<ul>
+<li>在写入新文档的时候，如果索引不存在，ES 会自动创建索引。</li>
+<li><strong>动态 Mapping</strong> 使得我们可以不定义 Mapping，ES 会自动根据文档信息，推断出字段的类型。</li>
+<li>但有时候也会<strong>推断错误</strong>，不符合我们的预期，比如地理位置信息等。</li>
+</ul>
+<p>ES 类型的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/dynamic-field-mapping.html">自动识别规则</a>如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210116113223866.png?" alt="在这里插入图片描述"></p>
+<h3 id="5修改文档字段类型">5，修改文档字段类型</h3>
+<p>字段类型是否能够修改，分两种情况：</p>
+<ul>
+<li>对于新增字段：
+<ul>
+<li>如果 <code>mappings._doc.dynamic</code> 为 <code>ture</code>，当有新字段写入时，<code>Mappings</code> 会自动更新。</li>
+<li>如果 <code>mappings._doc.dynamic</code> 为 <code>false</code>，当有新字段写入时，<code>Mappings</code> 不会更新；新增字段不会建立倒排索引，但是信息会出现在 <code>_source</code> 中。</li>
+<li>如果 <code>mappings._doc.dynamic</code> 为 <code>strict</code>，当有新字段写入时，写入失败。</li>
+</ul>
+</li>
+<li>对于已有字段：
+<ul>
+<li>字段的类型<strong>不允许</strong>再修改。因为如果修改了，会导致已有的信息无法被搜索。</li>
+<li>如果希望修改字段类型，需要 <code>Reindex</code> 重建索引。</li>
+</ul>
+</li>
+</ul>
+<p><code>dynamic</code> 有 3 种取值，使用下面 API 可以修改 <code>dynamic</code> 的值：</p>
+<pre><code class="language-shell">PUT index_name/_mapping
+{
+  &quot;dynamic&quot;: false/true/strict
+}
+</code></pre>
+<p>通过下面语法可以获取一个索引的 Mapping：</p>
+<pre><code class="language-shell">GET index_name/_mapping
+</code></pre>
+<h3 id="6自定义-mapping">6，自定义 Mapping</h3>
+<p>自定义 Mapping 的语法如下：</p>
+<pre><code class="language-shell">PUT index_name
+{
+  &quot;mappings&quot; : {
+    # 定义
+  }
+}
+</code></pre>
+<p>自定义 Mapping 的小技巧：</p>
+<ol>
+<li>创建一个临时索引，写入一些测试数据</li>
+<li>获取该索引的 Mapping 值，修改后，使用它创建新的索引</li>
+<li>删除临时索引</li>
+</ol>
+<p><strong>Mappings</strong> 有很多参数可以设置，可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-params.html">这里</a>。</p>
+<h4 id="61一个嵌套对象的-mappings">6.1，一个嵌套对象的 mappings</h4>
+<p>如果我们要在 ES 中插入如下结构的数据：</p>
+<pre><code class="language-shell">PUT blog/_doc/1
+{
+  &quot;content&quot;:&quot;I like Elasticsearch&quot;,
+  &quot;time&quot;:&quot;2019-01-01T00:00:00&quot;,
+  &quot;user&quot;: { # 是一个对象类型
+    &quot;userid&quot;:1,
+    &quot;username&quot;:&quot;Jack&quot;,
+    &quot;city&quot;:&quot;Shanghai&quot;
+  }
+}
+</code></pre>
+<p>其中的 <strong>user</strong> 字段是一个<strong>对象类型</strong>。</p>
+<p>这种结构的数据对应的 <strong>mappings</strong> 应该像下面这样定义：</p>
+<pre><code class="language-shell">PUT /blog
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;content&quot;: {
+        &quot;type&quot;: &quot;text&quot;
+      },
+      &quot;time&quot;: {
+        &quot;type&quot;: &quot;date&quot;
+      },
+      &quot;user&quot;: {  # user 内部又嵌套了一个 properties
+        &quot;properties&quot;: {
+          &quot;city&quot;: {
+            &quot;type&quot;: &quot;text&quot;
+          },
+          &quot;userid&quot;: {
+            &quot;type&quot;: &quot;long&quot;
+          },
+          &quot;username&quot;: {
+            &quot;type&quot;: &quot;keyword&quot;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="62一个对象数组的-mappings">6.2，一个对象数组的 mappings</h4>
+<p>如果我们要在 ES 中插入如下结构的数据：</p>
+<pre><code class="language-shell">POST my_movies/_doc/1
+{
+  &quot;title&quot;:&quot;Speed&quot;,
+  &quot;actors&quot;:[ # actors 是一个数组类型，数组中的元素是对象类型
+    {
+      &quot;first_name&quot;:&quot;Keanu&quot;,
+      &quot;last_name&quot;:&quot;Reeves&quot;
+    },
+    {
+      &quot;first_name&quot;:&quot;Dennis&quot;,
+      &quot;last_name&quot;:&quot;Hopper&quot;
+    }
+  ]
+}
+</code></pre>
+<p>其中的 <strong>actors</strong> 字段是一个数组类型，数组中的元素是对象类型。</p>
+<p>像这种结构的数据对应的 <strong>mappings</strong> 应该像下面这样定义：</p>
+<pre><code class="language-shell">PUT my_movies
+{
+  &quot;mappings&quot;: {
+	&quot;properties&quot;: {
+	  &quot;actors&quot;: {         # actors 字段
+		&quot;properties&quot;: {   # 嵌入了一个 properties
+		   &quot;first_name&quot;: {&quot;type&quot;: &quot;keyword&quot;},
+		   &quot;last_name&quot;: {&quot;type&quot;: &quot;keyword&quot;}
+		 }
+		},
+		&quot;title&quot;: {
+		   &quot;type&quot;: &quot;text&quot;,
+		   &quot;fields&quot;: {
+			   &quot;keyword&quot;: {
+				   &quot;type&quot;: &quot;keyword&quot;,
+				   &quot;ignore_above&quot;: 256
+				}
+			}
+		}
+	}
+  }
+}
+</code></pre>
+<h3 id="7控制字段是否可被索引">7，控制字段是否可被索引</h3>
+<p>可以通过设置字段的 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-index.html">index</a> 值，来控制某些字段是否可被搜索。</p>
+<p><code>index</code> 有两种取值：<code>true / false</code>，默认为 <code>true</code>。</p>
+<p>当某个字段的 <code>index</code> 值为 <code>false</code> 时，ES 就不会为该字段建立倒排索引（节省空间），该字段也不能被搜索（如果搜索的话会<strong>报错</strong>）。</p>
+<p>设置语法如下：</p>
+<pre><code class="language-shell">PUT index_name
+{
+    &quot;mappings&quot; : {          # 固定写法
+      &quot;properties&quot; : {      # 固定写法
+        &quot;firstName&quot; : {     # 字段名
+          &quot;type&quot; : &quot;text&quot;
+        },
+        &quot;lastName&quot; : {      # 字段名
+          &quot;type&quot; : &quot;text&quot;
+        },
+        &quot;mobile&quot; : {        # 字段名
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;index&quot;: false    # 设置为 false
+        }
+      }
+    }
+}
+</code></pre>
+<h3 id="8控制倒排索引项的内容">8，控制倒排索引项的内容</h3>
+<p>我们可以通过设置 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-options.html">index_options</a> 的值来控制<strong>倒排索引项</strong>的内容，它有 4 种取值：</p>
+<ul>
+<li><code>docs</code>：只记录<code>文档 id</code></li>
+<li><code>freqs</code>：记录<code>文档 id</code> 和 <code>词频</code></li>
+<li><code>positions</code>：记录<code>文档 id</code>，<code>词频</code> 和 <code>单词 position</code></li>
+<li><code>offsets</code>：记录<code>文档 id</code>，<code>词频</code>，<code>单词 position</code> 和 <code>字符 offset</code></li>
+</ul>
+<p><code>Text</code> 类型的数据，<code>index_options</code> 的值<strong>默认</strong>为 <code>positions</code>；<code>其它</code>类型的数据，<code>index_options</code> 的值<strong>默认</strong>为 <code>docs</code>。</p>
+<blockquote>
+<p>注意：对于 <strong>index_options</strong> 的默认值，不同版本的 ES，可能不一样，请查看相应版本的文档。</p>
+</blockquote>
+<p>对于倒排索引项，其记录的内容越多，占用的空间也就越大，同时 ES 也会对字段进行更多的分析。</p>
+<p>设置语法如下：</p>
+<pre><code class="language-shell">PUT index_name
+{
+  &quot;mappings&quot;: {                      # 固定写法
+    &quot;properties&quot;: {                  # 固定写法
+      &quot;text&quot;: {                      # 字段名
+        &quot;type&quot;: &quot;text&quot;,              # 字段的数据类型
+        &quot;index_options&quot;: &quot;offsets&quot;   # index_options 值
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="9设置-null-值可被搜索">9，设置 null 值可被搜索</h3>
+<p>默认情况下 <code>null</code> 和 空数组<code>[]</code> 是不能够被搜索的，比如下面的两个文档：</p>
+<pre><code class="language-shell">PUT my_index/_doc/1
+{
+  &quot;status_code&quot;: null
+}
+
+PUT my_index/_doc/2
+{
+  &quot;status_code&quot;: [] 
+}
+</code></pre>
+<p>要想使得这两个文档能够被搜索，需要设置 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/null-value.html">null_value</a> 参数，如下：</p>
+<pre><code class="language-shell">PUT my_index
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;status_code&quot;: {
+        &quot;type&quot;: &quot;keyword&quot;,    # 只有 Keyword 类型的数据，才支持设置 null_value
+        &quot;null_value&quot;: &quot;NULL&quot;  # 将 null_value 设置为 NULL，就可以通过 NULL 搜索了
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>注意</strong>只有 <code>Keyword</code> 类型的数据，才支持设置 <code>null_value</code>，将 <code>null_value</code> 设置为 <code>NULL</code>，就可以通过 <code>NULL</code> 搜索了，如下：</p>
+<pre><code class="language-shell">GET my-index/_search?q=status_code:NULL
+</code></pre>
+<h3 id="10索引模板">10，索引模板</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/indices-templates.html">索引模板</a>（Index Template）设置一个规则，自动生成索引的 Mappings 和 Settings。</p>
+<p><strong>索引模板有以下特性</strong>：</p>
+<ul>
+<li>模板只在索引创建时起作用，修改模板不会影响已创建的索引。</li>
+<li>可以设置多个索引模板，这些设置会被 <strong>merge</strong> 在一起。</li>
+<li>可以设置 order 的数值，控制 <strong>merge</strong> 的过程。</li>
+</ul>
+<p>多个模板时的 <strong>merge</strong> 规则，当一个索引被创建时：</p>
+<ul>
+<li>使用 ES 默认的 mappings 和 settings。</li>
+<li>使用 order 值低的模板。</li>
+<li>使用 order 值高的模板，它会覆盖 order 值低的模板。</li>
+<li>使用用户自带的，指定的 mappings 和 settings，这个级别的最高，会覆盖之前所有的。</li>
+</ul>
+<blockquote>
+<p>对于相同字段的不同只会进行<strong>覆盖</strong>，对于不同的字段会进行<strong>叠加</strong>依次使用。</p>
+</blockquote>
+<p>索引模板示例：</p>
+<pre><code class="language-shell">PUT _template/template_1  # template_1 是自定义的索引模板的名称
+{
+  &quot;index_patterns&quot;: [&quot;te*&quot;, &quot;bar*&quot;], # 匹配索引的规则，该模板会作用于这些索引名上
+  &quot;settings&quot;: {                      # settings 设置
+    &quot;number_of_shards&quot;: 1
+  },
+  &quot;mappings&quot;: {                      # mappings 设置
+    &quot;_source&quot;: {
+      &quot;enabled&quot;: false
+    },
+    &quot;properties&quot;: {
+      &quot;host_name&quot;: {
+        &quot;type&quot;: &quot;keyword&quot;
+      },
+      &quot;created_at&quot;: {
+        &quot;type&quot;: &quot;date&quot;,
+        &quot;format&quot;: &quot;EEE MMM dd HH:mm:ss Z yyyy&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<p>多个索引模板：</p>
+<pre><code class="language-shell">PUT /_template/template_1
+{
+    &quot;index_patterns&quot; : [&quot;*&quot;],
+    &quot;order&quot; : 0,
+    &quot;settings&quot; : {
+        &quot;number_of_shards&quot; : 1
+    },
+    &quot;mappings&quot; : {
+        &quot;_source&quot; : { &quot;enabled&quot; : false }
+    }
+}
+
+PUT /_template/template_2
+{
+    &quot;index_patterns&quot; : [&quot;te*&quot;],
+    &quot;order&quot; : 1,
+    &quot;settings&quot; : {
+        &quot;number_of_shards&quot; : 1
+    },
+    &quot;mappings&quot; : {
+        &quot;_source&quot; : { &quot;enabled&quot; : true }
+    }
+}
+</code></pre>
+<h3 id="11动态模板">11，动态模板</h3>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/dynamic-mapping.html">动态模板</a>（Dynamic Template）用于设置某个<strong>指定索引</strong>中的<strong>字段的数据类型</strong>。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-uri-search">ElasticSearch URI 查询</a></p>
+<p><a href="/2021/02/es-dsl-search">ElasticSearch DSL 查询</a></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
+<p><a href="/2021/02/es-search-template-suggest">ElasticSearch 搜索模板与建议</a></p>
+<p><a href="/2021/02/es-aggregations">ElasticSearch 聚合分析</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/02/es-datatypes/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">ElasticSearch 数据建模</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/02/es-aggregations/">
+            <span class="next-text nav-default">ElasticSearch 聚合分析</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-mappings/" class="leancloud_visitors" data-flag-title="ElasticSearch 中的 Mapping">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

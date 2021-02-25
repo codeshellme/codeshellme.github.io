@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 数据建模 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 通常在使用 ES 构建数据模型时，需要考虑以下几点： 字段类型" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-datatypes/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 数据建模" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 通常在使用 ES 构建数据模型时，需要考虑以下几点： 字段类型" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-datatypes/" />
+<meta property="article:published_time" content="2021-02-24T22:39:52+08:00" />
+<meta property="article:modified_time" content="2021-02-24T22:45:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 数据建模">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 通常在使用 ES 构建数据模型时，需要考虑以下几点： 字段类型">
+<meta itemprop="datePublished" content="2021-02-24T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-24T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="1252">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 数据建模"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 通常在使用 ES 构建数据模型时，需要考虑以下几点： 字段类型"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 数据建模</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-24 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 1252 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1字段类型">1，字段类型</a></li>
+        <li><a href="#2搜索需求">2，搜索需求</a></li>
+        <li><a href="#3聚合与排序">3，聚合与排序</a></li>
+        <li><a href="#4额外存储">4，额外存储</a></li>
+        <li><a href="#5示例">5，示例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>通常在使用 ES 构建数据模型时，需要考虑以下几点：</p>
+<ul>
+<li>字段类型</li>
+<li>是否需要搜索与分词</li>
+<li>是否需要聚合与排序</li>
+<li>是否需要额外的存储</li>
+</ul>
+<h3 id="1字段类型">1，字段类型</h3>
+<p>对于不同类型的数据，主要考虑下面几点：</p>
+<ul>
+<li>对于 <strong>Text 类型</strong>：用于全文本字段，数据会被分词器分词。
+<ul>
+<li>默认不支持聚合分析及排序，需要设置 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/fielddata.html">fielddata</a> 为 <code>true</code>。</li>
+</ul>
+</li>
+<li>对于 <strong>Keyword 类型</strong>：用于不需要分词处理的文本，例如手机号，email 地址，性别等。
+<ul>
+<li>适用于精确匹配，支持聚合与排序。</li>
+</ul>
+</li>
+<li>对于<strong>多字段类型</strong>：默认情况下，ES 会为将文本设置为 <strong>text</strong> 类型，并添加一个 <strong>keyword</strong> 子字段。
+<ul>
+<li>在处理人类语言时，可以通过增加“英文”，“拼音”和“标准”分词器，来满足搜索需求。</li>
+</ul>
+</li>
+<li>对于<strong>数值类型</strong>：尽量选择贴近的类型。比如 <strong>byte</strong> 类型能满足需求，就不要用 <strong>long</strong>。</li>
+</ul>
+<h3 id="2搜索需求">2，搜索需求</h3>
+<p>对于搜索需求，主要考虑以下几点：</p>
+<ul>
+<li>如果不需要检索，排序和聚合，可将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/enabled.html">enabled</a> 设置成 <code>false</code>，以减少不必要的处理（磁盘开销），来提高性能。</li>
+<li>如果不需要检索，但需要排序与聚合，可将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-index.html">index</a> 设置成 <code>false</code>。</li>
+</ul>
+<h3 id="3聚合与排序">3，聚合与排序</h3>
+<p>对于聚合与排序，主要考虑以下几点：</p>
+<ul>
+<li>如果不需要检索，排序和聚合，可将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/enabled.html">enabled</a> 设置成 <code>false</code>。</li>
+<li>如果需要检索，但不需要排序与聚合，可将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/doc-values.html">doc_values</a> 和 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/fielddata.html">fielddata</a> 设置成 <code>false</code>。</li>
+<li>对于<strong>keyword</strong> 类型的字段，如果更新与聚合比较频繁，推荐将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/eager-global-ordinals.html">eager_global_ordinals</a> 设置为 <code>true</code>（可以达到利用缓冲的目的，提高性能）。</li>
+</ul>
+<h3 id="4额外存储">4，额外存储</h3>
+<p>将 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-store.html">store</a> 设置为 <code>true</code>（默认为 <code>false</code>），可以存储字段的原始内容；一般在 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-source-field.html">_source</a> 的 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/enabled.html">enabled</a> 为 <code>false</code> 时使用。</p>
+<h3 id="5示例">5，示例</h3>
+<p>如果需要对一些图书信息进行建模，需求如下：</p>
+<ul>
+<li>书名：支持全文本及精确匹配</li>
+<li>简介：支持全文本</li>
+<li>作者：支持精确匹配</li>
+<li>出版日期：日期类型</li>
+<li>图书封面：不需要支持搜索</li>
+</ul>
+<p>示例数据如下：</p>
+<pre><code class="language-shell">{
+  &quot;title&quot;:&quot;Mastering ElasticSearch 5.0&quot;,
+  &quot;description&quot;:&quot;Master the searching, indexing, and aggregation features in ElasticSearch Improve users’ search experience with Elasticsearch’s functionalities and develop your own Elasticsearch plugins&quot;,
+  &quot;author&quot;:&quot;Bharvi Dixit&quot;,
+  &quot;public_date&quot;:&quot;2017&quot;,
+  &quot;cover_url&quot;:&quot;https://images-na.ssl-images-amazon.com/images/I/51OeaMFxcML.jpg&quot;
+}
+</code></pre>
+<p>如果不手动设置 mapping，那么每个字段将被 ES 设置为如下类型：</p>
+<pre><code class="language-shell">{
+  &quot;type&quot; : &quot;text&quot;,   # text 类型
+  &quot;fields&quot; : {       # 并添加一个 keyword 子字段
+    &quot;keyword&quot; : {
+      &quot;type&quot; : &quot;keyword&quot;,
+      &quot;ignore_above&quot; : 256
+    }
+  }
+}
+</code></pre>
+<h4 id="51手动设置-mapping">5.1，手动设置 mapping</h4>
+<p>下面根据需求，手动设置 mapping：</p>
+<pre><code class="language-shell">PUT books
+{
+	&quot;mappings&quot;: {
+		&quot;properties&quot;: {
+			&quot;author&quot;: {
+				&quot;type&quot;: &quot;keyword&quot;
+			},
+			&quot;cover_url&quot;: {
+				&quot;type&quot;: &quot;keyword&quot;,
+				&quot;index&quot;: false      # 不需要支持搜索
+			},
+			&quot;description&quot;: {
+				&quot;type&quot;: &quot;text&quot;
+			},
+			&quot;public_date&quot;: {
+				&quot;type&quot;: &quot;date&quot;
+			},
+			&quot;title&quot;: {
+				&quot;type&quot;: &quot;text&quot;,
+				&quot;fields&quot;: {
+					&quot;keyword&quot;: {
+						&quot;type&quot;: &quot;keyword&quot;,
+						&quot;ignore_above&quot;: 100
+					}
+				}
+			}
+		}
+	}
+}
+</code></pre>
+<h4 id="52增加需求">5.2，增加需求</h4>
+<p>如果现在需要添加一个字段 <code>content</code>，用于存储图书的内容，因此该字段的<strong>信息量将非常大</strong>，这将<strong>导致 _source 的内容过大</strong>，导致过大的网络开销。</p>
+<p>为了优化，可以将 <strong>_source</strong> 的 <strong>enabled</strong> 设置为 <code>false</code>，然后将每个字段的 <strong>store</strong> 设置为 <code>true</code>（打开<strong>额外存储</strong>）。</p>
+<p>如下：</p>
+<pre><code class="language-shell">PUT books
+{
+	&quot;mappings&quot;: {
+		&quot;_source&quot;: {
+			&quot;enabled&quot;: false    # enabled 为 false
+		},
+		&quot;properties&quot;: {
+			&quot;author&quot;: {
+				&quot;type&quot;: &quot;keyword&quot;,
+				&quot;store&quot;: true   # store 为 true
+			},
+			&quot;cover_url&quot;: {
+				&quot;type&quot;: &quot;keyword&quot;,
+				&quot;index&quot;: false,
+				&quot;store&quot;: true  # store 为 true
+			},
+			&quot;description&quot;: {
+				&quot;type&quot;: &quot;text&quot;,
+				&quot;store&quot;: true  # store 为 true
+			},
+			&quot;content&quot;: {
+				&quot;type&quot;: &quot;text&quot;,
+				&quot;store&quot;: true  # store 为 true
+			},
+			&quot;public_date&quot;: {
+				&quot;type&quot;: &quot;date&quot;,
+				&quot;store&quot;: true # store 为 true
+			},
+			&quot;title&quot;: {
+				&quot;type&quot;: &quot;text&quot;,
+				&quot;fields&quot;: {
+					&quot;keyword&quot;: {
+						&quot;type&quot;: &quot;keyword&quot;,
+						&quot;ignore_above&quot;: 100
+					}
+				},
+				&quot;store&quot;: true # store 为 true
+			}
+		}
+	}
+}
+</code></pre>
+<p>将 <strong>_source</strong> 禁止掉之后，查询的结果中就没有了 _source 字段；如果需要哪些字段的内容，则需要设置 <strong>stored_fields</strong>，如下：</p>
+<pre><code class="language-shell">POST books/_search
+{
+  &quot;stored_fields&quot;: [&quot;title&quot;,&quot;author&quot;,&quot;public_date&quot;],
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;searching&quot;
+    }
+  }
+}
+</code></pre>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-dsl-search">ElasticSearch DSL 查询</a></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
+<p><a href="/2021/02/es-search-template-suggest">ElasticSearch 搜索模板与建议</a></p>
+<p><a href="/2021/02/es-aggregations">ElasticSearch 聚合分析</a></p>
+<p><a href="/2021/02/es-mappings">ElasticSearch 中的 Mapping</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-24
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-mappings/">
+            <span class="next-text nav-default">ElasticSearch 中的 Mapping</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-datatypes/" class="leancloud_visitors" data-flag-title="ElasticSearch 数据建模">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
