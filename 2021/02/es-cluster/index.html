@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 分布式集群 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 的分布式架构 ES 是一个分布式的集群，具有高可用性" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-cluster/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 分布式集群" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 的分布式架构 ES 是一个分布式的集群，具有高可用性" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-cluster/" />
+<meta property="article:published_time" content="2021-02-25T22:39:52+08:00" />
+<meta property="article:modified_time" content="2021-02-25T22:45:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 分布式集群">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 的分布式架构 ES 是一个分布式的集群，具有高可用性">
+<meta itemprop="datePublished" content="2021-02-25T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-25T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="3279">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 分布式集群"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 的分布式架构 ES 是一个分布式的集群，具有高可用性"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 分布式集群</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-25 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 3279 字 </span>
+          <span class="more-meta"> 阅读约需 7 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1es-的分布式架构">1，ES 的分布式架构</a></li>
+        <li><a href="#2es-的节点类型">2，ES 的节点类型</a></li>
+        <li><a href="#3集群的健康状态">3，集群的健康状态</a></li>
+        <li><a href="#4脑裂问题">4，脑裂问题</a></li>
+        <li><a href="#5es-中的分片">5，ES 中的分片</a></li>
+        <li><a href="#6分片的内部原理">6，分片的内部原理</a></li>
+        <li><a href="#7文档的分布式存储">7，文档的分布式存储</a></li>
+        <li><a href="#8分布式查询及相关性算分">8，分布式查询及相关性算分</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1es-的分布式架构">1，ES 的分布式架构</h3>
+<p>ES 是一个分布式的集群，具有<strong>高可用性</strong>和<strong>可扩展性</strong>：</p>
+<ul>
+<li>高可用性指的是：当某些节点意外宕机或者数据丢失的时候，不影响整个集群的使用。</li>
+<li>可扩展性指的是：当业务数据量增加的时候，可以增加节点的数量，从而增强整个集群的能力。</li>
+</ul>
+<p><em><strong>ES 集群</strong></em></p>
+<p>ES 集群中可以有一个或多个节点，ES 通过<strong>集群名字</strong>来区分不同的集群，集群名可以通过 <code>cluster.name</code> 进行设置，默认为 &ldquo;elasticsearch&rdquo;。</p>
+<h3 id="2es-的节点类型">2，ES 的节点类型</h3>
+<p>ES 的一个节点就是一个 Java 进程，所以一台机器可以运行一个或多个节点，生产环境建议一台机器只运行一个节点。</p>
+<p>每个节点启动之后，都会分配一个 <code>UID</code>，并保存在 <code>data</code> 目录下。</p>
+<p>每个节点都有<strong>节点名字</strong>，节点名可通过 <code>node.name</code> 设置。</p>
+<h4 id="21master-节点">2.1，Master 节点</h4>
+<p>Master 节点的职责：</p>
+<ul>
+<li>处理客户端的请求。</li>
+<li>决定分片被分配到哪个节点。</li>
+<li>负责索引的创建于删除。</li>
+<li>维护集群状态。</li>
+<li>等。</li>
+</ul>
+<p>集群的状态包括：</p>
+<ul>
+<li>所有的节点信息</li>
+<li>所有的索引及其 Mapping 和 Setting 信息</li>
+<li>分片的路由信息</li>
+</ul>
+<p>所有的节点有保存了集群的状态信息，但只有主节点能够修改集群状态。</p>
+<h4 id="22master-eligible-节点">2.2，Master-eligible 节点</h4>
+<p>在 ES 集群中，只有 <strong>Master-eligible 节点</strong>可以被选举为 Master 节点。</p>
+<p>每个节点启动后默认就是 Master-eligible 节点，可以通过设置 <code>node.master</code> 为 <code>false</code> 来禁止成为 Master-eligible 节点。</p>
+<p>默认情况下，集群中的<strong>第一个节点</strong>启动后，会将自己选举为 Master 节点。</p>
+<p>集群中的每个节点都保存了集群的状态，但只有 Master 节点能够修改集群的状态信息。</p>
+<h4 id="23data-与-coordinating-节点">2.3，Data 与 Coordinating 节点</h4>
+<p>用于保存 ES 数据的节点，就是 Data 节点，它对数据扩展起到了至关重要的作用。</p>
+<p>Coordinating 节点叫做协调节点，它负责接收 Client 的请求，将请求分发到合适的节点，并最终汇总结果返回给 Client。</p>
+<p>在 ES 中，所有的节点都是 Coordinating 节点。</p>
+<h4 id="24ingest-节点">2.4，Ingest 节点</h4>
+<p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/ingest.html">Ingest 节点</a>用于对<strong>数据预处理</strong>，通过添加一些 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/ingest-processors.html">processors</a> 来完成特定的处理。</p>
+<p><strong>Ingest</strong> 节点是在 <strong>ES 5.0</strong> 后引入的一种节点类型，可以达到一定的 <strong>Logstash</strong> 的功能。</p>
+<p>默认情况下，所有的节点都是 <strong>Ingest</strong> 节点。</p>
+<h4 id="25配置节点类型">2.5，配置节点类型</h4>
+<p>理论上，一个节点可以扮演过多个角色，但生产环境中，建议设置单一角色。</p>
+<p>节点的类型可以通过下面参数进行配置：</p>
+<table>
+<thead>
+<tr>
+<th>节点类型</th>
+<th>配置参数</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master-eligible</td>
+<td>node.master</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Data Node</td>
+<td>node.data</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Ingest Node</td>
+<td>node.ingest</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Coordinating Node</td>
+<td>无</td>
+<td>设置上面 3 个都为 false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3集群的健康状态">3，集群的健康状态</h3>
+<p>我们可以通过下面的 API 来查看整个集群的健康状态：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210114141025906.png?" alt="在这里插入图片描述"></p>
+<p>集群有 3 种级别的健康状态：</p>
+<ul>
+<li><code>green</code>：所有的主分片与副本分片都正常。</li>
+<li><code>yellow</code>：所有的主分片都正常，某些副本分片不正常。</li>
+<li><code>red</code>：部分主分片不正常。</li>
+</ul>
+<p>我们也可以通过 Kibana 中的<strong>索引管理</strong>，来查看每个索引的健康状态：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210114141442458.png?" alt="在这里插入图片描述"></p>
+<p>索引的状态级别与集群的状态级别一致。</p>
+<h3 id="4脑裂问题">4，脑裂问题</h3>
+<p>脑裂问题是分布式系统中的经典问题。</p>
+<p>脑裂问题指的是，当出现网络故障时，一些节点无法与另一些节点连接，这时这两大部分节点会各自为主；当网络恢复时，也无法恢复成一个整体。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119215440248.png" alt="在这里插入图片描述"></p>
+<p><em><strong>如何避免脑裂问题</strong></em></p>
+<p>要限定一个选举条件，设置 Quorum（仲裁）：</p>
+<ul>
+<li>Quorum = （master 节点总数 / 2）+ 1</li>
+</ul>
+<p>只有当 Master eligible 节点数大于 Quorum 时，才能进行选举。</p>
+<p>在 ES 7.0 之前，为了避免脑裂问题，需要手动设置 <code>discovery.zen.minimum_master_nodes</code> 为 Quorum。</p>
+<p>在 ES 7.0 之后，ES 会自己处理脑裂问题，不需要用户处理。</p>
+<h3 id="5es-中的分片">5，ES 中的分片</h3>
+<p>ES 中的<strong>分片</strong>（Shard）用于存储数据，是存储的<strong>最小单元</strong>。</p>
+<p>分片有两种：<strong>主分片</strong>（Primary Shard）和<strong>副本分片</strong>（Replica Shard），副本分片是主分片的拷贝。</p>
+<p>主分片用于数据水平扩展的问题，主分片数在索引创建时指定，<strong>之后不允许修改</strong>。</p>
+<p>副本分片用于解决数据高可用的问题，副本分片数<strong>可以动态调整</strong>。</p>
+<p>分片数可以通过索引的 <code>setting</code> 进行设置，比如：</p>
+<pre><code class="language-shell">PUT /index_name 
+{
+    &quot;settings&quot; : {
+        &quot;number_of_shards&quot; : 3,
+        &quot;number_of_replicas&quot; : 1
+    }
+}
+</code></pre>
+<p>其中 <code>number_of_shards</code> 表示主分片数，<code>number_of_replicas</code> 表示每个主分片的副本分片数。</p>
+<p>如果一个集群有 3 个数据节点，某个索引有 3 个主分片，1 一个副本分片，那么它的节点分布会像下面这样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210114135603573.png?" alt="在这里插入图片描述"></p>
+<p>其中蓝色框为主分片，白色框为副本分片。</p>
+<p><strong>ES 在分配主副分片时，会将副本分片与主分片应该在不同的节点上</strong>。</p>
+<p>主分片和副本分片分别分布到不同的数据节点上，这样的话，如果有某个数据节点宕机，也不会影响整个系统的使用。</p>
+<p><strong>ES 7.0 开始，默认的主分片数为 1，默认的副本分片数为 0。在生产环境中，副本分片数至少为 1。</strong></p>
+<h4 id="51生产环境如何设置分片数">5.1，生产环境如何设置分片数</h4>
+<p>分片数设置不合理引发的问题：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210119221658276.png?" alt="在这里插入图片描述"></p>
+<h4 id="52集群节点的变化">5.2，集群节点的变化</h4>
+<p><img src="https://img-blog.csdnimg.cn/20210120113737522.png" alt="在这里插入图片描述"></p>
+<p>根据这样的配置（3 个主分片，1 个副本分片），如果只有一个节点，则会导致副本分片无法分配（ES 会将主副分片分配在不同的节点上），集群状态为 <strong>yellow</strong>。</p>
+<p><strong>如果此时增加一个数据节点</strong>，那么副本分片就得以分配，集群具备了故障转移能力，集群状态转为 <strong>green</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120113755507.png" alt="在这里插入图片描述"></p>
+<p><strong>如果此时再增加一个数据节点</strong>，那么主节点会重新分配分片的分布。同时，集群的整体能力也得到了提升。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120113820236.png" alt="在这里插入图片描述"></p>
+<h4 id="53故障转移">5.3，故障转移</h4>
+<p>如果此时有一个节点发生故障，比如主节点发生了故障：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120113840211.png" alt="在这里插入图片描述"></p>
+<p>此时集群的状态会变为 <strong>yellow</strong>，然后会重新选举主节点（假设选举了 Node2 为主节点），并且原来的 <strong>Node1</strong> 节点上的 <strong>p0</strong> 和 <strong>R1</strong> 分片，会被分配到 <strong>Node2</strong> 和 <strong>Node3</strong> 上。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120113857612.png" alt="在这里插入图片描述"></p>
+<p>集群调整完毕后，会重新恢复到 <strong>green</strong> 状态。</p>
+<h3 id="6分片的内部原理">6，分片的内部原理</h3>
+<p>ES 中的一个分片对应了 Lucene 中的一个 Index。</p>
+<h4 id="61lucene-index">6.1，Lucene Index</h4>
+<p>在 Lucene 中，单个倒排索引文件称为 <strong>Segment</strong>。</p>
+<p>Segment 是不可变的，当有新的文档写入时，会生成新的 Segment（放在<strong>文件系统缓存</strong>中）。</p>
+<p>多个 Segment 汇总在一起称为 Lucene 中的 Index，也就是 ES 中的分片。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120171621975.png" alt="在这里插入图片描述"></p>
+<h4 id="62refresh-刷新">6.2，Refresh 刷新</h4>
+<p>ES 的文档在写入时，会先放在 <code>Index Buffer</code>（内存） 中，当 Index Buffer 的空间被占用到<strong>一定程度/时间周期</strong>后，会 <strong>Refresh</strong> 到 Segment 中，Index Buffer 则会被清空。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120173153248.png" alt="在这里插入图片描述"></p>
+<p>Refresh 的刷新频率可以通过 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-refresh-interval-setting">index.refresh_interval</a> 参数进行设置，默认为 1 秒。</p>
+<p>或者当 Index Buffer 被占用到 JVM 的 <strong>10%</strong>（默认值），也会触发 Refresh。</p>
+<p>当文档被 Refresh 到 Segment 后，就可以被 ES 检索到了。</p>
+<h4 id="63transaction-log">6.3，Transaction log</h4>
+<p>写入文档时，会先放在 <code>Index Buffer</code> 中，而 Index Buffer 是在内存中，为了防止内存意外（比如断电）丢失，在写入 Index Buffer 的同时，也会写到 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-translog.html">Transaction log</a>（磁盘）中。</p>
+<p><img src="https://img-blog.csdnimg.cn/2021012017531953.png" alt="在这里插入图片描述"></p>
+<p>一个 <strong>Transaction log</strong> 默认是 512M。</p>
+<h4 id="64flush-操作">6.4，Flush 操作</h4>
+<p>ES 的 Flush 会触发以下操作：</p>
+<ul>
+<li>调用 <strong>Refresh</strong></li>
+<li>调用 <strong>fsync</strong>，将文件系统缓存中的 Segment 写入磁盘。</li>
+<li>清空 Transaction log。</li>
+</ul>
+<p>Flush 操作默认 30 分钟调用一次，或者当 Transaction log 满（默认 512 M）时也会触发 Flush。</p>
+<h4 id="65merge-合并">6.5，Merge 合并</h4>
+<p>当越来越多的 Segment 被写入到磁盘后，磁盘上的 Segment 会变得很多，ES 会定期 <strong>Merge</strong> 这些 Segment。</p>
+<p><strong>文档的删除操作并不会马上被真正的删除</strong>，而是会写入 <strong>del</strong> 文件中，Merge 操作也会删除该文件。</p>
+<p>Merge 操作可以由 ES 自动触发，也可以<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-forcemerge.html">手动强制 Merge</a>，语法如下：</p>
+<pre><code class="language-shell">POST index_name/_forcemerge
+</code></pre>
+<h3 id="7文档的分布式存储">7，文档的分布式存储</h3>
+<p>文档会均匀分布在分片上，充分利用硬件资源，避免资源利用不均。</p>
+<p>文档到分片的路由算法：</p>
+<ul>
+<li><code>shard_index = hash(_routing) % number_of_primary_shards</code></li>
+<li>Hash 算法可以保证文档均匀的分散到分片上。</li>
+<li>默认的 <code>_routing</code> 值为文档 id。</li>
+<li><code>_routing</code> 的值也可以自行指定。</li>
+</ul>
+<p>正是因为文档的路由算法是基于主分片数来计算的，所以主分片数一旦确定以后，就不能修改。</p>
+<p><strong>_routing</strong> 的设置语法如下：</p>
+<pre><code class="language-shell">POST index_name/_doc/doc_id/routing=xxx
+{
+  # 文档数据
+}
+</code></pre>
+<p>文档的 <strong>Write</strong> 操作（插入，更新，删除）的流程：</p>
+<ol>
+<li>客户将文档的 <strong>Write</strong> 请求发送到 <strong>Coordinating</strong> 节点（Coordinating 节点负责处理客户请求，而不是 Master 节点）。</li>
+<li>Coordinating  节点通过 Hash 算法找到该文档的<strong>主分片</strong>。</li>
+<li>在主分片上进行 <strong>Write</strong> 操作，主分片 <strong>Write</strong> 成功后，将该 <strong>Write</strong> 请求发送到所有的<strong>副本分片</strong>。</li>
+<li>所有副本分片进行相应的 <strong>Write</strong> 操作，成功后，将结果返回给主分片。</li>
+<li>主分片将所以的执行结果反馈给 <strong>Coordinating</strong> 节点。</li>
+<li><strong>Coordinating</strong> 节点将最终的结果反馈给客户端。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20210120164132754.png" alt="在这里插入图片描述"></p>
+<h3 id="8分布式查询及相关性算分">8，分布式查询及相关性算分</h3>
+<h4 id="81query-then-fetch-过程">8.1，Query Then Fetch 过程</h4>
+<p>ES 的搜索过程分两个阶段：</p>
+<ul>
+<li><strong>Query</strong> 阶段：
+<ul>
+<li>用户将查询请求发送到 Coordinating 节点，Coordinating 节点会随机选择 N（主分片数） 个分片，发送查询请求。</li>
+<li>收到查询请求的分片执行查询，并进行排序。然后每个分片都会返回 <code>From + Size</code> 个排好序的文档 ID 和排序值（score），给 Coordinating 节点。</li>
+</ul>
+</li>
+<li><strong>Fetch</strong> 阶段：
+<ul>
+<li>Coordinating 节点会将从所有分片得到的文档重新排序，重新得到 <code>From + Size</code> 个文档的 ID。</li>
+<li>Coordinating 节点以 <code>Multi Get</code> 的方式，到相应的分片获取具体的文档信息，并返回给用户。</li>
+</ul>
+</li>
+</ul>
+<p>这两个阶段合称为 <strong>Query Then Fetch</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210120215612313.png" alt="在这里插入图片描述"></p>
+<h4 id="82query-then-fetch-的问题">8.2，Query Then Fetch 的问题</h4>
+<p><img src="https://img-blog.csdnimg.cn/20210120220153185.png" alt="在这里插入图片描述"></p>
+<h4 id="83算分不准的解决办法">8.3，算分不准的解决办法</h4>
+<p><img src="https://img-blog.csdnimg.cn/20210120220331762.png" alt="在这里插入图片描述"></p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-doc">ElasticSearch 文档及操作</a></p>
+<p><a href="/2021/02/es-search-template-suggest">ElasticSearch 搜索模板与建议</a></p>
+<p><a href="/2021/02/es-aggregations">ElasticSearch 聚合分析</a></p>
+<p><a href="/2021/02/es-mappings">ElasticSearch 中的 Mapping</a></p>
+<p><a href="/2021/02/es-datatypes">ElasticSearch 数据建模</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-datatypes/">
+            <span class="next-text nav-default">ElasticSearch 数据建模</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-cluster/" class="leancloud_visitors" data-flag-title="ElasticSearch 分布式集群">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -58,6 +58,15 @@
     </item>
     
     <item>
+      <title>ElasticSearch 分布式集群</title>
+      <link>https://codeshellme.github.io/2021/02/es-cluster/</link>
+      <pubDate>Thu, 25 Feb 2021 22:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-cluster/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 的分布式架构 ES 是一个分布式的集群，具有高可用性</description>
+    </item>
+    
+    <item>
       <title>ElasticSearch 数据建模</title>
       <link>https://codeshellme.github.io/2021/02/es-datatypes/</link>
       <pubDate>Wed, 24 Feb 2021 22:39:52 +0800</pubDate>
