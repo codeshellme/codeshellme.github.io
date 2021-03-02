@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 集群安全 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在安装完 ES 后，ES 默认是没有任何安全防护的。 ES 的安全管" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-cluster-secure/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 集群安全" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在安装完 ES 后，ES 默认是没有任何安全防护的。 ES 的安全管" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-cluster-secure/" />
+<meta property="article:published_time" content="2021-02-26T22:39:52+08:00" />
+<meta property="article:modified_time" content="2021-02-26T22:45:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 集群安全">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在安装完 ES 后，ES 默认是没有任何安全防护的。 ES 的安全管">
+<meta itemprop="datePublished" content="2021-02-26T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-26T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="2059">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 集群安全"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 在安装完 ES 后，ES 默认是没有任何安全防护的。 ES 的安全管"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 集群安全</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-26 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 2059 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1身份认证">1，身份认证</a></li>
+        <li><a href="#2用户鉴权">2，用户鉴权</a></li>
+        <li><a href="#3启动-es-安全功能">3，启动 ES 安全功能</a></li>
+        <li><a href="#4启动-kibana-安全功能">4，启动 Kibana 安全功能</a></li>
+        <li><a href="#5使用-kibana-创建角色和用户">5，使用 Kibana 创建角色和用户</a></li>
+        <li><a href="#6传输加密">6，传输加密</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>在安装完 ES 后，ES 默认是没有任何安全防护的。</p>
+<p>ES 的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/secure-cluster.html">安全管理</a>主要包括以下内容：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-up-authentication.html">身份认证</a>：鉴定访问用户是否合法。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/authorization.html">用户鉴权</a>：设置用户有哪些访问权限。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/encrypting-communications.html">传输加密</a>：数据在传输的过程中，要加密。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/auditing.html">日志审计</a>：记录集群操作。</li>
+<li>等</li>
+</ul>
+<p>这里有一些免费的安全方案：</p>
+<ul>
+<li>设置 Nginx 方向代理。</li>
+<li>安装免费的安全插件，比如：
+<ul>
+<li><a href="https://search-guard.com/">Search Guard</a>：一个安全和报警的 ES 插件，分收费版和免费版。</li>
+<li><a href="https://github.com/sscarduzio/elasticsearch-readonlyrest-plugin">Readonly REST</a></li>
+</ul>
+</li>
+<li>X-Pack 的 Basic 版：可参考<a href="https://www.elastic.co/what-is/elastic-stack-security">这里</a>。</li>
+</ul>
+<h3 id="1身份认证">1，身份认证</h3>
+<p>ES 中提供的认证叫做 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/realms.html">Realms</a>，有以下几种方式，可分为两类：</p>
+<ul>
+<li>内部的：不需要与 ES 外部方通信。
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/file-realm.html">file</a>（免费）：用户名和密码保存在 ES 索引中。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/native-realm.html">native</a>（免费）：用户名和密码保存在 ES 索引中。</li>
+</ul>
+</li>
+<li>外部的：需要与 ES 外部组件通信。
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/ldap-realm.html">ldap</a>（收费）</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/active-directory-realm.html">active_directory</a>（收费）</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/pki-realm.html">pki</a>（收费）</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/saml-realm.html">saml</a>（收费）</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/kerberos-realm.html">kerberos</a>（收费）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2用户鉴权">2，用户鉴权</h3>
+<p>用户鉴权通过定义一个角色，并分配一组权限；然后将角色分配给用户，使得用户拥有这些权限。</p>
+<p>ES  中的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-privileges.html">权限</a>有不同的级别，包括集群级别（30 多种）和索引级别（不到 20 种）。</p>
+<p>ES 中提供了很多<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/built-in-roles.html">内置角色</a>（不到 30 种）可供使用。</p>
+<p>ES 中提供了很多关于用户与角色的 API：</p>
+<ul>
+<li><strong>关于用户</strong>：
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html">Change passwords</a>：修改密码。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html">Create or update users</a>：创建更新用户。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html">Delete users</a>：删除用户。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html">Enable users</a>：打开用户。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html">Disable users</a>：禁止用户。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html">Get users</a>：查看用户信息。</li>
+</ul>
+</li>
+<li><strong>关于角色</strong>：
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html">Create or update roles</a>：创建更新角色。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html">Delete roles</a>：删除角色。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html">Get roles</a>：查看角色信息。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3启动-es-安全功能">3，启动 ES 安全功能</h3>
+<p>下面演示如何使用 ES 的安全功能。</p>
+<p>启动 ES 并通过 <a href="https://www.elastic.co/guide/en/kibana/current/security-settings-kb.html">xpack.security.enabled</a> 参数打开安全功能：</p>
+<pre><code class="language-shell">bin\elasticsearch -E node.name=node0 -E cluster.name=mycluster -E path.data=node0_data -E http.port=9200 -E xpack.security.enabled=true
+</code></pre>
+<p>使用 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-passwords.html">elasticsearch-setup-passwords</a> 命令启用 ES内置用户及初始 6 位密码（需要手动输入，比如是 <code>111111</code>）：</p>
+<pre><code class="language-shell">bin\elasticsearch-setup-passwords interactive
+</code></pre>
+<p>该命令会启用下面这些用户：</p>
+<ul>
+<li><strong>elastic</strong>：超级用户。</li>
+<li><strong>kibana</strong>：用于 ES 与 Kibana 之间的通信。</li>
+<li><strong>kibana_system</strong>：用于 ES 与 Kibana 之间的通信。</li>
+<li><strong>apm_system</strong></li>
+<li><strong>logstash_system</strong></li>
+<li><strong>beats_system</strong></li>
+<li><strong>remote_monitoring_user</strong></li>
+</ul>
+<p>启用 ES 的安全功能后，访问 ES 就需要输入用户名和密码：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125180522723.png" alt="在这里插入图片描述"></p>
+<p>也可以通过 <strong>curl</strong> 命令（并指定用户）来访问 ES：</p>
+<pre><code class="language-shell">curl -u elastic 'localhost:9200'
+</code></pre>
+<p>更多内容可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/configuring-security.html">这里</a>。</p>
+<h3 id="4启动-kibana-安全功能">4，启动 Kibana 安全功能</h3>
+<p>打开 Kibana 的配置文件 <code>kibana.yml</code>，写入下面内容：</p>
+<pre><code class="language-shell">elasticsearch.username: &quot;kibana_system&quot;  # 用户名
+elasticsearch.password: &quot;111111&quot;         # 密码
+</code></pre>
+<p>然后使用 <code>bin\kibana</code> 命令启动 Kibana。</p>
+<p>访问 Kibana 也需要用户和密码（这里使用的是超级用户）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125181547506.png" alt="在这里插入图片描述"></p>
+<h3 id="5使用-kibana-创建角色和用户">5，使用 Kibana 创建角色和用户</h3>
+<p>下面演示如何使用 Kibana 创建角色和用户。登录 Kibana 之后进行如下操作：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125182334697.png" alt="在这里插入图片描述"></p>
+<p>点击 <code>Stack Management</code> 后进入下面页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125182437975.png" alt="在这里插入图片描述"></p>
+<h4 id="51创建角色">5.1，创建角色</h4>
+<p>点击 <code>Create role</code> 创建角色：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021012518285532.png" alt="在这里插入图片描述"></p>
+<p>创建角色需要填写如下内容：</p>
+<ul>
+<li>角色名称</li>
+<li>角色对哪些索引有权限及索引的权限级别</li>
+<li>添加一个 Kibana 权限</li>
+<li>最后创建角色</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210125215612483.png" alt="在这里插入图片描述"></p>
+<p>经过上面的操作，创建的角色名为 <code>test_role</code>，该角色对 <code>test_index</code> 索引有<strong>只读权限</strong>；如果进行超越范围的操作，将发生错误。</p>
+<h4 id="52创建用户">5.2，创建用户</h4>
+<p>进入到创建用户的界面，点击 <code>Create user</code> 创建用户：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125213239374.png" alt="在这里插入图片描述"></p>
+<p>填写用户名和密码，并将角色 <code>test_role</code> 赋予该用户。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125213636132.png" alt="在这里插入图片描述"></p>
+<h4 id="53使用用户">5.3，使用用户</h4>
+<p>使用新创建的用户登录 Kibana：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210125214121770.png" alt="在这里插入图片描述"></p>
+<p>该用户只对 <code>test_index</code> 索引有<strong>只读权限</strong>；如果进行超越范围的操作，将发生错误。</p>
+<h3 id="6传输加密">6，传输加密</h3>
+<p>传输加密指的是在数据的传输过程中，对数据进行加密（可防止数据被抓包）。</p>
+<p>传输加密分为<strong>集群内</strong>加密和<strong>集群间</strong>加密：</p>
+<ul>
+<li>集群内加密指的是 ES 集群内部各节点之间的数据传输时的加密。
+<ul>
+<li>通过 TLS 协议完成。</li>
+</ul>
+</li>
+<li>集群间加密指的是外部客户访问 ES 时，数据传输的加密。
+<ul>
+<li>通过 HTTPS 协议完成。</li>
+</ul>
+</li>
+</ul>
+<p>更多的内容可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/configuring-tls.html">这里</a>。</p>
+<h4 id="61集群内部传输加密">6.1，集群内部传输加密</h4>
+<p>在 ES 中可以使用 TLS 协议对数据进行加密，需要进行以下步骤：</p>
+<ul>
+<li>创建 CA</li>
+<li>为 ES 节点创建证书和私钥</li>
+<li>配置证书</li>
+</ul>
+<h5 id="1创建-ca-证书">1，创建 CA 证书</h5>
+<p>使用如下命令创建 CA：</p>
+<pre><code class="language-shell">bin\elasticsearch-certutil ca
+</code></pre>
+<p>成功后，可以看到当前文件夹下多了一个文件：</p>
+<pre><code class="language-shell">elastic-stack-ca.p12
+</code></pre>
+<h5 id="2生成证书和私钥">2，生成证书和私钥</h5>
+<p>使用如下命令为 ES 中的节点生成证书和私钥</p>
+<pre><code class="language-shell">bin\elasticsearch-certutil cert --ca elastic-stack-ca.p12
+</code></pre>
+<p>成功后，可以看到当前文件夹下多了一个文件：</p>
+<pre><code class="language-shell">elastic-certificates.p12
+</code></pre>
+<h5 id="3配置证书">3，配置证书</h5>
+<p>将创建好的证书 <code>elastic-certificates.p12</code> 放在 <code>config/certs</code> 目录下。</p>
+<h5 id="4启动集群">4，启动集群</h5>
+<pre><code class="language-shell"># 启动第一个节点
+bin\elasticsearch 
+-E node.name=node0 
+-E cluster.name=mycluster
+-E path.data=node0_data 
+-E http.port=9200 
+-E xpack.security.enabled=true 
+-E xpack.security.transport.ssl.enabled=true 
+-E xpack.security.transport.ssl.verification_mode=certificate 
+-E xpack.security.transport.ssl.keystore.path=certs\elastic-certificates.p12 
+-E xpack.security.transport.ssl.truststore.path=certs\elastic-certificates.p12
+
+# 启动第二个节点
+bin\elasticsearch 
+-E node.name=node1 
+-E cluster.name=mycluster 
+-E path.data=node1_data 
+-E http.port=9201 
+-E xpack.security.enabled=true 
+-E xpack.security.transport.ssl.enabled=true 
+-E xpack.security.transport.ssl.verification_mode=certificate 
+-E xpack.security.transport.ssl.keystore.path=certs\elastic-certificates.p12 
+-E xpack.security.transport.ssl.truststore.path=certs\elastic-certificates.p12
+</code></pre>
+<p>不提供证书的节点将无法加入集群：</p>
+<pre><code class="language-shell">bin\elasticsearch 
+-E node.name=node2 
+-E cluster.name=mycluster 
+-E path.data=node2_data 
+-E http.port=9202 
+-E xpack.security.enabled=true 
+-E xpack.security.transport.ssl.enabled=true 
+-E xpack.security.transport.ssl.verification_mode=certificate
+# 加入失败
+</code></pre>
+<p>也可以将配置写在配置文件 <code>elasticsearch.yml</code> 中，如下：</p>
+<pre><code class="language-shell">xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12
+xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12
+</code></pre>
+<h4 id="62集群外部传输加密">6.2，集群外部传输加密</h4>
+<p>通过配置如下三个参数，使得 ES 支持 HTTPS：</p>
+<pre><code class="language-shell">xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.keystore.path: certs/elastic-certificates.p12
+xpack.security.http.ssl.truststore.path: certs/elastic-certificates.p12
+</code></pre>
+<p>在命令行启动：</p>
+<pre><code class="language-shell">bin\elasticsearch 
+-E node.name=node0 
+-E cluster.name=mycluster
+-E path.data=node0_data 
+-E http.port=9200 
+-E xpack.security.enabled=true 
+-E xpack.security.transport.ssl.enabled=true 
+-E xpack.security.transport.ssl.verification_mode=certificate 
+-E xpack.security.transport.ssl.keystore.path=certs\elastic-certificates.p12 
+-E xpack.security.transport.ssl.truststore.path=certs\elastic-certificates.p12
+-E xpack.security.http.ssl.enabled=true 
+-E xpack.security.http.ssl.keystore.path=certs\elastic-certificates.p12 
+-E xpack.security.http.ssl.truststore.path=certs\elastic-certificates.p12
+</code></pre>
+<p>启动成功后，可以通过 HTTPS 协议访问 ES：</p>
+<pre><code class="language-shell">https://localhost:5601/
+</code></pre>
+<h4 id="63配置-kibana-链接-es-https">6.3，配置 Kibana 链接 ES HTTPS</h4>
+<h5 id="1为-kibana-生成-pem-文件">1，为 Kibana 生成 pem 文件</h5>
+<p>首先用 <code>openssl</code> 为 kibana 生成 pem：</p>
+<pre><code class="language-shell">openssl pkcs12 -in elastic-certificates.p12 -cacerts -nokeys -out elastic-ca.pem
+</code></pre>
+<p>成功后会生成如下文件：</p>
+<pre><code class="language-shell">elastic-ca.pem
+</code></pre>
+<p>将该文件放在 <code>config\certs</code> 目录下。</p>
+<h5 id="2配置-kibanayml">2，配置 kibana.yml</h5>
+<p>在 Kibana 的配置文件 <code>kibana.yml</code> 中配置如下参数：</p>
+<pre><code class="language-shell">elasticsearch.hosts: [&quot;https://localhost:9200&quot;]
+elasticsearch.ssl.certificateAuthorities: [&quot;C:\\elasticsearch-7.10.1\\config\\certs\\elastic-ca.pem&quot;]
+elasticsearch.ssl.verificationMode: certificate
+</code></pre>
+<h5 id="3运行-kibana">3，运行 Kibana</h5>
+<pre><code class="language-shell">bin\kibana
+</code></pre>
+<h4 id="64配置-kibana-支持-https">6.4，配置 Kibana 支持 HTTPS</h4>
+<h5 id="1为-kibana-生成-pem">1，为 Kibana 生成 pem</h5>
+<pre><code class="language-shell">bin/elasticsearch-certutil ca --pem
+</code></pre>
+<p>上面命令执行成功后会生成如下 <strong>zip</strong> 文件：</p>
+<pre><code class="language-shell">elastic-stack-ca.zip
+</code></pre>
+<p>将该文件解压，会有两个文件：</p>
+<pre><code class="language-shell">ca.crt
+ca.key
+</code></pre>
+<p>将这两个文件放到 Kibana 的配置文件目录 <code>config\certs</code>。</p>
+<h5 id="2配置-kibanayml-1">2，配置 kibana.yml</h5>
+<p>在 Kibana 的配置文件 <code>kibana.yml</code> 中配置如下参数：</p>
+<pre><code class="language-shell">server.ssl.enabled: true
+server.ssl.certificate: config\\certs\\ca.crt
+server.ssl.key: config\\certs\\ca.key
+</code></pre>
+<h5 id="3运行-kibana-1">3，运行 Kibana</h5>
+<pre><code class="language-shell">bin\kibana
+</code></pre>
+<p>启动成功后，可以通过 HTTPS 协议访问 Kibana：</p>
+<pre><code class="language-shell">https://localhost:5601/
+</code></pre>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-search-template-suggest">ElasticSearch 搜索模板与建议</a></p>
+<p><a href="/2021/02/es-aggregations">ElasticSearch 聚合分析</a></p>
+<p><a href="/2021/02/es-mappings">ElasticSearch 中的 Mapping</a></p>
+<p><a href="/2021/02/es-datatypes">ElasticSearch 数据建模</a></p>
+<p><a href="/2021/02/es-cluster">ElasticSearch 分布式集群</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-26
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-cluster/">
+            <span class="next-text nav-default">ElasticSearch 分布式集群</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-cluster-secure/" class="leancloud_visitors" data-flag-title="ElasticSearch 集群安全">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

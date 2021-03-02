@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Thu, 25 Feb 2021 22:39:52 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 26 Feb 2021 22:39:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>ElasticSearch 集群安全</title>
+      <link>https://codeshellme.github.io/2021/02/es-cluster-secure/</link>
+      <pubDate>Fri, 26 Feb 2021 22:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-cluster-secure/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 在安装完 ES 后，ES 默认是没有任何安全防护的。 ES 的安全管</description>
+    </item>
     
     <item>
       <title>ElasticSearch 分布式集群</title>
