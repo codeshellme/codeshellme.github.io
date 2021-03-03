@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch 集群规划部署与运维 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，常见的集群部署方式 ES 有以下不同类型的节点： Mast" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-cluster-conf/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch 集群规划部署与运维" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，常见的集群部署方式 ES 有以下不同类型的节点： Mast" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-cluster-conf/" />
+<meta property="article:published_time" content="2021-02-27T22:39:52+08:00" />
+<meta property="article:modified_time" content="2021-02-27T22:45:52+08:00" />
+<meta itemprop="name" content="ElasticSearch 集群规划部署与运维">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，常见的集群部署方式 ES 有以下不同类型的节点： Mast">
+<meta itemprop="datePublished" content="2021-02-27T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-27T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="2889">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch 集群规划部署与运维"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，常见的集群部署方式 ES 有以下不同类型的节点： Mast"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch 集群规划部署与运维</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-27 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 2889 字 </span>
+          <span class="more-meta"> 阅读约需 6 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1常见的集群部署方式">1，常见的集群部署方式</a></li>
+        <li><a href="#2分片设计与管理">2，分片设计与管理</a></li>
+        <li><a href="#3集群容量规划">3，集群容量规划</a></li>
+        <li><a href="#4es-开发模式与生产模式">4，ES 开发模式与生产模式</a></li>
+        <li><a href="#5监控集群状态">5，监控集群状态</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1常见的集群部署方式">1，常见的集群部署方式</h3>
+<p>ES 有以下不同类型的节点：</p>
+<ul>
+<li><strong>Master</strong>(eligible)节点：只有 Master eligible 节点可以成为 Master 节点。
+<ul>
+<li>Master 节点用于维护索引信息和集群状态。</li>
+</ul>
+</li>
+<li><strong>Data</strong> 节点：负责数据存储。</li>
+<li><strong>Ingest</strong> 节点：数据预处理。</li>
+<li><strong>Coordinating</strong> 节点：处理用户请求。</li>
+<li><strong>ML</strong> 节点：机器学习相关功能。</li>
+</ul>
+<p>在开发环境中，一个节点可以承担多种角色。</p>
+<p>但是在生产环境，建议一个节点只负责单一角色，以达到高可用性及高性能。同时根据业务需求和硬件资源来合理分配节点。</p>
+<h4 id="11节点配置参数">1.1，节点配置参数</h4>
+<p>在默认情况下，一个节点会同时扮演 Master eligible Node，Data Node 和 Ingest Node。</p>
+<p>各类型的节点配置参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>节点类型</th>
+<th>配置参数</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master eligible</td>
+<td>node.master</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Data Node</td>
+<td>node.data</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Ingest Node</td>
+<td>node.ingest</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Coordinating</td>
+<td>无</td>
+<td>-</td>
+</tr>
+<tr>
+<td>ML</td>
+<td>node.ml</td>
+<td>true（需要 enable x-pack）</td>
+</tr>
+</tbody>
+</table>
+<p>默认情况下，每个节点都是一个 Coordinating 节点，可以将 <code>node.master</code>，<code>node.data</code> 和 <code>node.ingest</code> 同时设置为 <code>false</code>，让一个节点<strong>只负责</strong> Coordinating 节点的角色。</p>
+<h4 id="12配置单一角色">1.2，配置单一角色</h4>
+<p>默认情况下，一个节点会承担多个角色，可以通过配置让一个节点只负责单一角色。</p>
+<p>单一职责节点配置：</p>
+<ul>
+<li><strong>Master</strong> 节点：从高可用和避免脑裂的角度考虑，生产环境可配置 3 个 Master节点。
+<ul>
+<li>node.master：<code>true</code></li>
+<li>node.ingest：<code>false</code></li>
+<li>node.data：<code>false</code></li>
+</ul>
+</li>
+<li><strong>Data</strong> 节点
+<ul>
+<li>node.master：<code>false</code></li>
+<li>node.ingest：<code>false</code></li>
+<li>node.data：<code>true</code></li>
+</ul>
+</li>
+<li><strong>Ingest</strong> 节点
+<ul>
+<li>node.master：<code>false</code></li>
+<li>node.ingest：<code>true</code></li>
+<li>node.data：<code>false</code></li>
+</ul>
+</li>
+<li><strong>Coordinating</strong> 节点
+<ul>
+<li>node.master：<code>false</code></li>
+<li>node.ingest：<code>false</code></li>
+<li>node.data：<code>false</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="13水平扩展架构">1.3，水平扩展架构</h4>
+<p>集群的水平扩展：</p>
+<ul>
+<li>当需要更多的磁盘容量和读写能力时，可以增加 Data Node；</li>
+<li>当系统有大量的复杂查询和聚合分析时，可以增加 Coordinating Node。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210128153113337.png" alt="在这里插入图片描述"></p>
+<h4 id="14读写分离架构">1.4，读写分离架构</h4>
+<p>使用 <strong>Ingest</strong> 节点对数据预处理。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210128152858813.png" alt="在这里插入图片描述"></p>
+<h3 id="2分片设计与管理">2，分片设计与管理</h3>
+<p>ES 中的文档存储在索引中，索引的最小存储单位是分片，不同的索引存储在不同的分片中。</p>
+<blockquote>
+<p>当讨论分片时，一般是<strong>基于某个索引</strong>的，不同索引之间的分片互不干扰。</p>
+</blockquote>
+<p>分片分为<strong>主分片</strong>和<strong>副本分片</strong>两种；副本分片是主分片的拷贝，主要用于备份数据。</p>
+<p>关于<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules.html">主副分片数的设置</a>：</p>
+<ul>
+<li>主分片数：主分片数在索引创建时确定，之后不能修改。
+<ul>
+<li>在 ES 7.0 以后，一个索引<strong>默认</strong>有一个主分片。</li>
+<li>一个索引的主分片数不能超过 <strong>1024</strong>。</li>
+</ul>
+</li>
+<li>副本分片数：副本分片数在索引创建之后可以动态修改。
+<ul>
+<li>副本分片数默认为 1。</li>
+</ul>
+</li>
+</ul>
+<p>关于每个节点上的分片数的设置，可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/allocation-total-shards.html">这里</a>。</p>
+<h4 id="21主分片的设计">2.1，主分片的设计</h4>
+<p>如果某个索引只有<strong>一个主分片</strong>：</p>
+<ul>
+<li>优点：查询算分和聚合不精准的问题都可避免。</li>
+<li>缺点：集群无法实现水平扩展。
+<ul>
+<li>因为索引（不管该索引的数据量达到了多大）只能存储在一个主分片上（一个分片不能跨节点存储/处理）；</li>
+<li>对于单个主分片的索引来说，即使有再多的数据节点，它也无法利用。</li>
+</ul>
+</li>
+</ul>
+<p>如果某个索引有<strong>多个主分片</strong>：</p>
+<ul>
+<li>优点：集群可以实现水平扩展。
+<ul>
+<li>对于拥有多个主分片的索引，该索引的数据可以分布在多个主分片上，不同的主分片可以分布在不同的数据节点中；这样，该索引就可以利用多个节点的读写能力，从而处理更多的数据。</li>
+<li>如果当前的<strong>数据节点数</strong>小于<strong>主分片数</strong>，当有新的数据节点加入集群后，这些主分片就会自动被分配到新的数据节点上，从而实现水平扩容。</li>
+</ul>
+</li>
+<li>缺点：但是主分片数也不能过多，因为对于分片的管理也需要额外的资源开销。主要会带来以下问题：
+<ul>
+<li>每次搜索/聚合数据时需要从多个分片上获取数据，并汇总；除了会带来精准度问题，还会有性能问题。</li>
+<li>分片的 Meta 信息由 Master 节点维护管理，过多的分片，会增加 Master 节点的负担。</li>
+</ul>
+</li>
+</ul>
+<p>对于<strong>分片的设计建议</strong>：</p>
+<ul>
+<li>从分片的存储量考虑：
+<ul>
+<li>对于日志类应用，单个分片不要大于 50G；</li>
+<li>对于搜索类应用，单个分片不要大于 20G；</li>
+</ul>
+</li>
+<li>从分片数量考虑：
+<ul>
+<li><strong>一个 ES 集群的分片</strong>（包括主分片和副本分片）<strong>总数不超过 10 W</strong>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="22副本分片的设计">2.2，副本分片的设计</h4>
+<p>副本分片是主分片的备份：</p>
+<ul>
+<li>优点：
+<ul>
+<li>可防止数据丢失，提高系统的可用性；</li>
+<li>可以分担主分片的查询压力，提高系统的<strong>查询</strong>性能。</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>与主分片一样，需要占用系统资源，有多少个副本，就会增加多少倍的存储消耗。</li>
+<li>会降低系统的写入速度。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3集群容量规划">3，集群容量规划</h3>
+<p>容量规划指的是，在一个实际项目中：</p>
+<ul>
+<li>一个集群需要多少节点，以及节点类型分配。</li>
+<li>一个索引需要几个主分片，几个副本分片。</li>
+</ul>
+<h4 id="31要考虑的因素">3.1，要考虑的因素</h4>
+<p>做容量规划时要考虑的因素：</p>
+<ul>
+<li>机器的软硬件配置</li>
+<li>数据量：
+<ul>
+<li>单条文档的尺寸</li>
+<li>文档的总数量</li>
+<li>索引的总数量</li>
+</ul>
+</li>
+<li>业务需求：
+<ul>
+<li>文档的复杂度、数据格式</li>
+<li>写入需求</li>
+<li>查询需求</li>
+<li>聚合需求</li>
+<li>等</li>
+</ul>
+</li>
+</ul>
+<h4 id="32硬件配置">3.2，硬件配置</h4>
+<p>对系统整体性能要求高的，建议使用 SSD，内存与硬盘的比例可为 1：10。</p>
+<p>对系统整体性能要求一般的，可使用机械硬盘，内存与硬盘的比例可为 1：50。</p>
+<p>JVM 配置为机器内存的一半，建议 JVM 内存配置不超过 32 G。</p>
+<p>单个节点的数据建议控制在 2TB 以内，最大不超过 5 TB。</p>
+<h4 id="33常见应用场景">3.3，常见应用场景</h4>
+<p>有如下常见应用场景：</p>
+<ul>
+<li>搜索类应用：
+<ul>
+<li>总体数据集大小基本固定，数据量增长较慢。</li>
+</ul>
+</li>
+<li>日志类应用：
+<ul>
+<li>每日新增数据量比较稳定，数据量持续增长，可预期。</li>
+</ul>
+</li>
+</ul>
+<h5 id="1处理时间序列数据">1，处理时间序列数据</h5>
+<p>ES 中提供了 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/date-math-index-names.html">Date Math 索引名</a>用于写入时间序列的数据。</p>
+<p>示例：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210127170002343.png" alt="在这里插入图片描述"></p>
+<p>请求 URI 要经过 URL 编码：</p>
+<pre><code class="language-shell"># PUT /&lt;my-index-{now/d}&gt;
+# 经过 URL 编码后
+PUT /%3Cmy-index-%7Bnow%2Fd%7D%3E
+</code></pre>
+<p>查询示例：</p>
+<pre><code class="language-shell"># POST /&lt;logs-{now/d}/_search
+POST /%3Clogs-%7Bnow%2Fd%7D%3E/_search
+
+# POST /&lt;logs-{now/w}/_search
+POST /%3Clogs-%7Bnow%2Fw%7D%3E/_search
+</code></pre>
+<h3 id="4es-开发模式与生产模式">4，ES 开发模式与生产模式</h3>
+<p>从 ES 5 开始，ES 支持开发模式与生产模式，ES 可通过配置自动选择不同的模式去运行：</p>
+<ul>
+<li>开发模式配置：
+<ul>
+<li>http.host：localhost</li>
+<li>transport.bind_host：localhost</li>
+</ul>
+</li>
+<li>生产模式配置：
+<ul>
+<li>http.host：真实 IP 地址</li>
+<li>transport.bind_host：真实 IP 地址</li>
+</ul>
+</li>
+</ul>
+<h4 id="41booststrap-检测">4.1，Booststrap 检测</h4>
+<p>在生产模式启动 ES 集群时，会进行 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html">Booststrap 检测</a>（只有检测通过才能启动成功），它包括：</p>
+<ul>
+<li>JVM 检测</li>
+<li>Linux 检测：只在 Linux 环境进行</li>
+</ul>
+<h4 id="42jvm-配置">4.2，JVM 配置</h4>
+<p>JVM 通过 <code>config</code> 目录下的 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/jvm-options.html">jvm.options</a> 文件进行配置，需要注意以下几点：</p>
+<ul>
+<li>将 Xms 和 Xmx 设置成一样；</li>
+<li>Xmx 不要超过物理内存的 50%，最大内存建议不超过 32G；</li>
+<li>JVM 有 Server 和 Client 两种模式，在 ES 的生产模式必须使用 Server 模式；</li>
+<li>需要关闭 JVM Swapping</li>
+</ul>
+<h4 id="43更多的-es-配置">4.3，更多的 ES 配置</h4>
+<p>更多的关于 <strong>ES 的配置</strong>可参考其官方文档，包括：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html">Configuring Elasticsearch</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/important-settings.html">Important Elasticsearch configuration</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/system-config.html">Important System Configuration</a></li>
+</ul>
+<h3 id="5监控集群状态">5，监控集群状态</h3>
+<p>集群状态为 <strong>Green</strong> 只能代表分片正常分配，不能代表没有其它问题。</p>
+<p>ES 提供了很多监控相关的 API：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-health.html">_cluster/health</a>：集群健康状态。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html">_cluster/state</a>：集群状态。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-stats.html">_cluster/stats</a>：集群指标统计。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-pending.html">_cluster/pending_tasks</a>：集群中正在执行的任务。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/tasks.html">_tasks</a>：集群任务。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-allocation-explain.html">_cluster/allocation/explain</a>：查看集群分片的分配情况，用于查找原因。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html">_nodes/stats</a>：节点指标统计。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-info.html">_nodes/info</a>：节点信息。</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-stats.html">_index/stats</a>：索引指标统计。</li>
+<li>一些 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cat.html">cat</a> API。</li>
+</ul>
+<h4 id="51slow-log">5.1，Slow log</h4>
+<p>ES 的 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-slowlog.html">Slow log</a> 可以设置一些阈值，当写入时间或者查询时间超过这些阈值后，会将相关操作记录日志。</p>
+<h4 id="52集群诊断">5.2，集群诊断</h4>
+<p>需要监控的指标：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210128102700148.png" alt="在这里插入图片描述"></p>
+<p>一个集群诊断工具 <a href="https://github.com/elastic/support-diagnostics">Support Diagnostics</a>。</p>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-aggregations">ElasticSearch 聚合分析</a></p>
+<p><a href="/2021/02/es-mappings">ElasticSearch 中的 Mapping</a></p>
+<p><a href="/2021/02/es-datatypes">ElasticSearch 数据建模</a></p>
+<p><a href="/2021/02/es-cluster">ElasticSearch 分布式集群</a></p>
+<p><a href="/2021/02/es-cluster-secure">ElasticSearch 集群安全</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/es-cluster-secure/">
+            <span class="next-text nav-default">ElasticSearch 集群安全</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-cluster-conf/" class="leancloud_visitors" data-flag-title="ElasticSearch 集群规划部署与运维">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

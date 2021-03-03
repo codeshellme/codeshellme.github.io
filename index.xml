@@ -58,6 +58,15 @@
     </item>
     
     <item>
+      <title>ElasticSearch 集群规划部署与运维</title>
+      <link>https://codeshellme.github.io/2021/02/es-cluster-conf/</link>
+      <pubDate>Sat, 27 Feb 2021 22:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/02/es-cluster-conf/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，常见的集群部署方式 ES 有以下不同类型的节点： Mast</description>
+    </item>
+    
+    <item>
       <title>ElasticSearch 集群安全</title>
       <link>https://codeshellme.github.io/2021/02/es-cluster-secure/</link>
       <pubDate>Fri, 26 Feb 2021 22:39:52 +0800</pubDate>
