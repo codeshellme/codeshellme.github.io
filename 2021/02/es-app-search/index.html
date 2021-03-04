@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Elastic App Search 快速构建 ES 应用 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io App Search 是 Elastic 家族中的一个产品，它可以帮助我们（基于 ES）快" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/02/es-app-search/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Elastic App Search 快速构建 ES 应用" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io App Search 是 Elastic 家族中的一个产品，它可以帮助我们（基于 ES）快" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/02/es-app-search/" />
+<meta property="article:published_time" content="2021-02-28T22:39:52+08:00" />
+<meta property="article:modified_time" content="2021-02-28T22:45:52+08:00" />
+<meta itemprop="name" content="Elastic App Search 快速构建 ES 应用">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io App Search 是 Elastic 家族中的一个产品，它可以帮助我们（基于 ES）快">
+<meta itemprop="datePublished" content="2021-02-28T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-28T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="2479">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Elastic App Search 快速构建 ES 应用"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io App Search 是 Elastic 家族中的一个产品，它可以帮助我们（基于 ES）快"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Elastic App Search 快速构建 ES 应用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-28 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 2479 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1安装-app-search">1，安装 App Search</a></li>
+        <li><a href="#2准备电影数据">2，准备电影数据</a></li>
+        <li><a href="#3创建-movies_db-项目">3，创建 movies_db 项目</a></li>
+        <li><a href="#4导入电影数据">4，导入电影数据</a></li>
+        <li><a href="#5管理数据">5，管理数据</a></li>
+        <li><a href="#6改变字段类型">6，改变字段类型</a></li>
+        <li><a href="#7生成-ui-界面">7，生成 UI 界面</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><a href="https://www.elastic.co/cn/app-search/">App Search</a> 是 Elastic 家族中的一个产品，它可以帮助我们（基于 ES）快速高效的构建搜索应用。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210203153515918.png" alt="在这里插入图片描述"></p>
+<p><strong>App Search</strong> 的官方文档可参考<a href="https://www.elastic.co/guide/en/app-search/current/index.html">这里</a>。</p>
+<h3 id="1安装-app-search">1，安装 App Search</h3>
+<p>首先确保当前机器已安装 <strong>Java8</strong> 或 <strong>Java11</strong> 环境，并且需要有对应版本的 <strong>ElasticSearch</strong>。</p>
+<h4 id="11下载-app-search-和-es">1.1，下载 App Search 和 ES</h4>
+<p>在<a href="https://www.elastic.co/cn/downloads/enterprise-search">这里</a>下载 App Search，根据自己的系统，选择相应的版本。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210203160517406.png" alt="在这里插入图片描述"></p>
+<p>然后需要下载相应版本的 ES，我这里下载的都是 <code>Linux 7.10.2</code> 版的压缩包：</p>
+<pre><code class="language-shell">elasticsearch-7.10.2-linux-x86_64.tar.gz
+enterprise-search-7.10.2.tar.gz
+</code></pre>
+<p>下载好之后将压缩包解压。</p>
+<h4 id="12运行-es">1.2，运行 ES</h4>
+<p>ES 要在安全模式运行，在 ES 的配置文件 <code>config/elasticsearch.yml</code> 中加入下面两行配置：</p>
+<pre><code class="language-shell">xpack.security.enabled: true
+xpack.security.authc.api_key.enabled: true
+</code></pre>
+<p>使用下面命令运行 ES：</p>
+<pre><code class="language-shell">bin/elasticsearch
+</code></pre>
+<p>可以通过访问地址 <code>http://localhost:9200/</code> 查看 ES 是否启动成功。</p>
+<p>使用下面命令为 ES 的默认用户生成随机密码：</p>
+<pre><code class="language-shell">bin/elasticsearch-setup-passwords auto
+</code></pre>
+<p>密码如下（要记录下来，以后需要使用）：</p>
+<pre><code class="language-shell">Changed password for user apm_system
+PASSWORD apm_system = XkF0dLKfcs3Yww4p4r3l
+
+Changed password for user kibana_system
+PASSWORD kibana_system = NqAuVK8UA21Iit7nzEpn
+
+Changed password for user kibana
+PASSWORD kibana = NqAuVK8UA21Iit7nzEpn
+
+Changed password for user logstash_system
+PASSWORD logstash_system = nq6hwgzGXwrwnrZPTW5a
+
+Changed password for user beats_system
+PASSWORD beats_system = BhT671Xf0PWGrbqly5R3
+
+Changed password for user remote_monitoring_user
+PASSWORD remote_monitoring_user = SJ9j9KMZeT4WMQiOwLtG
+
+Changed password for user elastic
+PASSWORD elastic = 7RiVeroRF273yvqJdhlR
+</code></pre>
+<h4 id="13运行-app-search">1.3，运行 App Search</h4>
+<p>在 App Search 的配置文件 <code>config/enterprise-search.yml</code> 中加入下面配置：</p>
+<pre><code class="language-shell">ent_search.auth.source: standard
+elasticsearch.username: elastic
+elasticsearch.password: 7RiVeroRF273yvqJdhlR 
+allow_es_settings_modification: true
+</code></pre>
+<p>注意 <code>username</code> 和 <code>password</code> 是在上面步骤生成的。</p>
+<p>使用命令运行 App Search：</p>
+<pre><code class="language-shell">bin/enterprise-search
+</code></pre>
+<p>第一次会启动失败，并且输出如下内容：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210204101032183.png" alt="在这里插入图片描述"></p>
+<p>将 <code>encryption_keys</code> 写入配置文件 <code>config/enterprise-search.yml</code>：</p>
+<pre><code class="language-shell">secret_management.encryption_keys: [34e51dd1111fbeeffce290bdf75755db90af3350849b4ded59fc46c3c97f2f13]
+</code></pre>
+<p>再次启动 App Search，会输出一对用户名和密码（<strong>只会输出一次，注意记录</strong>）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210204101548251.png" alt="在这里插入图片描述"></p>
+<p>该用户名密码用于登录 <code>App Search</code>：</p>
+<pre><code class="language-shell">username: enterprise_search
+password: 6ucyhwfhsmx98miv
+</code></pre>
+<p>另外还会输出 <code>secret_session_key</code>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210204101901971.png" alt="在这里插入图片描述"></p>
+<p>需要将 <code>secret_session_key</code> 写入配置文件，然后<strong>再次重启</strong> App Search。</p>
+<pre><code class="language-shell">secret_session_key: 0af3170d00384c24fa61f3ac5a6561d251aecf7fef8194c3627613f0fcc8d4469531fc044de815a7b5e1ff47b737f69cf5a5d606d2d43e678a70a647f57b8f76
+</code></pre>
+<h4 id="14访问-app-search">1.4，访问 App Search</h4>
+<p>App Search 启动成功后，会在 <strong>3002</strong> 端口监听服务。</p>
+<p>用浏览器访问地址 <code>http://localhost:3002/</code>，并使用上面步骤生成的用户名和密码登录系统：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210203180417119.png" alt="在这里插入图片描述"></p>
+<p>到此为止，App Search 就可以使用了。</p>
+<p>下面使用 App Search 构建一个<strong>电影搜索应用</strong>。</p>
+<h3 id="2准备电影数据">2，准备电影数据</h3>
+<p>我在<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/es/movies.txt">这里</a>准备了200 多条电影数据，每条电影数据包含多个字段，比如：</p>
+<pre><code class="language-shell">{
+	&quot;publish_time&quot;: &quot;1994-09-10&quot;,
+	&quot;movie_time&quot;: &quot;142&quot;,
+	&quot;other_name&quot;: &quot;月黑高飞(港) / 刺激1995(台) / 地狱诺言 / 铁窗岁月 / 消香克的救赎&quot;,
+	&quot;year&quot;: &quot;1994&quot;,
+	&quot;classifications&quot;: &quot;剧情/犯罪&quot;,
+	&quot;score&quot;: &quot;9.7&quot;,
+	&quot;language&quot;: &quot;英语&quot;,
+	&quot;title&quot;: &quot;肖申克的救赎 / The Shawshank Redemption / 月黑高飞(港)  /  刺激1995(台)&quot;,
+	&quot;introduction&quot;: &quot;一场谋杀案使银行家安迪（蒂姆•罗宾斯 Tim Robbins 饰）蒙冤入狱，谋杀妻子及其情人的指控将囚禁他终生。在肖申克监狱的首次现身就让监狱“大哥”瑞德（摩根•弗里曼 Morgan Freeman 饰）对他另眼相看。瑞德帮助他搞到一把石锤和一幅女明星海报，两人渐成患难 之交。很快，安迪在监狱里大显其才，担当监狱图书管理员，并利用自己的金融知识帮助监狱官避税，引起了典狱长的注意，被招致麾下帮助典狱长洗黑钱。偶然一次，他得知一名新入狱的小偷能够作证帮他洗脱谋杀罪。燃起一丝希望的安迪找到了典狱长，希望他能帮自己翻案。阴险伪善的狱长假装答应安迪，背后却派人杀死小偷，让他唯一能合法出狱的希望泯灭。沮丧的安迪并没有绝望，在一个电闪雷鸣的风雨夜，一场暗藏几十年的越狱计划让他自我救赎，重获自由！老朋友瑞德在他的鼓舞和帮助下，也勇敢地奔向自由。本片获得1995年奥...&quot;,
+	&quot;country&quot;: &quot;美国&quot;,
+	&quot;directors&quot;: &quot;弗兰克·德拉邦特&quot;,
+	&quot;writers&quot;: &quot;弗兰克·德拉邦特 / 斯蒂芬·金&quot;,
+	&quot;actors&quot;: &quot;蒂姆·罗宾斯 / 摩根·弗里曼 / 鲍勃·冈顿 / 威廉姆·赛德勒 / 克兰西·布朗 / 吉尔·贝罗斯 / 马克·罗斯顿 / 詹姆斯·惠特摩 / 杰弗里·德曼 / 拉里·布兰登伯格 / 尼尔·吉恩托利 / 布赖恩·利比 / 大卫·普罗瓦尔 / 约瑟夫·劳格诺 / 祖德·塞克利拉 / 保罗·麦克兰尼 / 芮妮·布莱恩 / 阿方索·弗里曼 / V·J·福斯特 / 弗兰克·梅德拉诺 / 马克·迈尔斯 / 尼尔·萨默斯 / 耐德·巴拉米 / 布赖恩·戴拉特 / 唐·麦克马纳斯&quot;,
+	&quot;img_url&quot;: &quot;https://img2.doubanio.com/view/photo/s_ratio_poster/public/p480747492.webp&quot;
+}
+</code></pre>
+<p>每个字段的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>含义</th>
+<th>字段名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publish_time</td>
+<td>发布时间</td>
+<td>title</td>
+<td>电影名称</td>
+</tr>
+<tr>
+<td>movie_time</td>
+<td>电影时长</td>
+<td>introduction</td>
+<td>电影简介</td>
+</tr>
+<tr>
+<td>other_name</td>
+<td>电影别名</td>
+<td>country</td>
+<td>发行国家</td>
+</tr>
+<tr>
+<td>year</td>
+<td>发布年份</td>
+<td>directors</td>
+<td>导演</td>
+</tr>
+<tr>
+<td>classifications</td>
+<td>电影分类</td>
+<td>writers</td>
+<td>编剧</td>
+</tr>
+<tr>
+<td>score</td>
+<td>电影评分</td>
+<td>actors</td>
+<td>主演</td>
+</tr>
+<tr>
+<td>language</td>
+<td>语言</td>
+<td>img_url</td>
+<td>封面地址</td>
+</tr>
+</tbody>
+</table>
+<p>其中的字段 <code>other_name</code>、<code>classifications</code>、<code>title</code>、<code>writers</code>、<code>actors</code> 都是用斜杠分割。</p>
+<h3 id="3创建-movies_db-项目">3，创建 movies_db 项目</h3>
+<p>登录 App Search 后会进入如下页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210222143135912.png" alt="在这里插入图片描述"></p>
+<p>App Search 中的项目叫做 <code>Engine</code>，点击 <code>Luanch App Search</code>，创建一个搜索项目。</p>
+<p>填写引擎名称和支持的语言，然后点击 <code>Create Engine</code>，创建引擎：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223164230217.png" alt="在这里插入图片描述"></p>
+<p>访问地址 <code>http://localhost:3002/as#/engines/</code> 可以看到所有的项目：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223164717209.png" alt="在这里插入图片描述"></p>
+<p>点击引擎名称，可进入引擎的管理界面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223165443444.png" alt="在这里插入图片描述"></p>
+<h3 id="4导入电影数据">4，导入电影数据</h3>
+<p>从上图中可看到，导入数据有三种方式：</p>
+<ul>
+<li><strong>Paste JSON</strong></li>
+<li><strong>Upload a JSON file</strong></li>
+<li><strong>使用 API 导入数据</strong></li>
+</ul>
+<p>使用 API 导入数据，需要用到秘钥，可通过点击 <code>Credentials</code> 查看秘钥：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223170126824.png" alt="在这里插入图片描述"></p>
+<p>将 <code>private-key</code> 复制下来，用于写入电影数据。</p>
+<pre><code class="language-shell">Bearer private-98q3arch6n9we5wm96tc9s3a
+</code></pre>
+<p>下面是使用 API 写入数据的请求格式：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223170400466.png" alt="在这里插入图片描述"></p>
+<h4 id="41使用-python-写入数据">4.1，使用 Python 写入数据</h4>
+<p>下面编写 Python 代码写入电影数据，代码如下：</p>
+<pre><code class="language-python">#!/usr/bin/env python
+# coding=utf-8
+
+import sys
+import json
+import requests
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+def read_file(file_name):
+    f = open(file_name)
+    lines = f.readlines()
+
+    for line in lines:
+        try:
+            line = json.loads(line)
+        except Exception, e:
+            continue
+
+        print 'movie_name:', line['title']
+
+        yield line
+
+def transform_data(data):
+    other_name = data['other_name']
+    classifications = data['classifications']
+    title = data['title']
+    writers = data['writers']
+    actors = data['actors']
+
+    # 转成数组
+    other_name = [i.strip() for i in other_name.split('/')]
+    classifications = [i.strip() for i in classifications.split('/')]
+    title = [i.strip() for i in title.split('/')]
+    writers = [i.strip() for i in writers.split('/')]
+    actors = [i.strip() for i in actors.split('/')]
+
+    data['other_name'] = other_name
+    data['classifications'] = classifications
+    data['title'] = title
+    data['writers'] = writers
+    data['actors'] = actors
+
+def import_doc(engine, authorization, doc):
+    url = 'http://localhost:3002/api/as/v1/engines/%s/documents' % engine
+    headers = {
+            &quot;content-type&quot; : &quot;application/json&quot;,
+            &quot;Authorization&quot;: authorization, 
+            } 
+    content=[doc]
+
+    try:
+        resp = requests.post(url, headers = headers, data = json.dumps(content))
+        print 'response:', resp
+    except Exception, e:
+        print e
+  
+if __name__== &quot;__main__&quot;:
+    engine = 'movies-db'
+    authorization = 'Bearer private-98q3arch6n9we5wm96tc9s3a'
+    
+    n = 0
+    for data in read_file('./movies.txt'):
+        transform_data(data)
+
+        import_doc(engine, authorization, data)
+
+        n += 1
+        print 'count:', n
+</code></pre>
+<h3 id="5管理数据">5，管理数据</h3>
+<p>App Search 提供了一些功能，来帮助我们管理 ES 数据。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223175234210.png" alt="在这里插入图片描述"></p>
+<h3 id="6改变字段类型">6，改变字段类型</h3>
+<p>通过 <code>Schema</code> 可以修改字段的数据类型：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223181822832.png" alt="在这里插入图片描述"></p>
+<p>通过上图可以看到，ES 默认将数据的所有字段都处理成了 <strong>text</strong> 类型。</p>
+<p>下面修改几个字段的数据类型：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223183416546.png" alt="在这里插入图片描述"></p>
+<p>修改字段的数据类型会<strong>重建索引</strong>。</p>
+<h3 id="7生成-ui-界面">7，生成 UI 界面</h3>
+<p>点击 <code>Reference UI</code>（基于<a href="https://github.com/elastic/search-ui">search-ui</a> ）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223183855900.png" alt="在这里插入图片描述"></p>
+<p>点击生成后，会跳转到如下页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210223184622991.png" alt="在这里插入图片描述"></p>
+<p>如果觉得没有问题，可下载 UI 压缩包。</p>
+<pre><code class="language-shell">movies-db-react-demo-ui.zip
+</code></pre>
+<h4 id="71使用压缩包">7.1，使用压缩包</h4>
+<p>下载好压缩包后，将其解压。</p>
+<p>使用 <code>Reference UI</code> 创建出来的界面是基于 <strong>nodejs</strong> 的，要保证其版本在 10 以上。</p>
+<pre><code class="language-shell">$ node -v
+---------------
+v12.16.3
+</code></pre>
+<p>使用如下命令安装 UI：</p>
+<pre><code class="language-shell">npm install
+</code></pre>
+<p>启动 UI：</p>
+<pre><code class="language-shell">npm start
+</code></pre>
+<p>启动成功后，通过 3000 端口<code>http://localhost:3000</code> 访问界面。</p>
+<p><strong>其它 UI 工具</strong>：</p>
+<ul>
+<li><a href="https://opensource.appbase.io/reactivesearch/">Reactive Search</a>
+<ul>
+<li>案例：<a href="https://github.com/appbaseio-apps/airbeds">Airbeds</a></li>
+</ul>
+</li>
+</ul>
+<p>（本节完。）</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<p><a href="/2021/02/es-mappings">ElasticSearch 中的 Mapping</a></p>
+<p><a href="/2021/02/es-datatypes">ElasticSearch 数据建模</a></p>
+<p><a href="/2021/02/es-cluster">ElasticSearch 分布式集群</a></p>
+<p><a href="/2021/02/es-cluster-secure">ElasticSearch 集群安全</a></p>
+<p><a href="/2021/02/es-cluster-conf">ElasticSearch 集群的规划部署与运维</a></p>
+<hr>
+<p><em>欢迎关注作者公众号，获取更多技术干货。</em></p>
+<p><img src="https://img-blog.csdnimg.cn/20200505082843773.png?#pic_center" alt="码农充电站pro"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-02-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/03/es-logstash-beats/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Logstash-Beats入门</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/02/es-cluster-conf/">
+            <span class="next-text nav-default">ElasticSearch 集群规划部署与运维</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/02/es-app-search/" class="leancloud_visitors" data-flag-title="Elastic App Search 快速构建 ES 应用">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
