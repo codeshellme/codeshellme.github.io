@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>学习笔记 on 码农充电站</title>
+    <link>https://codeshellme.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in 学习笔记 on 码农充电站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>@码农充电站</copyright>
+    <lastBuildDate>Tue, 10 Aug 2021 21:39:52 +0800</lastBuildDate>
+    
+	<atom:link href="https://codeshellme.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>架构学习笔记</title>
+      <link>https://codeshellme.github.io/2021/08/jiagou-learn/</link>
+      <pubDate>Tue, 10 Aug 2021 21:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/08/jiagou-learn/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 架构设计的关键思维是判断和取舍，程序设计的关键思维是逻</description>
+    </item>
+    
+    <item>
+      <title>MySQL 学习笔记</title>
+      <link>https://codeshellme.github.io/2021/08/mysql-learn/</link>
+      <pubDate>Tue, 10 Aug 2021 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/08/mysql-learn/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，SQL 的两个标准 SQL 有两个重要的标准，分别是 SQL92 和 SQ</description>
+    </item>
+    
+  </channel>
+</rss>

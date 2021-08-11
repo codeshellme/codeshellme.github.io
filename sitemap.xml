@@ -30,6 +30,13 @@
   </url>
   
   <url>
+    <loc>https://codeshellme.github.io/learn-book/</loc>
+    <lastmod>2021-08-10T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://codeshellme.github.io/about/</loc>
     <lastmod>2020-03-28T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -38,7 +45,42 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2021-03-01T22:45:52+08:00</lastmod>
+    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/post/</loc>
+    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/08/jiagou-learn/</loc>
+    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/08/mysql-learn/</loc>
+    <lastmod>2021-08-10T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/</loc>
+    <lastmod>2021-08-10T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -52,13 +94,6 @@
   
   <url>
     <loc>https://codeshellme.github.io/2021/03/es-logstash-beats/</loc>
-    <lastmod>2021-03-01T22:45:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/post/</loc>
     <lastmod>2021-03-01T22:45:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -179,13 +214,6 @@
   <url>
     <loc>https://codeshellme.github.io/2021/02/es-introduction/</loc>
     <lastmod>2021-02-02T22:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/</loc>
-    <lastmod>2021-02-02T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
