@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>架构学习笔记1 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/arch1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="架构学习笔记1" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/arch1/" />
+<meta property="article:published_time" content="2021-11-18T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-18T21:41:52+08:00" />
+<meta itemprop="name" content="架构学习笔记1">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架">
+<meta itemprop="datePublished" content="2021-11-18T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-18T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="11947">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="架构学习笔记1"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">架构学习笔记1</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 11947 字 </span>
+          <span class="more-meta"> 阅读约需 24 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0什么是架构师">0，什么是架构师</a></li>
+        <li><a href="#1软件架构出现的历史背景">1，软件架构出现的历史背景</a></li>
+        <li><a href="#2架构设计的目的">2，架构设计的目的</a></li>
+        <li><a href="#3架构设计三原则">3，架构设计三原则</a></li>
+        <li><a href="#4架构复杂度的六个来源">4，架构复杂度的六个来源</a></li>
+        <li><a href="#5架构设计流程">5，架构设计流程</a></li>
+        <li><a href="#6常用的高性能架构模式">6，常用的高性能架构模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 2 篇文章是我在学习架构的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/arch1/"><strong>第一篇 架构学习笔记1</strong></a>
+<ul>
+<li>0，什么是架构师</li>
+<li>1，软件架构出现的历史背景</li>
+<li>2，架构设计的目的</li>
+<li>3，架构设计三原则</li>
+<li>4，架构复杂度的六个来源</li>
+<li>5，架构设计流程</li>
+<li>6，常用的高性能架构模式</li>
+</ul>
+</li>
+<li><a href="/2021/11/arch2/"><strong>第二篇 架构学习笔记2</strong></a>
+<ul>
+<li>7，常用的高可用架构模式</li>
+<li>8，常用的可扩展架构模式</li>
+<li>9，架构师如何判断技术演进的方向</li>
+<li>10，互联网架构模板</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>架构设计的关键思维是判断和取舍，程序设计的关键思维是逻辑和实现。</p>
+<h3 id="0什么是架构师">0，什么是架构师</h3>
+<p>如果把程序员类比成建筑师，按照能力水平来分，大体可分为三个层次：</p>
+<ul>
+<li>搬砖师：他们的编程能力和业务基本上停留在堆叠代码，按照要求去实现功能需求的层面</li>
+<li>工程师：致力于不断提升软件代码的工程质量的程序员，代码在他们眼里是一种艺术，是自己生命的一部分。他们会把写出来的代码改了又改，直到让自己满意为止。</li>
+<li>架构师：掌控全局，对软件工程的执行结果负责，包括：按时按质进行软件的迭代和发布、敏捷地响应需求变更、防范软件质量风险（避免发生软件质量事故）、降低迭代维护成本。</li>
+</ul>
+<h3 id="1软件架构出现的历史背景">1，软件架构出现的历史背景</h3>
+<p>20 世纪 60 年代<strong>第一次软件危机</strong>引出了“<strong>结构化编程</strong>”，创造了“模块”概念；“<strong>软件危机</strong>”、“<strong>软件工程</strong>”、“<strong>结构化程序设计</strong>” 都被提了出来。</p>
+<p>第一次软件危机中的重要事件：</p>
+<ul>
+<li>1963 年美国的水手一号火箭发射失败事故，是因为一行 FORTRAN 代码错误导致的。</li>
+<li><strong>布鲁克斯</strong>主导的 IBM 的 System/360 的操作系统开发，投入巨大，却没能做好。</li>
+</ul>
+<blockquote>
+<p>布鲁克斯后来写出了注明的《人月神话》。</p>
+</blockquote>
+<p>20 世纪 80 年代<strong>第二次软件危机</strong>引出了“<strong>面向对象编程</strong>”，创造了“对象”概念，这主要得益于 C++，以及后来的 Java、C# 把面向对象推向了新的高峰。</p>
+<p>20 世纪 90 年代“<strong>软件架构</strong>”开始流行，创造了“组件”概念。</p>
+<blockquote>
+<p>随着软件系统规模的增加，计算相关的算法和数据结构不再构成主要的设计问题；当系统由许多部分组成时，整个系统的组织，也就是所说的“<strong>软件架构</strong>”，导致了一系列新的设计问题。 —— 《软件架构介绍》</p>
+</blockquote>
+<h3 id="2架构设计的目的">2，架构设计的目的</h3>
+<p>整个软件技术发展的历史，其实就是一部与“复杂度”斗争的历史，架构的出现也不例外。</p>
+<p>架构设计的主要目的是<strong>为了解决软件系统复杂度带来的问题</strong>。</p>
+<h3 id="3架构设计三原则">3，架构设计三原则</h3>
+<p>软件架构需要根据业务发展不断变化。</p>
+<p>架构设计中的三原则：</p>
+<ul>
+<li>合适原则：合适的就是最好的，不需要追求最优。</li>
+<li>简单原则：简单的就是最美的。</li>
+<li>演化原则：优秀的系统是一步步演化过来的，而不是一步到位的。</li>
+</ul>
+<h3 id="4架构复杂度的六个来源">4，架构复杂度的六个来源</h3>
+<h4 id="1高性能">1，高性能</h4>
+<p>高性能带来的复杂度主要体现在两方面：</p>
+<ul>
+<li>单台<strong>计算机内部</strong>为了高性能带来的复杂度，最关键的是操作系统。
+<ul>
+<li>计算机的性能发展是由硬件（CPU，内存）驱动的，操作系统是跟随硬件的发展而发展的</li>
+<li>操作系统是软件系统的运行环境，操作系统的复杂度直接决定了软件系统的复杂度</li>
+<li>并发：操作系统和性能最相关的就是进程和线程
+<ul>
+<li>要完成一个高性能的软件系统，需要考虑如<strong>多进程、多线程、进程间通信、多线程并发</strong>等技术点。</li>
+</ul>
+</li>
+<li>并行：多进程多线程虽然让多任务并行处理的性能大大提升，并不能做到时间上真正的并行。并行的解决方案有三种：
+<ul>
+<li>SMP（Symmetric Multi-Processor，对称多处理器结构）：是最常见的一种</li>
+<li>NUMA（Non-Uniform Memory Access，非一致存储访问结构）</li>
+<li>MPP（Massive Parallel Processing，海量并行处理结构）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>多台<strong>计算机集群</strong>为了高性能带来的复杂度</li>
+</ul>
+<h4 id="2高可用">2，高可用</h4>
+<p>高可用是指<strong>系统无中断地执行其功能的能力，代表系统的可用性程度</strong>，是进行系统设计时的准则之一。</p>
+<p>高可用一般都是通过**“冗余”机器**来完成的，通过冗余增强了可用性，但同时也带来了复杂性。</p>
+<p>高可用可分为：</p>
+<ul>
+<li>计算高可用：无论在哪台机器上进行计算，同样的算法和输入数据，产出的结果都是一样的</li>
+<li>存储高可用：其难点不在于如何备份数据，而<strong>在于如何减少或者规避数据不一致</strong>对业务造成的影响
+<ul>
+<li>分布式中的 <strong>CAP 定理</strong>，存储高可用不可能同时满足“<strong>一致性、可用性、分区容错性</strong>”，最多满足其中两个，这需要在做架构设计时结合业务进行取舍</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>高可用中的决策问题</strong></em></p>
+<p>当发现系统中的服务不可用时，要找一个可用的服务替代，这涉及到如何决策的问题。无论是计算高可用还是存储高可用，其基础都是“<strong>状态决策</strong>”，即系统需要能够判断当前的状态是正常还是异常，如果出现了异常就要采取行动来保证高可用。</p>
+<p>如果状态决策本身都是有错误或者有偏差的，那么后续的任何行动和处理无论多么完美也都没有意义和价值。但实际上，恰好存在一个本质的矛盾：<strong>通过冗余来实现的高可用系统，状态决策本质上就不可能做到完全正确</strong>。</p>
+<p>几种常见的决策方式：</p>
+<ul>
+<li><strong>独裁式</strong>：
+<ul>
+<li>存在一个独立的决策主体，称为“<strong>决策者</strong>”，负责收集信息然后进行决策；</li>
+<li>所有冗余的个体，称为“<strong>上报者</strong>”，都将状态信息发送给决策者。</li>
+<li><strong>缺点</strong>：因为决策者只有一个，所以独裁式不会出现决策混乱的问题。但是当决策者本身故障时，整个系统就无法实现准确的状态决策。</li>
+</ul>
+</li>
+<li><strong>协商式</strong>：指的是两个独立的个体通过交流信息，然后根据规则进行决策，最常用的协商式决策就是<strong>主备决策</strong>。
+<ul>
+<li>协议规则是：
+<ul>
+<li>2 台服务器启动时都是备机。</li>
+<li>2 台服务器建立连接。</li>
+<li>2 台服务器交换状态信息。</li>
+<li>某 1 台服务器做出决策，成为主机；另一台服务器继续保持备机身份。</li>
+</ul>
+</li>
+<li>协商式决策的架构不复杂，规则也不复杂，其难点在于，<strong>如果两者的信息交换出现问题（比如主备连接中断），此时状态决策应该怎么做</strong>。</li>
+</ul>
+</li>
+<li><strong>民主式</strong>：指的是<strong>多个独立的个体通过投票</strong>的方式来进行状态决策。例如，ZooKeeper 集群（ZAB 算法）在选举 leader 时就是采用这种方式。
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210626114653141.png" alt="在这里插入图片描述"></li>
+<li>民主式决策（比较复杂）和协商式决策比较类似，都是独立的个体之间交换信息，每个个体做出自己的决策，然后按照“<strong>多数取胜</strong>”的规则来确定最终的状态。</li>
+<li>民主式决策会出现<strong>脑裂</strong>的问题：因为连接中断，造成了两个独立分隔的子集群，每个子集群单独进行选举，选出了 2 个主机（两个主节点会各自做出自己的决策，整个系统的状态就混乱了）。
+<ul>
+<li>解决办法是：采用“<strong>投票节点数必须超过系统总节点数一半</strong>”规则来处理。
+<ul>
+<li>这种解决方式降低了系统整体的可用性，即如果系统不是因为脑裂问题导致投票节点数过少，而真的是因为节点故障（例如，节点 1、节点 2、节点 3 真的发生了故障），此时系统也不会选出主节点，<strong>整个系统就相当于宕机了</strong>，尽管此时还有节点 4 和节点 5 是正常的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>综合分析，无论采取什么样的方案，<strong>状态决策都不可能做到任何场景下都没有问题</strong>，但完全不做高可用方案又会产生更大的问题，如何选取适合系统的高可用方案，也是一个复杂的分析、判断和选择的过程。</p>
+<h4 id="3可扩展性">3，可扩展性</h4>
+<p><strong>可扩展性指系统为了应对将来需求变化而提供的一种扩展能力，当有新的需求出现时，系统不需要或者仅需要少量修改就可以支持，无须整个系统重构或者重建。</strong></p>
+<p>在软件开发领域，<strong>面向对象思想</strong>的提出，就是为了解决可扩展性带来的问题；后来的<strong>设计模式</strong>，更是将可扩展性做到了极致。</p>
+<p>设计具备良好可扩展性的系统，有两个基本条件：<strong>正确预测变化、完美封装变化</strong>。</p>
+<p><strong>预测变化的复杂性在于</strong>：</p>
+<ul>
+<li>不能每个设计点都考虑可扩展性。</li>
+<li>不能完全不考虑可扩展性。</li>
+<li>所有的预测都存在出错的可能性。</li>
+</ul>
+<p>对于架构师来说，<strong>如何把握预测的程度和提升预测结果的准确性</strong>，是一件很复杂的事情，而且没有通用的标准可以简单套上去，更多是靠自己的经验、直觉。</p>
+<p><strong>即使预测很准确，如果方案不合适，则系统扩展一样很麻烦</strong>：</p>
+<ul>
+<li>第一种应对变化的常见方案是将“变化”封装在一个“变化层”，将不变的部分封装在一个独立的“稳定层”。
+<ul>
+<li>系统需要拆分出变化层和稳定层</li>
+<li>需要设计变化层和稳定层之间的接口</li>
+</ul>
+</li>
+<li>第二种常见的应对变化的方案是提炼出一个“抽象层”和一个“实现层”。</li>
+</ul>
+<h4 id="4低成本">4，低成本</h4>
+<p>当架构方案涉及几百上千甚至上万台服务器，成本就会变成一个非常重要的架构设计考虑点。如果能通过一个架构方案的设计，就能轻松节约几千万元，不但展现了技术的强大力量，也带来了可观的收益。</p>
+<p>低成本本质上是与高性能和高可用冲突的：</p>
+<ul>
+<li>当我们设计“高性能”“高可用”的架构时，通用的手段都是增加更多服务器来满足“高性能”和“高可用”的要求；</li>
+<li>而低成本正好与此相反，我们需要减少服务器的数量才能达成低成本的目标。</li>
+</ul>
+<p>低成本给架构设计带来的主要复杂度体现在，<strong>往往只有“创新”才能达到低成本目标</strong>。</p>
+<p>新技术的例子：</p>
+<ul>
+<li>NoSQL（<code>Memcache、Redi</code> 等）的出现是为了解决关系型数据库无法应对高并发访问的压力。</li>
+<li>全文搜索引擎（<code>Sphinx、Elasticsearch、Solr</code>）的出现是为了解决关系型数据库 <code>like</code> 搜索的低效的问题。</li>
+<li><code>Hadoop</code> 的出现是为了解决传统文件系统无法应对海量数据存储和计算的问题。</li>
+<li>Linkedin 为了处理每天 5 千亿的事件，开发了高效的 <code>Kafka</code> 消息系统。</li>
+</ul>
+<p>无论是引入新技术，还是自己创造新技术，都是一件复杂的事情。</p>
+<ul>
+<li>引入新技术的主要复杂度在于需要去熟悉新技术，并且将新技术与已有技术结合起来；</li>
+<li>创造新技术的主要复杂度在于需要自己去创造全新的理念和技术，并且新技术跟旧技术相比，需要有质的飞跃。</li>
+</ul>
+<h4 id="5安全">5，安全</h4>
+<p>安全可以分为两类：</p>
+<ul>
+<li>一类是<strong>功能上的安全</strong>：功能安全其实也是一个“攻”与“防”的矛盾，只能在这种攻防大战中逐步完善，不可能在系统架构设计的时候一劳永逸地解决。</li>
+<li>一类是<strong>架构上的安全</strong>：传统的架构安全主要依靠防火墙，防火墙最基本的功能就是隔离网络，通过将网络划分成不同的区域，制定出不同区域之间的访问控制策略来控制不同信任程度区域间传送的数据流。</li>
+</ul>
+<h4 id="6规模">6，规模</h4>
+<p>规模带来复杂度的主要原因就是“<strong>量变引起质变</strong>”，<strong>当数量超过一定的阈值后，复杂度会发生质的变化</strong>。</p>
+<p>常见的规模带来的复杂度有：</p>
+<ul>
+<li><strong>功能越来越多</strong>，导致系统复杂度指数级上升</li>
+<li><strong>数据越来越多</strong>，系统复杂度发生质变</li>
+</ul>
+<h3 id="5架构设计流程">5，架构设计流程</h3>
+<h4 id="1识别复杂度">1，识别复杂度</h4>
+<p>只有正确分析出了系统的复杂性，后续的架构设计方案才不会偏离方向。将主要的复杂度问题列出来，然后根据业务、技术、团队等综合情况进行排序，<strong>优先解决当前面临的最主要的复杂度问题</strong>。</p>
+<h4 id="2设计备选方案">2，设计备选方案</h4>
+<p>如何设计备选方案：</p>
+<ul>
+<li>备选方案的数量以 3 ~ 5 个为最佳</li>
+<li>备选方案的差异要比较明显</li>
+<li>备选方案的技术不要只局限于已经熟悉的技术</li>
+</ul>
+<h4 id="3评估和选择备选方案">3，评估和选择备选方案</h4>
+<p>列出我们需要关注的质量属性点，然后分别从这些质量属性的维度去评估每个方案，再综合挑选适合当时情况的最优方案。</p>
+<h4 id="4详细方案设计">4，详细方案设计</h4>
+<p>详细方案设计就是将方案涉及的关键技术细节给确定下来。</p>
+<h3 id="6常用的高性能架构模式">6，常用的高性能架构模式</h3>
+<h4 id="1读写分离架构">1，读写分离架构</h4>
+<p>互联网业务兴起之后，海量用户加上海量数据的特点，<strong>单个数据库服务器已经难以满足业务需要</strong>，必须考虑<strong>数据库集群</strong>的方式来提升性能。</p>
+<p>高性能数据库集群架构：</p>
+<ul>
+<li><strong>读写分离架构</strong>：将访问压力分散到集群中的多个节点，但是没有分散存储压力。</li>
+<li><strong>分库分表架构</strong>：既可以分散访问压力，又可以分散存储压力。</li>
+</ul>
+<p>读写分离的<strong>基本原理是将数据库读写操作分散到不同的节点上</strong>，其基本架构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021062616274643.png" alt="在这里插入图片描述"></p>
+<p>读写分离的基本实现是：</p>
+<ul>
+<li>数据库服务器搭建主从集群，一主一从、一主多从都可以。</li>
+<li>数据库主机负责读写操作，从机只负责读操作。</li>
+<li>数据库主机通过复制将数据同步到从机，每台数据库服务器都存储了所有的业务数据。</li>
+<li>业务服务器将写操作发给数据库主机，将读操作发给数据库从机。</li>
+</ul>
+<p>主从与主备的区别：</p>
+<ul>
+<li><strong>主从</strong>：从机需要提供读数据的功能</li>
+<li><strong>主备</strong>：备机一般仅仅提供备份功能，不提供访问功能</li>
+</ul>
+<p>读写分离将引入两个问题：</p>
+<ul>
+<li><strong>主从复制延迟</strong>：
+<ul>
+<li>复制延迟带来的问题是：如果业务服务器将数据写入到主服务器后立刻进行读取，此时读操作访问的是从机，主机还没有将数据复制过来，<strong>到从机读取数据是读不到最新数据的</strong>，业务上就可能出现问题。</li>
+<li>解决主从复制延迟的常见方法：
+<ul>
+<li>写操作后的读操作指定发给主服务器：该方式与业务强绑定，对业务的侵入和影响较大</li>
+<li>读从机失败后再读一次主机：也称为“二次读取”，不足之处是，如果有<strong>很多二次读取，将大大增加主机的读操作压力</strong></li>
+<li>关键业务读写操作全部指向主机，非关键业务采用读写分离
+<ul>
+<li>例如，对于一个用户管理系统，注册 + 登录的业务读写操作全部访问主机；</li>
+<li>用户的介绍、爱好、等级等业务，可以采用读写分离；</li>
+<li>因为即使用户改了自己的自我介绍，在查询时却看到了自我介绍还是旧的，<strong>业务影响与不能登录相比就小很多</strong>，还<strong>可以忍受</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>分配机制</strong>：将读写操作区分开来，然后访问不同的数据库服务器，一般有两种方式：
+<ul>
+<li>
+<p>通过<strong>程序代码封装</strong>来实现，架构如下：</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210626170359301.png" alt="在这里插入图片描述"></li>
+<li>目前开源的实现方案中，淘宝的 TDDL（<code>Taobao Distributed Data Layer</code>）是比较有名的，具有主备、读写分离、动态数据库配置等功能，基本架构是：</li>
+<li><img src="https://img-blog.csdnimg.cn/20210626171548124.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>通过<strong>中间件封装</strong>来实现：一套独立的系统，实现了读写操作分离和数据库服务器连接的管理。在业务服务器看来，中间件就是一个数据库服务器。</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210626171753480.png" alt="在这里插入图片描述"></li>
+<li>由于数据库中间件的复杂度要比程序代码封装高出一个数量级，一般情况下建议采用程序语言封装的方式，或者使用成熟的开源数据库中间件。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>目前的<strong>开源数据库中间件</strong>方案中，MySQL 官方推荐 <code>MySQL Router</code>，它的主要功能有读写分离、故障自动切换、负载均衡、连接池等，其基本架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210626172331834.png" alt="在这里插入图片描述"></p>
+<p>奇虎 360 公司也开源了自己的数据库中间件 Atlas，Atlas 是基于 MySQL Proxy 实现的，基本架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210626172439343.png" alt="在这里插入图片描述"></p>
+<h4 id="2分库分表架构">2，分库分表架构</h4>
+<p><strong>单个数据库服务器</strong>存储的数据量不能太大（否则会出现存储，性能等很多问题），需要控制在一定的范围内。为了满足业务数据存储的需求，就需要将存储分散到多台数据库服务器上。</p>
+<p>可以通过<strong>分库或者分表</strong>来实现。</p>
+<h5 id="21分库">2.1，分库</h5>
+<p>分库指的是按照业务模块将数据分散到不同的<strong>数据库服务器</strong>。</p>
+<p>例如，一个简单的电商网站，包括用户、商品、订单三个业务模块，我们可以将用户数据、商品数据、订单数据分开放到三台不同的数据库服务器上，而不是将所有数据都放在一台数据库服务器上。</p>
+<p><img src="https://img-blog.csdnimg.cn/2021062617324999.png" alt="在这里插入图片描述"></p>
+<p>分库带来的问题：</p>
+<ul>
+<li><strong>join 操作问题</strong>：分库之后无法使用 join 操作。</li>
+<li><strong>事务问题</strong>：原本在同一个数据库中不同的表可以在同一个事务中修改，业务分库后，表分散到不同的数据库中，无法通过事务统一修改。</li>
+<li><strong>成本问题</strong>：服务器需要的多了，成本当然也就上去了。</li>
+</ul>
+<h5 id="21分表">2.1，分表</h5>
+<p>随着业务的发展，同一业务的<strong>单表数据</strong>会<strong>达到单台数据库服务器的处理瓶颈</strong>，此时就需要<strong>对单表数据进行拆分</strong>。</p>
+<p>单表数据拆分有两种方式：<strong>垂直分表和水平分表</strong>。示意图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210626174605296.png" alt="在这里插入图片描述"></p>
+<p>实际架构设计过程中<strong>并不局限切分的次数，可以切两次，也可以切很多次</strong>。单表切分为多表后，不一定要分散到不同数据库中，可根据实际需求而定。</p>
+<p><strong>分表也会引入额外的问题</strong>：</p>
+<ul>
+<li>垂直分表的问题：
+<ul>
+<li>垂直分表适合将表中某些<strong>不常用且占了大量空间</strong>的列拆分出去</li>
+<li>问题是，本来一次就可以获取所有数据，垂直分表后需要两次才能获取所有数据</li>
+</ul>
+</li>
+<li>水平分表的问题
+<ul>
+<li>水平分表适合表行数特别大的表，一般表数据行数达到千万级别就需要分表了</li>
+<li>水平分表带来的问题有：
+<ul>
+<li>路由问题，常见的路由算法有：
+<ul>
+<li>范围路由：比如将 <code>id 1~999999，1000000 ~ 1999999</code> 来分表（最终导致的结果可能使得每个表中的数据分配不均）</li>
+<li>Hash 路由：选取某个列（或者某几个列组合也可以）的值进行 Hash 运算，然后根据 Hash 结果分散到不同的数据库表中。Hash 路由的优点是表分布比较均匀，缺点是扩充新的表很麻烦，所有数据都要重分布。</li>
+<li>配置路由：配置路由就是路由表，用一张独立的表来记录路由信息。</li>
+</ul>
+</li>
+<li>join 操作：需要进行多次 join 查询，然后将结果合并。</li>
+<li>count 操作：需要对每个表进行 count() 操作，然后将结果相加。</li>
+<li>order by 操作：需要分别查询每个子表中的数据，然后汇总进行排序。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3高性能-nosql">3，高性能 NoSQL</h4>
+<p><strong>NoSQL = Not Only SQL</strong>，NoSQL 方案带来的优势，本质上是牺牲 ACID 中的某个或者某几个特性，从而在某些方面比关系型数据库更加优秀。</p>
+<p>NoSQL 的含义在不同的时期有着不同的含义，下图供参考：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210628085408824.png" alt="在这里插入图片描述"></p>
+<p>常见的 NoSQL 方案可分为 4 类：</p>
+<ul>
+<li>K-V 存储：解决关系数据库无法存储数据结构的问题，以 Redis 为代表。</li>
+<li>文档数据库：解决关系数据库强 schema 约束的问题，以 MongoDB 为代表。</li>
+<li>列式数据库：解决关系数据库大数据场景下的 I/O 问题，以 HBase 为代表。</li>
+<li>全文搜索引擎：解决关系数据库的全文搜索性能问题，以 Elasticsearch 为代表。</li>
+</ul>
+<h4 id="4高性能缓存架构">4，高性能缓存架构</h4>
+<p>缓存是为了弥补存储系统在一些复杂业务场景下的不足，其基本原理是将可能重复使用的数据放到内存中，一次生成、多次使用，避免每次使用都去访问存储系统。</p>
+<h4 id="5单服务器高性能模式">5，单服务器高性能模式</h4>
+<p>高性能是一件很复杂很有挑战的事情，高性能架构设计主要集中在两方面：</p>
+<ul>
+<li>尽量提升单服务器的性能，将单服务器的性能发挥到极致。</li>
+<li>当单服务器无法支撑性能，设计服务器集群方案。</li>
+</ul>
+<p>单服务器高性能的关键是采取的并发模型，这都和操作系统的 I/O 模型及进程模型相关：</p>
+<ul>
+<li>进程模型：单进程、多进程、多线程。</li>
+<li>I/O 模型：阻塞、非阻塞、同步、异步。</li>
+</ul>
+<h5 id="1ppc">1，PPC</h5>
+<p><strong>PPC</strong> 是 <code>Process Per Connection</code> 的缩写，其含义是指每次有新的连接就<strong>新建一个进程</strong>去专门处理这个连接的请求。</p>
+<p>PPC 模式实现简单，比较<strong>适合服务器的连接数没那么多的情况</strong>。世界上第一个 web 服务器 <code>CERN httpd</code> 就采用了这种模式。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629104210953.png" alt="在这里插入图片描述"></p>
+<p>主要步骤：</p>
+<ul>
+<li>父进程接受连接（图中 accept）</li>
+<li>父进程“fork”子进程（图中 fork）
+<ul>
+<li>将连接的文件描述符引用计数减一（父进程中的 close）</li>
+<li><em>连接对应的文件描述符引用计数变为 0 后，操作系统才会真正关闭连接</em></li>
+</ul>
+</li>
+<li>子进程处理连接的读写请求（图中子进程 read、业务处理、write）</li>
+<li>子进程关闭连接（图中子进程中的 close）</li>
+</ul>
+<p><em><strong>prefork</strong></em></p>
+<p>prefork 就是<strong>提前创建进程</strong>。系统在启动的时候就预先创建好进程，然后才开始接受用户的请求，当有新的连接进来的时候，就可以省去 fork 进程的操作，速度更快。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629104929863.png" alt="在这里插入图片描述"></p>
+<p><em><strong>prefork 中的惊群问题</strong></em></p>
+<p>当有新的连接进入时，多个子进程都去 accept 同一个 socket，但最终只会有一个进程能 accept 成功。</p>
+<p>当所有阻塞在 accept 上的子进程都被唤醒时，就导致了不必要的<strong>进程调度和上下文切换，会影响系统性能</strong>，这就是惊群问题。<strong>Linux 2.6</strong> 版本后<strong>内核已经解决了 accept 惊群问题</strong>。</p>
+<h5 id="2tpc">2，TPC</h5>
+<p>TPC 是 <code>Thread Per Connection</code> 的缩写，是指每次有新的连接就<strong>新建一个线程去专门处理这个连接的请求</strong>。</p>
+<p>与进程相比，TPC 的优点：</p>
+<ul>
+<li>线程更轻量级，创建线程的消耗比进程要少得多；</li>
+<li>同时多线程是共享进程内存空间的，线程通信相比进程通信更简单。</li>
+</ul>
+<p><strong>TPC 实际上是解决或者弱化了 PPC fork 代价高的问题和父子进程通信复杂的问题</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629105726436.png?" alt="在这里插入图片描述"></p>
+<p>主要步骤：</p>
+<ul>
+<li>父进程接受连接（图中 accept）</li>
+<li>父进程创建子线程（图中 pthread）
+<ul>
+<li>注意，这里的主进程不用 close 连接</li>
+<li><em>原因是在于子线程是共享主进程的进程空间的，连接的文件描述符并没有被复制，因此只需要一次 close 即可</em></li>
+</ul>
+</li>
+<li>子线程处理连接的读写请求（图中子线程 read、业务处理、write）</li>
+<li>子线程关闭连接（图中子线程中的 close）</li>
+</ul>
+<p>TPC 存在的问题：</p>
+<ul>
+<li>创建线程虽然比创建进程代价低，但并不是没有代价，高并发时（例如每秒上万连接）还是有性能问题。</li>
+<li>无须进程间通信，但是线程间的互斥和共享又引入了复杂度，可能一不小心就导致了死锁问题。</li>
+<li>TPC 还是存在 CPU 线程调度和切换代价的问题。</li>
+</ul>
+<p><em><strong>prethread</strong></em></p>
+<p>和 prefork 类似，prethread 模式会预先创建线程。prethread 的实现方式相比 prefork 要灵活一些，常见的实现方式有：</p>
+<ul>
+<li>主进程 accept，然后将连接交给某个线程处理。</li>
+<li>子线程都尝试去 accept，最终只有一个线程 accept 成功，方案的基本示意图如下：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/2021062911061744.png" alt="在这里插入图片描述"></p>
+<p><strong>PPC 和 TPC 模式，它们的优点是实现简单，缺点是都无法支撑高并发的场景。</strong></p>
+<h5 id="3reactor">3，Reactor</h5>
+<p><strong>I/O 多路复用技术</strong>：</p>
+<ul>
+<li>当多条连接共用一个阻塞对象后，进程只需要在一个阻塞对象上等待，而无须再轮询所有连接，常见的实现方式有 select、epoll、kqueue 等。</li>
+<li>当某条连接有新的数据可以处理时，操作系统会通知进程，进程从阻塞状态返回，开始进行业务处理。</li>
+</ul>
+<p>Reactor 的中文是“反应堆”，其实就是 <strong>I/O 多路复用结合线程池</strong>，其完美地解决了 PPC 和 TPC 的问题。</p>
+<p><strong>Reactor 模式</strong>也叫 <strong>Dispatcher 模式</strong>，即 <strong>I/O 多路复用统一监听事件，收到事件后分配（Dispatch）给某个进程</strong>。</p>
+<p><strong>Reactor 模式</strong>的核心组成部分包括 Reactor 和处理资源池（进程池或线程池）：</p>
+<ul>
+<li>Reactor 负责监听和分配事件</li>
+<li>处理资源池负责处理事件</li>
+</ul>
+<p>Reactor 模式有这三种典型的实现方案：</p>
+<ul>
+<li>单 Reactor，单进程 / 线程</li>
+<li>单 Reactor，多线程</li>
+<li>多 Reactor，多进程 / 线程</li>
+</ul>
+<h6 id="1单-reactor单进程--线程">1，单 Reactor，单进程 / 线程</h6>
+<p>单 Reactor 单进程 / 线程的方案示意图（以进程为例）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629113046484.png" alt="在这里插入图片描述"></p>
+<p>步骤说明：</p>
+<ul>
+<li>Reactor 对象通过 select 监控连接事件，收到事件后通过 dispatch 进行分发。</li>
+<li>如果是连接建立的事件，则由 Acceptor 处理，Acceptor 通过 accept 接受连接，并创建一个 Handler 来处理连接后续的各种事件。</li>
+<li>如果不是连接建立事件，则 Reactor 会调用连接对应的 Handler（第 2 步中创建的 Handler）来进行响应。</li>
+<li>Handler 会完成 read-&gt; 业务处理 -&gt;send 的完整业务流程。</li>
+</ul>
+<p>单 Reactor 单进程模式的优缺点：</p>
+<ul>
+<li>优点是很简单，没有进程间通信，没有进程竞争，全部都在同一个进程内完成。</li>
+<li>缺点有：
+<ul>
+<li>只有一个进程，无法发挥多核 CPU 的性能</li>
+<li>Handler 在处理某个连接上的业务时，整个进程无法处理其他连接的事件，容易导致性能瓶颈</li>
+</ul>
+</li>
+</ul>
+<p>单 Reactor 单进程的方案在实践中应用场景不多，只适用于<strong>业务处理非常快</strong>的场景，比较著名的是 <strong>Redis</strong>。</p>
+<p>对于不同的编程语言，需要注意的是：</p>
+<ul>
+<li>C 语言，一般使用单 Reactor 单进程，因为没有必要在进程中再创建线程</li>
+<li>Java 语言，一般使用单 Reactor 单线程，因为 Java 虚拟机是一个进程，虚拟机中有很多线程，业务线程只是其中的一个线程</li>
+</ul>
+<h6 id="2单-reactor多线程">2，单 Reactor，多线程</h6>
+<p>流程图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629114147486.png" alt="在这里插入图片描述"></p>
+<p>主要步骤：</p>
+<ul>
+<li>主线程中，Reactor 对象通过 select 监控连接事件，收到事件后通过 dispatch 进行分发。</li>
+<li>如果是连接建立的事件，则由 Acceptor 处理，Acceptor 通过 accept 接受连接，并创建一个 Handler 来处理连接后续的各种事件。</li>
+<li>如果不是连接建立事件，则 Reactor 会调用连接对应的 Handler（第 2 步中创建的 Handler）来进行响应。</li>
+<li>Handler 只负责响应事件，不进行业务处理；Handler 通过 read 读取到数据后，会发给 Processor 进行业务处理。</li>
+<li>Processor 会在独立的子线程中完成真正的业务处理，然后将响应结果发给主进程的 Handler 处理；Handler 收到响应后通过 send 将响应结果返回给 client。</li>
+</ul>
+<p>单 Reator 多线程方案能够<strong>充分利用多核多 CPU 的处理能力</strong>，但同时也存在下面的问题：</p>
+<ul>
+<li>多线程数据共享和访问比较复杂。
+<ul>
+<li>例如，子线程完成业务处理后，要把结果传递给主线程的 Reactor 进行发送，这里涉及共享数据的互斥和保护机制。</li>
+</ul>
+</li>
+<li>Reactor 承担所有事件的监听和响应，只在主线程中运行，瞬间高并发时会成为性能瓶颈。</li>
+</ul>
+<h6 id="3多-reactor多进程--线程">3，多 Reactor，多进程 / 线程</h6>
+<p>为了解决单 Reactor 多线程的问题，最直观的方法就是将<strong>单 Reactor 改为多 Reactor</strong>。</p>
+<p>多 Reactor 多进程 / 线程方案示意图是（以进程为例）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629114717909.png" alt="在这里插入图片描述"></p>
+<p>主要步骤：</p>
+<ul>
+<li>父进程中 mainReactor 对象通过 select 监控连接建立事件，收到事件后通过 Acceptor 接收，将新的连接分配给某个子进程。</li>
+<li>子进程的 subReactor 将 mainReactor 分配的连接加入连接队列进行监听，并创建一个 Handler 用于处理连接的各种事件。</li>
+<li>当有新的事件发生时，subReactor 会调用连接对应的 Handler（即第 2 步中创建的 Handler）来进行响应。</li>
+<li>Handler 完成 read→业务处理→send 的完整业务流程。</li>
+</ul>
+<p><strong>著名的开源系统 Nginx 采用的是多 Reactor 多进程，采用多 Reactor 多线程的实现有 Memcache 和 Netty</strong>。</p>
+<blockquote>
+<p>Nginx 采用的是多 Reactor 多进程的模式，但方案与标准的多 Reactor 多进程有差异。具体差异表现为主进程中仅仅创建了监听端口，并没有创建 mainReactor 来“accept”连接，而是由子进程的 Reactor 来“accept”连接，通过锁来控制一次只有一个子进程进行“accept”，子进程“accept”新连接后就放到自己的 Reactor 进行处理，不会再分配给其他子进程。</p>
+</blockquote>
+<h5 id="4proactor">4，Proactor</h5>
+<p><strong>Reactor 是非阻塞同步网络模型</strong>，因为真正的 read 和 send 操作都需要用户进程同步操作。这里的“同步”指用户进程在执行 read 和 send 这类 I/O 操作的时候是同步的，如果把 I/O 操作改为异步就能够进一步提升性能，这就是<strong>异步网络模型 Proactor</strong>。</p>
+<p>Reactor 可以理解为“来了事件我通知你，你来处理”，而 Proactor 可以理解为“来了事件我来处理，处理完了我通知你”。</p>
+<ul>
+<li>“我”就是操作系统内核</li>
+<li>“事件”就是有新连接、有数据可读、有数据可写的这些 I/O 事件</li>
+<li>“你”就是我们的程序代码</li>
+</ul>
+<p>Proactor 模型示意图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210629115324354.png" alt="在这里插入图片描述"></p>
+<p>主要步骤：</p>
+<ul>
+<li>Proactor Initiator 负责创建 Proactor 和 Handler，并将 Proactor 和 Handler 都通过 Asynchronous Operation Processor 注册到内核。</li>
+<li>Asynchronous Operation Processor 负责处理注册请求，并完成 I/O 操作。</li>
+<li>Asynchronous Operation Processor 完成 I/O 操作后通知 Proactor。</li>
+<li>Proactor 根据不同的事件类型回调不同的 Handler 进行业务处理。</li>
+<li>Handler 完成业务处理，Handler 也可以注册新的 Handler 到内核进程。</li>
+</ul>
+<p>理论上 Proactor 比 Reactor 效率要高一些，异步 I/O 能够充分利用 DMA 特性，让 I/O 操作与计算重叠，但要实现真正的异步 I/O，操作系统需要做大量的工作。</p>
+<ul>
+<li>目前 Windows 下通过 IOCP 实现了真正的异步 I/O</li>
+<li>而在 Linux 系统下的 AIO 并不完善，因此在 Linux 下实现高并发网络编程时都是以 Reactor 模式为主。</li>
+<li>所以即使 <strong>Boost.Asio</strong> 号称实现了 Proactor 模型，其实：
+<ul>
+<li>它在 Windows 下采用 IOCP，</li>
+<li>而在 Linux 下是用 Reactor 模式（采用 epoll）模拟出来的异步模型。</li>
+</ul>
+</li>
+</ul>
+<h4 id="6高性能负载均衡">6，高性能负载均衡</h4>
+<p>高性能集群的复杂性主要体现在需要增加一个任务分配器，以及为任务选择一个合适的<strong>任务分配算法</strong>。</p>
+<p>对于任务分配器，现在更流行的通用叫法是“<strong>负载均衡器</strong>”，这个名称有一定的误导性，会让人认为任务分配的目的是要保持各个计算单元的负载达到均衡状态。</p>
+<p>而实际上<strong>任务分配并不只是考虑计算单元的负载均衡</strong>，不同的任务分配算法目标是不一样的，有的基于负载考虑，有的基于性能（吞吐量、响应时间）考虑，有的基于业务考虑。</p>
+<p>常见的负载均衡系统包括 3 种：</p>
+<ul>
+<li>DNS负载均衡</li>
+<li>硬件负载均衡</li>
+<li>软件负载均衡</li>
+</ul>
+<h5 id="1dns-负载均衡">1，DNS 负载均衡</h5>
+<p>DNS 是最简单也是最常见的负载均衡方式，一般用来实现地理级别的均衡。DNS 负载均衡的本质是：<strong>DNS 解析同一个域名可以返回不同的 IP 地址</strong>。</p>
+<p>例如，北方的用户访问北京的机房，南方的用户访问深圳的机房。那么同样是 <code>www.baidu.com</code>：</p>
+<ul>
+<li>北方用户解析后获取的地址是 61.135.165.224（这是北京机房的 IP）</li>
+<li>南方用户解析后获取的地址是 14.215.177.38（这是深圳机房的 IP）</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210703093925280.png" alt="在这里插入图片描述"></p>
+<p>DNS 负载均衡的优缺点：</p>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li><strong>简单、成本低</strong>：负载均衡工作交给 DNS 服务器处理，无须自己开发或者维护负载均衡设备。</li>
+<li><strong>就近访问，提升访问速度</strong>：DNS 解析时可以根据请求来源 IP，解析成距离用户最近的服务器地址，可以加快访问速度，改善性能。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li><strong>更新不及时</strong>：DNS 缓存的时间比较长，修改 DNS 配置后，由于缓存的原因，还是有很多用户会继续访问修改前的 IP，这样的访问会失败，达不到负载均衡的目的，并且也影响用户正常使用业务。</li>
+<li><strong>扩展性差</strong>：<strong>DNS 负载均衡的控制权在域名商那里</strong>，无法根据业务特点针对其做更多的定制化功能和扩展特性。</li>
+<li><strong>分配策略比较简单</strong>：DNS 负载均衡支持的算法少；不能区分服务器的差异（不能根据系统与服务的状态来判断负载）；也无法感知后端服务器的状态。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2硬件负载均衡">2，硬件负载均衡</h5>
+<p>硬件负载均衡是通过单独的硬件设备来实现负载均衡功能，这类设备和路由器、交换机类似，可以理解为一个用于负载均衡的基础网络设备。目前业界典型的硬件负载均衡设备有两款：F5 和 A10。</p>
+<p>硬件负载均衡的优缺点是：</p>
+<ul>
+<li>优点：
+<ul>
+<li>功能强大：全面支持各层级的负载均衡，支持全面的负载均衡算法，支持全局负载均衡。</li>
+<li>性能强大：对比一下，软件负载均衡支持到 10 万级并发已经很厉害了，硬件负载均衡可以支持 100 万以上的并发。</li>
+<li>稳定性高：商用硬件负载均衡，经过了良好的严格测试，经过大规模使用，稳定性高。</li>
+<li>支持安全防护：硬件均衡设备除具备负载均衡功能外，还具备防火墙、防 DDoS 攻击等安全功能。</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>价格昂贵</li>
+<li>扩展能力差：硬件设备，可以根据业务进行配置，但无法进行扩展和定制。</li>
+</ul>
+</li>
+</ul>
+<h5 id="3软件负载均衡">3，软件负载均衡</h5>
+<p>软件负载均衡通过负载均衡软件来实现负载均衡功能，常见的有 Nginx 和 LVS：</p>
+<ul>
+<li>Nginx 是软件的 7 层负载均衡，支持 HTTP、E-mail 协议</li>
+<li>LVS 是 Linux 内核的 4 层负载均衡，和协议无关，几乎所有应用都可以做，例如，聊天、数据库等</li>
+<li>4 层和 7 层的区别就在于协议和灵活性</li>
+</ul>
+<p>软件和硬件的最主要区别就在于性能，硬件负载均衡性能远远高于软件负载均衡性能：</p>
+<ul>
+<li>Nginx 的性能是万级，一般的 Linux 服务器上装一个 Nginx 大概能到 5 万 / 秒；</li>
+<li>LVS 的性能是十万级，据说可达到 80 万 / 秒；</li>
+<li>F5 性能是百万级，从 200 万 / 秒到 800 万 / 秒都有。</li>
+</ul>
+<p>下面是 Nginx 的负载均衡架构示意图：</p>
+<p><img src="https://img-blog.csdnimg.cn/0a232b74b3c1474b9f8397b16dafd6a1.png" alt="在这里插入图片描述"></p>
+<p>软件负载均衡的优点：</p>
+<ul>
+<li>优点：
+<ul>
+<li>简单：部署、维护都比较简单。</li>
+<li>便宜：只要买个 Linux 服务器，装上软件即可。</li>
+<li>灵活：4 层和 7 层负载均衡可以根据业务进行选择；也可以根据业务进行比较方便的扩展。</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>性能与功能都没有硬件负载均衡那么强大。</li>
+<li>一般不具备防火墙和防 DDoS 攻击等安全功能。</li>
+</ul>
+</li>
+</ul>
+<p>4，组合使用负载均衡</p>
+<p>每种方式都有一些优缺点，在实际应用中，我们可以基于它们的优缺点进行组合使用。组合的基本原则为：</p>
+<ul>
+<li>DNS 负载均衡用于实现地理级别的负载均衡</li>
+<li>硬件负载均衡用于实现集群级别的负载均衡</li>
+<li>软件负载均衡用于实现机器级别的负载均衡</li>
+</ul>
+<p>下面是一个大型的负载均衡应用：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021070420412048.png" alt="在这里插入图片描述"></p>
+<p>整个系统的负载均衡分为三层：</p>
+<ul>
+<li>地理级别负载均衡：
+<ul>
+<li><code>www.xxx.com</code> 部署在北京、广州、上海三个机房</li>
+<li>当用户访问时，DNS 会根据用户的地理位置来决定返回哪个机房的 IP</li>
+</ul>
+</li>
+<li>集群级别负载均衡：
+<ul>
+<li>广州机房的负载均衡用的是 F5 设备，</li>
+<li>F5 收到用户请求后，进行集群级别的负载均衡，将用户请求发给 3 个本地集群中的一个</li>
+</ul>
+</li>
+<li>机器级别的负载均衡：
+<ul>
+<li>广州集群 2 的负载均衡用的是 Nginx</li>
+<li>Nginx 收到用户请求后，将用户请求发送给集群里面的某台服务器</li>
+</ul>
+</li>
+</ul>
+<p><em>一般在大型业务场景下才会这样用，如果业务量没这么大，则没有必要严格照搬这套架构</em>。</p>
+<h5 id="4高性能负载均衡算法">4，高性能负载均衡算法</h5>
+<p>常见的负载均衡算法：</p>
+<ul>
+<li><strong>轮询</strong>：负载均衡系统收到请求后，按照顺序轮流分配到服务器上
+<ul>
+<li>轮询是最简单的一个策略，无须关注服务器本身的状态</li>
+<li>如果服务器直接宕机了，这时负载均衡系统需要做出相应的处理。例如，将服务器从可分配服务器列表中删除</li>
+</ul>
+</li>
+<li><strong>加权轮询</strong>：负载均衡系统根据<strong>服务器权重</strong>进行任务分配，一般是根据硬件配置进行静态配置
+<ul>
+<li>其解决了轮询算法中无法根据服务器的配置差异进行任务分配的问题</li>
+</ul>
+</li>
+<li><strong>负载最低优先</strong>：负载均衡系统将任务分配给当前负载最低的服务器。
+<ul>
+<li>根据不同的任务类型和业务场景，<strong>负载</strong>可以用不同的指标来衡量，比如：
+<ul>
+<li>连接数、HTTP 请求数、CPU 负载程度、IO 负载程度</li>
+</ul>
+</li>
+<li>负载最低优先算法的缺点是其复杂度比较高，因此，实际上应用的场景并没有轮询（包括加权轮询）那么多。</li>
+</ul>
+</li>
+<li><strong>性能最优类</strong>：优先将任务分配给处理速度最快的服务器，通过这种方式达到最快响应客户端的目的。
+<ul>
+<li>负载均衡系统需要收集和分析每个服务器每个任务的响应时间</li>
+<li>可以使用<strong>采样统计</strong>的方法来计算响应时间</li>
+</ul>
+</li>
+<li><strong>Hash 类</strong>：负载均衡系统根据任务中的某些关键信息进行 Hash 运算，将相同 Hash 值的请求分配到同一台服务器上，比如：
+<ul>
+<li>源地址 Hash：对 IP 进行 Hash 计算</li>
+<li>ID Hash</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/arch2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">架构学习笔记2</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/redis-learn3/">
+            <span class="next-text nav-default">Redis学习笔记3-实战篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/arch1/" class="leancloud_visitors" data-flag-title="架构学习笔记1">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

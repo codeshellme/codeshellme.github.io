@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Redis学习笔记3-实战篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/redis-learn3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Redis学习笔记3-实战篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/redis-learn3/" />
+<meta property="article:published_time" content="2021-11-17T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-17T21:41:52+08:00" />
+<meta itemprop="name" content="Redis学习笔记3-实战篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re">
+<meta itemprop="datePublished" content="2021-11-17T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-17T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="7663">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis学习笔记3-实战篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Redis学习笔记3-实战篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-17 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 7663 字 </span>
+          <span class="more-meta"> 阅读约需 16 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#7redis-中如何进行原子操作">7，Redis 中如何进行原子操作</a></li>
+        <li><a href="#8redis-是否适合用作消息队列">8，Redis 是否适合用作消息队列</a></li>
+        <li><a href="#9使用-redis-实现分布式锁">9，使用 Redis 实现分布式锁</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 3 篇文章是我在学习 Redis 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/redis-learn1/"><strong>第一篇 Redis学习笔记1-理论篇</strong></a>
+<ul>
+<li>1，Redis 中的数据类型</li>
+<li>2，Redis 的 IO 模型</li>
+<li>3，Redis 的 持久化</li>
+<li>4，Redis 集群原理</li>
+<li>5，将 Redis 用作缓存</li>
+</ul>
+</li>
+<li><a href="/2021/11/redis-learn2/"><strong>第二篇 Redis学习笔记2-性能篇</strong></a>
+<ul>
+<li>6，Redis 高性能的影响因素
+<ul>
+<li>6.1，Redis 内部的阻塞式操作</li>
+<li>6.2，CPU 核和 NUMA 架构的影响</li>
+<li>6.3，Redis 关键系统配置</li>
+<li>6.4，Redis 内存碎片</li>
+<li>6.5，Redis 缓冲区</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/2021/11/redis-learn3/"><strong>第三篇 Redis学习笔记3-实战篇</strong></a>
+<ul>
+<li>7，Redis 中如何进行原子操作</li>
+<li>8，Redis 是否适合用作消息队列</li>
+<li>9，使用 Redis 实现分布式锁</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="7redis-中如何进行原子操作">7，Redis 中如何进行原子操作</h3>
+<h4 id="71原子操作要解决的问题">7.1，原子操作要解决的问题</h4>
+<p>原子操作是一种提供并发访问控制的方法（另一种是锁）。原子操作是指执行过程保持原子性的操作，而且原子操作执行时并不需要再加锁，实现了无锁操作。这样一来，既能保证并发控制，还能减少对系统并发性能的影响。</p>
+<p>原子操作，是指执行多个写命令操作时，这些命令操作要么全部完成，要么都不完成。</p>
+<p>当有<strong>多个客户端对同一份数据</strong>执行 “<strong>读取 - 修改 - 写回</strong>” 时，就需要用到原子操作，比如下面伪代码：</p>
+<pre><code class="language-python"># 如果对临界区代码的执行没有并发控制机制，就会出现数据更新错误
+current = GET(id) # 从 Redis 中获取数据
+current--		  # 修改数据
+SET(id, current)  # 写回数据
+</code></pre>
+<p>解决该问题的一种方法是使用锁：</p>
+<pre><code class="language-python">LOCK()				# 获取分布式锁
+current = GET(id)
+current--
+SET(id, current)
+UNLOCK()			# 释放分布式锁
+</code></pre>
+<p>加锁的缺点是会导致系统<strong>并发性能降低</strong>。原子操作也能实现并发控制，但是原子操作对系统并发性能的影响较小。</p>
+<h4 id="72redis-中的原子操作">7.2，Redis 中的原子操作</h4>
+<p>Redis 中有两种方式可实现原子操作：</p>
+<ul>
+<li>把多个操作在 Redis 中实现成一个操作，也就是<strong>单命令操作</strong>
+<ul>
+<li>Redis 是使用单线程来串行处理客户端的请求操作命令的，当 Redis 执行某个命令操作时，其他命令是无法执行的，这相当于命令操作是互斥执行的</li>
+<li>Redis 提供了 <code>INCR/DECR</code> 单命令操作，把“读取-修改-写回”转变为一个原子操作了</li>
+<li><code>INCR/DECR</code> 命令可以对数据进行<strong>增值 / 减值</strong>操作</li>
+<li>如果要执行的操作<strong>不是简单地增减数据</strong>，而是有更加复杂的判断逻辑或者是其他操作，那么单命令操作就不适用了。这时可以使用 Lua 脚本的方式</li>
+</ul>
+</li>
+<li>把多个操作写到一个 <strong>Lua 脚本</strong>中，以原子性方式执行单个 Lua 脚本
+<ul>
+<li>Redis 把整个 Lua 脚本作为一个整体执行，在执行过程中不会被其他命令打断，从而保证了 Lua 脚本中操作的原子性</li>
+<li>就是把多个操作编写到一个 Lua 脚本中，然后用 <code>EVAL</code> 命令来执行脚本</li>
+<li><strong>建议</strong>：在编写 Lua 脚本时，不要把不需要做并发控制的操作写入脚本中，以免降低 Redis 的并发性能</li>
+</ul>
+</li>
+</ul>
+<p><code>INCR/DECR</code> 单命令操作示例：</p>
+<pre><code class="language-python"># 该命令直接完成对商品 id 的库存值减 1 操作
+# 即使有多个客户端执行下面的代码，也不用担心出现库存值扣减错误的问题
+DECR id
+</code></pre>
+<p>LUA 脚本示例，文件名为 <code>lua.script</code>：</p>
+<pre><code class="language-lua">local current
+current = redis.call(&quot;incr&quot;,KEYS[1])
+if tonumber(current) == 1 then
+    redis.call(&quot;expire&quot;,KEYS[1],60)
+end
+</code></pre>
+<p>接下来使用 <code>redis-cli</code>，带上 <code>eval</code> 选项，来执行该脚本。脚本所需的参数将通过 keys 和 args 进行传递。</p>
+<pre><code class="language-shell">redis-cli  --eval lua.script  keys , args
+</code></pre>
+<h4 id="73redis-中的事务操作">7.3，Redis 中的事务操作</h4>
+<p>Redis 中使用 <code>MULTI</code> 和 <code>EXEC</code> 命令来实现<strong>简单的事务</strong> 。当多个命令及其参数本身无误时，MULTI 和 EXEC 命令可以保证多个命令的原子性。</p>
+<ul>
+<li><code>MULTI</code>：表示一系列原子性操作的开始
+<ul>
+<li>Redis 收到这个命令后，接下来再收到的命令会放到一个内部队列中，后续一起执行，从而保证原子性</li>
+</ul>
+</li>
+<li><code>EXEC</code>：表示一系列原子性操作的结束
+<ul>
+<li>Redis 收到这个命令后，就表示所有要保证原子性的命令操作都已经发送完成了。此时，Redis 开始执行刚才放到内部队列中的所有命令操作。</li>
+</ul>
+</li>
+<li><code>DISCARD </code>：是 <code>EXEC</code> 命令的反操作，表示放弃事务执行
+<ul>
+<li>Redis 并不支持事务的回滚操作</li>
+</ul>
+</li>
+</ul>
+<p>如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/0ef94b45ab5e4e00a30eb664dc8e72b8.png" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-shell">127.0.0.1:6379&gt; MULTI
+OK
+
+127.0.0.1:6379&gt; HSET device:temperature 202008030911 26.8
+QUEUED # 表示命令暂时入队，先不执行
+
+127.0.0.1:6379&gt; ZADD device:temperature 202008030911 26.8
+QUEUED # 表示命令暂时入队，先不执行
+
+127.0.0.1:6379&gt; EXEC # 真正的执行命令
+1) (integer) 1
+2) (integer) 1
+</code></pre>
+<p><em><strong>Redis 是否支持事务的所有特征</strong></em></p>
+<p>事务有四大特征，即 ACID 属性，Redis 对其的支持情况如下：</p>
+<ul>
+<li>原子性（Atomicity）：如果事务正常执行，没有发生任何错误，那么 MULTI 和 EXEC 配合，就可以保证多个操作都完成。但是，如果事务执行发生错误了，原子性还能保证吗？
+<ul>
+<li><strong>第一种情况</strong>：在执行 EXEC 命令前，客户端发送的操作命令本身就有错误（比如语法错误，使用了不存在的命令），在命令入队时就被 Redis 实例判断出来了。此时在执行 EXEC 命令后，Redis 就会拒绝执行所有提交的命令操作，从而<strong>保证了原子性</strong>。</li>
+<li><strong>第二种情况</strong>：事务操作入队时，命令和操作的数据类型不匹配，但 Redis 实例没有检查出错误。在执行完 EXEC 命令以后，Redis 实际执行这些事务操作时，就会报错。但是，虽然 Redis 会对错误命令报错，但还<strong>是会把正确的命令执行完</strong>。在这种情况下，事务的原子性就<strong>无法得到保证了</strong>。</li>
+<li><strong>第三种情况</strong>：在执行事务的 EXEC 命令时，Redis 实例发生了故障，导致事务执行失败。这种情况下，如果 Redis 开启了 AOF 日志，那么只会有部分的事务操作被记录到 AOF 日志中。我们需要使用 <code>redis-check-aof</code> 工具检查 AOF 日志文件，这个工具可以把未完成的事务操作从 AOF 文件中去除。这样一来，我们使用 AOF 恢复实例后，事务操作不会再被执行，<strong>从而保证了原子性</strong>。如果 AOF 日志并没有开启，那么实例重启后，数据也都没法恢复了，此时，也就谈不上原子性了。</li>
+</ul>
+</li>
+<li>一致性（Consistency）：在命令执行错误或 Redis 发生故障的情况下，Redis 事务机制对一致性属性是有保证的。</li>
+<li>隔离性（Isolation）：
+<ul>
+<li>并发操作在 EXEC 命令前执行，此时，隔离性的保证要使用 <strong>WATCH 机制</strong>来实现，否则隔离性无法保证；</li>
+<li>并发操作在 EXEC 命令后执行，此时，隔离性可以保证。</li>
+</ul>
+</li>
+<li>持久性（Durability）
+<ul>
+<li>如果 Redis 没有使用 RDB 或 AOF，那么事务的持久化属性肯定<strong>得不到保证</strong>。</li>
+<li>如果 Redis 使用了 RDB 模式，那么，在一个事务执行后，而下一次的 RDB 快照还未执行前，如果发生了实例宕机，这种情况下，事务修改的数据也是<strong>不能保证持久化</strong>的。</li>
+<li>如果 Redis 采用了 AOF 模式，因为 AOF 模式的三种配置选项 no、everysec 和 always 都会存在数据丢失的情况，所以，事务的持久性属性也还是<strong>得不到保证</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>Redis 中的 WATCH 机制</strong></em></p>
+<p>一个事务的 EXEC 命令还没有执行时，事务的命令操作是暂存在命令队列中的。此时，如果有其它的并发操作，需要看事务是否使用了 WATCH 机制。</p>
+<p><strong>WATCH 机制的作用是</strong>，在事务执行前，监控一个或多个键的值变化情况，当事务调用 EXEC 命令执行时，WATCH 机制会<strong>先检查监控的键是否被其它客户端修改了</strong>。如果修改了，就放弃事务执行，避免事务的隔离性被破坏。然后，客户端可以再次执行事务，此时，如果没有并发修改事务数据的操作了，事务就能正常执行，隔离性也得到了保证。</p>
+<p>下面是 WATCH 命令的使用：</p>
+<p><img src="https://img-blog.csdnimg.cn/07881848c90744e1a57be0af7b7d5579.png" alt="在这里插入图片描述"></p>
+<p>在 t4 时，实例收到客户端 X 发送的 EXEC 命令，但是，实例的 WATCH 机制发现 a:stock 已经被修改了，就会放弃事务执行。这样，事务的隔离性就可以得到保证了。</p>
+<p><img src="https://img-blog.csdnimg.cn/a9ab00682a1742798296f54043c78373.png" alt="在这里插入图片描述"></p>
+<h3 id="8redis-是否适合用作消息队列">8，Redis 是否适合用作消息队列</h3>
+<p>一个消息队列的一般架构：</p>
+<p><img src="https://img-blog.csdnimg.cn/5d47d3e44a4f4c7a917676bf5449600d.png" alt="在这里插入图片描述"></p>
+<p>消息队列的三个责任：</p>
+<ul>
+<li>消息保序</li>
+<li>处理重复消息</li>
+<li>保证消息可靠性：不丢消息，主要针对以下情况：
+<ul>
+<li>当消费者已经读取了消息，在消息还没有处理完的时候，消费者宕机了</li>
+<li>这时候，要保证消费者重启后，还能读到那个没有处理完的消息</li>
+</ul>
+</li>
+</ul>
+<p>Redis 中的 <strong>List</strong> 和 <strong>Streams</strong> 两种数据类型，就可以满足消息队列的这三个需求。</p>
+<h4 id="81list-类型">8.1，List 类型</h4>
+<p>List 对消息队列的支持：</p>
+<ul>
+<li>消息保序：支持</li>
+<li>处理重复消息：不支持；有两种解决方案：
+<ul>
+<li>生产者给每一个消息提供全局唯一的 ID 号；消费者把处理过的消息的 ID 号记录下来</li>
+<li>利用幂等性原理：对于同一条消息，消费者收到一次的处理结果和收到多次的处理结果是一致的，这样就不怕消息重复了</li>
+</ul>
+</li>
+<li>保证消息可靠性：不支持
+<ul>
+<li>消费者读取消息后，List 中的消息就没有了，如果消息没有被处理完毕，那么消息就丢失了</li>
+<li>针对这种情况，Redis 的 List 提供了以下解决方案：</li>
+<li>List 类型提供了 <code>BRPOPLPUSH</code> 命令，该命令可以让消费者从一个 List 中读取消息，同时，Redis 会把这个消息再插入到另一个 List（可以叫作备份 List）留存。</li>
+<li>这样一来，如果消费者程序读了消息但没能正常处理，等它重启后，就可以从备份 List 中重新读取消息并进行处理了</li>
+<li><img src="https://img-blog.csdnimg.cn/81428b79320f4cff81233cd4edf833ad.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<p>List 类型的常用命令：</p>
+<ul>
+<li><strong>LPUSH</strong>：写入数据</li>
+<li><strong>RPOP</strong>：非阻塞读取</li>
+<li><strong>BRPOP</strong>：阻塞读取</li>
+<li><strong>BRPOPLPUSH</strong></li>
+</ul>
+<h4 id="82发布订阅模型">8.2，发布订阅模型</h4>
+<p>Redis 中的 <strong>Pub/Sub</strong> 模型支持<strong>多生产者-多消费者</strong>的场景。</p>
+<p>List 其实是属于<strong>拉</strong>模型，而 Pub/Sub 其实属于<strong>推</strong>模型。</p>
+<p>Pub/Sub 在实现时非常简单，它没有基于任何数据类型，也没有做任何的数据存储，它只是单纯地为生产者、消费者建立<strong>数据转发通道</strong>（内存），把符合规则的数据，从一端转发到另一端。</p>
+<p><img src="https://img-blog.csdnimg.cn/5c5c748d3d984264a6a1f93b9627a1aa.png" alt="在这里插入图片描述">
+Redis 中的 <strong>Pub/Sub</strong> 的特点：</p>
+<ul>
+<li>支持多生产者-多消费者的场景</li>
+<li>在以下场景下会丢数据：
+<ul>
+<li>消费者下线：
+<ul>
+<li>如果一个消费者异常挂掉了，它再重新上线后，只能接收新的消息，在下线期间生产者发布的消息，因为找不到消费者，都会被丢弃掉（不会进行存储）</li>
+<li>如果所有消费者都下线了，那生产者发布的消息，因为找不到任何一个消费者，也会全部丢弃</li>
+<li>所以，在使用 Pub/Sub 时，一定要注意：<strong>消费者必须先订阅队列，生产者才能发布消息，否则消息会丢失</strong></li>
+</ul>
+</li>
+<li>Redis 宕机：Pub/Sub 的相关操作的数据并没有进行持久化</li>
+<li>消息堆积：当消费者的速度，跟不上生产者时，就会导致数据积压的情况发生
+<ul>
+<li>每个消费者订阅一个队列时，Redis 都会在 Server 上给这个消费者在分配一个<strong>缓冲区</strong>，这个缓冲区就是一块内存。</li>
+<li>这个缓冲区是有上限的（可配置），当超过了缓冲区配置的上限，Redis 就会把这个消费者踢下线，这时消费者就会消费失败，从而丢失数据。</li>
+<li>缓冲区配置示例：<code>client-output-buffer-limit pubsub 32mb 8mb 60</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>相关命令：</p>
+<ul>
+<li><code>SUBSCRIBE</code> ：订阅消息（队列）</li>
+<li><code>PUBLISH </code>：向队列中发布消息</li>
+<li>等</li>
+</ul>
+<h4 id="83streams-类型">8.3，Streams 类型</h4>
+<p>Redis 从 5.0 版本开始提供 <strong>Streams</strong> 数据类型，和 List 相比，Streams 同样能够满足消息队列的三大需求。而且，它还支持<strong>消费组</strong>形式的消息读取。</p>
+<blockquote>
+<p>Stream 是新增加的数据类型，它与其它数据类型一样，每个写操作，也都会写入到 RDB 和 AOF 中，我们只需要配置好持久化策略。</p>
+</blockquote>
+<p>List 对消息队列的支持：</p>
+<ul>
+<li>消息保序：支持</li>
+<li>处理重复消息：支持</li>
+<li>保证消息可靠性：支持</li>
+</ul>
+<p>Streams 是 Redis <strong>专门为消息队列设计</strong>的数据类型，它提供了丰富的消息队列操作命令：</p>
+<ul>
+<li><code>XADD</code>：插入消息，<strong>保证有序</strong>，可以自动生成全局唯一 ID
+<ul>
+<li>消息的格式是<strong>键 - 值对</strong>形式</li>
+</ul>
+</li>
+<li><code>XREAD</code>：用于读取消息，可以按 ID 读取数据</li>
+<li><code>XREADGROUP</code>：按<strong>消费组</strong>形式读取消息</li>
+<li><code>XPENDING</code> 和 <code>XACK</code>：
+<ul>
+<li><strong>XPENDING</strong> 命令可以用来查询每个消费组内所有消费者<strong>已读取但尚未确认</strong>的消息</li>
+<li><strong>XACK</strong> 命令用于向消息队列确认消息处理已完成
+<ul>
+<li>如果消费者没有发送 <code>XACK</code> 命令，消息仍然会留存（防止消息丢失）。消费者可以在重启后，用 <code>XPENDING</code> 命令查看已读取、但尚未确认处理完成的消息。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Stream 可以指定队列最大长度，为了避免数据量太多导致内存崩溃。</p>
+</blockquote>
+<p><strong>XADD</strong> 命令的使用示例：</p>
+<pre><code class="language-shell">XADD mqstream * repo 5
+&quot;1599203861727-0&quot;  # 返回全局唯一 ID
+# 第一部分“1599203861727”是数据插入时，以毫秒为单位的时间
+# 第二部分表示插入消息在当前毫秒内的消息序号，这是从 0 开始编号的
+</code></pre>
+<p>上面的命令，往名称为 mqstream 的消息队列中插入一条消息，消息的键是 repo，值是 5。</p>
+<p>消息队列名称后面的 <code>*</code>，表示让 Redis 为插入的数据自动生成一个全局唯一的 ID，例如“1599203861727-0”。我们也可以不用 <code>*</code>，直接在消息队列名称后自行设定一个 ID 号，只要保证这个 ID 号是全局唯一的就行。相比自行设定 ID 号，使用 <code>*</code> 会更加方便高效。</p>
+<p><strong>XREAD</strong> 在读取消息时，可以指定一个消息 ID，并从这个消息 ID 的下一条消息开始进行读取。</p>
+<p>例如，下面的命令，从 ID 号为 <code>1599203861727-0</code> 的消息开始，读取后续的所有消息（示例中一共 3 条）。</p>
+<pre><code class="language-shell">XREAD BLOCK 100 STREAMS  mqstream 1599203861727-0
+1) 1) &quot;mqstream&quot;
+   2) 1) 1) &quot;1599274912765-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;3&quot;
+      2) 1) &quot;1599274925823-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;2&quot;
+      3) 1) &quot;1599274927910-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;1&quot;
+</code></pre>
+<p>在调用 <strong>XRAED</strong> 时还可以设定 <code>block</code> 配置项，实现阻塞读取。当消息队列中没有消息时，一旦设置了 block 配置项，XREAD 就会阻塞，阻塞的时长可以在 block 配置项进行设置。</p>
+<p>下面的示例命令：</p>
+<pre><code class="language-shell">XREAD block 10000 streams mqstream $
+(nil)
+(10.00s)
+</code></pre>
+<p>命令最后的<code>$</code>符号表示<strong>读取最新</strong>的消息；同时设置了 <code>block 10000</code> ，10000 的单位是毫秒，表明 XREAD 在读取最新消息时，如果没有消息到来，XREAD 将阻塞 10000 毫秒再返回。上面命令中的 XREAD 执行后，消息队列中一直没有消息，所以，XREAD 在 10 秒后返回空值（nil）。</p>
+<p>Streams 可以使用 <code>XGROUP</code> 创建<strong>消费组</strong>，之后，可以使用 <code>XREADGROUP</code> 命令<strong>让消费组内的消费者读取消息</strong>。</p>
+<p>例如，下面的命令，创建一个名为 group1 的消费组，这个消费组消费的消息队列是 mqstream。</p>
+<pre><code class="language-shell">XGROUP create mqstream group1 0
+OK
+</code></pre>
+<p>然后执行下面命令：</p>
+<pre><code class="language-shell">XREADGROUP group group1 consumer1 streams mqstream &gt;
+1) 1) &quot;mqstream&quot;
+   2) 1) 1) &quot;1599203861727-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;5&quot;
+      2) 1) &quot;1599274912765-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;3&quot;
+      3) 1) &quot;1599274925823-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;2&quot;
+      4) 1) &quot;1599274927910-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;1&quot;
+</code></pre>
+<p>该命令让 group1 消费组里的消费者 consumer1 从 mqstream 中读取所有消息。命令最后的参数 <code>&gt;</code>，表示从第一条尚未被消费的消息开始读取。</p>
+<p>因为在 consumer1 读取消息前，group1 中没有其他消费者读取过消息，所以，consumer1 就得到 mqstream 消息队列中的所有消息了（一共 4 条）。</p>
+<p><strong>消息队列中的消息一旦被消费组里的一个消费者读取了，就不能再被该消费组内的其他消费者读取了。</strong></p>
+<p>比如，再执行下面的命令，让 group1 内的 consumer2 读取消息时，consumer2 读到的就是空值，因为消息已经被 consumer1 读取完了：</p>
+<pre><code class="language-shell">XREADGROUP group group1 consumer2  streams mqstream 0
+1) 1) &quot;mqstream&quot;
+   2) (empty list or set)
+</code></pre>
+<p>使用消费组的目的是<strong>让组内的多个消费者共同分担读取消息</strong>，所以，通常会让每个消费者读取部分消息，从而实现消息读取负载在多个消费者间是均衡分布的。</p>
+<p>例如下面命令，让 group2 中的 consumer1、2、3 各自读取一条消息。</p>
+<pre><code class="language-shell">XREADGROUP group group2 consumer1 count 1 streams mqstream &gt;
+1) 1) &quot;mqstream&quot;
+   2) 1) 1) &quot;1599203861727-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;5&quot;
+
+XREADGROUP group group2 consumer2 count 1 streams mqstream &gt;
+1) 1) &quot;mqstream&quot;
+   2) 1) 1) &quot;1599274912765-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;3&quot;
+
+XREADGROUP group group2 consumer3 count 1 streams mqstream &gt;
+1) 1) &quot;mqstream&quot;
+   2) 1) 1) &quot;1599274925823-0&quot;
+         2) 1) &quot;repo&quot;
+            2) &quot;2&quot;
+</code></pre>
+<p>用 XPENDING 命令查看 group2 中各个消费者已读取、但尚未确认的消息个数。其中，XPENDING 返回结果的第二、三行分别表示 group2 中所有消费者读取的消息最小 ID 和最大 ID。</p>
+<pre><code class="language-shell">XPENDING mqstream group2
+1) (integer) 3
+2) &quot;1599203861727-0&quot;
+3) &quot;1599274925823-0&quot;
+4) 1) 1) &quot;consumer1&quot;
+      2) &quot;1&quot;
+   2) 1) &quot;consumer2&quot;
+      2) &quot;1&quot;
+   3) 1) &quot;consumer3&quot;
+      2) &quot;1&quot;
+</code></pre>
+<p>查看某个消费者具体读取了哪些数据：</p>
+<pre><code class="language-shell">XPENDING mqstream group2 - + 10 consumer2
+1) 1) &quot;1599274912765-0&quot;
+   2) &quot;consumer2&quot;
+   3) (integer) 513336
+   4) (integer) 1
+</code></pre>
+<p>可以看到，consumer2 已读取的消息的 ID 是 1599274912765-0。</p>
+<p>使用 XACK 命令通知 Streams：</p>
+<pre><code class="language-shell">XACK mqstream group2 1599274912765-0
+(integer) 1
+XPENDING mqstream group2 - + 10 consumer2
+(empty list or set)
+</code></pre>
+<h4 id="84总结">8.4，总结</h4>
+<p>把 Redis 当作队列来使用时，始终面临的 2 个问题：</p>
+<ul>
+<li>Redis 本身可能会丢数据</li>
+<li>面对消息积压，Redis 内存资源紧张</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/750b146990444436bed9672c013a994c.png" alt="在这里插入图片描述"></p>
+<h3 id="9使用-redis-实现分布式锁">9，使用 Redis 实现分布式锁</h3>
+<p>在分布式系统中，当有<strong>多个客户端需要获取锁</strong>时，我们需要分布式锁。此时，锁保存在一个<strong>共享存储系统</strong>中的，可以被多个客户端共享访问和获取。</p>
+<p>分布式锁可以用一个变量来实现：</p>
+<ul>
+<li><strong>加锁</strong>时需要判断锁变量的值，根据锁变量值来判断能否加锁成功
+<ul>
+<li>在分布式场景下，锁变量需要由一个共享存储系统来维护</li>
+<li>那么，加锁和释放锁的操作就变成了<strong>读取、判断和设置</strong>共享存储系统中的锁变量值</li>
+</ul>
+</li>
+<li><strong>释放锁</strong>时需要把锁变量值设置为 0，表明客户端不再持有锁</li>
+</ul>
+<p>实现分布式锁的两个要求：</p>
+<ul>
+<li>要求一：分布式锁的加锁和释放锁的过程，涉及多个操作。所以，在实现分布式锁时，我们需要保证这些锁操作的原子性</li>
+<li>要求二：共享存储系统保存了锁变量，如果共享存储系统发生故障或宕机，那么客户端也就无法进行锁操作了。在实现分布式锁时，我们<strong>需要考虑保证共享存储系统的可靠性</strong>，进而保证锁的可靠性</li>
+</ul>
+<p>我们既可以<strong>基于单个 Redis 节点</strong>来实现，也可以<strong>基于多个 Redis 节点</strong>实现。在这两种情况下，锁的可靠性是不一样的。</p>
+<h4 id="91基于单个-redis-节点实现">9.1，基于单个 Redis 节点实现</h4>
+<p>我们可以使用一个键值对来表示一把锁：</p>
+<ul>
+<li>键表示锁的名称</li>
+<li>值表示锁的状态
+<ul>
+<li>0 表示没有加锁</li>
+<li>1 表示已加锁</li>
+</ul>
+</li>
+</ul>
+<p>加锁操作需要保证原子性，有两种方式：</p>
+<ul>
+<li>单命令方式
+<ul>
+<li><code>SETNX</code> 命令：它用于设置键值对的值，它在执行时会判断键值对是否存在，如果不存在，就设置键值对的值，如果存在，就不做任何设置
+<ul>
+<li><code>SETNX key 1</code> （加锁）</li>
+<li><code>DEL key</code>（释放锁）</li>
+<li>为了防止某个客户端在获取锁后，因发生异常而永远无法释放锁，因此需要<code>给 key 加一个过期时间</code></li>
+<li>这种方式还有一个问题是，当一个客户端获取了锁，如果其它客户端执行 <code>DEL</code> 命令，也可以释放锁，这就会产生混乱</li>
+<li><img src="https://img-blog.csdnimg.cn/0d0c52d6b95a4d0299cb129548d5b172.png" alt="在这里插入图片描述"></li>
+<li>解决办法是使用一个<code>唯一标识</code>，只有同一个客户端才能释放它所加的锁</li>
+<li>此时可以使用 <code>SET</code> 命令</li>
+</ul>
+</li>
+<li><code>SET lock_key unique_value NX PX 10000</code> （用 SET 来加锁，Redis 2.6.12 后支持）
+<ul>
+<li><code>unique_value</code> 表示客户端唯一性的标识</li>
+<li><code>NX</code> 用来实现“不存在即设置”，表示只有在键值对不存在时，才会进行设置，否则不做赋值操作</li>
+<li><code>EX</code> 或 <code>PX</code> 选项，用来设置键值对的过期时间，<code>EX</code> 的时间单位是秒，<code>PX</code> 的时间单位是毫秒</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>lua 脚本方式</li>
+</ul>
+<blockquote>
+<p>注意：<code>SETNX +  EXPIRE</code>  无法保证原子性，所以，<code>SETNX</code> 命令不能用来实现分布式锁，但是如果写在 lua 脚本中，是可以的</p>
+</blockquote>
+<p>在使用 <code>SET</code> 命令加完锁后，在释放锁时，需要判断锁变量的值，是否等于执行释放锁操作的客户端的唯一标识，需要使用到 lua 脚本来保证原子性：</p>
+<pre><code class="language-lua">//释放锁 比较unique_value是否相等，避免误释放
+if redis.call(&quot;get&quot;,KEYS[1]) == ARGV[1] then
+    return redis.call(&quot;del&quot;,KEYS[1])
+else
+    return 0
+end
+</code></pre>
+<p>然后执行下面来释放锁：</p>
+<pre><code class="language-shell">redis-cli  --eval  unlock.script lock_key , unique_value 
+</code></pre>
+<h4 id="92基于多个-redis-节点实现">9.2，基于多个 Redis 节点实现</h4>
+<p>要实现<strong>高可靠的分布式锁</strong>时，就不能只依赖单个的命令操作了，我们需要按照一定的步骤和规则进行加解锁操作，否则，就可能会出现锁无法工作的情况。</p>
+<p>“一定的步骤和规则”就是<strong>分布式锁的算法</strong>，Redis 的开发者 Antirez 提出了分布式锁算法 <strong>Redlock</strong>。</p>
+<p><strong>Redlock 算法的基本思路</strong>，是让客户端和多个独立的 Redis 实例依次请求加锁，如果客户端能够和半数以上的实例成功地完成加锁操作，那就认为，客户端成功地获得分布式锁了，否则加锁失败。</p>
+<p>这样一来，即使有单个 Redis 实例发生故障，因为锁变量在其它实例上也有保存，所以，客户端仍然可以正常地进行锁操作，锁变量并不会丢失。</p>
+<p>Redlock 的方案基于 2 个前提：</p>
+<ul>
+<li>不再需要部署从库和哨兵实例，只部署主库</li>
+<li>但主库要部署多个，官方推荐至少 5 个实例</li>
+</ul>
+<p>也就是说，想用使用 Redlock，你至少要部署 5 个 Redis 实例，而且都是主库，它们之间没有任何关系，都是一个个孤立的实例。注意：<strong>不是部署 Redis Cluster，就是部署 5 个简单的 Redis 实例</strong>。</p>
+<p>Redlock 算法的实现需要有 N 个独立的 Redis 实例，我们可以分成 3 步来完成加锁操作：</p>
+<ul>
+<li>客户端获取当前时间</li>
+<li>客户端按顺序依次向 N 个 Redis 实例执行加锁操作，使用 <code>SET</code> 命令
+<ul>
+<li>如果客户端在和一个 Redis 实例请求加锁时，一直到超时都没有成功，那么此时，客户端会和下一个 Redis 实例继续请求加锁。</li>
+<li>加锁操作的超时时间需要远远地小于锁的有效时间，一般也就是设置为<strong>几十毫秒</strong>。</li>
+</ul>
+</li>
+<li>一旦客户端完成了和所有 Redis 实例的加锁操作，客户端就要计算整个加锁过程的<strong>总耗时</strong></li>
+</ul>
+<p>客户端只有在满足下面的这两个条件时，才能认为是<strong>加锁成功</strong>：</p>
+<ul>
+<li>客户端从超过半数（大于等于 N/2+1）的 Redis 实例上成功获取到了锁</li>
+<li>客户端获取锁的总耗时没有超过锁的有效时间</li>
+</ul>
+<p>在满足了这两个条件后，我们需要重新计算这把锁的有效时间，计算的结果是锁的最初有效时间减去客户端为获取锁的总耗时。如果锁的有效时间已经来不及完成共享数据的操作了，我们可以释放锁，以免出现还没完成数据操作，锁就过期了的情况。（<strong>注意，即使这样，如果客户端成功获取锁后，仍然无法在完成业务操作之前释放锁，这就会导致锁过期而被 Redis 释放掉锁，此时其它客户端就可以获取到锁了，那这种情况下，分布式锁已经起不到作用了</strong>）</p>
+<p>如果客户端在和所有实例执行完加锁操作后，没能同时满足这两个条件，那么，客户端向所有 Redis 节点发起释放锁的操作。</p>
+<p>在 Redlock 算法中，<strong>释放锁的操作</strong>和在单实例上释放锁的操作一样，只要执行释放锁的 Lua 脚本就可以了。</p>
+<h4 id="93如何确定锁的过期时间">9.3，如何确定锁的过期时间</h4>
+<p><strong>Redisson</strong> 是一个 Java 语言实现的 Redis SDK 客户端，在使用分布式锁时，它采用了<strong>自动续期</strong>的方案来避免锁过期。</p>
+<p>所谓的<strong>自动续期</strong>是这样的：</p>
+<ul>
+<li>加锁时，先设置一个过期时间，然后开启一个<strong>守护线程</strong>，定时去检测这个锁的失效时间，如果锁快要过期了，操作共享资源还未完成，那么就自动对锁进行<strong>续期</strong>，重新设置过期时间。</li>
+<li><img src="https://img-blog.csdnimg.cn/c658f84f65394becb32be699c72ad287.png" alt="在这里插入图片描述"></li>
+</ul>
+<blockquote>
+<p><strong>Redisson</strong>  还封装了很多易用的功能：<strong>可重入锁</strong>、<strong>乐观锁</strong>、<strong>公平锁</strong>、<strong>读写锁</strong>、<strong>Redlock</strong></p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-17
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/arch1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">架构学习笔记1</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/redis-learn2/">
+            <span class="next-text nav-default">Redis学习笔记2-性能篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/redis-learn3/" class="leancloud_visitors" data-flag-title="Redis学习笔记3-实战篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

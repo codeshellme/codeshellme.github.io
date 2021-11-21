@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Redis学习笔记1-理论篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/redis-learn1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Redis学习笔记1-理论篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/redis-learn1/" />
+<meta property="article:published_time" content="2021-11-15T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-15T21:41:52+08:00" />
+<meta itemprop="name" content="Redis学习笔记1-理论篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re">
+<meta itemprop="datePublished" content="2021-11-15T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-15T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="11607">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis学习笔记1-理论篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Redis学习笔记1-理论篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 11607 字 </span>
+          <span class="more-meta"> 阅读约需 24 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1redis-数据类型的底层结构">1，Redis 数据类型的底层结构</a></li>
+        <li><a href="#2redis-的-io-模型">2，Redis 的 IO 模型</a></li>
+        <li><a href="#3redis-的持久化">3，Redis 的持久化</a></li>
+        <li><a href="#4redis-集群原理">4，Redis 集群原理</a></li>
+        <li><a href="#5将-redis-用作缓存">5，将 Redis 用作缓存</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/583ec76174294cecb6ac05e9b310a2ff.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong><code>这 3 篇文章是我在学习 Redis 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/redis-learn1/"><strong>第一篇 Redis学习笔记1-理论篇</strong></a>
+<ul>
+<li>1，Redis 中的数据类型</li>
+<li>2，Redis 的 IO 模型</li>
+<li>3，Redis 的 持久化</li>
+<li>4，Redis 集群原理</li>
+<li>5，将 Redis 用作缓存</li>
+</ul>
+</li>
+<li><a href="/2021/11/redis-learn2/"><strong>第二篇 Redis学习笔记2-性能篇</strong></a>
+<ul>
+<li>6，Redis 高性能的影响因素
+<ul>
+<li>6.1，Redis 内部的阻塞式操作</li>
+<li>6.2，CPU 核和 NUMA 架构的影响</li>
+<li>6.3，Redis 关键系统配置</li>
+<li>6.4，Redis 内存碎片</li>
+<li>6.5，Redis 缓冲区</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/2021/11/redis-learn3/"><strong>第三篇 Redis学习笔记3-实战篇</strong></a>
+<ul>
+<li>7，Redis 中如何进行原子操作</li>
+<li>8，Redis 是否适合用作消息队列</li>
+<li>9，使用 Redis 实现分布式锁</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="1redis-数据类型的底层结构">1，Redis 数据类型的底层结构</h3>
+<h4 id="11redis-中的数据类型">1.1，Redis 中的数据类型</h4>
+<p>Redis 中的数据类型及其特点：</p>
+<p><img src="https://img-blog.csdnimg.cn/02aa13abca694a00b7ce3c79a07015c0.png" alt="在这里插入图片描述"></p>
+<p>Redis 还提供了 <strong>3 种扩展数据类型</strong>，分别是：</p>
+<ul>
+<li><strong>Bitmap</strong>：可以把 Bitmap 看作是一个 <strong>bit 数组</strong>
+<ul>
+<li>Bitmap 提供了 <code>GETBIT/SETBIT</code> 操作，使用一个偏移值 offset 对 bit 数组的某一个 bit 位进行读和写。</li>
+<li>Bitmap 的偏移量是从 0 开始算的，也就是说 offset 的最小值是 0。</li>
+<li>当使用 <code>SETBIT</code> 对一个 bit 位进行写操作时，这个 bit 位会被设置为 1。</li>
+<li>Bitmap 还提供了 <code>BITCOUNT</code> 操作，用来统计这个 bit 数组中所有“1”的个数。</li>
+<li>Bitmap 支持用 <code>BITOP</code> 命令对多个 Bitmap 按位做“<strong>与</strong>”“<strong>或</strong>”“<strong>异或</strong>”的操作，操作的结果会保存到一个新的 Bitmap 中</li>
+</ul>
+</li>
+<li><strong>HyperLogLog</strong>：这是一种用于<strong>统计基数</strong>的数据集合类型，它的最大优势就在于，当集合元素数量非常多时，它计算基数所需的空间总是固定的，而且还很小。
+<ul>
+<li>常用命令：<code>PFADD</code>（添加元素）、<code>PFCOUNT</code>（统计数量）</li>
+<li>每个 HyperLogLog 只需要花费 12 KB 内存，就可以计算接近 2^64 个元素的基数。和元素越多就越耗费内存的 Set 和 Hash 类型相比，HyperLogLog 就非常节省空间。</li>
+<li>注意 HyperLogLog 的统计规则是<strong>基于概率</strong>的，所以它的统计结果是有一定误差的，标准误算率是 0.81%。这意味着，你使用 HyperLogLog 统计的 UV 是 100 万，但实际的 UV 可能是 101 万。如果需要精确统计结果，最好还是用 Set 或 Hash 类型。</li>
+</ul>
+</li>
+<li><strong>GEO</strong>：GEO 类型的底层数据结构就是用 <code>Sorted Set</code> 来实现的。主要用于提供<strong>位置信息</strong>类服务，比如打车软件，附近的餐馆等。常用命令：
+<ul>
+<li><code>GEOADD</code> 命令：用于把一组经纬度信息和相对应的一个 ID 记录到 GEO 类型集合中；</li>
+<li><code>GEORADIUS</code> 命令：会根据输入的经纬度位置，查找以这个经纬度为中心的<strong>一定范围内</strong>（可以自己定义）的其他元素。</li>
+</ul>
+</li>
+</ul>
+<h4 id="12全局哈希表">1.2，全局哈希表</h4>
+<p>Redis 的高性能离不开高效的数据结构，其使用一个<strong>全局哈希表</strong>来存储所有的键值对：</p>
+<p><img src="https://img-blog.csdnimg.cn/1388429dfc024c829bdc536272dedb2b.png" alt="在这里插入图片描述"></p>
+<h4 id="13数据类型的底层结构">1.3，数据类型的底层结构</h4>
+<p>Redis 中的 5 种数据类型及其对应的底层数据结构：</p>
+<p><img src="https://img-blog.csdnimg.cn/33435f23a8b14f90a26a15324af1dba6.png" alt="在这里插入图片描述"></p>
+<p><em><strong>整数数组和双向链表</strong></em></p>
+<p><strong>整数数组和双向链表</strong>通过数组下标或者链表的指针逐个元素访问，操作复杂度基本是 <code>O(N)</code>，操作效率比较低；它们的优势是节省空间。</p>
+<p><em><strong>压缩列表</strong></em></p>
+<p><strong>压缩列表</strong>类似于一个数组，数组中的每一个元素都保存一个数据。压缩列表在表头有三个字段，表尾有一个字段：</p>
+<ul>
+<li><strong>zlbytes</strong>：列表长度</li>
+<li><strong>zltail</strong>：列表尾的偏移量</li>
+<li><strong>zllen</strong>：列表中的元素个数</li>
+<li><strong>zlend</strong>：表示列表结束</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/c0073e7327a243a7b81ed5dfd5453729.png" alt="在这里插入图片描述"></p>
+<p>压缩列表的查找效率：</p>
+<ul>
+<li>定位第一个元素和最后一个元素，可以通过表头三个字段的长度直接定位，复杂度是 <code>O(1)</code></li>
+<li>而查找其他元素时，只能逐个查找，复杂度是 <code>O(N)</code></li>
+</ul>
+<p><em><strong>跳表</strong></em></p>
+<p><strong>跳表</strong>在链表的基础上，增加了多级索引，通过索引位置的几个跳转（在多级索引上跳来跳去），实现数据的<strong>快速定位</strong>（其查找复杂度是 <code>O(logN)</code>），如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/64fbff2bdd264bdab2617afc01629ee4.png" alt="在这里插入图片描述"></p>
+<p><strong>Hash 类型底层结构什么时候使用压缩列表，什么时候使用哈希表呢？</strong></p>
+<p>Redis 中有两个配置项：</p>
+<ul>
+<li><code>hash-max-ziplist-entries</code>：表示用压缩列表保存时，哈希集合中的最大元素个数</li>
+<li><code>hash-max-ziplist-value</code>：表示用压缩列表保存时，哈希集合中单个元素的最大长度</li>
+</ul>
+<p>当 Hash 集合中写入的元素个数超过了 <code>hash-max-ziplist-entries</code>，或者写入的单个元素大小超过了 <code>hash-max-ziplist-value</code>，Redis 就会自动把 Hash 类型的实现结构由压缩列表转为哈希表。一旦从压缩列表转为了哈希表，Hash 类型就会一直用哈希表进行保存，而不会再转回压缩列表了。</p>
+<h4 id="14哈希冲突">1.4，哈希冲突</h4>
+<p>Redis 使用<strong>链式哈希</strong>的方式来解决哈希冲突。</p>
+<p><img src="https://img-blog.csdnimg.cn/106b4ad196ca45aa83ffd53b368eead2.png" alt="在这里插入图片描述"></p>
+<p>哈希冲突链上的元素只能通过指针逐一查找再操作。当哈希表里写入的数据越来越多，就会导致某些<strong>哈希冲突链过长</strong>，进而导致这个链上的元素查找耗时长，效率降低。</p>
+<h4 id="15rehash-操作">1.5，rehash 操作</h4>
+<p>Redis 使用 <strong>Rehash</strong> 来处理哈希链过长的问题，通过增加现有的哈希桶数量，让逐渐增多的 entry 元素能在更多的桶之间分散保存。</p>
+<p>为了使 rehash 操作更高效，Redis 默认使用了两个全局哈希表：</p>
+<ul>
+<li>哈希表 1</li>
+<li>哈希表 2</li>
+</ul>
+<p>一开始，默认使用哈希表 1，此时的哈希表 2 并没有被分配空间。Redis 的 rehash 过程分三步：</p>
+<ul>
+<li>给哈希表 2 分配更大的空间（比如是当前哈希表 1 的两倍）</li>
+<li>把哈希表 1 中的数据重新映射并拷贝到哈希表 2 中
+<ul>
+<li>该过程涉及大量的数据拷贝，如果一次性把哈希表 1 中的数据都迁移完，会造成 Redis 线程阻塞，无法服务其他请求</li>
+<li>为了避免这个问题，Redis 采用了<strong>渐进式 rehash</strong>：把一次性大量拷贝的开销，分摊到了多次处理请求的过程中
+<ul>
+<li>即拷贝数据时，Redis 仍然正常处理客户端请求，每处理一个请求时，从哈希表 1 中的第一个索引位置开始，顺带着将这个索引位置上的所有 entries 拷贝到哈希表 2 中；等处理下一个请求时，再顺带拷贝哈希表 1 中的下一个索引位置的 entries。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>释放哈希表 1 的空间</li>
+</ul>
+<p>渐进式 <strong>rehash</strong> 过程图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/980ebdf14b2f4eb9821c30d391c64527.png" alt="在这里插入图片描述"></p>
+<h3 id="2redis-的-io-模型">2，Redis 的 IO 模型</h3>
+<p>通常所说的<strong>Redis 是单线程</strong>，主要是指 <strong>Redis 的网络 IO 和键值对读写是由一个线程来完成的</strong>，这也是 Redis 对外提供服务的主要流程。</p>
+<p>但 Redis 的其他功能，比如<strong>持久化、异步删除、集群数据同步</strong>等，是由额外的线程执行的。</p>
+<h4 id="21redis-为什么使用单线程">2.1，Redis 为什么使用单线程</h4>
+<p>Redis 为什么使用单线程，而不是多线程或多进程？</p>
+<blockquote>
+<p>2020 年 5 月，Redis 6.0 的稳定版发布了，Redis  6.0 中提出了多线程模型。</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/a959e83a843347229555c4e2f455df81.png" alt="在这里插入图片描述"></p>
+<p><strong>多线程的主要问题在于</strong>：系统中通常会存在被多线程同时访问的<strong>共享资源</strong>，当有多个线程要修改这个共享资源时，就需要额外的机制进行保证全安性，从而带来了额外的开销。</p>
+<h4 id="22多路复用机制">2.2，多路复用机制</h4>
+<p>Redis 采用多路复用机制，使其在网络 IO 操作中能<strong>并发处理大量的客户端请求</strong>，实现高吞吐率。</p>
+<p><img src="https://img-blog.csdnimg.cn/57463a04086b4194a1b51bbdb1ee8db3.png" alt="在这里插入图片描述"></p>
+<p>在网络连接的建立（<code>accept</code>）、数据的读取（<code>recv</code>）和发送（<code>send</code>）都有可能导致 <strong>socket 阻塞</strong>，从而阻塞整个线程，影响并发处理能力。</p>
+<p>所以，高效 IO 模型中 <strong>socket</strong> 必须是<strong>非阻塞</strong>的。</p>
+<p>Socket 的非阻塞模式设置，主要体现在三个关键的函数调用上：</p>
+<p><img src="https://img-blog.csdnimg.cn/872863cad08d4d219f033cb487b972a2.png" alt="在这里插入图片描述"></p>
+<p><strong>多路复用机制</strong></p>
+<p>Linux 中的 IO 多路复用机制是指，<strong>一个线程处理多个 IO 流</strong>，也就是 <strong>select/epoll</strong> 机制，该机制允许<strong>内核中，同时存在多个监听套接字和已连接套接字</strong>。</p>
+<p><strong>select/epoll</strong> 提供了<strong>基于事件的回调机制</strong>，即针对不同事件的发生，调用相应的<strong>处理函数</strong>。</p>
+<h3 id="3redis-的持久化">3，Redis 的持久化</h3>
+<p>Redis 的持久化主要有两大机制，即 <strong>AOF</strong>（<code>Append Only File</code>）日志和 <strong>RDB 快照</strong>（ <code>Redis DataBase</code>）。</p>
+<h4 id="31aof-机制">3.1，AOF 机制</h4>
+<p><strong>AOF</strong> 叫做<strong>写后日志</strong>：先执行命令，把数据写入内存，然后才记录日志。</p>
+<p><img src="https://img-blog.csdnimg.cn/b087b9dd07624ac4b98838f36b1c7db9.png" alt="在这里插入图片描述"></p>
+<p>AOF 里记录的是 Redis 收到的每一条命令，这些命令是以文本形式保存的。</p>
+<p><img src="https://img-blog.csdnimg.cn/c38ce7c19bc349778e00fa4f5d721057.png" alt="在这里插入图片描述"></p>
+<p>AOF 的优缺点：</p>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>Redis 在向 AOF 里面记录日志的时候，并不需要对命令进行语法检查，因为在内存中执行命令时，已经检查过。</li>
+<li>Redis 是在命令执行后才记录日志，所以不会阻塞当前的写操作。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>数据丢失风险：比如刚执行完一个命令，还没有来得及记日志就宕机了</li>
+<li>AOF 虽然避免了对当前命令的阻塞，但可能会给下一个操作带来阻塞风险
+<ul>
+<li>因为 AOF 日志也是在主线程中执行的，如果日志文件在写磁盘时，磁盘写压力大，就会导致写盘很慢，进而导致后续的操作也无法执行了</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>appendfsync</code> 参数的三个可选值控制了 AOF 的写盘时机：</p>
+<ul>
+<li><strong>Always</strong>：每个写命令执行完，立马同步地将日志写回磁盘
+<ul>
+<li>对于 always 策略来说，Redis 需要确保每个操作记录日志都写回磁盘，如果用后台子线程异步完成，主线程就无法及时地知道每个操作是否已经完成了，这就不符合 always 策略的要求了。</li>
+<li>所以，always 策略并不使用后台子线程来执行。</li>
+</ul>
+</li>
+<li><strong>Everysec</strong>：每个写命令执行完，只是先把日志写到 AOF 文件的内存缓冲区，每隔一秒把缓冲区中的内容写入磁盘；
+<ul>
+<li><code>fsync</code> 的执行时间很长，如果是在 Redis 主线程中执行 fsync，就容易阻塞主线程</li>
+<li>所以，当写回策略配置为 everysec 时，Redis 会使用<strong>后台的子线程</strong>异步完成 fsync 的操作</li>
+</ul>
+</li>
+<li><strong>No</strong>：每个写命令执行完，只是先把日志写到 AOF 文件的内存缓冲区，由操作系统决定何时将缓冲区内容写回磁盘。</li>
+</ul>
+<p>三种写回策略的优缺点：</p>
+<p><img src="https://img-blog.csdnimg.cn/d1762e446c9f4542ba614d6cabd1fa86.png" alt="在这里插入图片描述"></p>
+<p><em><strong>AOF 重写机制</strong></em></p>
+<p>随着接收的写命令越来越多，<strong>AOF 文件会越来越大</strong>，这会引发三个问题：</p>
+<ul>
+<li>文件系统本身对文件大小有限制，无法保存过大的文件；</li>
+<li>如果文件太大，之后再往里面追加命令记录的话，效率也会变低；</li>
+<li>如果发生宕机，为了故障恢复，AOF 中记录的命令要一个个被重新执行，如果日志文件太大，整个恢复过程就会非常缓慢</li>
+</ul>
+<p>AOF 文件是以追加的方式，逐一记录接收到的写命令的。当一个键值对被多条写命令反复修改时，AOF 文件会记录相应的<strong>多条命令</strong>。</p>
+<p>而在<strong>AOF 重写</strong>的时候，是根据这个键值对当前的最新状态，为它<strong>生成对应的写入命令</strong>。这样，一个键值对在重写日志中只用一条命令就行了。</p>
+<p><img src="https://img-blog.csdnimg.cn/046d92c731a54a3c85fee594a007017c.png" alt="在这里插入图片描述"></p>
+<p><em><strong>AOF 重写过程是否会阻塞主线程</strong></em></p>
+<p>要把整个数据库的最新数据的操作日志都写回磁盘，是<strong>一个非常耗时的过程</strong>。</p>
+<p>因此，重写过程是由后台子进程 <code>bgrewriteaof</code> 来完成的，这避免了阻塞主线程，导致数据库性能下降。</p>
+<p>每次执行重写时，主线程 <code>fork</code> 出后台的 bgrewriteaof 子进程。此时，fork 会把主线程的内存拷贝一份给 bgrewriteaof 子进程，这里面就包含了数据库的最新数据。</p>
+<p>如果业务应用对延迟非常敏感，但同时允许一定量的数据丢失，那么，可以把配置项 <code>no-appendfsync-on-rewrite</code> 设置为 <code>yes</code>：</p>
+<pre><code class="language-shell">no-appendfsync-on-rewrite yes
+</code></pre>
+<ul>
+<li>这个配置项设置为 <code>yes</code> 时，表示在 AOF 重写时，不进行 fsync 操作。
+<ul>
+<li>即 Redis 把写命令写到内存后，不调用后台线程进行 fsync 操作，就可以直接返回了。当然，如果此时实例发生宕机，就会导致数据丢失</li>
+</ul>
+</li>
+<li>这个配置项设置为 <code>no</code>（默认配置）时，在 AOF 重写时，Redis 会调用后台线程进行 fsync 操作，这就会给实例带来阻塞</li>
+</ul>
+<h4 id="32rdb-快照机制">3.2，RDB 快照机制</h4>
+<p><strong>内存快照</strong>，是指内存中的数据在<strong>某一个时刻</strong>的状态记录（RDB 记录的是某一时刻的数据，并不是操作）。</p>
+<p><strong>RDB 快照</strong>是指：把某一时刻的内存状态以文件的形式写到磁盘上，这个快照文件称为 <strong>RDB 文件</strong>。</p>
+<p>在做数据恢复时，可以直接把 RDB 文件读入内存，<strong>很快</strong>地完成恢复。</p>
+<p>给内存的全量数据做快照，把它们全部写入磁盘<strong>会花费很多时间</strong>。而且，全量数据越多，<strong>RDB 文件就越大</strong>，往磁盘上写数据的时间开销就越大。</p>
+<p>Redis 提供了两个命令来生成 RDB 文件，分别是 <code>save</code> 和 <code>bgsave</code>：</p>
+<ul>
+<li><strong>save</strong>：在主线程中执行，会导致阻塞</li>
+<li><strong>bgsave</strong>：创建一个子进程，专门用于写入 RDB 文件，避免了主线程的阻塞（不影响整个系统的读写服务）
+<ul>
+<li>这也是 Redis RDB 文件生成的默认配置</li>
+<li>bgsave 子进程是由主线程 fork（会阻塞主线程） 生成的，可以共享主线程的所有内存数据。</li>
+<li>bgsave 子进程运行后，开始读取主线程的内存数据，并把它们写入 RDB 文件
+<ul>
+<li>在写 RDB 文件的过程中，如果主线程对这些数据进行读操作，那么，主线程和 bgsave 子进程相互不影响。</li>
+<li>如果主线程要修改一块数据，那么，这块数据就会被复制一份，生成该数据的副本。然后，主线程在这个数据副本上进行修改。同时，bgsave 子进程可以继续把原来的数据写入 RDB 文件。这叫做<strong>写时复制技术</strong>（<code>Copy-On-Write, COW</code>），由操作系统提供。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>使用 <strong>INFO 命令</strong>查看 Redis 的 <code>latest_fork_usec</code> 指标值，表示最近一次 fork 的耗时。</p>
+</blockquote>
+<p><em><strong>写时复制的底层原理</strong></em></p>
+<p>主线程 fork 出 bgsave 子进程后，bgsave 子进程复制了主线程的<strong>页表</strong>（保存了所有数据）。当 bgsave 子进程生成 RDB 时，是根据页表读取这些数据，再写入磁盘中。</p>
+<p><strong>写时复制</strong>是指，主线程在有写操作时，才会把这个新写或修改后的数据写入到一个新的物理地址中，并修改自己的页表映射。</p>
+<p>从下图中可看出，主线程修改了它自己的页表，而并没有影响子进程的页表。</p>
+<p><img src="https://img-blog.csdnimg.cn/c89ac55fdfde4e8796794f89f3fc6080.png" alt="在这里插入图片描述"></p>
+<p><em><strong>多久做一次快照？</strong></em></p>
+<p>如果做快照的频率比较密集（比如一秒一次），则会带来两个问题：</p>
+<ul>
+<li>频繁将全量数据写入磁盘，会给磁盘带来很大压力</li>
+<li>fork 操作本身会阻塞主线程，而且主线程的内存越大，阻塞时间越长</li>
+</ul>
+<p>AOF 与 RDB 的另一个区别：</p>
+<ul>
+<li>AOF 记录的是每一次写命令，数据最全，但文件体积大，数据恢复速度慢</li>
+<li>RDB 采用二进制 + 数据压缩的方式写磁盘，这样文件体积小，数据恢复速度快</li>
+</ul>
+<h4 id="33混合-aof-与-rdb">3.3，混合 AOF 与 RDB</h4>
+<p>Redis 4.0 中提出了一个混合使用 AOF 日志和内存快照的方法。</p>
+<p>简单来说，内存快照以一定的频率执行，在两次快照之间，使用 AOF 日志记录这期间的所有命令操作；等到下一次做全量快照时，就可以清空上一次的 AOF 日志。</p>
+<p>关于 AOF 和 RDB 的选择的三点建议：</p>
+<ul>
+<li>如果数据不能丢失时，内存快照和 AOF 的混合使用是一个很好的选择；</li>
+<li>如果允许分钟级别的数据丢失，可以只使用 RDB；</li>
+<li>如果只用 AOF，优先使用 everysec 的配置选项，因为它在可靠性和性能之间取了一个平衡。</li>
+</ul>
+<h3 id="4redis-集群原理">4，Redis 集群原理</h3>
+<p>Redis 提供了<strong>主从库模式</strong>，以保证数据副本的一致，主从库之间采用的是读<strong>写分离</strong>的方式。</p>
+<ul>
+<li>对于<strong>读操作</strong>：主库、从库都可以接收；</li>
+<li>对于<strong>写操作</strong>：首先到主库执行，然后，主库将写操作同步给从库。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/f7a70e47341f4edc939d4e8dabeb7d3e.png" alt="在这里插入图片描述"></p>
+<p>主从库模式采用读写分离，所有数据的修改只会在主库上进行。主库有了最新的数据后，会同步给从库，这样，主从库的数据就是一致的。</p>
+<h4 id="41主从库之间的第一次数据同步">4.1，主从库之间的第一次数据同步</h4>
+<p>启动多个 Redis 实例的时候，它们相互之间就可以通过 <code>replicaof</code>（Redis 5.0 之前使用 <code>slaveof</code>）命令形成主库和从库的关系，之后会按照<strong>三个阶段</strong>完成数据的第一次同步。</p>
+<p>例如，现在有：</p>
+<ul>
+<li><strong>实例 1</strong>（172.16.19.3）</li>
+<li><strong>实例 2</strong>（172.16.19.5）</li>
+</ul>
+<p>在实例 2 上执行以下这个命令后，实例 2 就变成了实例 1 的从库，并从实例 1 上复制数据：</p>
+<pre><code class="language-shell">replicaof  172.16.19.3  6379
+</code></pre>
+<p>主从库之间的第一次数据同步：</p>
+<p><img src="https://img-blog.csdnimg.cn/036676dfc7b74f0d8feb432c1457e476.png" alt="在这里插入图片描述"></p>
+<p><code>psync</code> 命令包含了主库的 <strong>runID</strong> 和复制进度 <strong>offset</strong> 两个参数：</p>
+<ul>
+<li>runID：每个 Redis 实例启动时都会自动生成的一个随机 ID，用来唯一标记这个实例
+<ul>
+<li>当从库和主库第一次复制时，因为不知道主库的 runID，所以将 runID 设为“？”</li>
+</ul>
+</li>
+<li>offset：此时设为 -1，表示第一次复制</li>
+</ul>
+<p><code>FULLRESYNC</code> 响应命令带上两个参数：主库 runID 和主库目前的复制进度 offset。</p>
+<p>一旦主从库完成了<strong>全量复制</strong>，它们之间就会一直维护一个网络连接（长连接），主库会通过这个连接将后续陆续收到的命令操作再同步给从库。</p>
+<h4 id="42主-从-从模式">4.2，主-从-从模式</h4>
+<p>如果从库比较多，那么数据的同步过程就会占用主库较多的资源。这时，我们可以使用<strong>主从从模式</strong>，该模式将主库生成 RDB 和传输 RDB 的压力，以级联的方式分散到从库上。</p>
+<p><img src="https://img-blog.csdnimg.cn/48493571492945af81d5b58014eb90c0.png" alt="在这里插入图片描述"></p>
+<h4 id="43当主从间网络断开">4.3，当主从间网络断开</h4>
+<p>在 Redis 2.8 之前，如果主从库在命令传播时出现了网络闪断，那么，从库就会和主库重新进行一次全量复制（开销非常大）。</p>
+<p>从 Redis 2.8 开始，网络断了之后，主从库会采用<strong>增量复制</strong>的方式继续同步。</p>
+<p>全量复制是同步所有数据，而<strong>增量复制</strong>只会把主从库网络断连期间主库收到的命令，同步给从库。</p>
+<p>当主从库断连后，主库会把断连期间收到的写操作命令，写入<code> replication buffer</code>，同时也会把这些操作命令也写入 <code>repl_backlog_buffer</code> 这个缓冲区。</p>
+<p><code>repl_backlog_buffer</code> 是一个环形缓冲区，主库会记录自己写到的位置（master_repl_offset），从库则会记录自己已经读到的位置（slave_repl_offset ）。</p>
+<p>正常情况下，这两个偏移量基本相等：</p>
+<p><img src="https://img-blog.csdnimg.cn/cb09f938e7664cc199fff75e9c098407.png" alt="在这里插入图片描述"></p>
+<p>主从库的连接恢复之后，从库首先会给主库发送 psync 命令，并把自己当前的 slave_repl_offset 发给主库，主库只用把 master_repl_offset 和 slave_repl_offset 之间的命令操作同步给从库。</p>
+<p>由于 repl_backlog_buffer 是一个环形缓冲区，在缓冲区写满后，主库会继续写入，此时，就会覆盖掉之前写入的操作，这会导致主从库间的数据不一致。</p>
+<p>因此需要调整 <code>repl_backlog_size</code> 参数：</p>
+<ul>
+<li>repl_backlog_size 调整为缓冲空间大小 <code>*</code> 2</li>
+<li>缓冲空间大小 = 主库写入命令速度 <code>*</code> 操作大小 <code>-</code> 主从库间网络传输命令速度 <code>*</code> 操作大小</li>
+</ul>
+<p>增大 <code>repl_backlog_size </code> 只能缓解该问题，而不能彻底解决该问题。如果并发请求量非常大，连两倍的缓冲空间都存不下新操作请求的话，此时，主从库数据仍然可能不一致。针对这种情况：</p>
+<ul>
+<li>一方面，可以根据 Redis 所在服务器的内存资源再适当增加 repl_backlog_size 值，比如说设置成缓冲空间大小的 4 倍</li>
+<li>另一方面，可以考虑使用<strong>切片集群</strong>来分担单个主库的请求压力</li>
+</ul>
+<h4 id="44redis-主从切换原理">4.4，Redis 主从切换原理</h4>
+<p>当主库挂了，就需要运行一个新主库，比如说把一个从库切换为主库。</p>
+<p>在 Redis 主从集群中，<strong>哨兵机制</strong>是实现主从库自动切换的关键机制。</p>
+<p><strong>哨兵</strong>就是一个运行在特殊模式下的 Redis 进程，它主要复制三项任务：</p>
+<ul>
+<li><strong>监控</strong>：判断主库是否真的挂了。哨兵进程在运行时，周期性地给所有的主从库发送 PING 命令，检测它们是否仍然在线运行。
+<ul>
+<li>如果<strong>从库</strong>没有在规定时间内响应哨兵的 PING 命令，哨兵就会把它标记为“下线状态”；</li>
+<li>如果<strong>主库</strong>没有在规定时间内响应哨兵的 PING 命令，哨兵就会判定主库下线，然后<strong>开始自动切换主库的流程</strong>（选主）。</li>
+</ul>
+</li>
+<li><strong>选主</strong>：从很多个从库里，按照一定的规则选择一个从库实例，把它作为新的主库</li>
+<li><strong>通知</strong>：把新主库的相关信息通知给从库和客户端
+<ul>
+<li>哨兵会把新主库的连接信息发给其他从库，让它们执行 replicaof 命令，和新主库建立连接，并进行数据复制。</li>
+<li>哨兵会把新主库的连接信息通知给客户端，让它们把请求操作发到新主库上</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>如何判断主库下线</strong></em></p>
+<p>哨兵对主库的下线判断有“<strong>主观下线</strong>”和“<strong>客观下线</strong>”两种：</p>
+<ul>
+<li>如果发现从库对 PING 命令的响应超时了，哨兵就会先把它标记为<strong>主观下线</strong></li>
+<li>如果检测的是主库，哨兵还不能简单地把它标记为“主观下线”（有可能判断错误）</li>
+</ul>
+<p>为了减少误判，通常会采用多实例组成的<strong>集群模式</strong>进行部署，这也被称为<strong>哨兵集群</strong>。引入多个哨兵实例一起来判断，就可以避免单个哨兵因为自身网络状况不好，而误判主库下线的情况。</p>
+<p>只有<strong>大多数</strong>的哨兵实例，都判断主库已经<strong>主观下线</strong>了，主库才会被标记为<strong>客观下线</strong>，接下来，哨兵会进行<strong>主从切换流程</strong>。</p>
+<p><strong>客观下线</strong>的标准就是：</p>
+<ul>
+<li>当有 N 个哨兵实例时，要有 <code>N/2 + 1</code> 个实例判断主库为“主观下线”，才能最终判定主库为“客观下线”</li>
+<li>当然，有多少个实例做出“主观下线”的判断才行，<strong>可以由 Redis 管理员自行设定</strong></li>
+</ul>
+<p><em><strong>哨兵如何选主</strong></em></p>
+<p>在多个从库中，先按照一定的<strong>筛选</strong>条件，把不符合条件的从库去掉。然后，我们再按照一定的规则，给剩下的从库逐个<strong>打分</strong>，将得分最高的从库选为新主库。</p>
+<p><img src="https://img-blog.csdnimg.cn/28f0cd335ece4eefbaa60fe8b081dfa5.png" alt="在这里插入图片描述"></p>
+<p>在选主时，除了要检查从库的当前在线状态，还要判断它<strong>之前的网络连接状态</strong>。</p>
+<p>如何之前的网络连接状态呢？使用配置项 <code>down-after-milliseconds * 10</code>：</p>
+<ul>
+<li><code>down-after-millisecond</code> 是认定主从库断连的最大连接超时时间。如果在 down-after-milliseconds 毫秒内，主从节点都没有通过网络联系上，我们就认为主从节点断连了</li>
+<li>如果发生断连的次数超过了 <code>10</code> 次，就说明这个从库的网络状况不好，不适合作为新主库。</li>
+</ul>
+<p><strong>打分规则</strong>有三轮，只要在某一轮中，有从库得分最高，那么它就是主库了，选主过程到此结束。如果没有出现得分最高的从库，那么就继续进行下一轮。</p>
+<ul>
+<li><strong>从库优先级</strong>：可以通过 <code>slave-priority</code> 配置项，给从库设置不同优先级。
+<ul>
+<li>如果从库的优先级都一样，那么哨兵开始第二轮打分。</li>
+</ul>
+</li>
+<li><strong>从库复制进度</strong>：和旧主库同步程度最接近的从库得分高。
+<ul>
+<li>哪个从库的 <code>slave_repl_offset</code> 最接近主库的 <code>master_repl_offset</code>，则得分最高</li>
+<li>如果无法区分，则进行第三轮打分</li>
+</ul>
+</li>
+<li><strong>从库 ID 号</strong>：每个实例都会有一个 ID，<strong>ID 号最小的从库得分最高</strong>，会被选为新主库。</li>
+</ul>
+<h4 id="45哨兵集群">4.5，哨兵集群</h4>
+<p>通过部署多个实例，就形成了一个哨兵集群，即使有某个哨兵实例出现故障挂掉了，其他哨兵还能继续协作完成主从库切换的工作。</p>
+<p>在配置哨兵的信息时，我们只需要用到下面的这个配置项，设置主库的 IP 和端口，并没有配置其他哨兵的连接信息。</p>
+<pre><code class="language-shell">sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt; 
+</code></pre>
+<p>哨兵实例之间可以相互发现，要归功于 Redis 提供的 <strong>pub/sub 机制</strong>，也就是<strong>发布 / 订阅机制</strong>。</p>
+<p>哨兵只要和主库建立起了连接，就可以在主库上发布消息了，比如说发布它自己的连接信息（IP 和端口）。同时，它也可以从主库上订阅消息，获得其他哨兵发布的连接信息。当多个哨兵实例都在主库上做了发布和订阅操作后，它们之间就能知道彼此的 IP 地址和端口。</p>
+<p>在主从集群中，主库上有一个名为<code>__sentinel__:hello</code>的频道，不同哨兵就是通过它来相互发现，实现互相通信的。</p>
+<p><img src="https://img-blog.csdnimg.cn/283524420b0d4005a17d050e76922a5a.png" alt="在这里插入图片描述"></p>
+<p>哨兵通过向主库发送 <strong>INFO 命令</strong>来获取从库的信息，从而与从库建立连接，实现对从库的监控。</p>
+<p><img src="https://img-blog.csdnimg.cn/9de4ad41db864b2ba9dbc165313b2270.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>通过 pub/sub 机制，哨兵之间可以组成集群；同时，哨兵又通过 INFO 命令，获得了从库连接信息，也能和从库建立连接，并进行监控了。</p>
+</blockquote>
+<p><em><strong>哪个哨兵执行主从切换？</strong></em></p>
+<p>哨兵集群需要通过投票选出一个 Leader 去执行主从切换，选举过程（三个哨兵，quorum 为 2）如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/54c632a066c140b0ab32beda27e11409.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>quorum 是哨兵配置文件中的一个配置项，当某个哨兵的投票数达到 quorum 时，它才能称为 Leader。</p>
+</blockquote>
+<p>在 T1 时刻，S1 判断主库为“客观下线”，它想成为 Leader，就先给自己投一张赞成票，然后分别向 S2 和 S3 发送命令，表示要成为 Leader。</p>
+<p>在 T2 时刻，S3 判断主库为“客观下线”，它也想成为 Leader，所以也先给自己投一张赞成票，再分别向 S1 和 S2 发送命令，表示要成为 Leader。</p>
+<blockquote>
+<p>哨兵选举领导者这个场景，使用的是 Raft 共识算法，因为它足够简单，且易于实现。</p>
+</blockquote>
+<h4 id="46切片集群">4.6，切片集群</h4>
+<p>Redis 切片集群用于保存海量数据，切片集群涉及到多个实例的<strong>分布式管理</strong>问题。</p>
+<p><strong>切片集群</strong>，也叫<strong>分片集群</strong>，是指启动多个 Redis 实例组成一个集群，然后按照一定的规则，把收到的数据划分成多份，每一份用一个实例来保存。</p>
+<ul>
+<li>如果把 25GB 的数据平均分成 5 份（也可以不做均分），使用 5 个实例来保存，每个实例只需要保存 5GB 数据</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/b8421c74e6fa4022a1f08f8b08ece1dc.png" alt="在这里插入图片描述"></p>
+<p>切片集群是一种保存大量数据的<strong>通用机制</strong>，从 3.0 开始，官方提供了一个名为 <code>Redis Cluster</code> 的方案，用于实现切片集群。</p>
+<blockquote>
+<p>在 Redis 3.0 之前，Redis 官方并没有提供切片集群方案，但是，当时业界已经有了一些切片集群的方案，例如基于客户端分区的 <strong>ShardedJedis</strong>，基于代理的 <strong>Codis</strong>、<strong>Twemproxy</strong> 等。</p>
+</blockquote>
+<p><em><strong>切片数据如何分布？</strong></em></p>
+<p>Redis Cluster 方案采用<strong>哈希槽</strong>（Hash Slot），来处理数据和实例之间的映射关系。在 Redis Cluster 方案中，一个切片集群共有 <strong>16384</strong> 个哈希槽，这些哈希槽类似于数据分区，每个键值对都会根据它的 key，被映射到一个哈希槽中。</p>
+<p>在部署 <code>Redis Cluster</code> 方案时，可以使用 <code>cluster create</code> 命令创建集群，此时，Redis 会自动<strong>把这些槽平均分布在集群实例上</strong>。</p>
+<ul>
+<li>例如，如果集群中有 N 个实例，那么，每个实例上的槽个数为 16384/N 个。</li>
+</ul>
+<p>当每个机器的硬件配置不一样时，也可以使用 <code>cluster meet</code> 命令手动建立实例间的连接，形成集群，再使用 <code>cluster addslots</code> 命令，指定每个实例上的哈希槽个数。</p>
+<p>如下示例：</p>
+<p><img src="https://img-blog.csdnimg.cn/0f4d5341f86b4ae1ab2e8d2a32faa68f.png" alt="在这里插入图片描述"></p>
+<p>示意图中的切片集群一共有 3 个实例，同时假设有 5 个哈希槽。我们可以通过下面的命令手动分配哈希槽：</p>
+<ul>
+<li>实例 1 保存哈希槽 0 和 1</li>
+<li>实例 2 保存哈希槽 2 和 3</li>
+<li>实例 3 保存哈希槽 4</li>
+</ul>
+<pre><code class="language-shell">redis-cli -h 172.16.19.3 –p 6379 cluster addslots 0,1
+redis-cli -h 172.16.19.4 –p 6379 cluster addslots 2,3
+redis-cli -h 172.16.19.5 –p 6379 cluster addslots 4
+</code></pre>
+<blockquote>
+<p><strong>注意：在手动分配哈希槽时，需要把 16384 个槽都分配完，否则 Redis 集群无法正常工作</strong>。</p>
+</blockquote>
+<p>在集群中，实例和哈希槽的对应关系并不是一成不变的，最常见的变化有两个：</p>
+<ul>
+<li>在集群中，实例有新增或删除，Redis 需要重新分配哈希槽；</li>
+<li>为了负载均衡，Redis 需要把哈希槽在所有实例上重新分布一遍。</li>
+</ul>
+<h4 id="47主从同步中的问题">4.7，主从同步中的问题</h4>
+<h5 id="1主从数据不一致">1，主从数据不一致</h5>
+<p>主从数据不一致，就是指客户端从从库中读取到的值和主库中的最新值并不一致；这是由于主从库间的命令复制是异步进行的，主库收到新的写命令后，会发送给从库。但是，主库并不会等到从库实际执行完命令后，再把结果返回给客户端，而是主库自己在本地执行完命令后，就会向客户端返回结果了。</p>
+<p><em><strong>如何知道主从库间的复制进度？</strong></em></p>
+<p>Redis 的 <code>INFO replication</code> 命令可以查看主库接收写命令的进度信息（<code>master_repl_offset</code>）和从库复制写命令的进度信息（<code>slave_repl_offset</code>），用 <code>master_repl_offset</code> 减去 <code>slave_repl_offset</code>，就能得到从库和主库间的复制进度差值了。</p>
+<p><img src="https://img-blog.csdnimg.cn/3c992a13474a4c0b87ef74e5f52ed155.png" alt="在这里插入图片描述"></p>
+<h5 id="2读到过期数据">2，读到过期数据</h5>
+<p>Redis 中设置数据过期时间的命令一共有 4 个：</p>
+<ul>
+<li><code>EXPIRE</code> 和 <code>PEXPIRE</code>：它们给数据设置的是从命令执行时开始计算的存活时间</li>
+<li><code>EXPIREAT 和 </code>PEXPIREAT`：它们会直接把数据的过期时间设置为具体的一个时间点</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/4e5c5f85d8d04d10abc067a51a47ec27.png" alt="在这里插入图片描述"></p>
+<p>一个数据过期后，应该是被删除的，客户端不能再读取到该数据。</p>
+<p>但是有时候删除数据不及时，会导致读到过期数据，这是由 Redis 的删除过期数据的策略导致的。</p>
+<p>Redis 有两种过期数据删除策略：</p>
+<ul>
+<li><strong>惰性删除策略</strong>：当一个数据的过期时间到了以后，并不会立即删除数据，而是等到再有请求来读写这个数据时，对数据进行检查，如果发现数据已经过期了，再删除这个数据。
+<ul>
+<li>如果客户端从主库上读取留存的过期数据，主库会触发删除操作，此时，客户端并不会读到过期数据。</li>
+<li>但是，从库本身不会执行删除操作，如果客户端在从库中访问留存的过期数据，从库并不会触发数据删除。那么，从库会给客户端返回过期数据吗？
+<ul>
+<li>Redis 3.2 之前的版本，从库在服务读请求时，并不会判断数据是否过期，而是会返回过期数据。</li>
+<li>在 3.2 版本后，如果读取的数据已经过期了，从库虽然不会删除，但是会返回空值，这就避免了客户端读到过期数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>定期删除策略</strong>：Redis 每隔一段时间（默认 100ms），就会随机选出一定数量的数据，检查它们是否过期，并把其中过期的数据删除。</li>
+</ul>
+<p>当主从库全量同步时，如果主库接收到了一条 EXPIRE 命令，那么，主库会直接执行这条命令。这条命令会在全量同步完成后，发给从库执行。而从库在执行时，就会在当前时间的基础上加上数据的存活时间，这样一来，<strong>从库上数据的过期时间就会比主库上延后了</strong>。</p>
+<p>为了避免这种情况，建议在业务应用中使用 <code>EXPIREAT/PEXPIREAT</code> 命令，把数据的过期时间设置为具体的时间点，避免读到过期数据。</p>
+<p>总结：</p>
+<ul>
+<li>主从数据不一致。Redis 采用的是异步复制，所以无法实现强一致性保证（主从数据时时刻刻保持一致），数据不一致是难以避免的。我给你提供了应对方法：保证良好网络环境，以及使用程序监控从库复制进度，一旦从库复制进度超过阈值，不让客户端连接从库。</li>
+<li>对于读到过期数据，这是可以提前规避的，一个方法是，使用 Redis 3.2 及以上版本；另外，你也可以使用 <code>EXPIREAT/PEXPIREAT</code> 命令设置过期时间，避免从库上的数据过期时间滞后。不过，这里有个地方需要注意下，因为 <code>EXPIREAT/PEXPIREAT</code> 设置的是时间点，所以，主从节点上的时钟要保持一致，具体的做法是，让主从节点和相同的 NTP 服务器（时间服务器）进行时钟同步。</li>
+</ul>
+<h5 id="3不合理配置项导致服务挂掉">3，不合理配置项导致服务挂掉</h5>
+<p><img src="https://img-blog.csdnimg.cn/f6dba4eb796446a88646511ae515eef0.png" alt="在这里插入图片描述"></p>
+<h4 id="48集群中脑裂">4.8，集群中脑裂</h4>
+<p><strong>脑裂</strong>是指在主从集群中，同时有多个主节点，它们都能接收写请求。而脑裂最直接的影响，就是客户端不知道应该往哪个主节点写入数据，结果就是不同的客户端会往不同的主节点上写入数据。而且，严重的话，脑裂会进一步导致数据丢失。</p>
+<h3 id="5将-redis-用作缓存">5，将 Redis 用作缓存</h3>
+<h4 id="51缓存淘汰策略">5.1，缓存淘汰策略</h4>
+<p>一般来说，建议把<strong>缓存容量</strong>（Redis 容量）设置为总数据量的 15% 到 30%，兼顾访问性能和内存空间开销。</p>
+<p>对于 Redis 来说，一旦确定了缓存最大容量，比如 4GB，你就可以使用下面这个命令来设定缓存的大小了：</p>
+<pre><code class="language-sql">CONFIG SET maxmemory 4gb
+</code></pre>
+<p>当缓存写满后（超过 <code>maxmemory</code> 值），如果再向缓存中写入数据，就涉及到数据的淘汰策略。Redis 中有 8 种数据淘汰策略：</p>
+<ul>
+<li>不进行数据淘汰：<code>noeviction</code>（<strong>默认策略</strong>）：一旦缓存被写满了，再有写请求来时，Redis 不再提供服务，而是<strong>直接返回错误</strong></li>
+<li>在设置了过期时间的数据中进行淘汰，包括：
+<ul>
+<li><code>volatile-random</code>：在设置了过期时间的键值对中，进行<strong>随机删除</strong></li>
+<li><code>volatile-ttl</code>： 根据过期时间的先后进行删除，越早过期的越先被删除</li>
+<li><code>volatile-lru</code>：使用 LRU 算法筛选设置了过期时间的键值对</li>
+<li><code>volatile-lfu</code>（Redis  4.0 后新增）：使用 LFU 算法选择设置了过期时间的键值对，它是在 LRU 算法的基础上，同时考虑了数据的访问时效性和数据的访问次数，可以看作是对淘汰策略的优化</li>
+</ul>
+</li>
+<li>在所有数据范围内进行淘汰，包括：
+<ul>
+<li><code>allkeys-lru</code>：使用 LRU 算法在所有数据中进行筛选</li>
+<li><code>allkeys-random</code>：从所有键值对中随机选择并删除数据</li>
+<li><code>allkeys-lfu</code>（Redis 4.0 后新增）：使用 LFU 算法在所有数据中进行筛选</li>
+</ul>
+</li>
+</ul>
+<p>淘汰策略使用建议：</p>
+<ul>
+<li>优先使用 <code>allkeys-lru</code> 策略。这样可以把<strong>最近最常访问</strong>的数据留在缓存中，提升应用的访问性能。如果你的业务数据中有明显的冷热数据区分，建议使用 allkeys-lru 策略。</li>
+<li>如果业务应用中的数据访问频率相差不大，没有明显的冷热数据区分，建议使用 <code>allkeys-random</code> 策略，随机选择淘汰的数据就行。</li>
+<li>如果你的业务中有置顶的需求（比如置顶新闻、置顶视频），可以使用 <code>volatile-lru</code> 策略，同时不给这些置顶数据设置过期时间。这样一来，这些需要置顶的数据一直不会被删除，而其他数据会在过期时根据 LRU 规则进行筛选。</li>
+</ul>
+<h4 id="52缓存中的数据和后端数据库中的不一致问题">5.2，缓存中的数据和后端数据库中的不一致问题</h4>
+<p>在实际应用 Redis 缓存时，经常会遇到一些异常问题：</p>
+<ul>
+<li>缓存中的数据和数据库中的不一致</li>
+<li>缓存雪崩</li>
+<li>缓存击穿</li>
+<li>缓存穿透</li>
+</ul>
+<h4 id="53缓存雪崩">5.3，缓存雪崩</h4>
+<p>缓存雪崩是指大量的应用请求无法在 Redis 缓存中进行处理，紧接着，应用将大量请求发送到数据库层，导致数据库层的压力激增。</p>
+<p>有两种情况会导致缓存雪崩：</p>
+<ul>
+<li>缓存中有大量数据同时过期</li>
+<li>Redis 缓存实例发生故障宕机</li>
+</ul>
+<h4 id="54缓存击穿">5.4，缓存击穿</h4>
+<p>缓存击穿是指，针对某个访问非常频繁的热点数据的请求，无法在缓存中进行处理，紧接着，访问该数据的大量请求，一下子都发送到了后端数据库，导致了数据库压力激增，会影响数据库处理其他请求。缓存击穿的情况，经常发生在热点数据过期失效时。</p>
+<h4 id="55缓存穿透">5.5，缓存穿透</h4>
+<p>缓存穿透是指要访问的数据既不在 Redis 缓存中，也不在数据库中，导致请求在访问缓存时，发生缓存缺失，再去访问数据库时，发现数据库中也没有要访问的数据。</p>
+<p>此时，应用也无法从数据库中读取数据再写入缓存，来服务后续请求，这样一来，缓存也就成了“摆设”，如果应用持续有大量请求访问数据，就会同时给缓存和数据库带来巨大压力。</p>
+<p><img src="https://img-blog.csdnimg.cn/dd621fc3a91149129da2dfd81ae76c8c.png" alt="在这里插入图片描述"></p>
+<h4 id="56缓存污染">5.6，缓存污染</h4>
+<p>在一些场景下，有些数据被访问的次数非常少，甚至只会被访问一次。当这些数据服务完访问请求后，如果还继续留存在缓存中的话，就只会白白占用缓存空间。这种情况，就是<strong>缓存污染</strong>。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/redis-learn2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Redis学习笔记2-性能篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/mysql-learn5/">
+            <span class="next-text nav-default">MySQL学习笔记5-调优篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/redis-learn1/" class="leancloud_visitors" data-flag-title="Redis学习笔记1-理论篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MySQL学习笔记4-进阶篇-下 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/mysql-learn4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MySQL学习笔记4-进阶篇-下" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/mysql-learn4/" />
+<meta property="article:published_time" content="2021-11-13T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-13T21:41:52+08:00" />
+<meta itemprop="name" content="MySQL学习笔记4-进阶篇-下">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
+<meta itemprop="datePublished" content="2021-11-13T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-13T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="8084">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL学习笔记4-进阶篇-下"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MySQL学习笔记4-进阶篇-下</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-13 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 8084 字 </span>
+          <span class="more-meta"> 阅读约需 17 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#28join-语句的原理">28，Join 语句的原理</a></li>
+        <li><a href="#29mysql-如何进行排序">29，MySQL 如何进行排序</a></li>
+        <li><a href="#30mysql-中-kill-命令的原理">30，MySQL 中 kill 命令的原理</a></li>
+        <li><a href="#31mysql-中的-mysqldump-命令">31，MySQL 中的 mysqldump 命令</a></li>
+        <li><a href="#32mysql-主从同步">32，MySQL 主从同步</a></li>
+        <li><a href="#33mysql-主备原理">33，MySQL 主备原理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/mysql-learn1/"><strong>第一篇 MySQL 学习笔记1-基础篇</strong></a>
+<ul>
+<li>1，关于 SQL</li>
+<li>2，一条 SQL 的执行步骤</li>
+<li>3，MySQL 存储引擎</li>
+<li>4，数据库的基本操作</li>
+<li>5，关于自增主键</li>
+<li>6，SELECT 语句顺序</li>
+<li>7，WHERE 子句</li>
+<li>8，DISTINCT 去重</li>
+<li>9，关于 COUNT(*) 操作</li>
+<li>10，MYSQL 函数</li>
+<li>11，GROUP BY 数据分组</li>
+<li>12，子查询(嵌套查询)</li>
+<li>13，JOIN 连接查询</li>
+<li>14，VIEW 视图</li>
+<li>15，存储过程</li>
+<li>16，临时表</li>
+<li>17，MySQL 权限管理</li>
+<li>18，Python 操作 MySQL 的库</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn2/"><strong>第二篇 MySQL 学习笔记2-进阶篇-上</strong></a>
+<ul>
+<li>19，MySQL 的基础架构</li>
+<li>20，数据库缓冲池</li>
+<li>21，数据库中的存储结构</li>
+<li>22，InnoDB 中表数据的存储</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn3/"><strong>第三篇 MySQL 学习笔记3-进阶篇-中</strong></a>
+<ul>
+<li>23，事务处理</li>
+<li>24，事务的隔离级别</li>
+<li>25，MySQL 中的锁</li>
+<li>26，MVCC 多版本并发控制</li>
+<li>27，MySQL 传输数据的原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn4/"><strong>第四篇 MySQL 学习笔记4-进阶篇-下</strong></a>
+<ul>
+<li>28，Join 语句的原理</li>
+<li>29，MySQL 如何进行排序</li>
+<li>30，MySQL 中 kill 命令的原理</li>
+<li>31，MySQL 中的 mysqldump 命令</li>
+<li>32，MySQL 主从同步</li>
+<li>33，MySQL 主备原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn5/"><strong>第五篇 MySQL 学习笔记5-调优篇</strong></a>
+<ul>
+<li>34，关于 MySQL 索引</li>
+<li>35，定位数据库 SQL 性能问题</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="28join-语句的原理">28，Join 语句的原理</h3>
+<p>三种常用的 JOIN 操作：</p>
+<p><img src="https://img-blog.csdnimg.cn/e1806d31e182425f830837327ee18ee4.png" alt="在这里插入图片描述"></p>
+<h4 id="281join-的执行过程">28.1，join 的执行过程</h4>
+<h5 id="1被驱动表走索引的情况-nlj">1，被驱动表走索引的情况-NLJ</h5>
+<p>比如下面语句：</p>
+<pre><code class="language-sql">-- t1 中有 100 条数据
+-- t2 中有 1000 条数据
+-- 这两个表都有一个主键索引 id 和一个索引 a，字段 b 上无索引
+select * from t1 straight_join t2 on (t1.a=t2.a);
+</code></pre>
+<blockquote>
+<p>如果直接使用 join 语句，MySQL 优化器可能会选择表 t1 或 t2 作为驱动表。
+<code>straight_join</code> 让 MySQL 使用固定的连接方式执行查询，这样优化器只会按照我们指定的方式去 join。在这个语句里，t1 是驱动表，t2 是被驱动表。</p>
+</blockquote>
+<p>这个语句的执行流程是：</p>
+<ul>
+<li>从 t1 中读入一行数据 R</li>
+<li>从数据行 R 中，取出 a 字段到 t2 里去查找</li>
+<li>取出 t2 中满足条件的行，跟 R 组成一行，作为结果集的一部分</li>
+<li>重复执行步骤 1 到 3，直到 t1 的末尾循环结束</li>
+</ul>
+<p>在这个 join 语句执行过程中，驱动表是走全表扫描，而被驱动表是走树搜索（字段 a 上有索引，使用了索引）。</p>
+<p>这种算法叫做 <strong>Index Nested-Loop Join(NLJ)</strong> 。</p>
+<h5 id="2被驱动表不走索引的情况-bnl">2，被驱动表不走索引的情况-BNL</h5>
+<p>对于下面的查询，被驱动表是无法使用索引的（因为 b 字段上没有索引）：</p>
+<pre><code class="language-sql">select * from t1 straight_join t2 on (t1.a=t2.b);
+</code></pre>
+<p>这种算法叫做 <strong>Block Nested-Loop Join(BNL)</strong>。</p>
+<p>执行过程是这样的：</p>
+<ul>
+<li>把 t1 的数据读入线程内存 <code>join_buffer</code> 中</li>
+<li>扫描 t2，把 t2 中的每一行取出来，跟 join_buffer 中的数据做对比，满足 join 条件的，作为结果集的一部分返回</li>
+</ul>
+<p>流程图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210714103932718.png" alt="在这里插入图片描述"></p>
+<p><code>join_buffer</code> 的大小是由参数 <code>join_buffer_size</code> 设定的，默认值是 256k。如果放不下表 t1 的所有数据话，就会<strong>分段放</strong>。</p>
+<p><code>join_buffer_size</code> 越大，一次可以放入的行越多，分成的段数也就越少，对被驱动表的全表扫描次数就越少。因此，如果你的 join 语句很慢，就把 <code>join_buffer_size</code> 改大些。</p>
+<p>分段的执行过程是这样的：</p>
+<ul>
+<li>扫描表 t1，顺序读取数据行放入 <code>join_buffer</code> 中，放完第 88 行 join_buffer 满了，继续第 2 步；</li>
+<li>扫描表 t2，把 t2 中的每一行取出来，跟 <code>join_buffer</code> 中的数据做对比，满足 join 条件的，作为结果集的一部分返回；</li>
+<li>清空 join_buffer；</li>
+<li>继续扫描表 t1，顺序读取最后的 12 行数据放入 <code>join_buffer</code> 中，继续执行第 2 步。</li>
+</ul>
+<p>执行流程图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/9cee31aef2e94ead9dda560112a95937.png" alt="在这里插入图片描述"></p>
+<p><em><strong>图中的步骤 4 和 5，表示清空 join_buffer 再复用</strong></em>。</p>
+<h4 id="282是否要使用-join-操作">28.2，是否要使用 Join 操作</h4>
+<p>分两种情况：</p>
+<ul>
+<li>如果 Join 时，能利用上<strong>被驱动表</strong>的索引，Join 操作是很快的</li>
+<li>如果 Join 时，不能利用<strong>被驱动表</strong>的索引，扫描行数就会过多。
+<ul>
+<li>尤其是在大表上的 join 操作，会扫描被驱动表很多次，占用大量的系统资源，所以这种 join 尽量不要用。</li>
+<li>所以在判断要不要使用 join 语句时，就是看 <code>explain</code> 结果里面，Extra 字段里面有没有出现<code>Block Nested Loop</code>字样。</li>
+<li><img src="https://img-blog.csdnimg.cn/20210714160550549.png" alt="在这里插入图片描述"></li>
+<li>如果有 <code>Block Nested Loop</code>，表示无法使用被驱动表的索引，则此时的 Join 操作的性能会很差。</li>
+</ul>
+</li>
+</ul>
+<h4 id="283小表驱动大表">28.3，小表驱动大表</h4>
+<p>使用 Join 操作时，总是应该使用<strong>小表做驱动表</strong>，性能会更好。</p>
+<p>那么到底什么是<strong>小表</strong>呢？</p>
+<p><em>两个表按照各自的条件过滤，过滤完成之后，计算参与 join 的各个字段的总数据量，数据量小的那个表，就是“小表”，应该作为驱动表。</em></p>
+<h4 id="284mysql-对-join-语句的优化">28.4，MySQL 对 Join 语句的优化</h4>
+<p><em><strong>BKA 算法</strong></em></p>
+<p><strong>BKA</strong> 算法即 <code>Batched Key Access</code>，该算法是在 MySQL 5.6 之后引入的，它是对 NLJ 算法的优化。其原理与 <strong>22.12 节</strong>中的 MRR 算法类似，尽量使用顺序读盘。</p>
+<p>NLJ 算法的流程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/9b26a2d8965245f183815121dd1660fe.png" alt="在这里插入图片描述"></p>
+<p>NLJ 算法：从驱动表 t1，一行行地取出 a 的值，再到被驱动表 t2 去做 join。对于表 t2 来说，每次都是匹配一个值。</p>
+<p>BKA 算法的流程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/518d5a3aa0754199934fe76a171c3a8f.png" alt="在这里插入图片描述"></p>
+<p>为了一次性地多传些值给表 t2，BKA 算法将表 t1 的数据放到 join_buffer 中。</p>
+<p>join_buffer 中放入的数据是 <code>P1~P100</code>，表示只取查询需要的字段。如果 join_buffer 放不下 <code>P1~P100</code> 的所有数据，就会把这 100 行数据分成多段，然后执行上图的流程。</p>
+<p>注意，要使用 BKA 优化算法，需要在执行 SQL 语句之前，先设置：</p>
+<pre><code class="language-sql">set optimizer_switch='mrr=on,mrr_cost_based=off,batched_key_access=on';
+</code></pre>
+<p>前两个参数的作用是启用 MRR，因为 BKA 算法依赖 MRR。</p>
+<h4 id="285left-join-on-后的-and-和-where">28.5，LEFT JOIN ON 后的 AND 和 WHERE</h4>
+<p>示例：</p>
+<p>表1 <code>app_notification_user</code> 里面有两条数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210719082830662.png" alt="在这里插入图片描述"></p>
+<p>表2 <code>app_notification</code> 里面有一条数据：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210719082906725.png" alt="在这里插入图片描述"></p>
+<p>语句 1：</p>
+<pre><code class="language-sql">SELECT anu.id, anu.app_notification_id, anu.`status`, an.*  
+FROM app_notification_user anu 
+LEFT JOIN app_notification an ON anu.app_notification_id=an.id 
+</code></pre>
+<p>结果如下，左表有的数据全都有：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210719083046594.png" alt="在这里插入图片描述"></p>
+<p>语句2： <code>LEFT JOIN ON AND</code> 和 <code>LEFT JOIN ON WHERE</code> 对比：</p>
+<pre><code class="language-sql">SELECT anu.id, anu.app_notification_id, anu.`status`, an.*  
+FROM app_notification_user anu 
+LEFT JOIN app_notification an ON anu.app_notification_id=an.id AND anu.status=1
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210719083557908.png" alt="在这里插入图片描述"></p>
+<p><strong>VS</strong>：</p>
+<pre><code class="language-sql">SELECT anu.id, anu.app_notification_id, anu.`status`, an.*  
+FROM app_notification_user anu 
+LEFT JOIN app_notification an ON anu.app_notification_id=an.id 
+WHERE anu.status=1
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/2021071908371346.png" alt="在这里插入图片描述"></p>
+<p>放在 WHERE 里，会将不符合条件的过滤掉；</p>
+<p>LEFT JOIN 里加的 AND，左表的数据一直会在，不符合条件的部分会填充为 NULL。</p>
+<p>此处参考了<a href="https://blog.csdn.net/didiliu_1111/article/details/80430957">这里</a>。</p>
+<h3 id="29mysql-如何进行排序">29，MySQL 如何进行排序</h3>
+<p>当我们使用 <code>order by</code> 就是告诉 MySQL 返回的数据需要进行排序。</p>
+<p>例如一个表结构：</p>
+<pre><code class="language-sql">CREATE TABLE `t` (
+  `id` int(11) NOT NULL,
+  `city` varchar(16) NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `age` int(11) NOT NULL,
+  `addr` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `city` (`city`)
+) ENGINE=InnoDB;
+</code></pre>
+<p>对于 SQL 语句：</p>
+<pre><code class="language-sql">select city,name,age from t where city='杭州' order by name limit 1000;
+</code></pre>
+<p>用 <code>explain</code> 命令查看该 SQL 的执行情况：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210624113753773.png" alt="在这里插入图片描述"></p>
+<p>Extra 中的 <code>Using filesort</code> 表示需要排序，MySQL 会给每个线程分配一块<strong>内存用于排序</strong>，称为 <strong>sort_buffer</strong>。</p>
+<p>并且会用到 city 索引：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210624114024540.png" alt="在这里插入图片描述"></p>
+<h4 id="291数据的排序过程">29.1，数据的排序过程</h4>
+<p>MySQL 的排序过程会用到<strong>临时表</strong>。</p>
+<p>该 SQL 的执行流程：</p>
+<ol>
+<li>初始化 sort_buffer，确定放入 name、city、age 这三个字段；</li>
+<li>从索引 city 找到第一个满足 <code>city='杭州’</code> 条件的主键 id（<code>ID_X</code>）；</li>
+<li>到主键 id 索引取出整行，取 name、city、age 三个字段的值，存入 sort_buffer 中；</li>
+<li>从索引 city 取下一个记录的主键 id；</li>
+<li>重复步骤 3、4 直到 city 的值不满足查询条件为止（<code>ID_Y</code>）；</li>
+<li>对 sort_buffer 中的数据按照字段 name 做<strong>快速排序</strong>；按照排序结果取前 1000 行。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20210624114535641.png" alt="在这里插入图片描述"></p>
+<h4 id="292sort_buffer_size-参数">29.2，sort_buffer_size 参数</h4>
+<p>排序的过程可能在<strong>内存中完成</strong>，也可能需要使用<strong>外部排序</strong>，这取决于排序所需的内存和参数 <code>sort_buffer_size</code>。</p>
+<p><code>sort_buffer_size</code> 是 MySQL 为排序开辟的内存 <code>sort_buffer</code> 的大小：</p>
+<ul>
+<li>如果要排序的数据量小于 <code>sort_buffer_size</code>，排序就在<strong>内存中</strong>（采用快速排序）完成。</li>
+<li>如果要排序的数据量太大，内存放不下，则需用<strong>磁盘临时文件</strong>（采用归并排序）辅助排序。</li>
+</ul>
+<h4 id="293max_length_for_sort_data-参数与-rowid-排序">29.3，max_length_for_sort_data 参数与 rowid 排序</h4>
+<p>上面的 SQL 查询要返回的字段有三个（<code>city、name、age</code>），在上面的排序过程中，<strong>这三个字段都放入了 <code>sort_buffer</code> 中</strong>，这种排序叫做 <strong>全字段排序</strong>。</p>
+<p>如果<strong>要返回的字段很多的话</strong>，那么 <code>sort_buffer</code> 里面要放的字段数太多，这样内存里能够同时放下的行数很少，<strong>要分成很多个临时文件</strong>，<strong>排序的性能会很差</strong>。</p>
+<p>所以，<strong>如果单行的长度很大的话，全排序有可能导致性能较低</strong>。</p>
+<p><code>max_length_for_sort_data</code> 参数是控制排序的行数据的长度的，如果<strong>单行的长度</strong>超过这个值，MySQL 就认为单行太大，则会<strong>将全排序换成 rowid 排序</strong>。</p>
+<blockquote>
+<p>这里<strong>单行的长度</strong>指的是，所有要返回的字段的定义时的<strong>数据类型的长度</strong>。
+比如上面的 SQL 要返回的字段是（<code>city</code>、<code>name</code>、<code>age</code>），
+那么单行的长度就是 <code>16 + 16 + 4 = 36</code></p>
+</blockquote>
+<p><strong>rowid 排序</strong>只会将<strong>要排序的字段</strong>(而不是所有要返回的字段)和 rowid 放入 <code>sort_buffer</code> 中，从而避免占用 <code>sort_buffer</code> 过大的空间，进而尽可能少的使用外部排序，最终达到加快排序速度的目的。</p>
+<p>如果使用 <strong>rowid 排序</strong>，那么对于上面的 SQL，放入 <code>sort_buffer</code> 的字段，只有要排序的列（即 name 字段）和 rowid，那么排序过程将是：</p>
+<ol>
+<li>初始化 sort_buffer，确定放入两个字段，即 name 和 id；</li>
+<li>从索引 city 找到第一个满足 <code>city='杭州'</code>条件的主键 id(<code>ID_X</code>)；</li>
+<li>到主键 id 索引取出整行，取 name、id 这两个字段，存入 sort_buffer 中；</li>
+<li>从索引 city 取下一个记录的主键 id；</li>
+<li>重复步骤 3、4 直到不满足 city='杭州’条件为止(ID_Y)；</li>
+<li>对 sort_buffer 中的数据按照字段 name 进行排序；</li>
+<li>遍历排序结果，取前 1000 行，并按照 id 的值<strong>回到原表中</strong>取出 city、name 和 age 三个字段返回给客户端。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20210624151446858.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>请注意对比<strong>全字段排序</strong>和 <strong>rowid 排序</strong>的不同。</p>
+</blockquote>
+<h4 id="294全字段排序与rowid-排序">29.4，全字段排序与rowid 排序</h4>
+<p>两种排序的选择：</p>
+<ul>
+<li>如果 MySQL 认为内存足够大，<strong>会优先选择全字段排序</strong>，把需要的字段都放到 sort_buffer 中，这样排序后就会直接从内存里面返回查询结果了，不用再回到原表去取数据。</li>
+<li>如果 MySQL 实在是担心排序内存太小，会影响排序效率，<strong>才会采用 rowid 排序算法</strong>，这样排序过程中一次可以排序更多行，但是需要再回到原表去取数据。</li>
+</ul>
+<blockquote>
+<p>对于 InnoDB 引擎，执行<strong>全字段排序会减少磁盘访问</strong>，因此<strong>会被优先选择</strong>。
+而对于 Memory 引擎，回表过程只是简单地根据数据行的位置，直接访问内存得到数据，<strong>不会导致多访问磁盘</strong>。所以 Memory 引擎会优先选择 rowid 排序。</p>
+</blockquote>
+<h4 id="295所有的-order-by-都需要排序过程吗">29.5，所有的 order by 都需要排序过程吗</h4>
+<p>并不是所有的 order by 语句，都需要排序操作的，如果需要排序的字段本来就是有序的，那么就不需要排序了。</p>
+<p>比如 order by <strong>主键id</strong>，MySQL 就不需要执行排序过程，因为主键id 本来就是有序的。</p>
+<p>除了主键id 外，<strong>联合索引</strong>也会使得字段是有序排列的。</p>
+<p>所以，如果建立了 <code>city, name</code> 的联合索引：</p>
+<pre><code class="language-sql">alter table t add index city_user(city, name);
+</code></pre>
+<p>索引结构将变成下面这样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210624155602947.png" alt="在这里插入图片描述"></p>
+<p>这时将不再需要排序过程：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210624160003892.png" alt="在这里插入图片描述"></p>
+<h4 id="296order-by-rand-的执行过程">29.6，order by rand() 的执行过程</h4>
+<p>当我们想要对一个表的数据进行随机排序的时候会用到 <code>order by rand()</code>：</p>
+<pre><code class="language-sql">select * from table_name order by rand() limit N;
+</code></pre>
+<p>用 Explain 分析 SQL 如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210625094015397.png" alt="在这里插入图片描述"></p>
+<p>Extra 字段中的 <code>Using temporary</code>，表示需要使用<strong>临时表</strong>；<code>Using filesort</code>，表示需要执行排序操作。</p>
+<p>该 SQL 的执行流程图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210625094422290.png" alt="在这里插入图片描述"></p>
+<p>由上图可知：<strong><code>order by rand()</code> 使用了<code>内存临时表</code>，内存临时表排序的时候使用了 <code>rowid 排序</code></strong>。</p>
+<p><em><strong>并不是所有的临时表在内存中，也可以在磁盘上</strong></em>。</p>
+<p><code>tmp_table_size</code> 参数限制了内存临时表的大小，默认值是 16M。如果临时表大小超过了 <code>tmp_table_size</code>，那么<strong>内存临时表就会转成磁盘临时表</strong>。</p>
+<p><strong>结论：不论使用哪种类型的临时表，<code>order by rand()</code> 这种写法都会让计算过程非常复杂，需要大量的扫描行数，因此排序过程的资源消耗也会很大</strong>。</p>
+<h4 id="297order-by-对索引的使用">29.7，order by 对索引的使用</h4>
+<p><code>order by</code> 对索引的使用类似 <code>select ... where</code> 查询。</p>
+<p><img src="https://img-blog.csdnimg.cn/9ac8df12c8f343a28b30172dd7f8217f.png?" alt="在这里插入图片描述"></p>
+<h3 id="30mysql-中-kill-命令的原理">30，MySQL 中 kill 命令的原理</h3>
+<p>MySQL 中有两个 kill 命令：</p>
+<ul>
+<li><code>kill query + 线程 id</code>，表示终止这个线程中正在执行的语句</li>
+<li><code>kill connection + 线程 id</code>，表示断开这个线程的连接
+<ul>
+<li>如果这个线程有语句正在执行，要先停止正在执行的语句</li>
+<li>这里 <code>connection</code> 可缺省</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>show processlist;</code> 命令可以查看进程状态
+<code>innodb_thread_concurrency</code> 参数设置的是并发线程数</p>
+</blockquote>
+<p>当执行 Kill 命令时，线程并不会马上停止，被 kill 的线程，需要执行到判断状态的“埋点”，才会开始进入终止逻辑阶段。并且，终止逻辑本身也是需要耗费时间的。</p>
+<p>有两种情况会导致线程不会马上终止：</p>
+<ul>
+<li>线程没有执行到判断线程状态的逻辑</li>
+<li>终止逻辑耗时较长
+<ul>
+<li>这时候，从 <code>show processlist</code> 结果上看是 <code>Command=Killed</code>，需要等到终止逻辑完成，语句才算真正完成</li>
+<li>这类情况，比较常见的场景有以下几种：
+<ul>
+<li>超大事务执行期间被 kill。这时候，回滚操作需要对事务执行期间生成的所有新数据版本做回收操作，耗时很长。</li>
+<li>大查询回滚。如果查询过程中生成了比较大的临时文件，加上此时文件系统压力大，删除临时文件可能需要等待 IO 资源，导致耗时较长。</li>
+<li>DDL 命令执行到最后阶段，如果被 kill，需要删除中间过程的临时文件，也可能受 IO 资源影响耗时较久。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="31mysql-中的-mysqldump-命令">31，MySQL 中的 mysqldump 命令</h3>
+<p><code>mysqldump</code>  命令用于备份数据，如下：</p>
+<pre><code class="language-sql">mysqldump -h$host -P$port -u$user --add-locks=0 --no-create-info --single-transaction  --set-gtid-purged=OFF db1 t --where=&quot;a&gt;900&quot; --result-file=/client_tmp/t.sql
+</code></pre>
+<p>该命令将结果输出到文件。参数含义：</p>
+<ul>
+<li><code>–single-transaction</code>：在导出数据时，不需要对表 db1.t 加表锁，而是使用 <code>START TRANSACTION WITH CONSISTENT SNAPSHOT</code> 的方法
+<ul>
+<li>导数据之前就会启动一个事务，来确保拿到一致性视图。</li>
+<li>由于 MVCC 的支持，这个过程中<strong>数据是可以正常更新</strong>的。</li>
+</ul>
+</li>
+<li><code>–add-locks</code> 设置为 0：表示在输出的文件结果里，不增加<code>LOCK TABLES t WRITE;</code></li>
+<li><code>–no-create-info</code>：表示不需要导出表结构</li>
+<li><code>–set-gtid-purged=off</code>：表示不输出跟 GTID 相关的信息</li>
+<li><code>–result-file</code>：指定输出文件的路径</li>
+</ul>
+<p>t.sql 文件内容如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210717095426336.png" alt="在这里插入图片描述"></p>
+<p>如果希望生成的文件中一条 INSERT 语句只插入一行数据，可以在执行 mysqldump 命令时，加上参数 <code>–skip-extended-insert</code>。</p>
+<p>导出数据后，通过如下命令导入数据：</p>
+<pre><code class="language-sql">mysql -h127.0.0.1 -P13000  -uroot db2 -e &quot;source /client_tmp/t.sql&quot;
+</code></pre>
+<p><code>source</code> 并不是一条 SQL 语句，而是一个客户端命令，客户端执行这个命令的流程：</p>
+<ul>
+<li>打开文件，默认以分号为结尾读取一条条的 SQL 语句</li>
+<li>将 SQL 语句发送到服务端执行</li>
+</ul>
+<p><em><strong>物理拷贝表的方法</strong></em></p>
+<p>直接把 db1.t 表的 <code>.frm</code> 文件和 <code>.ibd</code> 文件拷贝到 db2 目录下，是不可行的。</p>
+<p>因为，一个 InnoDB 表，除了包含这两个物理文件外，还需要在<strong>数据字典</strong>中注册。直接拷贝这两个文件的话，因为数据字典中没有 db2.t 这个表，系统是不会识别和接受它们的。</p>
+<p>在 MySQL 5.6 版本引入了<strong>可传输表空间</strong>的方法，可以通过<code>导出 + 导入表空间</code>的方式，实现物理拷贝表的功能。</p>
+<h3 id="32mysql-主从同步">32，MySQL 主从同步</h3>
+<p>提升数据库高并发访问效率的三种方式：</p>
+<ul>
+<li>首先需要考虑的是<strong>优化 SQL 和索引</strong>，这种方式简单有效。</li>
+<li>其次是<strong>采用缓存</strong>的策略，比如使用 Redis。</li>
+<li>最后是对数据库采用<strong>主从架构</strong>，进行读写分离。</li>
+</ul>
+<h4 id="321主从同步的作用">32.1，主从同步的作用</h4>
+<ul>
+<li>达到<strong>读写分离</strong>的效果：
+<ul>
+<li>将同一份数据被放到多个数据库中，其中一个数据库是 Master 主库，其余的多个数据库是 Slave 从库。</li>
+<li>当主库进行更新的时候，会自动将数据复制到从库中。</li>
+<li>当读取数据的时候，会从从库中进行读取，也就是采用读写分离的方式。</li>
+</ul>
+</li>
+<li>达到<strong>数据备份</strong>的效果</li>
+<li>达到<strong>高可用性</strong>：当服务器出现故障或宕机的情况下，可以切换到从服务器上，保证服务的正常运行。</li>
+</ul>
+<h4 id="322主从同步的原理">32.2，主从同步的原理</h4>
+<p>主从同步是基于 <strong>Binlog</strong> 进行数据同步的，它是二进制日志文件，存储的是一个个的事件（Event），这些事件分别对应着数据库的更新操作，比如 INSERT、UPDATE、DELETE 等。</p>
+<blockquote>
+<p>需要注意的是，不是所有版本的 MySQL 都默认开启服务器的二进制日志，在进行主从同步的时候，我们需要先检查服务器是否已经开启了二进制日志。</p>
+</blockquote>
+<p>在主从复制过程中，会基于 <strong>3 个线程</strong>来操作：</p>
+<ul>
+<li>一个主库线程：即 Binlog 转储线程，当从库线程连接的时候，主库可以将 Binlog 日志发送给从库。</li>
+<li>两个从库线程：
+<ul>
+<li>一个是从库 I/O 线程：向主库发送请求更新 Binlog，并拷贝到本地形成中继日志（Relay log）。</li>
+<li>一个是从库 SQL 线程：读取从库中的中继日志，并执行日志中的事件，从而将从库中的数据与主库保持同步。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/096416088bde4b6da535876d2648bd9c.png" alt="在这里插入图片描述"></p>
+<h4 id="323主从同步的数据一致性问题">32.3，主从同步的数据一致性问题</h4>
+<p>进行主从同步的内容是二进制日志，在进行网络传输的过程中就一定会存在延迟，这样就可能造成用户在从库上读取的数据不是最新的数据。</p>
+<p>比如我们对一条记录进行更新，这个操作是在主库上完成的，而在很短的时间内又对同一个记录进行了读取，这时候从库还没有完成数据的更新，那么我们通过从库读到的数据就是一条旧的记录。</p>
+<h4 id="324如何解决数据一致性问题">32.4，如何解决数据一致性问题</h4>
+<p>主从数据库之间数据复制有 3 种方式，按照数据一致性从弱到强来进行划分：</p>
+<ul>
+<li><strong>异步复制</strong>：主库写成功后，及返回成功，而不保证从库中写成功。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/1c0e9abd01e2409894097513993e55de.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>半同步复制</strong>：MySQL5.5 版本之后开始支持半同步复制的方式。
+<ul>
+<li>原理是在客户端提交 COMMIT 之后不直接将结果返回给客户端，而是<strong>等待至少有一个从库接收到了 Binlog</strong>，并且写入到中继日志中，再返回给客户端。</li>
+<li>这样做的好处是提高了数据的一致性，当然相比于异步复制来说，至少多增加了一个网络连接的延迟，降低了主库写的效率。</li>
+<li>在 MySQL5.7 版本中增加了一个<code>rpl_semi_sync_master_wait_for_slave_count</code> 参数，我们可以对应答的从库数量进行设置，默认为 1，也就是说只要有 1 个从库进行了响应，就可以返回给客户端。</li>
+<li>如果将这个参数调大，可以提升数据一致性的强度，但也会增加主库等待从库响应的时间。</li>
+</ul>
+</li>
+<li><strong>组复制</strong>：简称 MGR（<code>MySQL Group Replication</code>），是 MySQL 在 5.7.17 版本中推出的一种新的数据复制技术，这种复制技术是基于 Paxos 协议的状态机复制。
+<ul>
+<li>MGR 将 MySQL 带入了数据强一致性的时代，是一个划时代的创新，其中一个重要的原因就是 MGR 是基于 Paxos 协议的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="33mysql-主备原理">33，MySQL 主备原理</h3>
+<p>MySQL 通过 binlog 来完成主备之间的数据备份。</p>
+<p>MySQL 主备流程图：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ae374f29bab9fcf4c4984678ad6d098f.png" alt="在这里插入图片描述"></p>
+<p>备库 B 跟主库 A 之间维持了一个长连接，一个事务日志同步的完整过程是这样的：</p>
+<ul>
+<li>在备库 B 上通过 <code>change master</code> 命令，设置主库 A 的 IP、端口、用户名、密码，以及要从哪个位置开始请求 binlog，这个位置包含文件名和日志偏移量。</li>
+<li>在备库 B 上执行 <code>start slave</code> 命令，这时候备库会启动两个线程，就是图中的 io_thread 和 sql_thread。其中 io_thread 负责与主库建立连接。</li>
+<li>主库 A 校验完用户名、密码后，开始按照备库 B 传过来的位置，从本地读取 binlog，发给 B。</li>
+<li>备库 B 拿到 binlog 后，写到本地文件，称为中转日志（relay log）。</li>
+<li><code>sql_thread</code> 读取中转日志，解析出日志里的命令，并执行。
+<ul>
+<li>在 MySQL 5.6 版本之前，MySQL 只支持单线程复制，由此在主库并发高、TPS 高时就会出现严重的主备延迟问题。</li>
+<li>在之后的版本，支持<strong>多线程复制</strong>，即由一个 <code>sql_thread</code> 变成多个，模型如下：</li>
+<li><img src="https://img-blog.csdnimg.cn/164d4e1c34504211b24f5fc2c014dd47.png" alt="在这里插入图片描述"></li>
+<li>coordinator 就是原来的 sql_thread，负责读取中转日志和分发事务。</li>
+<li>work 线程的个数，由参数 <code>slave_parallel_workers</code> 决定。</li>
+</ul>
+</li>
+</ul>
+<h4 id="331binlog-的三种格式">33.1，binlog 的三种格式</h4>
+<p>binlog 的三种格式：</p>
+<ul>
+<li><strong>statement</strong>：基于 SQL 语句
+<ul>
+<li>有些 statement 格式的 binlog 可能会导致主备不一致</li>
+</ul>
+</li>
+<li><strong>row</strong>：基于行，缺点是很占空间</li>
+<li><strong>mixed</strong>：上面两种的混合方式
+<ul>
+<li>MySQL 自己会判断这条 SQL 语句是否可能引起主备不一致，如果有可能，就用 row 格式，否则就用 statement 格式。</li>
+<li>mixed 格式可以利用 statment 格式的优点，同时又避免了数据不一致的风险。</li>
+</ul>
+</li>
+</ul>
+<p>以下命令可以查看 binlog 的内容：</p>
+<pre><code class="language-sql"># 获取 binlog 文件列表
+&gt; show binary logs;
+# 查看第一个文件的内容
+&gt; show binlog events;
+# 查看指定文件的内容
+&gt; show binlog events 'binlog文件名'： 
+</code></pre>
+<p><code>mysqlbinlog</code> 命令可以查看 binlog 文件的内容：</p>
+<pre><code class="language-shell">mysqlbinlog binlog.000003（文件路径） --start-position=8900（开始位置） -vv | more
+</code></pre>
+<p>用 <strong>binlog</strong> 来恢复数据的标准做法是，用 <code>mysqlbinlog</code> 工具解析出来，然后把解析结果整个发给 MySQL 执行：</p>
+<pre><code class="language-shell"># 将 master.000001 文件里面从第 2738 字节到第 2973 字节中间这段内容解析出来
+mysqlbinlog master.000001  --start-position=2738 --stop-position=2973 | mysql -h127.0.0.1 -P13000 -u$user -p$pwd;
+</code></pre>
+<h4 id="332双主架构">33.2，双主架构</h4>
+<p>实际生产上使用比较多的是双 M 结构，其主备切换流程入下：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d6bc5767e14fb34274e0121bbd7f35a9.png" alt="在这里插入图片描述"></p>
+<h4 id="333主备延迟">33.3，主备延迟</h4>
+<p>所谓<strong>主备延迟</strong>，就是同一个事务，在备库执行完成的时间和主库执行完成的时间之间的差值。</p>
+<p>在备库上执行 <code>show slave status</code> 命令，返回结果里面的 <code>seconds_behind_master</code>，用于表示当前备库延迟了多少<strong>秒</strong>。</p>
+<p>主备延迟最直接的表现是，备库消费中转日志（relay log）的速度，比主库生产 binlog 的速度要慢。</p>
+<h4 id="334主备切换步骤">33.4，主备切换步骤</h4>
+<p>安全的主备切换步骤：</p>
+<ul>
+<li>判断备库 B 现在的 <code>seconds_behind_master</code>，如果小于某个值（比如 5 秒）继续下一步，否则持续重试这一步；</li>
+<li>把主库 A 改成只读状态，即把 readonly 设置为 true；</li>
+<li>判断备库 B 的 <code>seconds_behind_master</code> 的值，直到这个值变成 0 为止；</li>
+<li>把备库 B 改成可读写状态，也就是把 readonly 设置为 false；把业务请求切到备库 B。</li>
+</ul>
+<p>这个切换流程，一般是由<strong>专门的 HA 系统</strong>来完成的，我们暂时称之为<strong>可靠性优先流程</strong>。</p>
+<h4 id="335一主多从架构">33.5，一主多从架构</h4>
+<p>一主多从，一般用于<strong>读写分离</strong>，主库负责所有的写入和一部分读，其他的读请求则由从库分担。</p>
+<p><img src="https://img-blog.csdnimg.cn/2670826ef7b54e19b35a974bed6d02e3.png?" alt="在这里插入图片描述"></p>
+<p>其中，<code>A</code> 和 <code>A’</code>互为主备，B，C，D 为备库。</p>
+<p>当主库发生故障，主备需要切换：</p>
+<p><img src="https://img-blog.csdnimg.cn/ff8736ec67fe4c5491316eb7916e60d5.png" alt="在这里插入图片描述"></p>
+<p>一主多从结构在切换完成后，A’会成为新的主库，从库 B、C、D 也要改接到 A’。</p>
+<p>把节点 <code>B</code> 设置成节点 <code>A’</code>的从库的时候，需要执行一条 <code>change master</code> 命令：</p>
+<pre><code class="language-sql">CHANGE MASTER TO 
+MASTER_HOST=$host_name 
+MASTER_PORT=$port 
+MASTER_USER=$user_name 
+MASTER_PASSWORD=$password 
+MASTER_LOG_FILE=$master_log_name 
+MASTER_LOG_POS=$master_log_pos  
+</code></pre>
+<p>其中 <code>MASTER_LOG_FILE</code> 和 <code>MASTER_LOG_POS</code> 合称为<strong>同步位点</strong>，也就是主库对应的文件名和日志偏移量。</p>
+<h4 id="336读写分离存在的问题">33.6，读写分离存在的问题</h4>
+<p>由于主从可能存在延迟，客户端执行完一个更新事务后马上发起查询，如果查询选择的是从库的话，就有可能读到刚刚的事务更新之前的状态，这称为<strong>过期读</strong>。</p>
+<p>应对过期读有以下方案：</p>
+<ul>
+<li><strong>强制走主库方案</strong>：将查询请求做分类
+<ul>
+<li>对于必须要拿到最新结果的请求，强制将其发到主库上</li>
+<li>对于可以读到旧数据的请求，才将其发到从库上</li>
+<li>如果所有查询都不能过期，则不能采用此方案</li>
+</ul>
+</li>
+<li><strong>sleep 方案</strong>：主库更新后，读从库之前先 sleep 一下。
+<ul>
+<li>这个方案假设：大多数情况下主备延迟在 1 秒之内，做一个 sleep 可以有很<strong>大概率</strong>拿到最新的数据。</li>
+</ul>
+</li>
+<li><strong>判断主备无延迟方案</strong>：有三种方式
+<ul>
+<li>判断 <code>seconds_behind_master</code> 参数</li>
+<li>对比<strong>位点</strong></li>
+<li>对比 <strong>GTID</strong> 集合</li>
+</ul>
+</li>
+<li><strong>配合 semi-sync 方案</strong>：半同步复制方案</li>
+<li><strong>等主库位点方案</strong></li>
+<li><strong>等 GTID 方案</strong></li>
+</ul>
+<h4 id="337如何判断主库异常">33.7，如何判断主库异常</h4>
+<p>在主从架构中，当主库出问题后，需要进行主从切换，那如何判断主库异常了呢？</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/mysql-learn5/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">MySQL学习笔记5-调优篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/mysql-learn3/">
+            <span class="next-text nav-default">MySQL学习笔记3-进阶篇-中</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/mysql-learn4/" class="leancloud_visitors" data-flag-title="MySQL学习笔记4-进阶篇-下">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

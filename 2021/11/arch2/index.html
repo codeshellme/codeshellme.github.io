@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>架构学习笔记2 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/arch2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="架构学习笔记2" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/arch2/" />
+<meta property="article:published_time" content="2021-11-19T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-19T21:41:52+08:00" />
+<meta itemprop="name" content="架构学习笔记2">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架">
+<meta itemprop="datePublished" content="2021-11-19T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-19T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="10086">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="架构学习笔记2"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 2 篇文章是我在学习架构的过程中，总结的笔记： 第一篇 架"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">架构学习笔记2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-19 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 10086 字 </span>
+          <span class="more-meta"> 阅读约需 21 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#7常用的高可用架构模式">7，常用的高可用架构模式</a></li>
+        <li><a href="#8常用的可扩展架构模式">8，常用的可扩展架构模式</a></li>
+        <li><a href="#9架构师如何判断技术演进的方向">9，架构师如何判断技术演进的方向</a></li>
+        <li><a href="#10互联网架构模板">10，互联网架构模板</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 2 篇文章是我在学习架构的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/arch1/"><strong>第一篇 架构学习笔记1</strong></a>
+<ul>
+<li>0，什么是架构师</li>
+<li>1，软件架构出现的历史背景</li>
+<li>2，架构设计的目的</li>
+<li>3，架构设计三原则</li>
+<li>4，架构复杂度的六个来源</li>
+<li>5，架构设计流程</li>
+<li>6，常用的高性能架构模式</li>
+</ul>
+</li>
+<li><a href="/2021/11/arch2/"><strong>第二篇 架构学习笔记2</strong></a>
+<ul>
+<li>7，常用的高可用架构模式</li>
+<li>8，常用的可扩展架构模式</li>
+<li>9，架构师如何判断技术演进的方向</li>
+<li>10，互联网架构模板</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="7常用的高可用架构模式">7，常用的高可用架构模式</h3>
+<h4 id="1cap-定理">1，CAP 定理</h4>
+<p><strong>CAP 定理</strong>是埃里克·布鲁尔在 2000 年的 ACM PODC 上提出的一个猜想。2002 年，赛斯·吉尔伯特和南希·林奇发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理。</p>
+<p>布鲁尔在提出 CAP 猜想的时候，并没有详细定义 <code>Consistency、Availability、Partition Tolerance</code> 三个单词的明确定义。</p>
+<p>这里参考 <a href="https://robertgreiner.com/about/">Robert Greiner</a> 的文章，其有两篇文章，第二篇比第一篇更精准：</p>
+<ul>
+<li>第一篇：<code>https://robertgreiner.com/2014/06/cap-theorem-explained/</code></li>
+<li>第二篇：<code>https://robertgreiner.com/2014/08/cap-theorem-revisited/</code></li>
+</ul>
+<blockquote>
+<p>下面都是采用第二篇文章的解析</p>
+</blockquote>
+<p><strong>CAP 定理</strong>：在一个<strong>分布式系统</strong>（指<strong>互相连接并共享数据</strong>的节点的集合）中，当<strong>涉及读写操作</strong>时，只能保证一致性（<code>Consistence</code>）、可用性（<code>Availability</code>）、分区容错性（<code>Partition Tolerance</code>）三者中的两个，另外一个必须被牺牲。</p>
+<p>其中的关键点有：</p>
+<ul>
+<li>强调了<strong>互相连接并共享数据的分布式系统</strong>（分布式系统并不一定会互联和共享数据）
+<ul>
+<li>例如 Memcache 的集群，相互之间就没有连接和共享数据，因此 Memcache 集群这类分布式系统就不符合 CAP 理论探讨的对象；</li>
+<li>而 MySQL 集群就是互联和进行数据复制的，因此是 CAP 理论探讨的对象。</li>
+</ul>
+</li>
+<li>强调了<strong>读写操作</strong>，CAP 关注的是对数据的读写操作，而不是分布式系统的所有功能。
+<ul>
+<li>例如，ZooKeeper 的选举机制就不是 CAP 探讨的对象。</li>
+</ul>
+</li>
+</ul>
+<p>CAP 的含义：</p>
+<ul>
+<li><strong>一致性</strong>（<code>Consistence</code>）：对某个指定的客户端来说，读操作保证能够返回最新的写操作结果</li>
+<li><strong>可用性</strong>（<code>Availability</code>）：非故障的节点在合理的时间内返回合理的响应</li>
+<li><strong>分区容错性</strong>（<code>Partition Tolerance</code>）：当出现网络分区后（集群中的节点之间不能互相通信），系统能够继续提供服务</li>
+</ul>
+<p>在分布式网络中，网络本身无法做到完全可靠，所以<strong>分区是一个必然的现象</strong>，也就是 <strong>P</strong> 必然存在，因此，有两种选择：</p>
+<ul>
+<li>
+<p><strong>CP 架构</strong>：当发生网络分区时，保证一致性，可用性无法保证。</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210704222520601.png" alt="在这里插入图片描述"></li>
+<li>注意：<strong>完美的 CP 场景是不存在的</strong>，因为数据同步毕竟需要时间，</li>
+<li>即使是几毫秒的数据复制延迟，那么在这几毫秒时间内，系统是不符合 CP 要求的，</li>
+<li>因此 CAP 中的 CP 方案，实际上也是实现了<strong>最终一致性</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>AP 架构</strong>：当发生网络分区时，保证可用性，一致性则无法保证。</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210704222758474.png" alt="在这里插入图片描述"></li>
+<li>系统分区期间牺牲一致性，但<strong>分区故障恢复后，系统应该达到最终一致性</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/8ea0ac6b442342259f1b92c5c97199b1.png" alt="在这里插入图片描述"></p>
+<h4 id="2fmea-排除高可用架构隐患">2，FMEA 排除高可用架构隐患</h4>
+<p>FMEA，中文翻译为“<strong>故障模式与影响分析</strong>”，是一种广泛应用的可用性分析方法，<strong>通过对系统范围内潜在的故障模式加以分析，并按照严重程度进行分类，以确定失效对于系统的最终影响</strong>。</p>
+<p>在架构设计领域，FMEA 的具体分析方法是：</p>
+<ul>
+<li>给出初始的架构设计图。</li>
+<li>假设架构中某个部件发生故障。</li>
+<li>分析此故障对系统功能造成的影响。</li>
+<li>根据分析结果，判断架构是否需要进行优化。</li>
+</ul>
+<p>FMEA 分析就是一个 FMEA 分析表，常见的 FMEA 分析表包含下面部分（11项）：</p>
+<ul>
+<li><strong>功能点</strong>：这里的“功能点”指的是从用户角度来看的，而不是从系统各个模块功能点划分来看的。</li>
+<li><strong>故障模式</strong>：指的是系统会出现什么样的故障，包括故障点和故障形式。</li>
+<li><strong>故障影响</strong>：当发生故障模式中描述的故障时，功能点具体会受到什么影响。</li>
+<li><strong>严重程度</strong>：严重程度指站在业务的角度故障的影响程度，一般分为“致命 / 高 / 中 / 低 / 无”五个档次。</li>
+<li><strong>故障原因</strong></li>
+<li><strong>故障概率</strong></li>
+<li><strong>风险程度</strong>：风险程度就是综合严重程度和故障概率来一起判断某个故障的最终等级，风险程度 = 严重程度 × 故障概率。</li>
+<li><strong>已有措施</strong>：针对具体的故障原因，系统现在是否提供了某些措施来应对，包括：检测告警、容错、自恢复等。</li>
+<li><strong>规避措施</strong>：规避措施指为了降低故障发生概率而做的一些事情，可以是技术手段，也可以是管理手段。</li>
+<li><strong>解决措施</strong>：指为了能够解决问题而做的一些事情，一般都是技术手段。</li>
+<li><strong>后续规划</strong></li>
+</ul>
+<p>例如，对如下架构进行架构分析：</p>
+<p><img src="https://img-blog.csdnimg.cn/ee0752d13fdd4cd5be5de038837180c7.png" alt="在这里插入图片描述"></p>
+<p>下图是 FMEA 分析的结果：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210705142719152.png" alt="在这里插入图片描述"></p>
+<p>改进后的架构图：</p>
+<p><img src="https://img-blog.csdnimg.cn/0468f4cb7ab2420480ef946365b1fb3e.png" alt="在这里插入图片描述"></p>
+<h4 id="3高可用存储架构双机架构">3，高可用存储架构：双机架构</h4>
+<p><strong>存储高可用方案的本质都是通过将数据复制到多个存储设备，通过数据冗余的方式来实现高可用</strong>，其复杂性主要体现在如何应对<strong>复制延迟和中断</strong>导致的数据不一致问题。</p>
+<p>因此，对任何一个高可用存储方案，我们需要思考以下问题：</p>
+<ul>
+<li>数据如何复制？</li>
+<li>各个节点的职责是什么？</li>
+<li>如何应对复制延迟？</li>
+<li>如何应对复制中断？</li>
+</ul>
+<p>常见的高可用存储架构有：</p>
+<ul>
+<li>主备（双机架构）</li>
+<li>主从（双机架构）</li>
+<li>主主（双机架构）</li>
+<li>集群</li>
+<li>分区</li>
+</ul>
+<h5 id="1主备复制">1，主备复制</h5>
+<p>主备复制是最常见也是最简单的一种存储高可用方案，几乎所有的存储系统都提供了主备复制的功能，例如 MySQL、Redis、MongoDB 等。</p>
+<p>主备方案架构图：</p>
+<p><img src="https://img-blog.csdnimg.cn/d151c288494841a4bf44b64bcd2433e4.png" alt="在这里插入图片描述"></p>
+<p>主备架构中的“备机”主要还是起到一个<strong>备份作用</strong>，并不承担实际的业务读写操作，如果要把备机改为主机，需要人工操作。</p>
+<p>主备架构的优缺点：</p>
+<ul>
+<li>优点：简单</li>
+<li>缺点：
+<ul>
+<li>备机仅仅只为备份，并没有提供读写操作，硬件成本上有浪费。</li>
+<li>故障后需要人工干预，无法自动恢复。</li>
+</ul>
+</li>
+</ul>
+<p>内部的后台管理系统使用主备复制架构的情况会比较多，例如学生管理系统、员工管理系统、假期管理系统等</p>
+<h5 id="2主从复制">2，主从复制</h5>
+<p>主机负责<strong>读写操作</strong>，从机只<strong>负责读操作，不负责写操作</strong>。</p>
+<p>主从方案架构图：</p>
+<p><img src="https://img-blog.csdnimg.cn/98d8ac63cc574512bf4ac9d72074d0bf.png" alt="在这里插入图片描述"></p>
+<p>主从架构的优缺点：</p>
+<ul>
+<li>优点：
+<ul>
+<li>主机故障时，读操作相关的业务可以继续运行（写操作不可用）。</li>
+<li>从机提供读操作，发挥了硬件的性能。</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li><strong>客户端需要感知主从关系</strong>，并将不同的操作发给不同的机器进行处理，复杂度比主备复制要高。</li>
+<li>从机提供读业务，如果主从复制延迟比较大，业务会因为<strong>数据不一致</strong>出现问题。</li>
+<li>故障时需要人工干预。</li>
+</ul>
+</li>
+</ul>
+<p>一般情况下，<strong>写少读多的业务使用主从复制的存储架构比较多</strong>。例如，论坛、BBS、新闻网站这类业务。</p>
+<h5 id="3双机切换">3，双机切换</h5>
+<p>主备和主从方案存在两个共性的问题：</p>
+<ul>
+<li>主机故障后，<strong>无法进行写操作</strong>。</li>
+<li>如果主机无法恢复，需要<strong>人工指定新的主机角色</strong>。</li>
+</ul>
+<p>双机切换就是为了解决这两个问题而产生的，包括主备切换和主从切换两种方案。这两个方案就是在原有方案的基础上增加“切换”功能，即<strong>系统自动决定主机角色，并完成角色切换</strong>。</p>
+<p>要实现一个完善的切换方案，必须考虑这几个关键的设计点：</p>
+<ul>
+<li>主备间状态判断，主要包括两方面：
+<ul>
+<li>状态传递的渠道：是相互间互相连接，还是第三方仲裁？</li>
+<li>状态检测的内容：例如机器是否掉电、进程是否存在、响应是否缓慢等。</li>
+</ul>
+</li>
+<li>切换决策，主要包括：
+<ul>
+<li>切换时机：什么情况下备机应该升级为主机？
+<ul>
+<li>是机器掉电后备机才升级，</li>
+<li>还是主机上的进程不存在就升级，</li>
+<li>还是主机响应时间超过 2 秒就升级，</li>
+<li>还是 3 分钟内主机连续重启 3 次就升级等。</li>
+</ul>
+</li>
+<li>切换策略：原来的主机故障恢复后，要再次切换，确保原来的主机继续做主机，还是原来的主机故障恢复后自动成为新的备机？</li>
+<li>自动程度：切换是完全自动的，还是半自动的？</li>
+</ul>
+</li>
+<li>数据冲突解决：当原有故障的主机恢复后，新旧主机之间可能存在数据冲突。</li>
+</ul>
+<p>切换方案比复制方案不只是多了一个切换功能那么简单，而是复杂度上升了一个量级。</p>
+<p>常见的主备切换架构有三种形式：互连式、中介式和模拟式。</p>
+<p><em><strong>互连式</strong></em></p>
+<p>互连式就是指主备机直接建立状态传递的渠道，其架构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/fa1d4b1bdc9a4dcf8da963837c0a5c84.png" alt="在这里插入图片描述"></p>
+<p><em><strong>中介式</strong></em></p>
+<p>中介式指的是在主备两者之外引入第三方中介，主备机之间不直接连接，而都去连接中介，并且通过中介来传递状态信息，其架构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/d0a3ab125a324a8d91742f90f342bb42.png" alt="在这里插入图片描述"></p>
+<p>MongoDB 的 Replica Set 采取的就是这种方式，其基本架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/c30f60c3c4b44e7eb8c875566595c17f.png" alt="在这里插入图片描述"></p>
+<p>中介式架构的关键在于<strong>如何实现中介本身的高可用</strong>，开源方案已经有比较成熟的中介式解决方案，例如 <strong>ZooKeeper</strong> 和 <strong>Keepalived</strong>。ZooKeeper 本身已经实现了高可用集群架构。</p>
+<p><em><strong>模拟式</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/fe49aef31b46474992bfb5ef15c85359.png" alt="在这里插入图片描述"></p>
+<h5 id="4主主复制">4，主主复制</h5>
+<p>主主复制指的是两台机器都是主机，互相将数据复制给对方，客户端可以任意挑选其中一台机器进行读写操作。</p>
+<p><img src="https://img-blog.csdnimg.cn/e6bef5d8ad4b4845a07ff7e365c631c3.png" alt="在这里插入图片描述"></p>
+<p>主主复制架构具有如下特点：</p>
+<ul>
+<li>两台都是主机，不存在切换的概念。</li>
+<li>客户端无须区分不同角色的主机，随便将读写操作发送给哪台主机都可以。</li>
+</ul>
+<p>主主复制架构<strong>对数据的设计有严格的要求</strong>，一般适合于那些临时性、可丢失、可覆盖的数据场景。例如，用户登录产生的 session 数据（可以重新登录生成）、用户行为的日志数据（可以丢失）、论坛的草稿数据（可以丢失）等。</p>
+<h4 id="4高可用存储架构集群和分区">4，高可用存储架构：集群和分区</h4>
+<h5 id="1数据集群">1，数据集群</h5>
+<p>单台机器的存储和处理能力是有极限的，集群是多台机器组合在一起形成一个统一的系统，可存储更多的数据。</p>
+<p>根据集群中机器承担的不同角色来划分，集群可以分为两类：</p>
+<ul>
+<li>数据集中集群</li>
+<li>数据分散集群</li>
+</ul>
+<p><em><strong>数据集中集群</strong></em></p>
+<p>数据集中集群为 1 主多备或者 1 主多从。数据都只能往主机中写，而读操作可以参考主备、主从架构进行灵活多变。</p>
+<p>下图是读写全部到主机的一种架构：</p>
+<p><img src="https://img-blog.csdnimg.cn/261cfa91fcde4608a5ecef26dff1c217.png" alt="在这里插入图片描述"></p>
+<p>由于集群里面的服务器数量更多，导致复杂度更高一些：</p>
+<ul>
+<li>主机如何将数据复制给备机
+<ul>
+<li>数据集中集群架构中，存在多条复制通道，多条复制通道会增大主机复制的压力，并且可能会导致多个备机之间数据不一致</li>
+</ul>
+</li>
+<li>备机如何检测主机状态
+<ul>
+<li>在数据集中集群架构中，多台备机都需要对主机状态进行判断，而不同的备机判断的结果可能是不同的</li>
+<li>如何处理不同备机对主机状态的不同判断，是一个复杂的问题。</li>
+</ul>
+</li>
+<li>主机故障后，如何决定新的主机
+<ul>
+<li>在数据集中集群架构中，有多台备机都可以升级为主机，但实际上只能允许一台备机升级为主机，那么究竟选择哪一台备机作为新的主机，备机之间如何协调，这也是一个复杂的问题。</li>
+<li>开源的数据集中集群以 ZooKeeper 为典型，ZooKeeper 通过 ZAB 算法来解决上述提到的几个问题，但 ZAB 算法的复杂度是很高的。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>数据分散集群</strong></em></p>
+<p>数据分散集群指多个服务器组成一个集群，每台服务器都会负责存储一部分数据；同时，为了提升硬件利用率，每台服务器又会备份一部分数据。</p>
+<p>数据分散集群的复杂点在于如何将数据分配到不同的服务器上，需要考虑这些设计点：</p>
+<ul>
+<li><strong>均衡性</strong>：服务器上的数据分区需是均衡的，不能存在某台服务器上的分区数量是另外一台服务器的几倍的情况。</li>
+<li><strong>容错性</strong>：当出现部分服务器故障时，算法需要将原来分配给故障服务器的数据分区分配给其他服务器。</li>
+<li><strong>可伸缩性</strong>：当集群容量不够，扩充新的服务器后，算法能够自动将部分数据分区迁移到新服务器，并保证扩容后所有服务器的均衡性。</li>
+</ul>
+<p>数据分散集群中的<strong>每台服务器都可以处理读写请求</strong>，因此不存在数据集中集群中负责写的主机那样的角色。</p>
+<p>但在数据分散集群中，必须有一个角色来负责执行数据分配算法，这个角色可以是独立的一台服务器，也可以是集群自己选举出的一台服务器。</p>
+<p>Hadoop 的实现就是独立的服务器（NameNode）负责数据分区的分配。Hadoop 的数据分区管理架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/07e41441a133460b9756420bdf7fcb00.png" alt="在这里插入图片描述"></p>
+<p>与 <code>Hadoop</code> 不同的是，<code>Elasticsearch</code> 集群通过选举一台服务器来做数据分区的分配，叫作 <code>master node</code>，其数据分区管理架构是：</p>
+<p><img src="https://img-blog.csdnimg.cn/07465abbab1a43b78fd8e4015dd5f694.png" alt="在这里插入图片描述"></p>
+<p>数据集中集群与数据分散集群的区别：</p>
+<ul>
+<li>数据集中集群：
+<ul>
+<li>客户端只能将数据写到主机；</li>
+<li>适合数据量不大，集群机器数量不多的场景。</li>
+<li>例如，ZooKeeper 集群，一般推荐 5 台机器左右，数据量是单台服务器就能够支撑</li>
+</ul>
+</li>
+<li>数据分散集群：
+<ul>
+<li>客户端可以向任意服务器中读写数据。</li>
+<li>适合业务数据量巨大、集群机器数量庞大的业务场景。</li>
+<li>例如，Hadoop 集群、HBase 集群，大规模的集群可以达到上百台甚至上千台服务器。</li>
+</ul>
+</li>
+</ul>
+<h5 id="2数据分区">2，数据分区</h5>
+<p>数据分区指将数据按照一定的规则进行分区，不同分区分布在不同的地理位置上，每个分区存储一部分数据，通过这种方式来规避地理级别的故障所造成的巨大影响。</p>
+<p>设计一个良好的数据分区架构，需要考虑以下方面：</p>
+<ul>
+<li>数据量：数据量的大小直接决定了分区的规则复杂度。</li>
+<li>分区规则：地理位置有近有远，因此可以得到不同的分区规则，包括洲际分区、国家分区、城市分区。具体采取哪种或者哪几种规则，需要综合考虑业务范围、成本等因素。</li>
+<li>复制规则</li>
+</ul>
+<p>常见的分区复制规则有三种：</p>
+<ul>
+<li>
+<p>集中式：</p>
+<ul>
+<li>指存在一个总的备份中心，所有的分区都将数据备份到备份中心，其架构如下：</li>
+<li><img src="https://img-blog.csdnimg.cn/7e3779df871f425eb42743eb24dda926.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>互备式：</p>
+<ul>
+<li>指每个分区备份另外一个分区的数据，其架构如下：</li>
+<li><img src="https://img-blog.csdnimg.cn/7c3f7789899644c2a701a368e8de4a75.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>独立式：</p>
+<ul>
+<li>指每个分区自己有独立的备份中心，其架构如下：</li>
+<li><img src="https://img-blog.csdnimg.cn/a8bb6986483f4b91a41afe8691f88f12.png" alt="在这里插入图片描述"></li>
+<li>注意，各个分区的备份并不和原来的分区在一个地方。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5高可用计算架构">5，高可用计算架构</h4>
+<p>计算高可用的主要设计目标是当出现部分硬件损坏时，计算任务能够继续正常运行，其本质是通过冗余来规避部分故障的风险。</p>
+<p>计算高可用架构的设计复杂度主要体现在<strong>任务管理</strong>方面，即当任务在某台服务器上执行失败后，如何将任务重新分配到新的服务器进行执行。</p>
+<p>计算高可用架构设计的关键点有下面两点：</p>
+<ul>
+<li>哪些服务器可以执行任务</li>
+<li>任务如何重新执行</li>
+</ul>
+<p>常见的计算高可用架构：<strong>主备、主从和集群</strong>。</p>
+<p><em><strong>主备架构</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/2021070517185922.png" alt="在这里插入图片描述"></p>
+<p>详细设计：</p>
+<ul>
+<li>主机执行所有计算任务。例如，读写数据、执行操作等。</li>
+<li>当主机故障时，任务分配器不会自动将计算任务发送给备机，此时系统处于不可用状态。</li>
+<li>如果主机能够恢复（人工或自动恢复），任务分配器继续将任务发送给主机。</li>
+<li>如果主机不能够恢复，则需要人工操作，将备机升为主机，然后让任务分配器将任务发送给新的主机；</li>
+<li>同时，为了继续保持主备架构，需要人工增加新的机器作为备机。</li>
+</ul>
+<p>根据备机状态的不同，主备架构又可以细分为<strong>冷备架构</strong>和<strong>温备架构</strong>：</p>
+<ul>
+<li><strong>冷备架构</strong>：备机上的程序包和配置文件都准备好，但备机上的业务系统没有启动。
+<ul>
+<li>主机故障后，需要人工手工将备机的业务系统启动，并将任务分配器的任务请求切换发送给备机。</li>
+</ul>
+</li>
+<li><strong>温备架构</strong>：备机上的业务系统已经启动，只是不对外提供服务。
+<ul>
+<li>主机故障后，人工只需要将任务分配器的任务请求切换发送到备机即可。</li>
+<li>冷备可以节省一定的能源，但温备能够大大减少手工操作时间，因此一般情况下推荐用温备的方式。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>主从架构</strong></em></p>
+<p>从机也是要执行任务的。任务分配器需要将任务进行分类，确定哪些任务可以发送给主机执行，哪些任务可以发送给备机执行，其基本的架构示意图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210705173038945.png" alt="在这里插入图片描述"></p>
+<p>详细设计：</p>
+<ul>
+<li>正常情况下，主机执行部分计算任务，备机执行部分计算任务。</li>
+<li>当主机故障时，任务分配器不会自动将原本发送给主机的任务发送给从机，而是继续发送给主机，不管这些任务执行是否成功。</li>
+<li>如果主机能够恢复（人工或自动恢复），任务分配器继续按照原有的设计策略分配任务。</li>
+<li>如果主机不能够恢复，则需要人工操作，将原来的从机升级为主机。</li>
+<li>增加新的机器作为从机，新的从机准备就绪后，任务分配器继续按照原有的设计策略分配任务。</li>
+</ul>
+<p><em><strong>集群架构</strong></em></p>
+<p>高可用集群方案能够自动完成切换操作，根据节点角色的不同，可以分为两类：</p>
+<ul>
+<li><strong>对称集群</strong>：集群中每个服务器的角色都是一样的，都可以执行所有任务，因此其又叫<strong>负载均衡集群</strong>。</li>
+<li><strong>非对称集群</strong>：集群中的服务器分为多个不同的角色，不同的角色执行不同的任务，例如最常见的 Master-Slave 角色。</li>
+</ul>
+<p><em><strong>对称集群</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/20210705223230422.png" alt="在这里插入图片描述"></p>
+<p>详细设计：</p>
+<ul>
+<li>任务分配器采取某种策略（随机、轮询等），将计算任务分配给集群中的不同服务器。</li>
+<li>当集群中的某台服务器故障后，任务分配器不再将任务分配给它，而是将任务分配给其他服务器执行。</li>
+<li>当故障的服务器恢复后，任务分配器重新将任务分配给它执行。</li>
+</ul>
+<p>负载均衡集群的设计关键点在于两点：</p>
+<ul>
+<li>任务分配器需要选取<strong>分配策略</strong>：轮询或随机。</li>
+<li>任务分配器需要<strong>检测服务器状态</strong>：
+<ul>
+<li>检测服务器的状态，例如服务器是否宕机、网络是否正常等；</li>
+<li>检测任务的执行状态，例如任务是否卡死、是否执行时间过长等。</li>
+<li>常用的做法是任务分配器和服务器之间通过心跳来传递信息（包括服务器信息和任务信息），然后根据实际情况来确定状态判断条件。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>非对称集群</strong></em></p>
+<p>非对称集群中不同服务器的角色是不同的，承担不同的职责。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210705224055616.png" alt="在这里插入图片描述"></p>
+<p>详细设计：</p>
+<ul>
+<li>集群通过某种方式来区分不同服务器的角色</li>
+<li>任务分配器将不同任务发送给不同服务器</li>
+<li>当指定类型的服务器故障时，需要重新分配角色</li>
+</ul>
+<p>非对称集群的复杂度主要体现在两个方面：</p>
+<ul>
+<li>任务分配策略更加复杂：需要将任务划分为不同类型并分配给不同角色的集群节点。</li>
+<li>角色分配策略实现比较复杂：例如，可能需要使用 ZAB、Raft 这类复杂的算法来实现 Leader 的选举。</li>
+</ul>
+<h4 id="6异地多活架构">6，异地多活架构</h4>
+<p>无论是高可用计算架构，还是高可用存储架构，其本质的设计目的都是为了解决部分服务器故障的场景下，如何保证系统能够继续提供服务。</p>
+<p>异地多活的关键在于异地与多活：</p>
+<ul>
+<li>异地：地理位置上不同的地方</li>
+<li>多活：不同地理位置上的系统都能够提供业务服务</li>
+</ul>
+<p>实现异地多活架构的代价很高，具体表现为：</p>
+<ul>
+<li>系统复杂度会发生质的变化，需要设计复杂的异地多活方案。</li>
+<li>成本会上升，毕竟要多在一个或者多个机房搭建独立的一套业务系统。</li>
+</ul>
+<p>异地多活的方案：</p>
+<ul>
+<li>同城异区：指的是将业务部署在同一个城市不同区的多个机房。</li>
+<li>跨城异地：指的是业务部署在不同城市的多个机房。</li>
+<li>跨国异地：指的是业务部署在不同国家的多个机房。</li>
+</ul>
+<p>跨城异地多活架构设计的 4 大技巧：</p>
+<ul>
+<li>保证核心业务的异地多活</li>
+<li>保证核心数据最终一致性</li>
+<li>采用多种手段同步数据</li>
+<li>只保证绝大部分用户的异地多活</li>
+</ul>
+<h3 id="8常用的可扩展架构模式">8，常用的可扩展架构模式</h3>
+<p>软件的可扩展性让我们可以通过修改和扩展，不断地让软件系统具备更多的功能和特性，满足新的需求或者顺应技术发展的趋势。</p>
+<p><strong>可扩展性架构设计的基本思想</strong>是，将原本大一统的系统<strong>拆分</strong>成<strong>多个规模小的部分</strong>，扩展时只修改其中一部分即可，无须整个系统到处都改，通过这种方式来减少改动范围，降低改动风险。</p>
+<p>合理的拆分，能够强制保证即使程序员出错，出错的范围也不会太广，影响也不会太大。</p>
+<p><strong>不同的拆分方式，决定了系统的扩展方式</strong>。常见的拆分思路有如下三种：</p>
+<ul>
+<li><strong>面向流程拆分</strong>：将整个业务流程拆分为几个阶段，每个阶段作为一部分。</li>
+<li><strong>面向服务拆分</strong>：将系统提供的服务拆分，每个服务作为一部分。</li>
+<li><strong>面向功能拆分</strong>：将系统提供的功能拆分，每个功能作为一部分。</li>
+</ul>
+<p>不同的拆分方式，将得到不同的系统架构，典型的可扩展系统架构有：</p>
+<ul>
+<li>面向流程拆分：<strong>分层架构</strong></li>
+<li>面向服务拆分：<strong>SOA、微服务</strong></li>
+<li>面向功能拆分：<strong>微内核架构</strong></li>
+</ul>
+<p>当然，这几个系统架构并不是非此即彼的，而是可以在系统架构设计中进行组合使用的。</p>
+<h4 id="1分层架构">1，分层架构</h4>
+<p>分层架构也叫 N 层架构，N 至少是 2 层：</p>
+<ul>
+<li>2 层架构：例如 C/S 架构、B/S 架构</li>
+<li>3 层架构：例如 MVC、MVP 架构</li>
+<li>等</li>
+</ul>
+<p>分层架构设计最核心的一点是要保证<strong>各层之间的差异足够清晰</strong>，边界足够明显。如果两个层的差异不明显，很容易导致分层混乱。</p>
+<p>分层架构使得每个层中的组件只会处理本层的逻辑，并且强制将分层依赖限定为两两依赖（不建议绕过分层，时间长了，容易混乱），降低了整体系统复杂度。</p>
+<h4 id="2soa">2，SOA</h4>
+<p>SOA 的全称是 <code>Service Oriented Architecture</code>，中文翻译为<strong>面向服务的架构</strong>。</p>
+<p>SOA 更多是在传统企业（例如，制造业、金融业等）落地和推广，在互联网行业并没有大规模地实践和推广。SOA 出现的背景是企业内部的 IT 系统<strong>重复建设且效率低下</strong>。</p>
+<p>典型的 SOA 架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210707172735794.png" alt="在这里插入图片描述"></p>
+<h4 id="3微服务">3，微服务</h4>
+<p>2014 年，<code>James Lewis</code> 和 <code>Martin Fowler</code> 合写了<a href="https://martinfowler.com/articles/microservices.html">关于微服务的一篇学术性的文章</a>，详细阐述了微服务。</p>
+<p>关于 SOA 和微服务的关系和区别，有下面几个典型的观点：</p>
+<ul>
+<li>
+<p>微服务是 SOA 的实现方式</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210707173747302.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>微服务是去掉 ESB 后的 SOA</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210707173812495.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>微服务是一种和 SOA 相似但本质上不同的架构理念（<strong>正确观点</strong>）</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/20210707173850970.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<p>SOA 和微服务对比如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210707174336199.png" alt="在这里插入图片描述"></p>
+<p>微服务有哪些坑：</p>
+<ul>
+<li>服务划分过细，服务间关系复杂</li>
+<li>服务数量太多，团队效率急剧下降</li>
+<li>调用链太长，性能下降</li>
+<li>调用链太长，问题定位困难</li>
+</ul>
+<h4 id="4微内核">4，微内核</h4>
+<p>微内核架构，也被称为插件化架构，是一种面向功能进行拆分的可扩展性架构，通常用于实现基于产品的应用。</p>
+<p>微内核的架构本质就是将变化部分封装在插件里面，从而达到快速灵活扩展的目的，而又不影响整体系统的稳定。</p>
+<p>微内核架构包含两类组件：</p>
+<ul>
+<li><strong>核心系统</strong>：负责和具体业务功能无关的通用功能，例如模块加载、模块间通信等</li>
+<li><strong>插件模块</strong>：负责实现具体的业务逻辑</li>
+</ul>
+<p>架构示意图：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210708083622603.png" alt="在这里插入图片描述"></p>
+<p>核心系统 <code>Core System</code> 功能比较稳定，不会因为业务功能扩展而不断修改，插件模块可以根据业务功能的需要不断地扩展。</p>
+<p><em><strong>OSGi 架构</strong></em></p>
+<p>OSGi 是一个非盈利的国际组织，旨在建立一个开放的服务规范，为通过网络向设备提供服务建立开放的标准，这个标准就是 OSGi 规范。</p>
+<p>OSGi 是一个插件化的标准，它的架构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210708085113494.png" alt="在这里插入图片描述"></p>
+<p>说明：</p>
+<ul>
+<li>模块层（Module 层）：实现插件管理功能，插件被称为 Bundle。</li>
+<li>生命周期层（Lifecycle 层）：实现插件连接功能，提供了执行时模块管理、模块对底层 OSGi 框架的访问。</li>
+<li>服务层（Service 层）：实现插件通信的功能。</li>
+</ul>
+<p><em><strong>规则引擎</strong></em></p>
+<p>规则引擎也属于微内核架构的一种具体实现，基本架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210708085804587.png" alt="在这里插入图片描述"></p>
+<p>目前最常用的规则引擎是开源的 JBoss Drools，采用 Java 语言编写，基于 Rete 算法。</p>
+<h3 id="9架构师如何判断技术演进的方向">9，架构师如何判断技术演进的方向</h3>
+<p>几个典型的派别（都存在一定的问题）：</p>
+<ul>
+<li>潮流派：对于新技术特别热衷，紧跟技术潮流，当有新的技术出现时，迫切想将新的技术应用到自己的产品中</li>
+<li>保守派：对于新技术抱有很强的戒备心</li>
+<li>跟风派：跟着竞争对手的步子走</li>
+</ul>
+<p>互联网公司发展的不同阶段：</p>
+<p><img src="https://img-blog.csdnimg.cn/3f2c7443e3d440e891cb1ae822694896.png" alt="在这里插入图片描述"></p>
+<h3 id="10互联网架构模板">10，互联网架构模板</h3>
+<p>互联网的标准技术架构如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210708093345208.png" alt="在这里插入图片描述"></p>
+<h4 id="1存储层">1，存储层</h4>
+<p>有以下几种：</p>
+<ul>
+<li><strong>SQL</strong>：即关系型数据库，比如 MySQL、PostgreSQL，Oracle。
+<ul>
+<li>当业务发展到一定规模后，会将这部分功能独立成中间件（分库分表自动化），例如百度的 <code>DBProxy</code>、淘宝的 <code>TDDL</code>。</li>
+<li>中小公司建议使用开源方案，例如 MySQL 官方推荐的 <code>MySQL Router</code>、360 开源的数据库中间件 <code>Atlas</code>。</li>
+</ul>
+</li>
+<li><strong>NoSQL</strong>：非关系型数据库，比如 Redis，Memcache，MongoDB 等。</li>
+<li><strong>小文件存储</strong>：比如图片数据，特点是数据小，量大，访问量大。
+<ul>
+<li>HBase、Hadoop、Hypertable、FastDFS 等都可以作为小文件存储的底层平台，只需要将这些开源方案再包装一下基本上就可以用了。</li>
+<li>典型的小文件存储有：淘宝的 TFS、京东 JFS、Facebook 的 Haystack。</li>
+</ul>
+</li>
+<li><strong>大文件存储</strong>：比如视频、日志文件等。
+<ul>
+<li>流行的开源方案，例如，Hadoop、HBase、Storm、Hive 等。</li>
+<li>Hadoop 生态圈：</li>
+<li><img src="https://img-blog.csdnimg.cn/20210708103249813.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<h4 id="2开发层">2，开发层</h4>
+<p>主要有：</p>
+<ul>
+<li>开发框架：提升团队的开发效率，例如：
+<ul>
+<li>Java 的 SSH、SpringMVC、Play</li>
+<li>Ruby 的 Ruby on Rails</li>
+<li>PHP 的 ThinkPHP</li>
+<li>Python 的 Django</li>
+<li>等</li>
+</ul>
+</li>
+<li>Web 服务器：选择一个服务器主要和开发语言相关，例如：
+<ul>
+<li>Java 的有 Tomcat、JBoss、Resin 等</li>
+<li>PHP/Python 的用 Nginx</li>
+</ul>
+</li>
+<li>容器：以 Docker 为代表</li>
+</ul>
+<h4 id="3服务层">3，服务层</h4>
+<p>服务层的主要目标是为了降低系统间相互关联的复杂度。</p>
+<ul>
+<li>
+<p><strong>配置中心</strong>：集中管理各个系统的配置。</p>
+</li>
+<li>
+<p><strong>服务中心</strong>：是为了解决跨系统依赖的“配置”和“调度”问题，一般有两种实现方式：</p>
+<ul>
+<li>服务名字系统：将 Service 名称解析为“host + port + 接口名称”</li>
+<li>服务总线系统：由总线系统完成调用，服务请求方不需要直接和服务提供方交互</li>
+</ul>
+</li>
+<li>
+<p><strong>消息队列</strong>：是为了实现跨系统异步通知的中间件系统。</p>
+<ul>
+<li>有很多成熟的开源实现方案，例如，RocketMQ、Kafka、ActiveMQ 等。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4网络层">4，网络层</h4>
+<p>网络层技术的关键架构设计点：</p>
+<ul>
+<li>
+<p><strong>负载均衡</strong>：为了应对大容量的访问，将请求均衡地分配到多个系统上。</p>
+<ul>
+<li><strong>DNS</strong> 是最简单也是最常见的负载均衡方式，一般用来实现地理级别的均衡。解析域名的命令：<code>dig baidu.com</code></li>
+<li>DNS 负载均衡的优缺点：
+<ul>
+<li>优点：通用（全球通用）、成本低（申请域名，注册 DNS 即可）</li>
+<li>缺点：DNS 缓存的时间比较长；DNS 不够灵活，不能感知后端服务器的状态</li>
+</ul>
+</li>
+<li>Nginx 、LVS 、F5，用于同一地点内机器级别的负载均衡。</li>
+<li>很多云服务商都提供了负载均衡的产品，例如阿里云的 SLB、UCloud 的 ULB 等。</li>
+</ul>
+</li>
+<li>
+<p><strong>CDN</strong>：CDN 是为了解决用户网络访问时的“最后一公里”效应，本质上是一种“以空间换时间”的加速策略，即将内容缓存在离用户最近的地方，用户访问的是缓存的内容，而不是站点实时的内容。</p>
+<ul>
+<li>CDN 流程图：</li>
+<li><img src="https://img-blog.csdnimg.cn/be8696129c114be0a4de85e59a58cce1.png" alt="在这里插入图片描述"></li>
+<li>CDN 经过多年的发展，已经变成了一个很庞大的体系：分布式存储、全局负载均衡、网络重定向、流量控制等都属于 CDN 的范畴，尤其是在视频、直播等领域，如果没有 CDN，用户是不可能实现流畅观看内容的。</li>
+<li>目前有专门的 CDN 服务商，例如<strong>网宿和蓝汛</strong>；</li>
+<li>也有云计算厂家提供 CDN 服务，例如<strong>阿里云和腾讯云</strong>都提供 CDN 的服务。</li>
+</ul>
+</li>
+<li>
+<p><strong>多机房</strong>：多机房是为了解决单机房的单点问题。</p>
+</li>
+<li>
+<p><strong>多中心</strong>：多中心必须以多机房为前提，多中心相比多机房是本质上的飞越，难度也高出一个等级。</p>
+</li>
+</ul>
+<h4 id="5用户层">5，用户层</h4>
+<p><em><strong>用户管理</strong></em></p>
+<p>用户管理的第一个目标：<strong>单点登录</strong>（SSO），又叫统一登录。单点登录的技术实现手段较多，例如 cookie、JSONP、token 等，目前最成熟的开源单点登录方案当属 CAS，其架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/5b86e05be57947d8999a1fd4fefe259f.png" alt="在这里插入图片描述"></p>
+<p>用户管理的第二个目标：<strong>授权登录</strong>（第三方应用接入）。现在最流行的授权登录就是 OAuth 2.0 协议，基本上已经成为了标准。</p>
+<p>用户管理的基本架构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/e350fb89e13a41538fcc9f9f77a2efe7.png" alt="在这里插入图片描述"></p>
+<p><em><strong>消息推送</strong></em></p>
+<p>消息推送根据不同的途径，分为短信、邮件、站内信、App 推送。</p>
+<p>App 目前主要分为 iOS 和 Android 推送，iOS 系统比较规范和封闭，基本上只能使用苹果的 APNS；但 Android 就不一样了，在国外，用 GCM 和 APNS 差别不大；但是在国内，情况就复杂多了：首先是 GCM 不能用；其次是各个手机厂商都有自己的定制的 Android，消息推送实现也不完全一样。</p>
+<p><em><strong>存储云、图片云</strong></em></p>
+<p>存储云和图片云通常的实现都是“CDN + 小文件存储”，现在有了“云”之后，除非 BAT 级别，一般不建议自己再重复造轮子了，直接买云服务可能是最快也是最经济的方式。</p>
+<p>普通的文件基本上提供存储和访问就够了，而图片涉及的业务会更多，包括裁剪、压缩、美化、审核、水印等处理，因此通常情况下图片云会拆分为独立的系统对用户提供服务。</p>
+<h4 id="6业务层">6，业务层</h4>
+<p>面对业务层的技术挑战，最有效的方法就是，化整为零、分而治之，将整体复杂性分散到多个子业务或者子系统里面去。具体的方式就是可扩展架构模式部分的分层架构、微服务、微内核等。</p>
+<p>例如下面的系统拆分演变过程：</p>
+<p><img src="https://img-blog.csdnimg.cn/d58cef0d1107457d8fe62d95fac68d61.png" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/11/arch1/">
+            <span class="next-text nav-default">架构学习笔记1</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/arch2/" class="leancloud_visitors" data-flag-title="架构学习笔记2">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

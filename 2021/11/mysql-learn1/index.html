@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MySQL学习笔记1-基础篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/mysql-learn1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MySQL学习笔记1-基础篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/mysql-learn1/" />
+<meta property="article:published_time" content="2021-11-10T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-10T21:41:52+08:00" />
+<meta itemprop="name" content="MySQL学习笔记1-基础篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
+<meta itemprop="datePublished" content="2021-11-10T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-10T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="8375">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL学习笔记1-基础篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MySQL学习笔记1-基础篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-10 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 8375 字 </span>
+          <span class="more-meta"> 阅读约需 17 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1关于-sql">1，关于 SQL</a></li>
+        <li><a href="#2一条-sql-的执行步骤">2，一条 SQL 的执行步骤</a></li>
+        <li><a href="#3mysql-存储引擎">3，MySQL 存储引擎</a></li>
+        <li><a href="#4数据库基本操作">4，数据库基本操作</a></li>
+        <li><a href="#5关于自增主键">5，关于自增主键</a></li>
+        <li><a href="#6select-语句顺序">6，SELECT 语句顺序</a></li>
+        <li><a href="#7where-子句">7，WHERE 子句</a></li>
+        <li><a href="#8distinct-去重">8，DISTINCT 去重</a></li>
+        <li><a href="#9关于-count-操作">9，关于 COUNT(*) 操作</a></li>
+        <li><a href="#10mysql-函数">10，MYSQL 函数</a></li>
+        <li><a href="#11group-by-数据分组">11，GROUP BY 数据分组</a></li>
+        <li><a href="#12子查询嵌套查询">12，子查询(嵌套查询)</a></li>
+        <li><a href="#13join-连接查询">13，JOIN 连接查询</a></li>
+        <li><a href="#14view-视图">14，VIEW 视图</a></li>
+        <li><a href="#15存储过程">15，存储过程</a></li>
+        <li><a href="#16临时表">16，临时表</a></li>
+        <li><a href="#17mysql-权限管理">17，MySQL 权限管理</a></li>
+        <li><a href="#18python-操作-mysql-的库">18，Python 操作 MySQL 的库</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/mysql-learn1/"><strong>第一篇 MySQL 学习笔记1-基础篇</strong></a>
+<ul>
+<li>1，关于 SQL</li>
+<li>2，一条 SQL 的执行步骤</li>
+<li>3，MySQL 存储引擎</li>
+<li>4，数据库的基本操作</li>
+<li>5，关于自增主键</li>
+<li>6，SELECT 语句顺序</li>
+<li>7，WHERE 子句</li>
+<li>8，DISTINCT 去重</li>
+<li>9，关于 COUNT(*) 操作</li>
+<li>10，MYSQL 函数</li>
+<li>11，GROUP BY 数据分组</li>
+<li>12，子查询(嵌套查询)</li>
+<li>13，JOIN 连接查询</li>
+<li>14，VIEW 视图</li>
+<li>15，存储过程</li>
+<li>16，临时表</li>
+<li>17，MySQL 权限管理</li>
+<li>18，Python 操作 MySQL 的库</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn2/"><strong>第二篇 MySQL 学习笔记2-进阶篇-上</strong></a>
+<ul>
+<li>19，MySQL 的基础架构</li>
+<li>20，数据库缓冲池</li>
+<li>21，数据库中的存储结构</li>
+<li>22，InnoDB 中表数据的存储</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn3/"><strong>第三篇 MySQL 学习笔记3-进阶篇-中</strong></a>
+<ul>
+<li>23，事务处理</li>
+<li>24，事务的隔离级别</li>
+<li>25，MySQL 中的锁</li>
+<li>26，MVCC 多版本并发控制</li>
+<li>27，MySQL 传输数据的原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn4/"><strong>第四篇 MySQL 学习笔记4-进阶篇-下</strong></a>
+<ul>
+<li>28，Join 语句的原理</li>
+<li>29，MySQL 如何进行排序</li>
+<li>30，MySQL 中 kill 命令的原理</li>
+<li>31，MySQL 中的 mysqldump 命令</li>
+<li>32，MySQL 主从同步</li>
+<li>33，MySQL 主备原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn5/"><strong>第五篇 MySQL 学习笔记5-调优篇</strong></a>
+<ul>
+<li>34，关于 MySQL 索引</li>
+<li>35，定位数据库 SQL 性能问题</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="1关于-sql">1，关于 SQL</h3>
+<h4 id="11sql-的两个标准">1.1，SQL 的两个标准</h4>
+<p>SQL 有两个重要的标准，分别是 <code>SQL92</code> 和 <code>SQL99</code>，它们分别代表了 92 年和 99 年颁布的 SQL 标准，今天的 SQL 语言依然遵循这些标准。</p>
+<h4 id="12sql-命名规范">1.2，SQL 命名规范</h4>
+<p>表名、表别名、字段名、字段别名等都<strong>小写</strong>；SQL 保留字、函数名、绑定变量等都<strong>大写</strong>。</p>
+<p>比如：</p>
+<pre><code class="language-sql">SELECT name, hp_max FROM heros WHERE role_main = '战士';
+</code></pre>
+<h4 id="13sql-语句大小写问题">1.3，SQL 语句大小写问题</h4>
+<p>比如：</p>
+<pre><code class="language-sql">SELECT * FROM heros WHERE name = 'guanyu';
+SELECT * FROM heros WHERE name = 'GUANYU';
+</code></pre>
+<p>上面两个语句，在 Oracle 中是不同的查询，而在 MySQL 中是相同的查询。</p>
+<p>同时，可以通过修改系统参数来配置，比如在 MySQL 中可以通过参数 <code>lower_case_table_names</code> 来配置数据库和数据表的大小写敏感性。</p>
+<h3 id="2一条-sql-的执行步骤">2，一条 SQL 的执行步骤</h3>
+<p>一条 SQL 语句在数据库中的执行步骤如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/761b4510858044719e5b9ec4e2a43737.png" alt="在这里插入图片描述"></p>
+<p>注意在 <code>MySQL 8.0</code> 之后，<strong>查询缓存</strong>功能被取消。</p>
+<h3 id="3mysql-存储引擎">3，MySQL 存储引擎</h3>
+<p>MySQL 的存储引擎是插件式的，在使用时可以选择不同的存储引擎。</p>
+<table>
+<thead>
+<tr>
+<th>引擎名</th>
+<th>特点</th>
+<th>其它</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>InnoDB</td>
+<td>支持事务，表锁，行锁，外键约束等</td>
+<td>MySQL 5.5 之后的默认引擎</td>
+</tr>
+<tr>
+<td>MyISAM</td>
+<td>不支持事务，不支持行锁，不支持外键等，速度快，占用资源少</td>
+<td>MySQL 5.5 之前的默认引擎</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>不支持行锁，只支持表锁；数据存储在内存中， 速度快，数据不能持久化</td>
+<td>-</td>
+</tr>
+<tr>
+<td>NDB</td>
+<td>主要用于 MySQL Cluster 分布式集群</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Archive</td>
+<td>有很好的压缩机制，可用于用于文件归档</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>在 MySQL 中查看可用的存储引擎：</p>
+<pre><code class="language-sql">show engines;
+</code></pre>
+<p>结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210403185713191.png" alt="在这里插入图片描述"></p>
+<p><strong>InnoDB 与 Memory 的区别：</strong></p>
+<ul>
+<li>InnoDB 表的数据是有序存放的，Memory 表的数据是按照写入顺序存放的</li>
+<li>当数据文件有空洞的时候，InnoDB 表在插入新数据的时候，为了保证数据有序性，只能在固定的位置写入新值，而 Memory 表找到空位就可以插入新值</li>
+<li>数据位置发生变化的时候，InnoDB 表只需要修改主键索引，而 Memory 表需要修改所有索引</li>
+<li>InnoDB 支持变长数据类型，不同记录的长度可能不同；内存表不支持 Blob 和 Text 字段，并且即使定义了 varchar(N)，实际也当作 char(N)，因此 Memory 表的每行数据长度相同</li>
+</ul>
+<h3 id="4数据库基本操作">4，数据库基本操作</h3>
+<h4 id="41创建与删除数据库">4.1，创建与删除数据库</h4>
+<pre><code class="language-sql">CREATE DATABASE nba; -- 创建一个名为 nba 的数据库
+DROP DATABASE nba;   -- 删除一个名为 nba 的数据库
+</code></pre>
+<h4 id="42创建表结构">4.2，创建表结构</h4>
+<p><a href="https://dev.mysql.com/doc/refman/8.0/en/data-size.html">MySQL 官方文档</a> 建议我们尽量将数据表的字段设置为 <code>NOT NULL</code> 约束，这样做的好处是可以更好地使用索引，节省空间，甚至加速 SQL 的运行。</p>
+<p>创建表的语法如下：</p>
+<pre><code class="language-sql">CREATE TABLE [table_name](字段名 数据类型，......)
+</code></pre>
+<blockquote>
+<p>注意：如果创建的表没有主键，或者把一个表的主键删掉了，那么 <strong>InnoDB</strong> 会自己生成一个<strong>长度为 6 字节的 rowid</strong> 来作为主键。</p>
+</blockquote>
+<p>示例：</p>
+<pre><code class="language-sql">CREATE TABLE player  (
+  player_id int(11) NOT NULL AUTO_INCREMENT,
+  player_name varchar(255) NOT NULL
+);
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>NOT NULL PRIMARY KEY AUTO_INCREMENT</code> 表示自增主键，<code>NOT NULL AUTO_INCREMENT</code> 只表示自增而非主键。
+<ul>
+<li><strong>自增主键</strong>，在插入新记录的时候可以不指定 ID 的值，系统会获取当前 ID 最大值加 1 作为下一条记录的 ID 值。</li>
+</ul>
+</li>
+<li><code>int(11)</code> 代表整数类型，<strong>显示长度</strong>为 11 位，括号中的参数 11 代表的是最大有效显示长度，与类型包含的数值范围大小无关。
+<ul>
+<li><code>int</code> 默认表示有符号整数，长度未定义的话，默认是 11；</li>
+<li>无符号整数表示方法：<code>int unsighed</code>，长度未定义的话，默认是 10。</li>
+<li>如果插入的数值大小超出了所能表示的范围，将默认插入一个临界值。</li>
+</ul>
+</li>
+<li><code>varchar(255)</code> 代表的是<strong>最大长度</strong>为 255 个<strong>字符数</strong>的可变长字符串。
+<ul>
+<li>注意单位是<strong>字符数</strong>，一个汉字与一个英文字母都是一个字符。</li>
+<li>对于 <code>varchar(M)</code>，M 的范围是 <code>0 ~ 25535</code>。</li>
+<li>在定义时，M 不可省略。</li>
+<li>如果超出了长度，超出的部分会被截断。</li>
+</ul>
+</li>
+<li><code>char(M)</code>：表示固定长字符串，M 的范围是 <code>0 ~ 255</code>。
+<ul>
+<li>在定义时，M 可省略，默认为 1。</li>
+<li>如果超出了长度，超出的部分会被截断。</li>
+<li><strong>固定长度</strong>的意思是，不管实际存储的数据是多大，都会占用固定的空间；容易造成空间浪费，但是<strong>检索性能比可变长的要好一些</strong>。</li>
+<li><strong>可变长度</strong>的意思是，会根据实际的数据的大小，去占用相应的空间，不会造成空间浪费。</li>
+</ul>
+</li>
+<li><code>float(M, N)</code>：单精度浮点数
+<ul>
+<li>N 表示小数位的位数，小数位如果超出N，则四舍五入；如果不够N 则用 0 补齐。</li>
+<li>M 表示整数位的位数与小数位的位数之和，如果超出 M，则存储一个边界值。</li>
+<li>M 和 N 都可省略，表示不限制范围。</li>
+</ul>
+</li>
+<li><code>double(M, N)</code>：双精度浮点数</li>
+<li><code>DATETIME</code>：占 8 字节
+<ul>
+<li>表示的时间范围 <code>1000-01-01 00:00:00/9999-12-31 23:59:59</code></li>
+</ul>
+</li>
+<li><code>TIMESTAMP</code>：占 4 字节
+<ul>
+<li>表示的时间范围 <code>1970-01-01 00:00:00/2038</code></li>
+</ul>
+</li>
+<li><code>DECIMAL</code>：常用于表示金额</li>
+<li><code>CHECK 约束</code>：用来<strong>检查特定字段取值范围的有效性</strong>，<code>CHECK 约束</code>的结果不能为 <code>FALSE</code>
+<ul>
+<li>比如可以对身高 height 的数值进行 CHECK 约束，必须≥0，且＜3</li>
+<li>即 <code>CHECK(height&gt;=0 AND height&lt;3)</code></li>
+</ul>
+</li>
+</ul>
+<p>对于 <code>int</code> 类型的<strong>显示长度</strong>的使用，要搭配 <code>zerofill</code> 关键字来使用，如果不与 <code>zerofill</code> 一起使用，其实 <code>int(n)</code> 中的 <code>n</code>，并没有实际意义，<code>n</code> 是几都一样（如果数值不够 n 位，也不会用 0 补齐）。</p>
+<p><code>zerofill</code> 的使用方法：</p>
+<pre><code class="language-sql">create table t1 {
+	t1 int(7) zerofill,
+	t2 int(7) zerofill
+};
+</code></pre>
+<p>此时如果插入的数值，不够 7 位数，则前边用 0 补齐；比如插入了 <code>123</code>，则显示如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210411171122687.png" alt="在这里插入图片描述"></p>
+<p>从 Navicat 中导出的 SQL 语句，示例：</p>
+<pre><code class="language-sql">DROP TABLE IF EXISTS `player`;
+CREATE TABLE `player`  (
+  `player_id` int(11) NOT NULL AUTO_INCREMENT,
+  `team_id` int(11) NOT NULL,
+  `player_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `height` float(3, 2) NULL DEFAULT 0.00,
+  PRIMARY KEY (`player_id`) USING BTREE,
+  UNIQUE INDEX `player_name`(`player_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>SET = utf8</code> 代表字符编码</li>
+<li><code>COLLATE = utf8_general_ci</code> 代表排序规则
+<ul>
+<li><code>utf8_general_ci</code> 代表对大小写不敏感</li>
+<li>如果设置为 <code>utf8_bin</code>，代表对大小写敏感</li>
+<li>还有许多其他排序规则</li>
+</ul>
+</li>
+<li><code>PRIMARY KEY</code> 代表<strong>主键</strong>
+<ul>
+<li>主键起的作用是唯一标识一条记录，不能重复，不能为空，即 <code>UNIQUE+NOT NULL</code></li>
+<li>一个数据表的主键只能有一个</li>
+<li>主键<strong>可以是一个字段</strong>，也可以由<strong>多个字段复合组成</strong></li>
+</ul>
+</li>
+<li><code>USING BTREE</code> 表示底层使用 <code>BTREE</code> 作为索引结构
+<ul>
+<li>其它的索引结构还有 <code>HASH</code></li>
+</ul>
+</li>
+<li><code>UNIQUE INDEX</code> 代表唯一索引，可以设置为其他索引方式，比如 <code>NORMAL INDEX</code>（普通索引）。
+<ul>
+<li><code>唯一索引</code>和<code>普通索引</code>的区别在于，它对字段进行了唯一性的约束，索引方式使用了 <code>BTREE</code></li>
+</ul>
+</li>
+</ul>
+<p><em><strong>其它建表方式</strong></em></p>
+<pre><code class="language-sql">-- A 的结构是 B 的精简版，A 中没有索引等信息
+-- A 中的数据与 B 中的数据完全相同 
+create table A as select * from B;
+
+-- A 的结构与 B 完全相同，包括索引等其它信息
+-- A 是空表，没有任何数据
+create table A like B;
+-- 可以使用下面语句将 B 中的数据插入 A
+insert into A select * from B;
+</code></pre>
+<h4 id="43修改表结构">4.3，修改表结构</h4>
+<p><strong>添加字段</strong>，在 player 表中添加 age 字段：</p>
+<pre><code class="language-sql">ALTER TABLE player ADD (age int(11));
+</code></pre>
+<p><strong>修改字段名</strong>，将 player 表中的 age 字段名改为 player_age：</p>
+<pre><code class="language-sql">ALTER TABLE player RENAME COLUMN age to player_age
+</code></pre>
+<p><strong>修改字段数据类型</strong>，将 player 表中的 player_age 字段的数据类型改为 <code>float(3,1)</code>：</p>
+<pre><code class="language-sql">ALTER TABLE player MODIFY (player_age float(3,1));
+</code></pre>
+<p><strong>删除字段</strong>，将 player 表中的 player_age 字段删除：</p>
+<pre><code class="language-sql">ALTER TABLE player DROP COLUMN player_age;
+</code></pre>
+<h3 id="5关于自增主键">5，关于自增主键</h3>
+<p>在 MySQL 里面，如果字段被定义为 <code>AUTO_INCREMENT</code>，则表示该字段自增。</p>
+<h4 id="51查看自增值">5.1，查看自增值</h4>
+<p>命令 <code>show create table table_name</code> 可以看到下一个可用的自增值，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/a8c899d013c441a7bf851c729c3ae8ed.png" alt="在这里插入图片描述"></p>
+<h4 id="52自增值是如何保存的">5.2，自增值是如何保存的</h4>
+<p>不同的引擎对于自增值的保存策略不同：</p>
+<ul>
+<li>MyISAM 引擎的自增值保存在数据文件中</li>
+<li>InnoDB 引擎的自增值：
+<ul>
+<li>在 MySQL 5.7 及之前的版本，自增值保存在内存里，并没有持久化。每次重启后，第一次打开表的时候，都会去找自增值的最大值 max(id)，然后将 <code>max(id)+1</code> 作为这个表当前的自增值</li>
+<li>在 MySQL 8.0 版本，将自增值的变更记录在了 redo log 中，重启的时候依靠 redo log 恢复重启之前的值</li>
+</ul>
+</li>
+</ul>
+<h4 id="53自增值的生成算法">5.3，自增值的生成算法</h4>
+<p>自增值的特性如下：</p>
+<ul>
+<li>如果插入数据时 id 字段指定为 <code>0</code>、<code>NULL</code> 或<code>未指定值</code>，那么就把这个表当前的 <code>AUTO_INCREMENT</code> 值填到自增字段</li>
+<li>如果插入数据时 id 字段指定了具体的值，就直接使用语句里指定的值。假设，某次要插入的值是 X，当前的自增值是 Y：
+<ul>
+<li>如果 <code>X&lt;Y</code>，那么这个表的自增值不变；</li>
+<li>如果 <code>X≥Y</code>，就需要把当前自增值修改为新的自增值。</li>
+</ul>
+</li>
+</ul>
+<p><strong>新的自增值生成算法是</strong>：以参数 <code>auto_increment_offset</code> 为初始值，以 <code>auto_increment_increment</code> 为步长，持续叠加，直到找到第一个大于 X 的值，作为新的自增值。</p>
+<p>这两个参数的默认值都是 1：</p>
+<ul>
+<li>当准备插入的值 &gt;= 当前自增值，新的自增值就是“准备插入的值 +1”</li>
+<li>否则，自增值不变</li>
+</ul>
+<blockquote>
+<p>双 M 的主备架构里要求双写的时候，会设置成 <code>auto_increment_increment=2</code>，让一个库的自增 id 都是奇数，另一个库的自增 id 都是偶数，避免两个库生成的主键发生冲突</p>
+</blockquote>
+<h4 id="54自增值不能保证是连续的">5.4，自增值不能保证是连续的</h4>
+<p>在这两个参数都设置为 1 的时候，自增主键 id 不能保证是连续的，有以下情况：</p>
+<ul>
+<li>唯一键冲突是导致自增主键 id 不连续的第一种原因</li>
+<li>事务回滚也会产生类似的现象，这就是第二种原因</li>
+</ul>
+<h4 id="55自增-id-可能被用完">5.5，自增 id 可能被用完</h4>
+<p>MySQL 中无符号整型 (<code>unsigned int</code>) 是 4 个字节，上限就是 <code>2^32-1</code>。</p>
+<p>表定义的自增值达到上限后的逻辑是：<strong>再申请下一个 id 时，得到的值保持不变</strong>。这就导致，当自增 id 达到上限后，如果再插入新的值，会导致自增id 重复的错误，<strong>因此就无法再插入新的值</strong>。</p>
+<p>因此，在建表的时候，你需要考察你的表是否有可能达到这个上限，如果有可能，就应该创建成 8 个字节的 <code>bigint unsigned</code>。</p>
+<p><em><strong>InnoDB 系统自增  row_id</strong></em></p>
+<p>如果创建的 InnoDB 表没有指定主键，那么 InnoDB 会创建一个不可见的，长度为 6 个字节的 row_id。</p>
+<p>row_id 是从 0 开始到 <code>2^48-1</code>。达到上限后，下一个值就是 0，然后继续循环。这就会导致，当达到上限后，<strong>新的数据会覆盖旧的数据</strong>。</p>
+<h3 id="6select-语句顺序">6，SELECT 语句顺序</h3>
+<p>关键字顺序不能颠倒：</p>
+<pre><code class="language-sql">SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY ...
+</code></pre>
+<p>执行顺序：</p>
+<pre><code class="language-sql">FROM &gt; WHERE &gt; GROUP BY &gt; HAVING &gt; SELECT 的字段 &gt; DISTINCT &gt; ORDER BY &gt; LIMIT
+</code></pre>
+<h3 id="7where-子句">7，WHERE 子句</h3>
+<h4 id="71比较运算符">7.1，比较运算符</h4>
+<table>
+<thead>
+<tr>
+<th align="left">比较运算符</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">=</td>
+<td align="left">等于</td>
+</tr>
+<tr>
+<td align="left">&lt;&gt; 或 !=</td>
+<td align="left">不等于</td>
+</tr>
+<tr>
+<td align="left">&gt;</td>
+<td align="left">大于</td>
+</tr>
+<tr>
+<td align="left">&lt;</td>
+<td align="left">小于</td>
+</tr>
+<tr>
+<td align="left">&gt;=</td>
+<td align="left">大于等于</td>
+</tr>
+<tr>
+<td align="left">&lt;=</td>
+<td align="left">小于等于</td>
+</tr>
+<tr>
+<td align="left">BETWEEN &hellip; AND &hellip;</td>
+<td align="left">在两个值之间</td>
+</tr>
+<tr>
+<td align="left">IS NULL</td>
+<td align="left">为空值</td>
+</tr>
+</tbody>
+</table>
+<p>其中 <code>BETWEEN ... AND ...</code> 可以取到两个值的<strong>边界</strong>。</p>
+<p>另外，在 MySQL 中空字符串 <code>&quot;&quot;</code> 与 <code>NULL</code> 是不同的：</p>
+<ul>
+<li><code>空字符串</code>代表<code>有值</code>，但是空字符；可以使用比较运算符进行比较。</li>
+<li><code>NULL</code> 代表<code>无值</code>，什么都没有，未定义；只能使用 <code>IS NULL</code> 来筛选。</li>
+</ul>
+<h4 id="72逻辑运算符">7.2，逻辑运算符</h4>
+<p>逻辑运算符用于连接多个 where 子句：</p>
+<table>
+<thead>
+<tr>
+<th align="left">逻辑运算符</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">AND</td>
+<td align="left">并且</td>
+</tr>
+<tr>
+<td align="left">OR</td>
+<td align="left">或者</td>
+</tr>
+<tr>
+<td align="left">IN</td>
+<td align="left">在条件范围内</td>
+</tr>
+<tr>
+<td align="left">NOT</td>
+<td align="left">非</td>
+</tr>
+</tbody>
+</table>
+<h4 id="73like-语句">7.3，like 语句</h4>
+<p>like 语句用于模糊查询，like 根据 <code>%</code> 位置的不同，对索引有不同的影响：</p>
+<ul>
+<li><code>like '%abc%'</code> 和 <code>like '%abc'</code> 都无法使用索引，是全表扫描</li>
+<li><code>like 'abc%'</code> 可以使用索引</li>
+</ul>
+<h3 id="8distinct-去重">8，DISTINCT 去重</h3>
+<p>在 MySQL 中使用 <code>distinct</code> 去重时，<code>distinct</code> 的必须写在所有列的前面，也就是紧跟 select 关键字之后：</p>
+<pre><code class="language-sql">-- 对 a 列进行去重
+select distinct a from table_name;
+</code></pre>
+<p>也可以对多列进行去重：</p>
+<pre><code class="language-sql">select distinct a, b, c from table_name;
+</code></pre>
+<p>此时 MySQL 会将 <code>a,b,c</code> 作为一个联合字段进行统一去重，而不是分别对三个字段进行了去重。</p>
+<h3 id="9关于-count-操作">9，关于 COUNT(*) 操作</h3>
+<p>对于 <code>count(*)</code>，不同的 MySQL 引擎，有不同的实现方式：</p>
+<ul>
+<li><strong>MyISAM 引擎</strong>：把一个表的总行数存在了磁盘上，执行 <code>count(*)</code> 的时候会直接返回这个数，效率很高；
+<ul>
+<li>如果带了 <code>where</code> 过滤条件，就没有这么快了</li>
+<li>不支持事务</li>
+</ul>
+</li>
+<li><strong>InnoDB 引擎</strong>：它执行 <code>count(*)</code> 的时候，需要把数据一行一行地从引擎里面读出来，然后累积计数。
+<ul>
+<li>支持事务</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>为什么 InnoDB 不向 MyISAM 一样将行数直接记录下来呢？</strong></em></p>
+<p>这是因为，即使是在同一个时刻的多个查询，由于<strong>多版本并发控制（MVCC）</strong> 的原因，<strong>InnoDB 表“应该返回多少行”也是不确定的</strong>。</p>
+<p>这和 InnoDB 的<strong>事务</strong>有关，<strong>可重复读</strong>是它默认的隔离级别，这是用 MVCC 来实现的。<strong>每一行记录都要判断自己是否对这个会话可见</strong>，因此对于 count(*) 请求，InnoDB 只能把数据一行一行地读出依次判断，<strong>可见的行</strong>才能够用于计算“基于这个查询”的表的总行数。</p>
+<p>使用命令 <code>show table status like 'tbname'</code> 得到的结果中也有一个行数（rows），注意这个行数是不准确的，这是一个采样估算值，官方文档说误差可能达到 <code>40%</code> 到 <code>50%</code>。</p>
+<p><em><strong>几种不同的 count 用法</strong></em></p>
+<ul>
+<li><code>count(*)</code>：总行数</li>
+<li><code>count(1)</code>：总行数</li>
+<li><code>count(主键id)</code>：总行数</li>
+<li><code>count(字段名)</code>：字段部位 <code>NULL</code> 的行数</li>
+</ul>
+<p>性能差异：</p>
+<pre><code class="language-sql"># count(*) 是经过优化的，性能最好
+count(字段名) &lt; count(主键id) &lt; count(1) ≈ count(*)
+</code></pre>
+<h3 id="10mysql-函数">10，MYSQL 函数</h3>
+<p>MYSQL 函数包括<code>内置函数</code>和<code>自定义函数</code>。</p>
+<p>内置函数可分为 5 大类：</p>
+<ul>
+<li>算术函数
+<ul>
+<li><code>ABS(n)</code>：取绝对值</li>
+<li><code>MOD(m， n)</code>：取余，m % n</li>
+<li><code>ROUND(字段名称，n)</code>：四舍五入 n 个小数位</li>
+</ul>
+</li>
+<li>字符串函数
+<ul>
+<li><code>CONCAT()</code>：字符串连接</li>
+<li><code>LENGTH()</code>：字符长度（一个汉字3 个字符长）</li>
+<li><code>CHAR_LENGTH()</code>：字符串长度，汉字、数字、字母都算一个字符</li>
+<li><code>LOWER()</code>：字符串小写</li>
+<li><code>UPPER()</code>：字符串大写</li>
+<li><code>REPLACE()</code>：字符串替换</li>
+<li><code>SUBSTRING()</code>：字符串截取</li>
+</ul>
+</li>
+<li>日期函数
+<ul>
+<li><code>CURRENT_DATE()</code>：当前日期</li>
+<li><code>CURRENT_TIME()</code>：当前时间</li>
+<li><code>CURRENT_TIMESTAMP()</code>：当前日期 + 时间</li>
+<li><code>DATE()</code>：时间的日期部分</li>
+<li><code>YEAR()</code>：年份</li>
+<li><code>MONTH()</code>：月份</li>
+<li><code>DAY()</code>：天</li>
+<li><code>HOUR()</code>：小时</li>
+<li><code>MINUTE()</code>：分钟</li>
+<li><code>SECOND()</code>：秒</li>
+</ul>
+</li>
+<li>转换函数</li>
+<li>聚集函数
+<ul>
+<li><code>COUNT()</code>：总行数</li>
+<li><code>MAX()</code>：最大值，会忽略 NULL</li>
+<li><code>MIN()</code>：最小值，会忽略 NULL</li>
+<li><code>SUM()</code>：求和，会忽略 NULL</li>
+<li><code>AVG()</code>：平均值，会忽略 NULL</li>
+</ul>
+</li>
+</ul>
+<p><code>COUNT(*)</code> 与 <code>COUNT(字段名)</code>的区别：</p>
+<pre><code class="language-sql">-- 统计所有 a 大于 100 的行
+select count(*) from table_name where a &gt; 100;
+
+-- 统计所有 a 大于 100 且 b 不为 NULL 的行
+select count(b) from table_name where a &gt; 100;
+</code></pre>
+<h3 id="11group-by-数据分组">11，GROUP BY 数据分组</h3>
+<p>数据分组使用 <code>GROUP BY</code> 子句，需要注意 <code>NULL</code> 值也会被分成一组。</p>
+<p>示例：</p>
+<pre><code class="language-sql">-- 用字段 a 进行分组，并统计每个不同值的数量
+select count(*), a from table_name group by a;
+</code></pre>
+<p>也可以对多个字段进行分组：</p>
+<pre><code class="language-sql">-- 会把 a，b 两个字段的所有取值情况都进行分组
+select count(*) as num, a, b from table_name group by a, b order by num;
+</code></pre>
+<p><em><strong>对分组过滤 having</strong></em></p>
+<p>WHERE 子句作用于数据行，having 子句作用域分组。</p>
+<pre><code class="language-sql">-- 筛选出 num 大于 5 的分组
+select count(*) as num, a, b from table_name group by a, b having num &gt; 5 order by num;
+</code></pre>
+<p>这里如果将 having 换成 where，则会出错。</p>
+<pre><code class="language-sql">-- 这个子句更加复杂
+-- 会先筛选出所有 a &gt; 10 的行，然后再进行分组，过滤，排序
+select count(*) as num, a, b from table_name where a &gt; 10 group by a, b having num &gt; 5 order by num;
+</code></pre>
+<h3 id="12子查询嵌套查询">12，子查询(嵌套查询)</h3>
+<p>会用到下面几个关键字：</p>
+<ul>
+<li><code>EXISTS</code>：判断是否存在</li>
+<li><code>NOT EXISTS</code>：</li>
+<li><code>IN</code>：判断是否在集合中</li>
+<li><code>NOT IN</code>：</li>
+<li><code>SOME / ANY</code>：与子查询返回的任何值做比较，需要与比较运算符一起使用</li>
+<li><code>ALL</code>：与子查询返回的所有值做比较，需要与比较运算符一起使用</li>
+</ul>
+<p>子查询分为关联子查询与非关联子查询：</p>
+<ul>
+<li>关联子查询：查询子句会执行多次。</li>
+<li>非关联子查询：查询子句只执行一次。</li>
+</ul>
+<p>举例：</p>
+<pre><code class="language-sql">-- 非关联子查询
+SELECT player_name, height
+FROM player
+WHERE height = (
+	SELECT MAX(height)
+	FROM player
+);
+
+-- 关联子查询
+-- 查找每个球队中大于平均身高的球员有哪些，并显示他们的球员姓名、身高以及所在球队 ID。
+SELECT player_name, height, team_id
+FROM player a
+WHERE height &gt; (
+	SELECT AVG(height)
+	FROM player b
+	WHERE a.team_id = b.team_id
+);
+</code></pre>
+<p>EXIST 与 IN 的使用模式：</p>
+<pre><code class="language-sql">-- 下面两种含义一样
+SELECT * FROM A WHERE cc IN (SELECT cc FROM B)                 -- B 表小时，用 IN 效率高
+SELECT * FROM A WHERE EXIST (SELECT cc FROM B WHERE B.cc=A.cc) -- A 表小时，用 Exist 效率高
+</code></pre>
+<p>ANY 与 ALL 子句，必须与一个<strong>比较操作符</strong>一起使用：</p>
+<pre><code class="language-sql">SELECT player_id, player_name, height
+FROM player
+WHERE height &gt; ANY (
+	SELECT height
+	FROM player
+	WHERE team_id = 1002
+);
+
+SELECT player_id, player_name, height
+FROM player
+WHERE height &gt; ALL (
+	SELECT height
+	FROM player
+	WHERE team_id = 1002
+);
+</code></pre>
+<h3 id="13join-连接查询">13，JOIN 连接查询</h3>
+<p>根据不同的SQL 标准，连接查询是不同的，主要有 <code>SQL92</code> 和<code> SQL99</code> 两种。</p>
+<p>SQL 中的 5 中连接方式：</p>
+<ul>
+<li>笛卡尔积</li>
+<li>等值连接：连接多个表的条件是等号</li>
+<li>非等值连接：连接多个表的条件不是等号</li>
+<li>外连接
+<ul>
+<li>左外连接：LEFT    JOIN &hellip; ON &hellip;</li>
+<li>右外连接：RIGHT JOIN &hellip; ON &hellip;</li>
+<li>全外连接：FULL   JOIN &hellip; ON &hellip; <strong>（MYSQL 不支持）</strong></li>
+<li><img src="https://img-blog.csdnimg.cn/e1806d31e182425f830837327ee18ee4.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>自连接</li>
+</ul>
+<blockquote>
+<p>AS 为表名重命名是 SQL92 语法，SQL99 中不需要用 AS，使用空格就行。
+LEFT JOIN &hellip; ON 是 SQL99 语法，SQL92 中没有该语法。 
+LEFT 与 RIGHT 表示主表在哪边。</p>
+</blockquote>
+<p>SQL 举例：</p>
+<pre><code class="language-sql">-- 笛卡尔积 SQL92 语法
+SELECT * FROM player, team;
+-- 笛卡尔积 SQL99 语法
+SELECT * FROM player CROSS JOIN team;
+SELECT * FROM t1 CROSS JOIN t2 CROSS JOIN t3; -- 三张表笛卡尔积
+
+-- 等值连接 SQL92 语法
+SELECT player_id, player.team_id, player_name, height, team_name
+FROM player, team
+WHERE player.team_id = team.team_id;
+-- 等值连接 SQL99 语法
+SELECT player_id, team_id, player_name, height, team_name
+FROM player
+	NATURAL JOIN team
+
+-- 非等值连接 SQL92 语法
+SELECT p.player_name, p.height, h.height_level
+FROM player AS p, height_grades AS h
+WHERE p.height BETWEEN h.height_lowest AND h.height_highest;
+-- 非等值连接 SQL99 语法
+SELECT p.player_name, p.height, h.height_level
+FROM player as p JOIN height_grades as h
+ON height BETWEEN h.height_lowest AND h.height_highest
+
+-- 外连接 SQL99 语法
+SELECT * 
+FROM player 
+LEFT JOIN team on player.team_id = team.team_id;
+
+-- SQL99 USING 连接，USING 用于指定两张表中的同名字段
+SELECT player_id, team_id, player_name, height, team_name
+FROM player
+	JOIN team USING (team_id)
+-- 这两个 SQL 含义相同
+SELECT player_id, player.team_id, player_name, height, team_name
+FROM player
+	JOIN team ON player.team_id = team.team_id
+</code></pre>
+<h3 id="14view-视图">14，VIEW 视图</h3>
+<p>在 MySQL 里，有两个“视图”的概念：</p>
+<ul>
+<li>一个是 view。它是一个用查询语句定义的<strong>虚拟表</strong>，是对 select 语句的封装，本身不具有数据；在调用的时候执行查询语句并生成结果。
+<ul>
+<li>创建视图的语法是 <code>create view … </code>，而它的查询方法与表一样。</li>
+</ul>
+</li>
+<li>另一个是 InnoDB 在实现 MVCC 时用到的<strong>一致性读视图</strong>，即 <code>consistent read view</code>，用于支持<strong>读提交</strong>和<strong>可重复读</strong>隔离级别的实现。
+<ul>
+<li>它没有物理结构，作用是事务执行期间用来定义“我能看到什么数据”。</li>
+</ul>
+</li>
+</ul>
+<p>创建视图：</p>
+<pre><code class="language-sql">CREATE VIEW view_name AS
+SELECT column1, column2
+FROM table
+WHERE condition
+</code></pre>
+<p>当视图创建之后，它就相当于一个虚拟表，可以直接使用：</p>
+<pre><code class="language-sql">SELECT * FROM view_name;
+</code></pre>
+<p>更新视图（更改一个已有的视图）：</p>
+<pre><code class="language-sql">ALTER VIEW view_name AS
+SELECT column1, column2
+FROM table
+WHERE condition
+</code></pre>
+<p>删除视图：</p>
+<pre><code class="language-sql">DROP VIEW view_name
+</code></pre>
+<h3 id="15存储过程">15，存储过程</h3>
+<p>存储过程是对 SQL 语句的封装，是程序化的SQL，也就是将 SQL 写成函数（过程）的形式。存储过程由 SQL 语句和流控制语句共同组成。</p>
+<p>定义一个存储过程：</p>
+<pre><code class="language-sql">-- 创建存储过程
+CREATE PROCEDURE 存储过程名称([参数列表])
+BEGIN
+    需要执行的语句
+END    
+
+-- 修改存储过程
+ALTER PROCEDURE
+
+-- 删除存储过程
+DROP PROCEDURE
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-sql">DELIMITER //
+CREATE PROCEDURE `add_num`(IN n INT)
+BEGIN
+       DECLARE i INT;
+       DECLARE sum INT;
+       
+       SET i = 1;
+       SET sum = 0;
+       WHILE i &lt;= n DO
+              SET sum = sum + i;
+              SET i = i +1;
+       END WHILE;
+       SELECT sum;
+END //
+DELIMITER ;
+
+-- 调用存储过程
+CALL add_num(50);
+</code></pre>
+<p>其中 <code>DELIMITER //</code> 用于定义结束符，在存储过程结束后，要还原 <code>DELIMITER ;</code>。</p>
+<p><code>SET</code> 用于对变量进行赋值。</p>
+<blockquote>
+<p>注意在使用 Navicat 时，不需要使用 DELIMITER。</p>
+</blockquote>
+<p>参数修饰符，<code>IN OUT INOUT</code> 的含义：</p>
+<p><img src="https://img-blog.csdnimg.cn/83747e47cea64205a6e18289dbd91007.png" alt="在这里插入图片描述"></p>
+<p>示例：</p>
+<pre><code class="language-sql">CREATE PROCEDURE `get_hero_scores`(
+       OUT max_max_hp FLOAT,
+       OUT min_max_mp FLOAT,
+       OUT avg_max_attack FLOAT,  
+       s VARCHAR(255)
+       )
+BEGIN
+       SELECT MAX(hp_max), MIN(mp_max), AVG(attack_max) FROM heros WHERE role_main = s INTO max_max_hp, min_max_mp, avg_max_attack;
+END
+
+-- 调用存储过程
+CALL get_hero_scores(@max_max_hp, @min_max_mp, @avg_max_attack, '战士');
+SELECT @max_max_hp, @min_max_mp, @avg_max_attack;
+</code></pre>
+<p>其中 <code>SELECT ... INTO</code> 是将查询结果为变量赋值。</p>
+<p><strong>存储过程的缺点</strong></p>
+<ul>
+<li>可移植性差</li>
+<li>调试困难，不易维护</li>
+</ul>
+<h3 id="16临时表">16，临时表</h3>
+<p>临时表不同于视图（虚拟表），临时表示真实存在的数据表，只是不会长期存在，它只为当前连接存在，连接关闭后，临时表就释放了。</p>
+<p><strong>临时表与内存表的区别：</strong></p>
+<ul>
+<li>内存表：特指用 <strong>Memory</strong> 引擎的表
+<ul>
+<li>建表语法是 <code>create table … engine=memory</code></li>
+<li>这种表的数据都保存在内存里，系统重启的时候会被清空，但是表结构还在</li>
+</ul>
+</li>
+<li>临时表：可以使用各种引擎类型
+<ul>
+<li>如果使用 InnoDB / MyISAM 引擎，写数据的时候是写到磁盘上的</li>
+<li>临时表也可以使用 Memory 引擎</li>
+<li>建表语法是 <code>create temporary table … </code></li>
+</ul>
+</li>
+</ul>
+<p>一个创建临时表的事例：</p>
+<p><img src="https://img-blog.csdnimg.cn/afc2c9218d95487d9ca08c5cb09cd808.png" alt="在这里插入图片描述"></p>
+<p>临时表的特征：</p>
+<ul>
+<li>一个临时表只能被创建它的 session 访问，对其他线程不可见。（<em>所以，图中 session A 创建的临时表 t，对于 session B 就是不可见的</em>）
+<ul>
+<li>由于临时表只能被创建它的 session 访问，所以在这个 session 结束的时候，会自动删除临时表</li>
+</ul>
+</li>
+<li>临时表可以与普通表同名</li>
+<li>session A 内有同名的临时表和普通表的时候，<code>show create </code>语句，以及增删改查语句访问的是临时表</li>
+<li><code>show tables</code> 命令不显示临时表</li>
+</ul>
+<p>在实际应用中，临时表一般用于处理比较复杂的计算逻辑。</p>
+<p>上面介绍到的临时表都是用户自己创建的，也称为<strong>用户临时表</strong>。</p>
+<h3 id="17mysql-权限管理">17，MySQL 权限管理</h3>
+<p>创建用户命令：</p>
+<pre><code class="language-sql">create user 'ua'@'%' identified by 'pa';
+</code></pre>
+<p>这条语句的逻辑是，创建一个用户 <code>'ua'@'%'</code>，密码是 <code>pa</code>。</p>
+<p>在 MySQL 里面，<code>用户名 (user)+ 地址 (host)</code> 才表示一个用户，因此 <code>ua@ip1</code> 和 <code>ua@ip2</code> 代表的是两个不同的用户。</p>
+<p>这条命令做了两个动作：</p>
+<ul>
+<li><strong>磁盘上</strong>：往 <code>mysql.user</code> 表里插入一行，由于没有指定权限，所以这行数据上所有表示权限的字段的值都是 N；</li>
+<li><strong>内存里</strong>：往数组 <code>acl_users</code> 里插入一个 <code>acl_user</code> 对象，这个对象的 access 字段值为 0。</li>
+</ul>
+<p>下图是此时用户 ua 在 user 表中的状态：</p>
+<p><img src="https://img-blog.csdnimg.cn/488c206d0f33436aa75458eb25adacb9.png" alt="在这里插入图片描述"></p>
+<p>在 MySQL 中，用户权限是有不同的范围的：</p>
+<ul>
+<li>全局权限</li>
+<li>db 权限</li>
+<li>表权限和列权限</li>
+</ul>
+<h4 id="171全局权限">17.1，全局权限</h4>
+<p>全局权限作用于整个 MySQL 实例，这些权限信息保存在 mysql 库的 <code>user</code> 表里。</p>
+<p>要给用户 ua 赋一个最高权限的话，语句是这么写的：</p>
+<pre><code class="language-sql">grant all privileges on *.* to 'ua'@'%' with grant option;
+</code></pre>
+<p>这个 grant 命令做了两个动作：</p>
+<ul>
+<li><strong>磁盘上</strong>：将 <code>mysql.user</code> 表里，用户 <code>’ua’@’%'</code> 这一行的所有表示权限的字段的值都修改为‘Y’；</li>
+<li><strong>内存里</strong>：从数组 acl_users 中找到这个用户对应的对象，将 access 值（权限位）修改为二进制的“全 1”。</li>
+</ul>
+<p>注意：<em>一般在生产环境上要合理控制用户权限的范围。如果一个用户有所有权限，一般就不应该设置为所有 IP 地址都可以访问。</em></p>
+<p><code>revoke</code> 命令用于回收权限：</p>
+<pre><code class="language-sql">revoke all privileges on *.* from 'ua'@'%';
+</code></pre>
+<p><code>revoke</code> 命令做了如下两个动作：</p>
+<ul>
+<li><strong>磁盘上</strong>：将 mysql.user 表里，用户’ua’@’%&lsquo;这一行的所有表示权限的字段的值都修改为“N”；</li>
+<li><strong>内存里</strong>：从数组 acl_users 中找到这个用户对应的对象，将 access 的值修改为 0。</li>
+</ul>
+<h4 id="172库级权限">17.2，库级权限</h4>
+<p>如果要让用户 ua 拥有库 db1 的所有权限，可以执行下面这条命令：</p>
+<pre><code class="language-sql">grant all privileges on db1.* to 'ua'@'%' with grant option;
+</code></pre>
+<p>基于库的权限记录保存在 <code>mysql.db</code> 表中，在内存里则保存在数组 <code>acl_dbs</code> 中。</p>
+<p>这条 grant 命令做了如下两个动作：</p>
+<ul>
+<li><strong>磁盘上</strong>：往 mysql.db 表中插入了一行记录，所有权限位字段设置为“Y”；</li>
+<li><strong>内存里</strong>：增加一个对象到数组 acl_dbs 中，这个对象的权限位为“全 1”。</li>
+</ul>
+<p>下图是此时用户 ua 在 db 表中的状态：</p>
+<p><img src="https://img-blog.csdnimg.cn/f7dc90e6a36c4e3781f90df1b8814745.png" alt="在这里插入图片描述"></p>
+<p>每次需要判断一个用户对一个数据库读写权限的时候，都需要遍历一次 acl_dbs 数组，根据 user、host 和 db 找到匹配的对象，然后根据对象的权限位来判断。</p>
+<h4 id="173表权限和列权限">17.3，表权限和列权限</h4>
+<p>MySQL 支持更细粒度的表权限和列权限：</p>
+<ul>
+<li>表权限定义存放在表 <code>mysql.tables_priv</code> 中</li>
+<li>列权限定义存放在表 <code>mysql.columns_priv</code> 中</li>
+<li>这两类权限，组合起来存放在内存的 hash 结构 <code>column_priv_hash</code> 中</li>
+</ul>
+<p>示例：</p>
+<pre><code class="language-sql"># 创建一个表
+create table db1.t1(id int, a int);
+
+# 赋予表权限
+grant all privileges on db1.t1 to 'ua'@'%' with grant option;
+
+# 赋予列权限
+GRANT SELECT(id), INSERT (id,a) ON mydb.mytbl TO 'ua'@'%' with grant option;
+</code></pre>
+<p>这两个权限每次 grant 的时候都会修改数据表，也会同步修改内存中的 hash 结构。</p>
+<h3 id="18python-操作-mysql-的库">18，Python 操作 MySQL 的库</h3>
+<ul>
+<li>mysql-connector</li>
+<li>MySQLdb</li>
+<li>mysqlclient</li>
+<li>PyMySQL</li>
+<li>peewee：一个轻量级的 ORM 框架</li>
+<li>SQLAIchemy：一个 ORM 框架</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/mysql-learn2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">MySQL学习笔记2-进阶篇-上</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/03/es-logstash-beats/">
+            <span class="next-text nav-default">Logstash-Beats入门</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/mysql-learn1/" class="leancloud_visitors" data-flag-title="MySQL学习笔记1-基础篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

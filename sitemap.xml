@@ -45,35 +45,91 @@
   
   <url>
     <loc>https://codeshellme.github.io/categories/</loc>
-    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <lastmod>2021-11-19T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/post/</loc>
-    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <lastmod>2021-11-19T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://codeshellme.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <lastmod>2021-11-19T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/2021/08/jiagou-learn/</loc>
-    <lastmod>2021-08-10T21:42:52+08:00</lastmod>
+    <loc>https://codeshellme.github.io/2021/11/arch2/</loc>
+    <lastmod>2021-11-19T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://codeshellme.github.io/2021/08/mysql-learn/</loc>
-    <lastmod>2021-08-10T21:41:52+08:00</lastmod>
+    <loc>https://codeshellme.github.io/2021/11/arch1/</loc>
+    <lastmod>2021-11-18T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/redis-learn3/</loc>
+    <lastmod>2021-11-17T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/redis-learn2/</loc>
+    <lastmod>2021-11-16T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/redis-learn1/</loc>
+    <lastmod>2021-11-15T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/mysql-learn5/</loc>
+    <lastmod>2021-11-14T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/mysql-learn4/</loc>
+    <lastmod>2021-11-13T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/mysql-learn3/</loc>
+    <lastmod>2021-11-12T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/mysql-learn2/</loc>
+    <lastmod>2021-11-11T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/2021/11/mysql-learn1/</loc>
+    <lastmod>2021-11-10T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

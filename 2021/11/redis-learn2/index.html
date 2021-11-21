@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Redis学习笔记2-性能篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/redis-learn2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Redis学习笔记2-性能篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/redis-learn2/" />
+<meta property="article:published_time" content="2021-11-16T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-16T21:41:52+08:00" />
+<meta itemprop="name" content="Redis学习笔记2-性能篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re">
+<meta itemprop="datePublished" content="2021-11-16T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-16T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="10782">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis学习笔记2-性能篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 3 篇文章是我在学习 Redis 的过程中，总结的笔记： 第一篇 Re"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Redis学习笔记2-性能篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-16 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 10782 字 </span>
+          <span class="more-meta"> 阅读约需 22 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#6redis-高性能的影响因素">6，Redis 高性能的影响因素</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 3 篇文章是我在学习 Redis 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/redis-learn1/"><strong>第一篇 Redis学习笔记1-理论篇</strong></a>
+<ul>
+<li>1，Redis 中的数据类型</li>
+<li>2，Redis 的 IO 模型</li>
+<li>3，Redis 的 持久化</li>
+<li>4，Redis 集群原理</li>
+<li>5，将 Redis 用作缓存</li>
+</ul>
+</li>
+<li><a href="/2021/11/redis-learn2/"><strong>第二篇 Redis学习笔记2-性能篇</strong></a>
+<ul>
+<li>6，Redis 高性能的影响因素
+<ul>
+<li>6.1，Redis 内部的阻塞式操作</li>
+<li>6.2，CPU 核和 NUMA 架构的影响</li>
+<li>6.3，Redis 关键系统配置</li>
+<li>6.4，Redis 内存碎片</li>
+<li>6.5，Redis 缓冲区</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="/2021/11/redis-learn3/"><strong>第三篇 Redis学习笔记3-实战篇</strong></a>
+<ul>
+<li>7，Redis 中如何进行原子操作</li>
+<li>8，Redis 是否适合用作消息队列</li>
+<li>9，使用 Redis 实现分布式锁</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="6redis-高性能的影响因素">6，Redis 高性能的影响因素</h3>
+<h4 id="61redis-内部的阻塞式操作">6.1，Redis 内部的阻塞式操作</h4>
+<p>与 Redis 实例交互的对象，以及交互时会发生的操作：</p>
+<ul>
+<li><strong>客户端</strong>：网络 IO，键值对增删改查操作，数据库操作；</li>
+<li><strong>磁盘</strong>：生成 RDB 快照，记录 AOF 日志，AOF 日志重写；</li>
+<li><strong>主从节点</strong>：主库生成、传输 RDB 文件，从库接收 RDB 文件、清空数据库、加载 RDB 文件；</li>
+<li><strong>切片集群实例</strong>：向其他实例传输哈希槽信息，数据迁移。</li>
+</ul>
+<p><strong>和客户端交互时的阻塞点</strong>：</p>
+<ul>
+<li><strong>网络 IO</strong>：不会引起阻塞
+<ul>
+<li>因为 Redis 使用了 IO 多路复用机制</li>
+</ul>
+</li>
+<li><strong>键值对增删改查操作</strong>：复杂度高（是否为 <code>O(N)</code>）的操作会引起阻塞
+<ul>
+<li>Redis 中涉及<strong>集合</strong>的操作复杂度通常为 O(N)</li>
+<li>例如集合元素全量查询操作 <code>HGETALL</code>、<code>SMEMBERS</code>，以及集合的<code>聚合统计</code>操作（求交、并和差集）</li>
+<li>这些操作可以作为 Redis 的<strong>第一个阻塞点：集合全量查询和聚合操作</strong></li>
+<li><strong>bigkey（包含大量元素的集合） 删除操作就是 Redis 的第二个阻塞点</strong></li>
+</ul>
+</li>
+<li><strong>数据库操作</strong>：Redis 的<strong>第三个阻塞点：清空数据库</strong>
+<ul>
+<li>清空数据库（例如 <code>FLUSHDB</code> 和 <code>FLUSHALL</code> 操作）也是一个潜在的阻塞风险</li>
+</ul>
+</li>
+</ul>
+<p><strong>和磁盘交互时的阻塞点</strong>：</p>
+<ul>
+<li><strong>生成 RDB 快照</strong>：由子进程完成，不阻塞</li>
+<li><strong>记录 AOF 日志</strong>：<strong>第四个阻塞点：AOF 日志同步写</strong>
+<ul>
+<li>一个同步写磁盘的操作的耗时大约是 1～2ms</li>
+</ul>
+</li>
+<li><strong>AOF 日志重写</strong>：由子进程完成，不阻塞</li>
+</ul>
+<p><strong>主从节点交互时的阻塞点</strong>：</p>
+<ul>
+<li>主库生成、传输 RDB 文件：由子进程完成，不会阻塞主线程</li>
+<li>从库接收 RDB 文件、清空数据库、加载 RDB 文件
+<ul>
+<li>需要使用 FLUSHDB 命令清空当前数据库（第三个阻塞点）</li>
+<li><strong>加载 RDB 文件是 Redis 的第五个阻塞点</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>切片集群实例交互时的阻塞点</strong>：</p>
+<ul>
+<li>向其他实例传输哈希槽信息、数据迁移
+<ul>
+<li>哈希槽的信息量不大，而数据迁移是渐进式执行的，所以，这两类操作对 Redis 主线程的阻塞风险不大</li>
+</ul>
+</li>
+</ul>
+<p>为了避免阻塞式操作，Redis 提供了<strong>异步线程机制</strong>，就是，Redis 会启动一些<strong>子线程</strong>，把一些任务交给这些子线程，让它们在后台完成，而<strong>不再由主线程来执行</strong>这些任务。<strong>使用异步线程机制执行操作，可以避免阻塞主线程</strong>。</p>
+<p>如果一个操作能被异步执行，就意味着，它并不是 Redis 主线程的<strong>关键路径上</strong>的操作。关键路径上的操作就是说，客户端把请求发送给 Redis 后，等着 Redis 返回数据结果的操作。</p>
+<p><em><strong>哪些阻塞点可以异步执行？</strong></em></p>
+<p>对于 Redis 的五大阻塞点来说，除了“集合全量查询和聚合操作”和“从库加载 RDB 文件”，其他三个阻塞点涉及的操作都不在关键路径上，所以，我们可以使用 Redis 的异步子线程机制来实现 bigkey 删除，清空数据库，以及 AOF 日志同步写。</p>
+<p>Redis 主线程启动后，会使用操作系统提供的 <code>pthread_create </code>函数创建 <strong>3 个子线程</strong>，分别由它们负责 AOF 日志写操作、键值对删除以及文件关闭的异步执行。</p>
+<p>主线程通过一个链表形式的<strong>任务队列</strong>和子线程进行交互。当收到键值对删除和清空数据库的操作时，主线程会把这个操作封装成一个任务，放入到任务队列中，然后给客户端返回一个完成信息，表明删除已经完成。这种异步删除也称为<strong>惰性删除</strong>。</p>
+<p>当 AOF 日志配置成 everysec 选项后，主线程会把 AOF 写日志操作封装成一个任务，也放到任务队列中。后台子线程读取任务后，开始自行写入 AOF 日志，这样主线程就不用一直等待 AOF 日志写完了。</p>
+<p>Redis 中的异步子线程执行机制：</p>
+<p><img src="https://img-blog.csdnimg.cn/c2e10e31551542ae97dbb38662888697.png" alt="在这里插入图片描述"></p>
+<p>异步的键值对删除和数据库清空操作是 Redis 4.0 后提供的功能，由两个命令完成：</p>
+<ul>
+<li><strong>键值对删除</strong>：当集合类型中有大量元素需要删除时，建议使用 <code>UNLINK</code> 命令。</li>
+<li><strong>清空数据库</strong>：可以在 <code>FLUSHDB</code> 和 <code>FLUSHALL</code> 命令后加上 <code>ASYNC</code> 选项，这样就可以让后台子线程异步地清空数据库：
+<ul>
+<li><code>FLUSHDB ASYNC</code></li>
+<li><code>FLUSHALL AYSNC</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="62cpu-核和-numa-架构的影响">6.2，CPU 核和 NUMA 架构的影响</h4>
+<h5 id="1主流-cpu-架构">1，主流 CPU 架构</h5>
+<p>一个 CPU 处理器中有多个物理核，每个物理核都可以运行应用程序。每个物理核都拥有私有的<strong>一级缓存</strong>（L1 cache，包括一级指令缓存和一级数据缓存），以及私有的<strong>二级缓存</strong>（L2 cache）。</p>
+<p>物理核的<strong>私有缓存</strong>（大小只有 KB 级别）只能被当前的物理核使用，其他的物理核无法对这个核的缓存空间进行数据存取。</p>
+<p>物理核访问私有缓存的延迟不超过 10 纳秒，速度非常快。如果 L1、L2 缓存中没有所需的数据，应用程序就需要访问内存来获取数据，需要百纳秒的时间。</p>
+<p><img src="https://img-blog.csdnimg.cn/75160e74892c449ba1ca062e2d7b1ae5.png" alt="在这里插入图片描述"></p>
+<p>因为 L1、L2 缓存的空间很小，所以又有了 L3 缓存（能达到几 MB 到几十 MB），它并不是私有的，而是被不同的物理核共享的。当 L1、L2 缓存中没有数据缓存时，可以访问 L3，<strong>尽可能避免访问内存</strong>。</p>
+<p>另外，现在主流的 CPU 处理器中，<strong>每个物理核通常都会运行两个超线程</strong>，也叫作<strong>逻辑核</strong>。同一个物理核的逻辑核会共享使用 L1、L2 缓存。</p>
+<p><img src="https://img-blog.csdnimg.cn/e06e80d6df5042b4a275662bc8a253f2.png" alt="在这里插入图片描述"></p>
+<p>一般的机器上会有多个 CPU 处理器（多 CPU Socket），不同处理器间通过<strong>总线</strong>连接。</p>
+<p>下图显示的就是多 CPU Socket 的架构：</p>
+<p><img src="https://img-blog.csdnimg.cn/576da717920449e79b537dad2702188b.png" alt="在这里插入图片描述"></p>
+<p>在多 CPU 架构上，应用程序可以在不同的处理器上运行。在刚才的图中，Redis 可以先在 Socket  1 上运行一段时间，然后再被调度到 Socket  2 上运行。</p>
+<p>但是，如果应用程序先在一个 Socket 上运行，并且把数据保存到了内存，然后被调度到另一个 Socket 上运行，此时，应用程序再进行内存访问时，就需要访问之前 Socket 上连接的内存，这种访问属于<strong>远端内存访问</strong>。和访问 Socket 直接连接的内存相比，<strong>远端内存访问会增加应用程序的延迟</strong>。</p>
+<p>在多 CPU 架构下，一个应用程序访问所在 Socket 的本地内存和访问远端内存的<strong>延迟并不一致</strong>，我们把这个架构称为<strong>非统一内存访问架构</strong>（Non-Uniform Memory Access，<strong>NUMA 架构</strong>）。</p>
+<h5 id="2cpu-多核对-redis-的影响">2，CPU 多核对 Redis 的影响</h5>
+<p>在一个 CPU 核上运行时，应用程序需要记录自身使用的软硬件资源信息（例如栈指针、CPU 核的寄存器值等），这些信息称为<strong>运行时信息</strong>。</p>
+<p>同时，应用程序访问最频繁的指令和数据会被缓存到 L1、L2 缓存上，以便提升执行速度。但是，在多核 CPU 的场景下，一旦应用程序需要在一个新的 CPU 核上运行，那么，<strong>运行时信息就需要重新加载到新的 CPU 核上</strong>（可认为是<strong>上下文切换</strong>）。而且，新的 CPU 核的 L1、L2 缓存也需要重新加载数据和指令，<strong>这会导致程序的运行时间增加</strong>。</p>
+<p>如果在 CPU 多核场景下，Redis 实例<strong>被频繁调度到不同 CPU 核上</strong>运行的话，就会影响性能。每调度一次，一些请求就会受到运行时信息、指令和数据重新加载过程的影响，这就会<strong>导致某些请求的延迟明显高于其他请求</strong>。</p>
+<p>要避免 Redis 总是在不同 CPU 核上来回调度执行，可以使用  <code>taskset</code> 命令把 Redis 实例和 CPU 核绑定，让一个 Redis 实例固定运行在一个 CPU 核上。绑核能够有效提升 Redis 性能。</p>
+<p>如下命令，把 Redis 实例绑在了 0 号核上，“-c”选项用于设置要绑定的核编号：</p>
+<pre><code class="language-shell">taskset -c 0 ./redis-server
+</code></pre>
+<h5 id="3numa-架构对-redis-的影响">3，NUMA 架构对 Redis 的影响</h5>
+<p>Linux 中的 <code>lscpu</code> 命令可以查看 CPU 的情况；假设有 2 个 CPU Socket，每个 Socket 上有 6 个物理核，每个物理核又有 2 个逻辑核，总共 24 个逻辑核：</p>
+<pre><code class="language-shell">&gt; lscpu
+=============================
+Architecture: x86_64
+...
+NUMA node0 CPU(s): 0-5,12-17
+NUMA node1 CPU(s): 6-11,18-23
+...
+</code></pre>
+<p>可以看到，NUMA node0 的 CPU 核编号是 0 到 5、12 到 17。其中，0 到 5 是 node0 上的 6 个物理核中的第一个逻辑核的编号，12 到 17 是相应物理核中的第二个逻辑核编号。</p>
+<p>所以，在绑核时，我们一定要注意，不能想当然地认为第一个 Socket 上的 12 个逻辑核的编号就是 0 到 11。否则，网络中断程序和 Redis 实例就可能绑在了不同的 CPU Socket 上。</p>
+<p>在 CPU 多核的场景下，用 taskset 命令把 Redis 实例和一个核绑定，可以减少 Redis 实例在不同核上被来回调度执行的开销，避免较高的尾延迟；在多 CPU 的 NUMA 架构下，如果你对网络中断程序做了绑核操作，建议你同时把 Redis 实例和网络中断程序绑在同一个 CPU Socket 的不同核上，这样可以避免 Redis 跨 Socket 访问内存中的网络数据的时间开销。</p>
+<h4 id="63redis-关键系统配置">6.3，Redis 关键系统配置</h4>
+<p><em><strong>如何判断 Redis 是不是真的变慢了？</strong></em></p>
+<p>基于当前环境下的 Redis <strong>基线性能</strong>做判断，基线性能就是一个系统在低压力、无干扰下的基本性能，这个性能只由<strong>当前的软硬件配置决定</strong>。</p>
+<p>从 2.8.7 版本开始，<code>redis-cli</code> 命令提供了 <code>–intrinsic-latency</code> （表示测试时长，单位是秒）参数，可以用来监测和统计测试期间内的最大延迟，这个延迟可以作为 Redis 的基线性能。为了<strong>避免网络对基线性能</strong>的影响，这个命令需要在服务器端直接运行。</p>
+<p>比如下面的命令，会打印 120 秒内监测到的最大延迟：</p>
+<pre><code class="language-shell">./redis-cli --intrinsic-latency 120
+====================================
+Max latency so far: 17 microseconds.
+Max latency so far: 44 microseconds.
+Max latency so far: 94 microseconds.
+Max latency so far: 110 microseconds.
+Max latency so far: 119 microseconds.
+
+36481658 total runs (avg latency: 3.2893 microseconds / 3289.32 nanoseconds per run).
+Worst run took 36x longer than the average latency.
+</code></pre>
+<p>这里的最大延迟是 119 微秒，也就是基线性能为 119 微秒。一般情况下，运行 120 秒就足够监测到最大延迟了。</p>
+<p>一般来说，把<strong>运行时延迟</strong>（Redis 的响应时长）和基线性能进行对比，如果观察到的 Redis 运行时延迟是其基线性能的 2 倍及以上，<strong>就可以认定 Redis 变慢了</strong>。</p>
+<p><em><strong>如何处理 Redis 变慢了？</strong></em></p>
+<p>Redis 中的 key 可以使用 <code>EXPIRE</code> 设置过期时间，Redis 对过期 key 的删除策略是这样的：</p>
+<ul>
+<li>默认情况下，Redis 每 100 毫秒会删除一些过期 key</li>
+<li>采样 <code>ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP</code> 个数的 key，并将其中过期的 key 全部删除</li>
+<li>如果超过 25% 的 key 过期了，则重复删除的过程，直到过期 key 的比例降至 25% 以下（这个过程会阻塞 Redis）</li>
+<li><code>ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP</code> 是 Redis 的一个参数，默认是 <code>20</code></li>
+</ul>
+<h4 id="64redis-内存碎片">6.4，Redis 内存碎片</h4>
+<h5 id="1内存-swap-对-redis-的影响">1，内存 swap 对 Redis 的影响</h5>
+<p><strong>内存 swap</strong> 是操作系统里将内存数据在<strong>内存和磁盘间来回换入和换出的机制</strong>，涉及到磁盘的读写。一旦触发 swap，无论是被换入数据的进程，还是被换出数据的进程，其性能都会受到慢速磁盘读写的影响。</p>
+<p>Redis 是内存数据库，内存使用量大，<strong>如果 Redis 的内存不够用了</strong>，操作系统会启动 swap 机制，这就会直接拖慢 Redis。swap 触发后<strong>影响的是 Redis 主 IO 线程</strong>，这会极大地增加 Redis 的响应时间。</p>
+<p>通常，触发 swap 的原因主要是<strong>物理机器内存不足</strong>，对于 Redis 而言，有两种常见的情况：</p>
+<ul>
+<li>Redis 实例自身使用了大量的内存，导致物理机器的可用内存不足</li>
+<li>和 Redis 实例在同一台机器上运行的其他进程，在进行大量的文件读写操作
+<ul>
+<li>文件读写本身会占用系统内存，这会导致分配给 Redis 实例的内存量变少，进而触发 Redis 发生 swap</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>如何查看进程的 swap 情况？</strong></em></p>
+<p>操作系统本身会在后台记录每个进程的 swap 使用情况，即有多少数据量发生了 swap。</p>
+<p>可先通过下面的命令查看 Redis 的进程号：</p>
+<pre><code class="language-shell">$ redis-cli info | grep process_id
+process_id: 5332
+</code></pre>
+<p>然后，进入 Redis 所在机器的 <code>/proc</code> 目录下的该进程目录中：</p>
+<pre><code class="language-shell">$ cd /proc/5332
+</code></pre>
+<p>查看该 Redis 进程的使用情况：</p>
+<pre><code class="language-shell">
+$cat smaps | egrep '^(Swap|Size)'
+Size: 584 kB
+Swap: 0 kB
+Size: 4 kB
+Swap: 4 kB
+Size: 4 kB
+Swap: 0 kB
+Size: 462044 kB
+Swap: 462008 kB
+Size: 21392 kB
+Swap: 0 kB
+</code></pre>
+<p>每一行 Size 表示的是 Redis 实例所用的一块内存大小，而 Size 下方的 Swap 和它相对应，表示这块 Size 大小的内存区域有多少已经被换出到磁盘上了。如果这两个值相等，就表示这块内存区域已经完全被换出到磁盘了。</p>
+<p>作为内存数据库，Redis 本身会使用很多大小不一的内存块，所以，可以看到有很多 Size 行，有的很小，就是 4KB，而有的很大，例如 462044KB。</p>
+<p>当出现百 MB，甚至 GB 级别的 swap 大小时，就表明，此时 Redis 实例的内存压力很大，很有可能会变慢。所以，swap 的大小是排查 Redis 性能变慢是否由 swap 引起的重要指标。</p>
+<h5 id="2内存大页对-redis-的影响">2，内存大页对 Redis 的影响</h5>
+<p>内存大页机制也会影响 Redis 性能；常规的内存页分配是按 <code>4KB</code> 的粒度来执行的，Linux 内核从 2.6.38 开始支持<strong>内存大页机制</strong>，该机制支持 <code>2MB</code> 大小的内存页分配。</p>
+<p>Redis 在做持久化时，这个写入过程由额外的线程执行，此时，Redis 主线程仍然可以接收客户端写请求。客户端的写请求可能会修改正在进行持久化的数据。在这一过程中，Redis 就会采用<strong>写时复制机制</strong>，也就是说，一旦有数据要被修改，Redis 并不会直接修改内存中的数据，而是将这些数据拷贝一份，然后再进行修改。</p>
+<p>如果采用了内存大页，那么，即使客户端请求只修改 100B 的数据，Redis 也需要拷贝 2MB 的大页。相反，如果是常规内存页机制，只用拷贝 4KB。因此，当客户端请求修改或新写入数据较多时，<strong>内存大页机制将导致大量的拷贝</strong>，这就会影响 Redis 正常的访存操作，最终导致性能变慢。</p>
+<p>查看内存大页机制是否开启：</p>
+<pre><code class="language-shell"># 如果执行结果是 always，就表明内存大页机制被启动了
+# 如果是 never，就表示，内存大页机制被禁止
+cat /sys/kernel/mm/transparent_hugepage/enabled
+</code></pre>
+<p>关闭内存大页：</p>
+<pre><code class="language-shell">echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+</code></pre>
+<p>在实际生产环境中部署时，<strong>建议不使用内存大页机制</strong>。</p>
+<h5 id="3检查-redis-变慢的原因9-个检查点">3，检查 Redis 变慢的原因，9 个检查点</h5>
+<p>这里梳理了一个包含 9 个检查点的 <strong>Checklist</strong>，在遇到 Redis 性能变慢时，按照这些步骤逐一检查，高效地解决问题：</p>
+<ol>
+<li>获取 Redis 实例在当前环境下的基线性能。</li>
+<li>是否用了慢查询命令？如果是的话，就使用其他命令替代慢查询命令，或者把聚合计算命令放在客户端做。</li>
+<li>是否对过期 key 设置了相同的过期时间？对于批量删除的 key，可以在每个 key 的过期时间上加一个随机数，避免同时删除。</li>
+<li>是否存在 bigkey？ 对于 bigkey 的删除操作，如果你的 Redis 是 4.0 及以上的版本，可以直接利用异步线程机制减少主线程阻塞；如果是 Redis 4.0 以前的版本，可以使用 SCAN 命令迭代删除；对于 bigkey 的集合查询和聚合操作，可以使用 SCAN 命令在客户端完成。</li>
+<li>Redis AOF 配置级别是什么？业务层面是否的确需要这一可靠性级别？如果我们需要高性能，同时也允许数据丢失，可以将配置项 no-appendfsync-on-rewrite 设置为 yes，避免 AOF 重写和 fsync 竞争磁盘 IO 资源，导致 Redis 延迟增加。当然， 如果既需要高性能又需要高可靠性，最好使用高速固态盘作为 AOF 日志的写入盘。</li>
+<li>Redis 实例的内存使用是否过大？发生 swap 了吗？如果是的话，就增加机器内存，或者是使用 Redis 集群，分摊单机 Redis 的键值对数量和内存压力。同时，要避免出现 Redis 和其他内存需求大的应用共享机器的情况。</li>
+<li>在 Redis 实例的运行环境中，是否启用了透明大页机制？如果是的话，直接关闭内存大页机制就行了。</li>
+<li>是否运行了 Redis 主从集群？如果是的话，把主库实例的数据量大小控制在 2~4GB，以免主从复制时，从库因加载大的 RDB 文件而阻塞。</li>
+<li>是否使用了多核 CPU 或 NUMA 架构的机器运行 Redis 实例？使用多核 CPU 时，可以给 Redis 实例绑定物理核；使用 NUMA 架构时，注意把 Redis 实例和网络中断处理程序运行在同一个 CPU Socket 上。</li>
+</ol>
+<pre><code class="language-shell">关于如何分析、排查、解决Redis变慢问题，我总结的checklist如下：
+
+1、使用复杂度过高的命令（例如SORT/SUION/ZUNIONSTORE/KEYS），或一次查询全量数据（例如LRANGE key 0 N，但N很大）
+
+分析：a) 查看slowlog是否存在这些命令 b) Redis进程CPU使用率是否飙升（聚合运算命令导致）
+
+解决：a) 不使用复杂度过高的命令，或用其他方式代替实现（放在客户端做） b) 数据尽量分批查询（LRANGE key 0 N，建议N&lt;=100，查询全量数据建议使用HSCAN/SSCAN/ZSCAN）
+
+2、操作bigkey
+
+分析：a) slowlog出现很多SET/DELETE变慢命令（bigkey分配内存和释放内存变慢） b) 使用redis-cli -h $host -p $port --bigkeys扫描出很多bigkey
+
+解决：a) 优化业务，避免存储bigkey b) Redis 4.0+可开启lazy-free机制
+
+3、大量key集中过期
+
+分析：a) 业务使用EXPIREAT/PEXPIREAT命令 b) Redis info中的expired_keys指标短期突增
+
+解决：a) 优化业务，过期增加随机时间，把时间打散，减轻删除过期key的压力 b) 运维层面，监控expired_keys指标，有短期突增及时报警排查
+
+4、Redis内存达到maxmemory
+
+分析：a) 实例内存达到maxmemory，且写入量大，淘汰key压力变大 b) Redis info中的evicted_keys指标短期突增
+
+解决：a) 业务层面，根据情况调整淘汰策略（随机比LRU快） b) 运维层面，监控evicted_keys指标，有短期突增及时报警 c) 集群扩容，多个实例减轻淘汰key的压力
+
+5、大量短连接请求
+
+分析：Redis处理大量短连接请求，TCP三次握手和四次挥手也会增加耗时
+
+解决：使用长连接操作Redis
+
+6、生成RDB和AOF重写fork耗时严重
+
+分析：a) Redis变慢只发生在生成RDB和AOF重写期间 b) 实例占用内存越大，fork拷贝内存页表越久 c) Redis info中latest_fork_usec耗时变长
+
+解决：a) 实例尽量小 b) Redis尽量部署在物理机上 c) 优化备份策略（例如低峰期备份） d) 合理配置repl-backlog和slave client-output-buffer-limit，避免主从全量同步 e) 视情况考虑关闭AOF f) 监控latest_fork_usec耗时是否变长
+
+7、AOF使用awalys机制
+
+分析：磁盘IO负载变高
+
+解决：a) 使用everysec机制 b) 丢失数据不敏感的业务不开启AOF
+
+8、使用Swap
+
+分析：a) 所有请求全部开始变慢 b) slowlog大量慢日志 c) 查看Redis进程是否使用到了Swap
+
+解决：a) 增加机器内存 b) 集群扩容 c) Swap使用时监控报警
+
+9、进程绑定CPU不合理
+
+分析：a) Redis进程只绑定一个CPU逻辑核 b) NUMA架构下，网络中断处理程序和Redis进程没有绑定在同一个Socket下
+
+解决：a) Redis进程绑定多个CPU逻辑核 b) 网络中断处理程序和Redis进程绑定在同一个Socket下
+
+10、开启透明大页机制
+
+分析：生成RDB和AOF重写期间，主线程处理写请求耗时变长（拷贝内存副本耗时变长）
+
+解决：关闭透明大页机制
+
+11、网卡负载过高
+
+分析：a) TCP/IP层延迟变大，丢包重传变多 b) 是否存在流量过大的实例占满带宽
+
+解决：a) 机器网络资源监控，负载过高及时报警 b) 提前规划部署策略，访问量大的实例隔离部署
+
+总之，Redis的性能与CPU、内存、网络、磁盘都息息相关，任何一处发生问题，都会影响到Redis的性能。
+
+主要涉及到的包括业务使用层面和运维层面：业务人员需要了解Redis基本的运行原理，使用合理的命令、规避bigke问题和集中过期问题。运维层面需要DBA提前规划好部署策略，预留足够的资源，同时做好监控，这样当发生问题时，能够及时发现并尽快处理。
+</code></pre>
+<h5 id="4内存碎片">4，内存碎片</h5>
+<p>当数据删除后，Redis 释放的内存空间会由内存分配器管理，并不会立即返回给操作系统。</p>
+<p>内存碎片的形成有内因和外因两个层面的原因：</p>
+<ul>
+<li>内因是操作系统的内存分配机制
+<ul>
+<li>内存分配器的分配策略决定了操作系统无法做到<strong>按需分配</strong></li>
+<li>内存分配器一般是<strong>按固定大小来分配内存</strong>，而<strong>不是完全按照应用程序申请的内存空间大小</strong>给程序分配</li>
+<li>Redis 可以使用 <code>libc</code>、<code>jemalloc</code>、<code>tcmalloc</code> 多种内存分配器来分配内存，默认使用 <code>jemalloc</code></li>
+<li>jemalloc 是按照一系列固定的大小划分内存空间，例如 <code>8 字节、16 字节、32 字节、48 字节，…, 2KB、4KB、8KB</code> 等。当程序申请的内存最接近某个固定值时，jemalloc 会给它分配相应大小的空间。这样的分配方式本身是为了减少分配次数，但同时也很容易造成内存碎片</li>
+</ul>
+</li>
+<li>外因是 Redis 的数据特征
+<ul>
+<li>不同业务应用的数据都可能保存在 Redis 中，这就会带来不同大小的键值对。这样一来，Redis 申请内存空间分配时，本身就会有大小不一的空间需求</li>
+<li>持续不断地<strong>增删改</strong>数据，也会造成内存碎片</li>
+</ul>
+</li>
+</ul>
+<p>大量内存碎片的存在，会造成 Redis 的内存实际利用率变低。</p>
+<h5 id="5如何判断是否有内存碎片">5，如何判断是否有内存碎片</h5>
+<p>Redis 提供了 <code>INFO</code> 命令，可以用来查询内存使用的详细信息：</p>
+<pre><code class="language-shell">INFO memory
+# Memory
+used_memory:1073741736
+used_memory_human:1024.00M
+used_memory_rss:1997159792
+used_memory_rss_human:1.86G
+…
+mem_fragmentation_ratio:1.86 # 当前的内存碎片率
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><code>used_memory_rss</code> 是操作系统实际分配给 Redis 的物理内存空间（里面包含了碎片）</li>
+<li><code>used_memory</code> 是 Redis 为了保存数据实际申请使用的空间</li>
+<li><code>mem_fragmentation_ratio</code> 是 Redis 当前的内存碎片率
+<ul>
+<li><code>mem_fragmentation_ratio = used_memory_rss / used_memory</code></li>
+<li>当 <code>1 &lt; mem_fragmentation_ratio &lt; 1.5</code>，这种情况是合理的</li>
+<li>当 <code> mem_fragmentation_ratio &gt; 1.5</code>，这表明内存碎片率已经超过了 50%。这时，就需要采取一些措施来降低内存碎片率了</li>
+</ul>
+</li>
+</ul>
+<h5 id="6如何清理内存碎片">6，如何清理内存碎片</h5>
+<p>当 Redis 发生内存碎片后，一个<strong>简单粗暴</strong>的方法就是<strong>重启 Redis 实例</strong>，但这并不是一个“优雅”的方法。</p>
+<p>从 <code>4.0-RC3</code> 版本以后，Redis 提供了一种内存碎片自动清理的方法，其基本原理就是<strong>搬家让位，合并空间</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/e9c6c56fc73c40a0af201d0a65c3d168.png" alt="在这里插入图片描述"></p>
+<p>碎片清理是有代价的，操作系统需要把多份数据拷贝到新位置，把原有空间释放出来，这会带来时间开销，导致 Redis 无法及时处理请求，性能就会降低。</p>
+<p>我们可以通过设置参数，来控制碎片清理的开始和结束时机，以及占用的 CPU 比例，从而减少碎片清理对 Redis 本身请求处理的性能影响。</p>
+<p>要让 Redis 启用自动内存碎片清理，可以把 <code>activedefrag</code> 配置项设置为 <code>yes</code>，命令如下：</p>
+<pre><code class="language-shell">config set activedefrag yes
+</code></pre>
+<p>具体什么时候清理，会受到下面这两个参数的控制。这两个参数分别设置了触发内存清理的一个条件，如果同时满足这两个条件，就开始清理。在清理的过程中，只要有一个条件不满足了，就停止自动清理。</p>
+<ul>
+<li><code>active-defrag-ignore-bytes 100mb</code>：表示内存碎片的字节数达到 100MB 时，开始清理</li>
+<li><code>active-defrag-threshold-lower 10</code>：表示内存碎片空间占操作系统分配给 Redis 的总空间比例达到 10% 时，开始清理</li>
+</ul>
+<p>还有两个参数，分别用于控制清理操作占用的 CPU 时间比例的上、下限，既保证清理工作能正常进行，又避免了降低 Redis 性能。</p>
+<ul>
+<li><code>active-defrag-cycle-min 25</code>： 表示自动清理过程所用 CPU 时间的比例不低于 25%，保证清理能正常开展；</li>
+<li><code>active-defrag-cycle-max 75</code>：表示自动清理过程所用 CPU 时间的比例不高于 75%，一旦超过，就停止清理，从而避免在清理时，大量的内存拷贝阻塞 Redis，导致响应延迟升高。</li>
+</ul>
+<h4 id="65redis-缓冲区">6.5，Redis 缓冲区</h4>
+<p>缓冲区在 Redis 中的主要应用场景：</p>
+<ul>
+<li>在客户端和服务器端之间进行通信时，用来暂存客户端发送的命令数据，或者是服务器端返回给客户端的数据结果</li>
+<li>在主从节点间进行数据同步时，用来暂存主节点接收的写命令和数据</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/708ad8ce0e7a4ddf9f5a6b11bfd06add.png" alt="在这里插入图片描述"></p>
+<p>当数据量太大时，会造成<strong>缓冲区溢出</strong>的问题：</p>
+<ul>
+<li><strong>输入缓冲区溢出</strong>：
+<ul>
+<li>当客户端写入大量命令的话，就会引起客户端输入缓冲区溢出</li>
+</ul>
+</li>
+<li><strong>输出缓冲区溢出</strong></li>
+</ul>
+<p>对于输入输出缓冲区溢出，Redis 的处理办法就是把客户端连接关闭。</p>
+<h5 id="1输入缓冲区">1，输入缓冲区</h5>
+<p>要查看和服务器端相连的每个客户端对<strong>输入缓冲区</strong>的使用情况，可以使用 <code>CLIENT LIST</code> 命令：</p>
+<pre><code class="language-shell">
+&gt; CLIENT LIST
+==============
+id=5 addr=127.0.0.1:50487 fd=9 name= age=4 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=26 qbuf-free=32742 obl=0 oll=0 omem=0 events=r cmd=client
+</code></pre>
+<p>CLIENT 命令返回的信息虽然很多，但我们只需要重点关注两类信息就可以了：</p>
+<ul>
+<li>一类是与服务器端连接的客户端的信息。
+<ul>
+<li>这个案例展示的是一个客户端的输入缓冲区情况，如果有多个客户端，输出结果中的 addr 会显示不同客户端的 IP 和端口号。</li>
+</ul>
+</li>
+<li>另一类是与输入缓冲区相关的三个参数：
+<ul>
+<li><strong>cmd</strong>，表示客户端最新执行的命令。这个例子中执行的是 CLIENT 命令。</li>
+<li><strong>qbuf</strong>，表示输入缓冲区已经使用的大小。这个例子中的 CLIENT 命令已使用了 26 字节大小的缓冲区。</li>
+<li><strong>qbuf-free</strong>，表示输入缓冲区尚未使用的大小。
+<ul>
+<li>这个例子中的 CLIENT 命令还可以使用 32742 字节的缓冲区。</li>
+<li>qbuf 和 qbuf-free 的总和就是，Redis 服务器端当前为已连接的这个客户端分配的缓冲区总大小。</li>
+<li>这个例子中总共分配了 26 + 32742 = 32768 字节，也就是 32KB 的缓冲区。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Redis 服务器端不止服务一个客户端，当多个客户端连接占用的内存总量，超过了 Redis 的 <code>maxmemory</code> 配置项时（例如 4GB），就会触发 Redis 进行数据淘汰。一旦数据被淘汰出 Redis，再要访问这部分数据，就需要去后端数据库读取，这就降低了业务应用的访问性能。</p>
+<p>要<strong>避免输入缓冲区溢出</strong>，可以从两个角度去考虑：</p>
+<ul>
+<li>一是把缓冲区调大：Redis 并没有提供参数让我们调节客户端输入缓冲区的大小
+<ul>
+<li>Redis 的客户端输入缓冲区大小的上限阈值，在代码中就设定为了 1GB。即，Redis 服务器端允许为每个客户端最多暂存 1GB 的命令和数据。</li>
+</ul>
+</li>
+<li>二是从数据命令的发送和处理速度入手：避免客户端写入 bigkey，以及避免 Redis 主线程阻塞</li>
+</ul>
+<h5 id="2输出缓冲区">2，输出缓冲区</h5>
+<p>Redis 为每个客户端设置的<strong>输出缓冲区</strong>包括两部分：</p>
+<ul>
+<li>一部分，是一个大小为 16KB 的固定缓冲空间，用来暂存 OK 响应和出错信息；</li>
+<li>另一部分，是一个可以动态增加的缓冲空间，用来暂存大小可变的响应结果。</li>
+</ul>
+<p>发生输出缓冲区溢出的三种情况：</p>
+<ul>
+<li>服务器端返回 bigkey 的大量结果</li>
+<li>执行了 MONITOR 命令</li>
+<li>缓冲区大小设置得不合理</li>
+</ul>
+<p><code>MONITOR</code> 命令是用来监测 Redis 执行的。执行这个命令之后，就会持续输出监测到的<strong>各个命令操作</strong>，如下所示：</p>
+<pre><code class="language-shell">MONITOR
+OK
+1600617456.437129 [0 127.0.0.1:50487] &quot;COMMAND&quot;
+1600617477.289667 [0 127.0.0.1:50487] &quot;info&quot; &quot;memory&quot;
+</code></pre>
+<p>MONITOR 的输出结果<strong>会持续占用输出缓冲区</strong>，并越占越多，最后的结果就是发生溢出。</p>
+<p>我们可以通过 <code>client-output-buffer-limit</code> 配置项，来设置缓冲区的大小。具体设置的内容包括两方面：</p>
+<ul>
+<li>设置缓冲区大小的上限阈值</li>
+<li>设置输出缓冲区持续写入数据的数量上限阈值，和持续写入数据的时间的上限阈值</li>
+</ul>
+<p>设置<strong>普通客户端</strong>，命令如下：</p>
+<pre><code class="language-shell"># 对于普通客户端来说，它每发送完一个请求，会等到请求结果返回后，再发送下一个请求，这种发送方式称为阻塞式发送。在这种情况下，如果不是读取体量特别大的 bigkey，服务器端的输出缓冲区一般不会被阻塞的。
+# 所以，我们通常把普通客户端的缓冲区大小限制，以及持续写入量限制、持续写入时间限制都设置为 0，也就是不做限制。
+client-output-buffer-limit normal 0 0 0
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>normal 表示当前设置的是普通客户端</li>
+<li>第 1 个 0 设置的是缓冲区大小限制</li>
+<li>第 2 个 0 表示缓冲区持续写入量限制</li>
+<li>第 3 个 0 表示持续写入时间限制</li>
+</ul>
+<blockquote>
+<p>对于和 Redis 实例进行交互的应用程序来说，主要使用两类客户端和 Redis 服务器端交互，分别是常规和 Redis 服务器端进行读写命令交互的<strong>普通客户端</strong>，以及订阅了 Redis 频道的<strong>订阅客户端</strong>。</p>
+</blockquote>
+<p>设置<strong>订阅客户端</strong>，命令如下：</p>
+<pre><code class="language-shell"># 对于订阅客户端来说，一旦订阅的 Redis 频道有消息了，服务器端都会通过输出缓冲区把消息发给客户端。
+# 所以，订阅客户端和服务器间的消息发送方式，不属于阻塞式发送。不过，如果频道消息较多的话，也会占用较多的输出缓冲区空间。
+client-output-buffer-limit pubsub 8mb 2mb 60
+</code></pre>
+<p>其中：</p>
+<ul>
+<li>pubsub 表示订阅客户端</li>
+<li>8mb 表示输出缓冲区的大小上限为 8MB，一旦实际占用的缓冲区大小要超过 8MB，<strong>服务器端就会直接关闭客户端的连接</strong>；</li>
+<li>2mb 和 60 表示，如果连续 60 秒内对输出缓冲区的写入量超过 2MB 的话，<strong>服务器端也会关闭客户端连接</strong>。</li>
+</ul>
+<h5 id="3主从集群中的缓冲区">3，主从集群中的缓冲区</h5>
+<p>主从集群间的数据复制包括<strong>全量复制</strong>和<strong>增量复制两种</strong></p>
+<ul>
+<li>全量复制是同步所有数据，会用到<strong>复制缓冲区</strong></li>
+<li>增量复制只会把主从库网络断连期间主库收到的命令，同步给从库，会用到<strong>复制积压缓冲区</strong></li>
+</ul>
+<p><em><strong>复制缓冲区</strong></em></p>
+<p>在全量复制过程中，主节点在向从节点传输 RDB 文件的同时，会继续接收客户端发送的写命令请求。这些<strong>写命令就会先保存在复制缓冲区</strong>中，等 RDB 文件传输完成后，再发送给从节点去执行。<strong>主节点上会为每个从节点都维护一个复制缓冲区</strong>，来保证主从节点间的数据同步。</p>
+<p><img src="https://img-blog.csdnimg.cn/5594fca63a84401c9f66ab38c75c9314.png" alt="在这里插入图片描述"></p>
+<p>如果在全量复制时，从节点接收和加载 RDB 较慢，同时主节点接收到了大量的写命令，写命令在复制缓冲区中就会越积越多，最终导致溢出。复制缓冲区一旦发生溢出，主节点会直接关闭和从节点进行复制操作的连接，<strong>导致全量复制失败</strong>。</p>
+<p>可以使用 client-output-buffer-limit 配置项，来设置合理的复制缓冲区大小。</p>
+<pre><code class="language-shell"># slave 表明是复制缓冲区
+# 512mb 代表将缓冲区大小的上限设置为 512MB
+# 128mb 和 60 代表的设置是，如果连续 60 秒内的写入量超过 128MB 的话，也会触发缓冲区溢出
+config set client-output-buffer-limit slave 512mb 128mb 60
+</code></pre>
+<p>主节点上复制缓冲区的内存开销，会是每个从节点客户端输出缓冲区占用内存的总和。如果集群中的从节点数非常多的话，主节点的内存开销就会非常大。所以，我们还必须得控制和主节点连接的从节点个数，不要使用大规模的主从集群。</p>
+<p><em><strong>复制积压缓冲区</strong></em></p>
+<p>增量复制时使用的缓冲区称为<strong>复制积压缓冲区</strong>（<code>repl_backlog_buffer</code>）。</p>
+<p>主节点在把接收到的写命令同步给从节点时，同时会把这些写命令写入复制积压缓冲区。一旦从节点发生网络闪断，再次和主节点恢复连接后，从节点就会从复制积压缓冲区中，读取断连期间主节点接收到的写命令，进而进行增量同步。</p>
+<p><img src="https://img-blog.csdnimg.cn/67a76f684028453f92b46683a033d230.png" alt="在这里插入图片描述"></p>
+<p>复制积压缓冲区是一个大小有限的环形缓冲区。当主节点把复制积压缓冲区写满后，会覆盖缓冲区中的旧命令数据。如果从节点还没有同步这些旧命令数据，就会<strong>造成主从节点间重新开始执行全量复制</strong>。</p>
+<p>为了应对复制积压缓冲区的溢出问题，我们可以调整复制积压缓冲区的大小，也就是设置 <code>repl_backlog_size</code> 这个参数的值。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/redis-learn3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Redis学习笔记3-实战篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/redis-learn1/">
+            <span class="next-text nav-default">Redis学习笔记1-理论篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/redis-learn2/" class="leancloud_visitors" data-flag-title="Redis学习笔记2-性能篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

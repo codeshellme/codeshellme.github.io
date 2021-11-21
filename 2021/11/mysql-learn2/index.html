@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MySQL学习笔记2-进阶篇-上 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/mysql-learn2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MySQL学习笔记2-进阶篇-上" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/mysql-learn2/" />
+<meta property="article:published_time" content="2021-11-11T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-11T21:41:52+08:00" />
+<meta itemprop="name" content="MySQL学习笔记2-进阶篇-上">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
+<meta itemprop="datePublished" content="2021-11-11T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-11T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="10372">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL学习笔记2-进阶篇-上"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MySQL学习笔记2-进阶篇-上</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-11 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 10372 字 </span>
+          <span class="more-meta"> 阅读约需 21 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#19mysql-的基础架构">19，MySQL 的基础架构</a></li>
+        <li><a href="#20数据库缓冲池">20，数据库缓冲池</a></li>
+        <li><a href="#21数据库中的存储结构">21，数据库中的存储结构</a></li>
+        <li><a href="#22innodb-中表数据的存储">22，InnoDB 中表数据的存储</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/mysql-learn1/"><strong>第一篇 MySQL 学习笔记1-基础篇</strong></a>
+<ul>
+<li>1，关于 SQL</li>
+<li>2，一条 SQL 的执行步骤</li>
+<li>3，MySQL 存储引擎</li>
+<li>4，数据库的基本操作</li>
+<li>5，关于自增主键</li>
+<li>6，SELECT 语句顺序</li>
+<li>7，WHERE 子句</li>
+<li>8，DISTINCT 去重</li>
+<li>9，关于 COUNT(*) 操作</li>
+<li>10，MYSQL 函数</li>
+<li>11，GROUP BY 数据分组</li>
+<li>12，子查询(嵌套查询)</li>
+<li>13，JOIN 连接查询</li>
+<li>14，VIEW 视图</li>
+<li>15，存储过程</li>
+<li>16，临时表</li>
+<li>17，MySQL 权限管理</li>
+<li>18，Python 操作 MySQL 的库</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn2/"><strong>第二篇 MySQL 学习笔记2-进阶篇-上</strong></a>
+<ul>
+<li>19，MySQL 的基础架构</li>
+<li>20，数据库缓冲池</li>
+<li>21，数据库中的存储结构</li>
+<li>22，InnoDB 中表数据的存储</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn3/"><strong>第三篇 MySQL 学习笔记3-进阶篇-中</strong></a>
+<ul>
+<li>23，事务处理</li>
+<li>24，事务的隔离级别</li>
+<li>25，MySQL 中的锁</li>
+<li>26，MVCC 多版本并发控制</li>
+<li>27，MySQL 传输数据的原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn4/"><strong>第四篇 MySQL 学习笔记4-进阶篇-下</strong></a>
+<ul>
+<li>28，Join 语句的原理</li>
+<li>29，MySQL 如何进行排序</li>
+<li>30，MySQL 中 kill 命令的原理</li>
+<li>31，MySQL 中的 mysqldump 命令</li>
+<li>32，MySQL 主从同步</li>
+<li>33，MySQL 主备原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn5/"><strong>第五篇 MySQL 学习笔记5-调优篇</strong></a>
+<ul>
+<li>34，关于 MySQL 索引</li>
+<li>35，定位数据库 SQL 性能问题</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="19mysql-的基础架构">19，MySQL 的基础架构</h3>
+<p>大体来说，MySQL 可以分为 <strong>Server 层</strong>和<strong>存储引擎层</strong>两部分：</p>
+<p><img src="https://img-blog.csdnimg.cn/5b1cae817bd5406786eee28c3127365f.png" alt="在这里插入图片描述"></p>
+<p>MySQL 基础架构：</p>
+<ul>
+<li><strong>Server 层</strong>：
+<ul>
+<li>连接器：负责跟客户端建立连接、获取权限、维持和管理连接
+<ul>
+<li><code>max_connections</code> 参数，用来控制同时存在的连接数的上限，超过这个值，系统就会拒绝接下来的连接请求，并报错提示“Too many connections”。如果把它改得太大，让更多的连接都可以进来，那么系统的<strong>负载可能会加大</strong></li>
+<li>可以设置数据库跳过权限验证阶段（不建议使用），使用 <code>–skip-grant-tables</code> 参数启动数据库。在 MySQL 8.0 版本里，如果启用 <code>–skip-grant-tables</code> 参数，MySQL 会默认把 <code>--skip-networking</code> 参数打开，表示这时候数据库只能被本地的客户端连接</li>
+</ul>
+</li>
+<li>查询缓存：查询缓存的失效非常频繁，只要有对一个表的更新，这个表上所有的查询缓存都会被清空
+<ul>
+<li>可将参数 <code>query_cache_type</code> 设置成 <code>DEMAND</code>，这样对于默认的 SQL 语句都不使用查询缓存</li>
+<li>对于确定要使用查询缓存的语句，可以用 <code>SQL_CACHE</code> 显式指定，如下：</li>
+<li><code>select SQL_CACHE * from T where ID=10;</code></li>
+<li><strong>MySQL 8.0</strong> 及以上版本不再有查询缓存的功能</li>
+</ul>
+</li>
+<li>分析器：分析 SQL 是否合法，表是否存在，列是否存在等</li>
+<li>优化器：优化 SQL 语句，比如：
+<ul>
+<li>当表里面有多个索引的时候，决定使用哪个索引</li>
+<li>或者在一个语句有多表关联（join）的时候，决定各个表的连接顺序</li>
+</ul>
+</li>
+<li>执行器：执行 SQL 语句，要先判断你对这个表 T 有没有执行查询的<strong>权限</strong>
+<ul>
+<li>如果没有，就会返回没有权限的错误</li>
+<li>如果有权限，就打开表继续执行。打开表的时候，执行器就会根据表的引擎定义，去使用这个引擎提供的接口</li>
+</ul>
+</li>
+<li><strong>binlog</strong>：归档日志，可用于<strong>备份数据</strong>，MySQL Server 层自有的日志。</li>
+</ul>
+</li>
+<li><strong>存储引擎层</strong>：
+<ul>
+<li><strong>redo log</strong>：重做日志，可用于 <strong>crash-safe</strong>，是 <strong>InnoDB</strong> 中特有的日志。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>MySQL 的内存架构和磁盘架构</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/20210619154838703.png?" alt="在这里插入图片描述"></p>
+<h4 id="191重要的日志模块-redo-log">19.1，重要的日志模块 redo log</h4>
+<p>如果每次更新操作都要写磁盘，那这样的效率会非常低。</p>
+<p>于是就有了 <strong>redo log</strong>，当有一条记录需要更新的时候，<strong>InnoDB</strong> 引擎就会先把记录写到 <strong>redo log（内存） 里面，并更新内存</strong>，这个时候更新就完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录从内存更新到磁盘里面，而这个更新往往是在系统比较<strong>空闲的时候</strong>做（redo log 将随机写磁盘的 IO 消耗，转成了顺序写）。</p>
+<p>这种先写 <strong>redo log</strong>，再更新到磁盘的过程，叫做 <strong>WAL</strong> 技术，全称是 <em>Write-Ahead Logging</em>，意思就是<strong>先写日志，再写磁盘</strong>。</p>
+<p><strong>InnoDB</strong> 的 <strong>redo log</strong> 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么<strong>redo log</strong> 的大小就是 4GB。</p>
+<p>如果在这个过程中，<strong>redo log</strong> 被写满了，MySQL 就会将其中的内容写到磁盘（而不是等到磁盘空闲的时候再做）。</p>
+<p>有了 <strong>redo log</strong>，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 <strong>crash-safe</strong>。</p>
+<p><em><strong>redo log 的结构</strong></em></p>
+<p><strong>redo log</strong> 是一个循环写的结构。</p>
+<p><img src="https://img-blog.csdnimg.cn/2021061815164554.png" alt="在这里插入图片描述"></p>
+<p><strong>write pos</strong> 是当前记录的位置，一边写一边后移，写到第 3 号文件末尾后就回到 0 号文件开头。</p>
+<p><strong>checkpoint</strong> 是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
+<p><strong>write pos</strong> 和 <strong>checkpoint</strong> 之间的是还空着的部分，可以用来记录新的操作。如果 <strong>write pos</strong> 追上 <strong>checkpoint</strong>，表示<strong>redo log</strong>满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把 <strong>checkpoint</strong> 推进一下。</p>
+<p><em><strong>查看 redo log 的大小</strong></em></p>
+<pre><code class="language-sql">show variables like 'innodb_log_file%'
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210618152629931.png" alt="在这里插入图片描述"></p>
+<p><strong>redo log</strong> 由多个文件组成，每个文件的大小由 <code>innodb_log_file_size</code> 控制（单位是字节），文件的个数由 <code>innodb_log_files_in_group</code> 控制。</p>
+<p><strong><code>innodb_log_file_size</code> 参数设置多大合适呢？</strong></p>
+<p>redo log 太小的话，会导致很快就被写满，然后不得不强行刷 redo log，这样 WAL 机制的能力就发挥不出来了。</p>
+<p>所以，应该尽量将其设置的大一些，如果是几个 TB 的磁盘，直接将 redo log 设置为 4 个文件、每个文件 1GB 。</p>
+<p><em><strong>数据何时写入 redo log 文件？</strong></em></p>
+<p>对于下面这个事务：</p>
+<pre><code class="language-sql">begin;
+insert into t1 ...
+insert into t2 ...
+commit;
+</code></pre>
+<p>这个事务要往两个表中插入记录，插入数据的过程中，生成的日志都得先保存起来，但不会在还没 <code>commit</code> 的时候就直接写到 <code>redo log</code> 文件里。</p>
+<p><code>redo log buffer</code> 是一块内存，用来先存 redo 日志。在执行第一个 <code>insert</code> 的时候，数据的内存被修改了，<code>redo log buffer</code> 也写入了日志。</p>
+<p>但是，真正把日志写到 <code>redo log</code> 文件，是在执行 commit 语句的时候。</p>
+<p>为了控制 redo log 的写入策略，InnoDB 提供了 <code>innodb_flush_log_at_trx_commit</code> 参数，有三种取值：</p>
+<ul>
+<li><code>0</code> ，表示每次事务提交时都只是把 redo log 留在 redo log buffer 中 ;</li>
+<li><code>1</code> ，表示每次事务提交时都将 redo log 直接持久化到磁盘；</li>
+<li><code>2</code> ，表示每次事务提交时都只是把 redo log 写到 page cache。</li>
+</ul>
+<p>另外，InnoDB 有一个后台线程，每隔 1 秒，就会把 <code>redo log buffer</code> 中的日志，调用 write 写到文件系统的 page cache，然后调用 fsync 持久化到磁盘。因此，一个没有提交的事务的 redo log，也可能被持久化到磁盘。</p>
+<p>除了后台线程每秒一次的轮询操作外，还有两种场景会让一个没有提交的事务的 redo log 写入到磁盘中：</p>
+<ul>
+<li>一种是，<code>redo log buffer</code> 占用的空间即将达到 <code>innodb_log_buffer_size</code> 一半的时候，后台线程会主动写盘。注意：由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 page cache。</li>
+<li>另一种是，并行的事务提交的时候，顺带将这个事务的 redo log buffer 持久化到磁盘。</li>
+</ul>
+<p>通常说 MySQL 的“双 1”配置，指的就是 <code>sync_binlog</code> 和 <code>innodb_flush_log_at_trx_commit</code> 都设置成 1。也就是说，一个事务完整提交前，需要等待两次刷盘，一次是 redo log（prepare 阶段），一次是 binlog。</p>
+<h4 id="192重要的日志模块-binlog">19.2，重要的日志模块 binlog</h4>
+<p><strong>binlog</strong> 是MySQL Server 层的日志机制，可以用来归档，也可以用来做主备同步。</p>
+<p>MySQL 自带的引擎是 MyISAM，并没有 crash-safe 的能力。而 InnoDB 是另一个公司以插件形式引入 MySQL 的， InnoDB 使用 <strong>redo log</strong> 来实现 crash-safe 能力。</p>
+<p><strong>binlog 的写入逻辑</strong>：事务执行过程中，先把日志写到 <strong>binlog cache</strong>，事务提交的时候，再把 binlog cache 写到 <strong>binlog 文件</strong>中。</p>
+<p>系统给 <code>binlog cache</code> 分配了一片内存，每个线程一个，参数 <code>binlog_cache_size</code> 用于控制单个线程内 <code>binlog cache</code> 所占内存的大小。如果超过了这个参数规定的大小，就要暂存到磁盘。事务提交的时候，执行器把 binlog cache 里的完整事务写入到 binlog 中，并清空 binlog cache。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/697f6573b417fafa10fe91e398876e36.png" alt="在这里插入图片描述"></p>
+<p>每个线程有自己 <strong>binlog cache</strong>，但共用同一份 binlog 文件。</p>
+<p><strong>write</strong> 和 <strong>fsync</strong> 的时机，是由参数 <code>sync_binlog</code> 控制的：</p>
+<ul>
+<li><code>sync_binlog=0</code> ，表示每次提交事务都只 write，不 fsync</li>
+<li><code>sync_binlog=1</code> ，表示每次提交事务都会执行 fsync</li>
+<li><code>sync_binlog=N</code>(N&gt;1) ，表示每次提交事务都 write，但累积 N 个事务后才 fsync
+<ul>
+<li>对应的风险是：如果主机发生异常重启，会丢失最近 N 个事务的 binlog 日志</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>redo log 与 binlog 的区别</strong></em></p>
+<ol>
+<li>redo log 是 InnoDB 引擎特有的；binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用。</li>
+<li>redo log 是物理日志，记录的是“在某个数据页上做了什么修改”；binlog 是逻辑日志，记录的是这个语句的原始逻辑，比如“给 ID=2 这一行的 c 字段加 1 ”。</li>
+<li>redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。</li>
+</ol>
+<h4 id="193重要的日志模块-undo-log">19.3，重要的日志模块 undo log</h4>
+<p><strong>undo log</strong> 用于事务的回滚。</p>
+<h4 id="194mysql-的更新步骤">19.4，MySQL 的更新步骤</h4>
+<p>对于以下更新操作：</p>
+<pre><code class="language-sql">mysql&gt; update T set c=c+1 where ID=2;
+</code></pre>
+<p>MySQL 的更新流程为：</p>
+<ol>
+<li>执行器先找引擎取 ID=2 这一行。如果 ID=2 这一行所在的数据页本来就在内存中，就直接返回给执行器；否则，需要先从磁盘读入内存，然后再返回。</li>
+<li>执行器拿到引擎给的行数据，把这个值加上 1，得到新的一行数据，再调用引擎接口写入这行新数据。</li>
+<li>引擎将这行新数据更新到<strong>内存</strong>中，同时将这个更新操作记录到 <strong>redo log</strong> 里面，此时 redo log 处于 <strong>prepare</strong> 状态。然后告知执行器执行完成了，随时可以提交事务。</li>
+<li>执行器生成这个操作的 <strong>binlog</strong>，并把 binlog 写入磁盘。</li>
+<li>执行器调用引擎的提交事务接口，引擎把刚刚写入的 redo log 改成提交（<strong>commit</strong>）状态，更新完成。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20210618160913943.png" alt="在这里插入图片描述"></p>
+<h4 id="195两阶段提交的必要性">19.5，两阶段提交的必要性</h4>
+<p>在 MySQL 中有两种日志：</p>
+<ul>
+<li><strong>redo log</strong>：当 MySQL 突然宕机时，用于恢复数据，确保 crash-safe
+<ul>
+<li><code>innodb_flush_log_at_trx_commit</code> 参数设置成 <code>1</code> 时，表示每次事务的 <code>redo log</code> 都直接持久化到磁盘，这样可以保证 MySQL 异常重启之后数据不丢失。</li>
+<li><code>datadir</code> 参数是 MySQL 数据的存储目录。</li>
+<li><code>innodb_log_buffer_size</code> 是 <strong>redo log</strong> 在内存中的大小。</li>
+<li><code>innodb_log_file_size</code> 参数是一个 <strong>redo log</strong> 在磁盘的大小。</li>
+<li><code>innodb_log_files_in_group</code> 参数是 <strong>redo log</strong> 的个数。</li>
+</ul>
+</li>
+<li><strong>binlog</strong>：用于备份数据，集群之间的数据迁移（主从同步）也是使用 binlog。
+<ul>
+<li><code>sync_binlog</code> 参数设置成 <code>1</code> 时，表示每次事务的 <code>binlog</code> 都持久化到磁盘，这样可以保证 MySQL 异常重启之后 binlog 不丢失。</li>
+</ul>
+</li>
+</ul>
+<p>MySQL 在写数据时，会先写 <strong>redo-log</strong> 时，再写 <strong>binlog</strong>，在这两个写操作之间有可能发生<strong>意外宕机</strong>，这就会导致 binlog 没有写入内容，从而造成 <strong>redo-log</strong> 与 <strong>binlog</strong> 不一致的结果，最终造成数据库中的数据不一致的情况。</p>
+<p>因此，就有了<strong>两阶段提交</strong>，<strong>commit</strong> 状态保证 <strong>redo log</strong> 和 <strong>binlog</strong> 都写入成功了，从而保证了数据的一致性。如果一个事务没有 commit 转态，那就是一个不完整的事务，不是有效事务。</p>
+<p><strong>两阶段提交</strong>是跨系统维持<strong>数据逻辑一致性</strong>的常用方案。</p>
+<h4 id="196redo-log-与脏页">19.6，redo log 与脏页</h4>
+<p>redo log 的三种状态：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021062311153062.png" alt="在这里插入图片描述"></p>
+<p>redo log 在内存和磁盘各有一份，当内存中的 redo log 与磁盘中的 redo log 不一致的时候，内存中的 redo log 称为<strong>脏页</strong>，当脏页被刷（<code>flush</code>）到磁盘后，内存中的redo log 称为<strong>干净页</strong>。</p>
+<p><em><strong>如何判断一个数据页是否是脏页</strong></em>：</p>
+<ul>
+<li>每个数据页头部有LSN，8字节，每次修改都会变大</li>
+<li>对比这个LSN跟checkpoint 的LSN，比checkpoint小的一定是干净页</li>
+<li>脏页大小 = <code>current LSN - check point LSN</code></li>
+</ul>
+<p>在以下几种情况，MySQL 会将脏页刷到磁盘：</p>
+<ul>
+<li>当内存不足时，需要将内存中的一些 redo log 释放掉，这有两种情况：
+<ul>
+<li>内存中的 redo log 是脏页：将<strong>脏页刷到磁盘</strong></li>
+<li>内存中的 redo log 是干净页：直接释放</li>
+</ul>
+</li>
+<li>磁盘上的 redo log 写满了
+<ul>
+<li>这时需要将磁盘上的redo log 中的 <code>check point</code> 向前移动（将数据更新到数据文件）</li>
+<li>而此时就要确保 <code>check point</code> 向前移动的那一部分数据是正确的数据，这就需要将涉及到的<strong>脏页刷到磁盘</strong></li>
+<li>当这种情况出现的时候，MySQL 则不能在接收新的更新操作，直到磁盘上的 redo log 有了空闲空间</li>
+<li>因此<strong>这种情况应该尽量避免</strong>，以防影响MySQL 性能</li>
+</ul>
+</li>
+<li>MySQL 空闲时，会刷脏页
+<ul>
+<li>不会影响MySQL 性能</li>
+</ul>
+</li>
+<li>MySQL 关闭之前，会刷脏页
+<ul>
+<li>不会影响MySQL 性能</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>InnoDB 控制脏页的策略</strong></em>：</p>
+<ul>
+<li><code>innodb_io_capacity</code> 参数会告诉 InnoDB 磁盘的 IO 能力。
+<ul>
+<li>这个值建议设置成磁盘的 IOPS</li>
+<li>如果这个值设置的不合适（较小）会导致刷脏页的速度较慢，从而影响MySQL性能</li>
+</ul>
+</li>
+<li><code>innodb_flush_neighbors</code> 参数：刷脏页<strong>连坐机制</strong>
+<ul>
+<li>InnoDB 在刷一个脏页的时候，如果这个数据页旁边的数据页刚好是脏页，就会把这个“邻居”也带着一起刷掉</li>
+<li>而且这个把“邻居”拖下水的逻辑还可以继续蔓延，也就是对于每个邻居数据页，如果跟它相邻的数据页也还是脏页的话，也会被放到一起刷</li>
+<li><code>innodb_flush_neighbors</code> 值为 1 时，会有上述的“连坐”机制，值为 0 时表示不找邻居，自己刷自己的。</li>
+</ul>
+</li>
+<li><code>innodb_max_dirty_pages_pct</code> 参数是脏页的比例，默认是 75
+<ul>
+<li><code>脏页比例 = 脏页大小 / redo log 大小</code></li>
+<li>当到达比例时，会刷脏页</li>
+</ul>
+</li>
+</ul>
+<p>测试磁盘 IOPS 的命令：</p>
+<pre><code class="language-shell">fio -filename=$filename -direct=1 -iodepth 1 -thread -rw=randrw -ioengine=psync -bs=16k -size=500M -numjobs=10 -runtime=10 -group_reporting -name=mytest 
+</code></pre>
+<h4 id="197组提交-group-commit">19.7，组提交 group commit</h4>
+<p>组提交机制，可以大幅度降低磁盘的 IOPS 消耗。一次组提交里面，组员越多，节约磁盘 IOPS 的效果越好。</p>
+<p>有两个参数来控制组提交：</p>
+<ul>
+<li><code>binlog_group_commit_sync_delay</code> 参数，表示延迟多少微秒后才调用 fsync;</li>
+<li><code>binlog_group_commit_sync_no_delay_count</code> 参数，表示累积多少次以后才调用 fsync。</li>
+</ul>
+<p>这两个条件是或的关系，也就是说只要有一个满足条件就会调用 fsync。</p>
+<h3 id="20数据库缓冲池">20，数据库缓冲池</h3>
+<p>数据库缓冲池（<code>buffer pool</code>）用于加快数据的读写性能。</p>
+<h4 id="201缓冲池原理">20.1，缓冲池原理</h4>
+<p><strong>buffer poll</strong> 存储的是 <code>idb</code> 文件的叶子节点（页），<code>idb</code> 文件以 B+ 树的结构存储，实际的数据都存储在叶子节点上，一个叶子节点就是一个页，是 16 K。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210622173623581.png" alt="在这里插入图片描述"></p>
+<p><strong>buffer pool</strong> 的底层数据结构：</p>
+<ul>
+<li><strong>LRU 链表</strong>：缓存的淘汰策略（最近最少使用），缓冲池放满之后会被淘汰数据
+<ul>
+<li>该链表分为冷热数据区（可解决全表扫描 <code>select * from t;</code> 这种操作对缓存数据的影响）：
+<ul>
+<li>热数据区：占 <code>5/8</code></li>
+<li>冷数据区：占 <code>3/8</code>，由 <code>innodb_old_blocks_pct</code> 参数控制</li>
+</ul>
+</li>
+<li>冷数据区的数据转到热数据区的条件：
+<ul>
+<li>页的第二次使用时间与第一次使用时间的时间间隔小于一个值：</li>
+<li>参数<code>innodb_old_blocks_time</code>，单位毫秒</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Free 链表</strong>：记录了缓冲区中的空闲区域（页）</li>
+<li><strong>Flush 链表</strong>：记录了被更新过的区域（页），称为<strong>脏页</strong></li>
+<li><strong>自适应哈希索引</strong>也会占用 buffer pool 的空间（34）
+<ul>
+<li><code>mysql&gt; show engine innodb status;</code> 命令可以看到 buffer pool 的使用情况</li>
+</ul>
+</li>
+</ul>
+<p><code>innodb_change_buffering</code> 参数用于设置缓存哪些操作：</p>
+<ul>
+<li>all：默认值，所有操作</li>
+<li>none：不要缓存任何操作</li>
+<li>inserts：缓冲插入操作</li>
+<li>deletes：缓冲删除标记操作</li>
+<li>changes：缓冲插入和删除标记操作。</li>
+<li>purges：缓冲在后台发生的物理删除操作</li>
+</ul>
+<h4 id="202缓冲池作用">20.2，缓冲池作用</h4>
+<p>对于读操作：</p>
+<ul>
+<li>缓冲池管理器会尽量将经常使用的数据保存起来；</li>
+<li>在数据库进行页面读操作的时候，首先会判断该页面是否在<strong>缓冲池</strong>中：
+<ul>
+<li>如果存在就直接读取；</li>
+<li>如果不存在，就会通过<strong>内存或磁盘</strong>将页面存放到缓冲池中再进行读取。
+<ul>
+<li>内存读取：如果数据在内存中，会直接从内存中读取，所需时间约 <strong>1ms</strong>；</li>
+<li>磁盘读取：如果数据不在内存中，会从磁盘读取；
+<ul>
+<li>随机读取：如果需要查找，时间基本约需 <strong>10ms</strong>；</li>
+<li>顺序读取：如果一个磁盘的吞吐量是 40MB/S，那么对于一个 16KB 大小的页来说，一次可以顺序读取 2560（40MB/16KB）个页，相当于一个页的读取时间为 <strong>0.4ms</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>对于写操作：</p>
+<ul>
+<li>当我们对数据库中的记录进行修改的时候，首先会修改缓冲池中页里面的记录信息，然后数据库会以<strong>一定的频率</strong>刷新到磁盘上。</li>
+<li>注意<strong>并不是每次发生更新操作，都会立刻进行磁盘回写</strong>。缓冲池会采用一种叫做 <strong>checkpoint</strong> 的机制将数据回写到磁盘上，这样做的好处就是提升了数据库的整体性能。
+<ul>
+<li>当缓冲池不够用时，需要释放掉一些不常用的页，就可以采用强行采用 checkpoint 的方式，将不常用的<strong>脏页</strong>回写到磁盘上，然后再从缓冲池中将这些页释放掉。</li>
+<li>脏页（dirty page）指的是<strong>缓冲池中被修改过的页</strong>，与磁盘上的数据页不一致。</li>
+</ul>
+</li>
+</ul>
+<h4 id="203查看与修改缓冲池大小">20.3，查看与修改缓冲池大小</h4>
+<pre><code class="language-sql">mysql &gt; show variables like 'innodb_buffer_pool_size';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210416095214939.png" alt="在这里插入图片描述"></p>
+<p>可以看到 InnoDB 的缓冲池大小只有 8388608/1024/1024=<strong>8MB</strong>，我们可以修改缓冲池大小为 128MB，方法如下：</p>
+<pre><code class="language-sql">mysql &gt; set global innodb_buffer_pool_size = 134217728;
+</code></pre>
+<blockquote>
+<p>一般建议将 <code>innodb_buffer_pool_size</code> 设置成可用物理内存的 60%~80%。</p>
+</blockquote>
+<p>在 InnoDB 存储引擎中，可以同时开启<strong>多个缓冲池</strong>，查看缓冲池的个数：</p>
+<pre><code class="language-sql">mysql &gt; show variables like 'innodb_buffer_pool_instances';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210416095621171.png" alt="在这里插入图片描述"></p>
+<p>可以看到当前只有一个缓冲池。</p>
+<p>说明：</p>
+<ul>
+<li>实际上 <code>innodb_buffer_pool_instances</code> 默认情况下为 8，为什么只显示只有一个呢？</li>
+<li>原因是，如果想要开启多个缓冲池，首先需要将 <code>innodb_buffer_pool_size</code> 参数设置为大于等于 <code>1GB</code>，这时 <code>innodb_buffer_pool_instances</code> 才会大于 1。</li>
+</ul>
+<p>你可以在 MySQL 的配置文件中对 <code>innodb_buffer_pool_size</code> 进行设置，大于等于 1GB，然后再针对 <code>innodb_buffer_pool_instances</code> 参数进行修改。</p>
+<p><strong>查看 innodb 整体状态</strong>(其中有很多关于 Buffer Pool 的状态)：</p>
+<pre><code class="language-sql">&gt; show engine innodb status;
+</code></pre>
+<h4 id="204sql-的查询成本">20.4，SQL 的查询成本</h4>
+<p>可以在执行完一条 SQL 语句后，通过查看当前会话中的 <code>last_query_cost</code> 变量值来得到当前查询的成本。这个查询成本对应的是 SQL 语句所需要<strong>读取的页的数量</strong>。</p>
+<pre><code class="language-sql">mysql&gt; SHOW STATUS LIKE 'last_query_cost';
+</code></pre>
+<p>例 1：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210416101118709.png" alt="在这里插入图片描述"></p>
+<p>例 2：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210416101146213.png" alt="在这里插入图片描述"></p>
+<p>需要说明的是，如果 <code>last_query_cost</code> 的值比较大，并一定意味着 SQL 的查询时间较长；因为如果是顺序读取的方式将页面一次性加载到缓冲池中，这是页的读取速度是非常快。</p>
+<h4 id="205change-buffer">20.5，change buffer</h4>
+<p><strong>change buffer</strong> 主要用于优化（二级索引的）<strong>更新操作</strong>。</p>
+<p>当需要更新一个数据页时：</p>
+<ul>
+<li>如果数据页在内存中就直接更新</li>
+<li>如果这个数据页没在内存中（注意，只有当数据不在内存中时才会用到 change buffer），InnoDB 会将这些更新操作缓存在 <strong>change buffer</strong> 中，这样就不需要从磁盘中读入这个数据页了。
+<ul>
+<li>在下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行 change buffer 中与这个页有关的操作。（通过这种方式就能保证这个数据逻辑的正确性）</li>
+</ul>
+</li>
+</ul>
+<p><strong>change buffer</strong> 在内存和磁盘各有一份，在内存中占用 buffer pool 的空间，在磁盘上占用数据库表空间。<code>innodb_change_buffer_max_size</code> 参数（默认为25，最大设置为50）指定了 change buffer 占用 buffer pool 的百分比。</p>
+<p><em><strong>change buffer 的 merge 操作</strong></em></p>
+<p>将 change buffer 中的操作应用到原数据页，得到最新结果的过程称为 <strong>merge</strong>，下面三种时机会触发 merge 操作：</p>
+<ul>
+<li>访问这个数据页会触发 merge</li>
+<li>系统有后台线程会定期 merge</li>
+<li>在数据库正常关闭（shutdown）的过程中，也会 merge 操作</li>
+</ul>
+<p><em><strong>change buffer 对普通索引与唯一索引的影响</strong></em></p>
+<p>唯一索引的更新不能使用 change buffer，只有普通索引可以使用：</p>
+<ul>
+<li><em>对于唯一索引来说，所有的更新操作都要先判断这个操作是否违反唯一性约束。</em></li>
+<li><em>比如，要插入 (4,400) 这个记录，就要先判断现在表中是否已经存在这条记录，而这必须要将数据页读入内存才能判断。</em></li>
+<li><em>如果都已经读入到内存了，那直接更新内存会更快，就没必要使用 change buffer 了。</em></li>
+</ul>
+<p>在更新数据时，如果要更新的目标页不在内存中，InnoDB 的处理流程如下：</p>
+<ul>
+<li>对于唯一索引，需要将数据页从磁盘读入内存（<code>较慢</code>），判断到没有冲突，插入这个值，语句执行结束</li>
+<li>对于普通索引，则是将更新记录在 <strong>change buffer</strong>（<code>很快</code>），语句执行就结束了。
+<ul>
+<li><strong>change buffer</strong> 因为<strong>减少了随机磁盘访问</strong>，所以对更新性能的提升是很明显的。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>change buffer 最适用的场景</strong></em></p>
+<p>由上面的分析可知，change buffer 对普通索引（不适用唯一索引）的更新有加速作用，而更新操作也分两种实际场景：</p>
+<ul>
+<li><strong>写多读少</strong>：
+<ul>
+<li>change buffere 的 merge 操作是真正进行数据更新的时刻， change buffer 的主要目的就是将记录的变更动作缓存下来，所以在一个数据页做 merge 之前，change buffer 记录的变更越多（也就是这个页面上要更新的次数越多），收益就越大。</li>
+<li>因此，对于写多读少的业务来说，页面在写完以后马上被访问到的概率比较小，<strong>此时 change buffer 的使用效果最好</strong>。这种业务模型常见的是<em>账单类、日志类</em> 的系统。</li>
+</ul>
+</li>
+<li><strong>读多写少</strong>：
+<ul>
+<li>如果一个更新在写入之后马上会做查询，那即使将更新先记录在 change buffer，但之后由于马上要访问这个数据页，<strong>会立即触发 merge 过程</strong>。这样随机访问 IO 的次数不会减少，反而增加了 change buffer 的维护代价。</li>
+<li>所以，对于这种业务模式来说，<strong>change buffer 反而起到了副作用</strong>。</li>
+<li>如果所有的更新后面，都马上伴随着对这个记录的查询，那么建议关闭 change buffer。</li>
+</ul>
+</li>
+</ul>
+<h3 id="21数据库中的存储结构">21，数据库中的存储结构</h3>
+<p>MySQL 中的数据（记录）是按照<strong>行</strong>来存储的，但是数据库的读取并不以行为单位，否则一次读取（也就是一次 I/O 操作）只能处理一行数据，效率会非常低。</p>
+<p>因此，在数据库中，不论读一行，还是读多行，<strong>都是将这些行所在的页进行加载</strong>。也就是说，数据库管理存储空间的<strong>基本单位是页（Page）</strong>。</p>
+<p>当读一条记录时：</p>
+<ul>
+<li>如果记录所在的页在内存中，则直接从内存中获取记录</li>
+<li>如果记录所在的页不在内存中，则会将记录所在的页（磁盘中）加载到内存中，然后返回记录</li>
+</ul>
+<p>MySQL 中<strong>表空间，段，区，页，行</strong>的关系：</p>
+<p><img src="https://img-blog.csdnimg.cn/b57df76512be4d98a9494b986a8e768c.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>区</strong>：在 InnoDB 存储引擎中，一个区会分配 64 个<strong>连续的页</strong>； InnoDB 中的页大小默认是 16KB，所以一个区的大小是 64*16KB=1MB。</li>
+<li><strong>段</strong>：段由一个或多个区组成，段中<strong>不要求区与区之间是相邻的</strong>。
+<ul>
+<li>不同类型的数据库对象以不同的段形式存在。</li>
+<li>当我们创建数据表、索引的时候，就会相应创建对应的段，比如创建一张表时会创建一个表段，创建一个索引时会创建一个索引段。</li>
+</ul>
+</li>
+<li><strong>表空间</strong>：是一个逻辑容器，一个表空间可以有一个或多个段，但一个段只能属于一个表空间。
+<ul>
+<li>数据库由一个或多个表空间组成；</li>
+<li>表空间从管理上可以划分为系统表空间、用户表空间、撤销表空间、临时表空间等。</li>
+<li>在 InnoDB 中存在两种表空间的类型：共享表空间和独立表空间。
+<ul>
+<li>共享表空间：意味着多张表共用一个表空间。</li>
+<li>独立表空间：意味着每张表有一个独立的表空间，也就是数据和索引信息都会保存在自己的表空间中。独立的表空间可以在不同的数据库之间进行迁移。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>查看 InnoDB 的表空间类型：</p>
+<pre><code class="language-sql">mysql &gt; show variables like 'innodb_file_per_table';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210416084346818.png" alt="在这里插入图片描述"></p>
+<p><code>innodb_file_per_table=ON</code>，这意味着每张表都会单独保存为一个.ibd 文件。</p>
+<h4 id="211页结构">21.1，页结构</h4>
+<p>查看页的大小：</p>
+<pre><code class="language-sql">mysql&gt; show variables like '%innodb_page_size%';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210416084924414.png" alt="在这里插入图片描述"></p>
+<p>页结构的示意图（包括 7 个部分）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210416085114610.png" alt="在这里插入图片描述"></p>
+<p>页结构的变化：</p>
+<p><img src="https://img-blog.csdnimg.cn/a5ad1754643a41bb99ceed107d572b02.png" alt="在这里插入图片描述"></p>
+<h4 id="212页分裂与页合并">21.2，页分裂与页合并</h4>
+<p>当一个数据页已经满了，根据 B+ 树的算法，这时候需要申请一个新的数据页，然后挪动部分数据过去。这个过程称为<strong>页分裂</strong>。在这种情况下，<strong>性能</strong>自然会受影响。除了性能外，页分裂操作还影响数据<strong>页的利用率</strong>。原本放在一个页的数据，现在分到两个页中，整体空间利用率降低大约 50%。</p>
+<p>当相邻两个页由于删除了数据，利用率很低之后，会将数据页做<strong>合并</strong>。合并的过程，可以认为是分裂过程的逆过程。</p>
+<h4 id="213从数据页的角度看-b-树">21.3，从数据页的角度看 B+ 树</h4>
+<p>一棵 B+ 树按照节点类型可以分成两部分：</p>
+<ul>
+<li>叶子节点，B+ 树最底层的节点，用于存储行记录。</li>
+<li>非叶子节点，用于存储索引键和页面指针，并不存储行记录本身。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/7eb68bd7bce248488ce7d95369e15fd7.png" alt="在这里插入图片描述"></p>
+<p>在一棵 B+ 树中，每个节点都是一个页，每次新建节点的时候，就会申请一个页空间。同一层上的节点之间，通过页的结构构成一个双向的链表（页文件头中的两个指针字段）。</p>
+<ul>
+<li>非叶子节点，包括了多个索引行，每个索引行里存储索引键和指向下一层页面的页面指针。</li>
+<li>叶子节点，存储了关键字和行记录，在节点内部（也就是页结构的内部）记录之间是一个单向的链表，但是对记录进行查找，则可以通过页目录采用二分查找的方式来进行。</li>
+</ul>
+<h4 id="214b-树如何检索记录">21.4，B+ 树如何检索记录</h4>
+<p>B+ 树的索引查询行记录，首先是从 B+ 树的根开始，逐层检索，直到找到叶子节点，也就是找到对应的数据页为止，将数据页加载到内存中，页目录中的槽（slot）采用二分查找的方式先找到一个粗略的记录分组，然后再在分组中通过链表遍历的方式查找记录。</p>
+<p>虽然我们想要查找的，只是一行记录，但是对于磁盘 I/O 来说却需要加载一页的信息，因为页是最小的存储单位。</p>
+<h3 id="22innodb-中表数据的存储">22，InnoDB 中表数据的存储</h3>
+<p>一个 InnoDB 表包含两部分，即：<strong>表结构定义和数据</strong>。</p>
+<p>在 <code>MySQL 8.0</code> 以前，表结构是存在以 <code>.frm</code> 为后缀的文件里（占用的空间很少）。而 <code>MySQL 8.0</code> ，则已允许把表结构定义放在<strong>系统数据表</strong>中了。</p>
+<h4 id="221参数-innodb_file_per_table">22.1，参数 innodb_file_per_table</h4>
+<p><strong>表数据既可以存在共享表空间里，也可以是单独的文件</strong>。该行为由 <code>innodb_file_per_table</code> 控制：</p>
+<ul>
+<li>值为 <code>OFF</code> 表示，表的数据放在<strong>系统共享表空间</strong>，也就是跟数据字典放在一起；</li>
+<li>值为 <code>ON</code> （默认值）表示，每张表数据存储在一个以 <code>.ibd</code> 为后缀的文件中。
+<ul>
+<li>建议将这个值设置为 <code>ON</code>。</li>
+<li>因为，一个表单独存储为一个文件更容易管理，而且在你不需要这个表的时候，通过 <code>drop table</code> 命令，系统就会直接删除这个文件。</li>
+<li>而如果是放在共享表空间中，即使表删掉了，空间也是<strong>不会回收</strong>的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="222数据的删除流程">22.2，数据的删除流程</h4>
+<p>删除数据分为下面几种情况：</p>
+<ul>
+<li>使用 <code>drop table</code> 命令，系统就会直接删除表文件。</li>
+<li>删除表中的<strong>某行数据</strong>，MySQL 不会直接从文件中删除数据，而是做一个<strong>删除标记</strong>。
+<ul>
+<li>被标记为删除的空间，可以被重复利用。</li>
+<li>如果某一页上的所有数据都被删除，那么整个数据页就可以被复用。</li>
+</ul>
+</li>
+<li>使用 <code>delete</code> 将表中的所有数据删除，该表的所有数据页将被标记为删除，但表文件不会改变。</li>
+</ul>
+<h4 id="223数据空洞">22.3，数据空洞</h4>
+<p>由上可知，<code>delete</code> 命令其实只是把记录的位置，或者数据页标记为了<strong>可复用</strong>，但磁盘文件的大小是不会变的。</p>
+<p>也就是说，通过 <code>delete</code> 命令是<strong>不能回收表空间</strong>的。这些可以复用，而没有被使用的空间，看起来就像是“<strong>空洞</strong>”。</p>
+<p>除了 <code>delete</code> 会造成数据空洞之外，<code>insert</code> 和 <code>update</code>（先 delete 再 insert） 也会造成数据空洞。</p>
+<p>当 <code>insert</code> 时，如果一个数据页满了，则会导致<strong>分页</strong>，此时就会造成空洞：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210624093533811.png" alt="在这里插入图片描述"></p>
+<p>由上可知，<strong>经过大量增删改的表</strong>，都是可能是存在空洞的。所以，如果能够把这些空洞去掉，就能达到<strong>收缩表空间</strong>的目的。</p>
+<h4 id="224重建表消除空洞">22.4，重建表消除空洞</h4>
+<p><strong>重建表</strong>，可以达到消除空洞的目的。</p>
+<ul>
+<li>新建一个与表 A 结构相同的表 B，然后按照主键 ID 递增的顺序，把数据一行一行地从表 A 里读出来再插入到表 B 中。</li>
+<li>由于表 B 是新建的表，所以表 A 主键索引上的空洞，在表 B 中就都不存在了。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210624094439954.png" alt="在这里插入图片描述"></p>
+<p>重建表的命令：</p>
+<pre><code class="language-sql"># 重建表
+alter table table_name engine=InnoDB;
+</code></pre>
+<p>在 MySQL 5.6 之前，重建表的时候不允许插入数据；MySQL 5.6 版本开始引入的 <strong>Online DDL</strong>，允许在重建表是插入数据。</p>
+<p><em><strong>几个表相关的操作</strong></em>：</p>
+<ul>
+<li><code>create table</code>：新建一个表。</li>
+<li><code>drop table</code>：删除一个表。</li>
+<li><code>alter table</code>：重建表。</li>
+<li><code>analyze table</code>：对表的索引信息做重新统计，没有修改数据。</li>
+<li><code>optimize table</code> ：相当于 <code>alter + analyze</code>。</li>
+<li><code>truncate table</code>：相当于 <code>drop + create</code>。</li>
+</ul>
+<h4 id="225表空间">22.5，表空间</h4>
+<p>InnoDB 存储引擎的文件格式是 <code>.ibd</code> 文件，数据会按照<strong>表空间</strong>进行存储，分为：</p>
+<ul>
+<li><strong>共享表空间</strong>：多个数据表共用一个表空间，同时表空间也会自动分成多个文件存放到磁盘上。
+<ul>
+<li>这样做的好处在于单个数据表的大小可以突破文件系统大小的限制，最大可以达到 64TB，也就是 InnoDB 存储引擎表空间的上限。</li>
+<li>不足是，多个数据表存放到一起，结构不清晰，不利于数据的找回，同时将所有数据和索引都存放到一个文件中，也会使得共享表空间的文件很大。</li>
+</ul>
+</li>
+<li><strong>独立表空间</strong>：每个数据表都有自己的物理文件，也就是 <code>table_name.ibd</code> 的文件，在这个文件中保存了数据表中的数据、索引、表的内部数据字典等信息。
+<ul>
+<li>优势在于每张表都相互独立，不会影响到其他数据表，存储结构清晰，利于数据恢复，同时数据表还可以在不同的数据库之间进行迁移。</li>
+</ul>
+</li>
+</ul>
+<p>如果我们之前没有做过全量备份，也没有开启 Binlog，那么我们还可以通过.ibd 文件进行数据恢复，采用独立表空间的方式可以很方便地对数据库进行迁移和分析。</p>
+<p>查看表空间的存储方式：</p>
+<pre><code class="language-sql"># ON 表示独立表空间，而 OFF 则表示共享表空间。
+&gt; show variables like 'innodb_file_per_table';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/a7bf0751b3094a53b3612d70e58657ba.png" alt="在这里插入图片描述"></p>
+<h4 id="226mysql-中的分区表">22.6，MySQL 中的分区表</h4>
+<p>创建分区表示例：</p>
+<pre><code class="language-sql">CREATE TABLE `t` (
+  `ftime` datetime NOT NULL,
+  `c` int(11) DEFAULT NULL,
+  KEY (`ftime`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+PARTITION BY RANGE (YEAR(ftime))
+(PARTITION p_2017 VALUES LESS THAN (2017) ENGINE = InnoDB,
+ PARTITION p_2018 VALUES LESS THAN (2018) ENGINE = InnoDB,
+ PARTITION p_2019 VALUES LESS THAN (2019) ENGINE = InnoDB,
+PARTITION p_others VALUES LESS THAN MAXVALUE ENGINE = InnoDB);
+insert into t values('2017-4-1',1),('2018-4-1',1);
+</code></pre>
+<p>这个表包含了 1 个 <code>.frm</code> 文件和 4 个 <code>.ibd</code> 文件，每个分区对应一个 <code>.ibd</code> 文件：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210717111325785.png" alt="在这里插入图片描述"></p>
+<p><strong>对于引擎层来说，这是 4 个表；对于 Server 层来说，这是 1 个表</strong>。</p>
+<p>表 t 中初始化插入了两行记录，按照分区规则，这两行记录分别落在 p_2018 和 p_2019 这两个分区上。</p>
+<p>分区策略有 <strong>range 分区，hash 分区、list 分区</strong>等（示例中就是 range 分区）。</p>
+<p>注意，使用分区表，不要创建太多的分区。</p>
+<ul>
+<li>分区并不是越细越好</li>
+<li>分区也不要提前预留太多，在使用之前预先创建即可。
+<ul>
+<li>比如，如果是按月分区，每年年底时再把下一年度的 12 个新分区创建上即可。对于没有数据的历史分区，要及时的 drop 掉。</li>
+<li><code>alter table t drop partition ...</code></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/mysql-learn3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">MySQL学习笔记3-进阶篇-中</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/mysql-learn1/">
+            <span class="next-text nav-default">MySQL学习笔记1-基础篇</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/mysql-learn2/" class="leancloud_visitors" data-flag-title="MySQL学习笔记2-进阶篇-上">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

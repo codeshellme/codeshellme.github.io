@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MySQL学习笔记3-进阶篇-中 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/mysql-learn3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MySQL学习笔记3-进阶篇-中" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/mysql-learn3/" />
+<meta property="article:published_time" content="2021-11-12T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-12T21:41:52+08:00" />
+<meta itemprop="name" content="MySQL学习笔记3-进阶篇-中">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
+<meta itemprop="datePublished" content="2021-11-12T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-12T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="8406">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL学习笔记3-进阶篇-中"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MySQL学习笔记3-进阶篇-中</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 8406 字 </span>
+          <span class="more-meta"> 阅读约需 17 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#23事务处理">23，事务处理</a></li>
+        <li><a href="#24事务的隔离级别">24，事务的隔离级别</a></li>
+        <li><a href="#25mysql-中的锁">25，MySQL 中的锁</a></li>
+        <li><a href="#26mvcc-多版本并发控制">26，MVCC 多版本并发控制</a></li>
+        <li><a href="#27mysql-传输数据的原理">27，MySQL 传输数据的原理</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/mysql-learn1/"><strong>第一篇 MySQL 学习笔记1-基础篇</strong></a>
+<ul>
+<li>1，关于 SQL</li>
+<li>2，一条 SQL 的执行步骤</li>
+<li>3，MySQL 存储引擎</li>
+<li>4，数据库的基本操作</li>
+<li>5，关于自增主键</li>
+<li>6，SELECT 语句顺序</li>
+<li>7，WHERE 子句</li>
+<li>8，DISTINCT 去重</li>
+<li>9，关于 COUNT(*) 操作</li>
+<li>10，MYSQL 函数</li>
+<li>11，GROUP BY 数据分组</li>
+<li>12，子查询(嵌套查询)</li>
+<li>13，JOIN 连接查询</li>
+<li>14，VIEW 视图</li>
+<li>15，存储过程</li>
+<li>16，临时表</li>
+<li>17，MySQL 权限管理</li>
+<li>18，Python 操作 MySQL 的库</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn2/"><strong>第二篇 MySQL 学习笔记2-进阶篇-上</strong></a>
+<ul>
+<li>19，MySQL 的基础架构</li>
+<li>20，数据库缓冲池</li>
+<li>21，数据库中的存储结构</li>
+<li>22，InnoDB 中表数据的存储</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn3/"><strong>第三篇 MySQL 学习笔记3-进阶篇-中</strong></a>
+<ul>
+<li>23，事务处理</li>
+<li>24，事务的隔离级别</li>
+<li>25，MySQL 中的锁</li>
+<li>26，MVCC 多版本并发控制</li>
+<li>27，MySQL 传输数据的原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn4/"><strong>第四篇 MySQL 学习笔记4-进阶篇-下</strong></a>
+<ul>
+<li>28，Join 语句的原理</li>
+<li>29，MySQL 如何进行排序</li>
+<li>30，MySQL 中 kill 命令的原理</li>
+<li>31，MySQL 中的 mysqldump 命令</li>
+<li>32，MySQL 主从同步</li>
+<li>33，MySQL 主备原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn5/"><strong>第五篇 MySQL 学习笔记5-调优篇</strong></a>
+<ul>
+<li>34，关于 MySQL 索引</li>
+<li>35，定位数据库 SQL 性能问题</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="23事务处理">23，事务处理</h3>
+<h4 id="231事务的四大特性">23.1，事务的四大特性</h4>
+<p>ACID 是数据库管理系统为了<strong>保证事务的正确性</strong>而提出来的一个理论，ACID 包含四个约束：</p>
+<ul>
+<li><strong>原子性</strong>（<code>Atomicity</code>）：一个事务中的所有操作，要么全部完成，要么全部不完成，不会在中间某个环节结束。
+<ul>
+<li>如果事务在执行过程中发生错误，会被回滚到事务开始前的状态</li>
+</ul>
+</li>
+<li><strong>一致性</strong>（<code>Consistency</code>）：事务开始之前和事务结束以后，数据库的完整性没有被破坏。</li>
+<li><strong>隔离性</strong>（<code>Isolation</code>）：多个事务并发处理时，事务之间的数据可见性
+<ul>
+<li>读未提交：一个事务还没提交时，它做的变更就能被别的事务看到。</li>
+<li>读已提交：一个事务提交之后，它做的变更才会被其他事务看到。</li>
+<li>可重复读：一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。
+<ul>
+<li>MySQL 的默认隔离级别。</li>
+</ul>
+</li>
+<li>串行化：此时不存在并发事务，但是性能较低。</li>
+</ul>
+</li>
+<li><strong>持久性</strong>（<code>Durability</code>）：事务处理结束后，对数据的修改就是永久的，即便系统故障也不会丢失。</li>
+</ul>
+<h4 id="232事务的控制语句">23.2，事务的控制语句</h4>
+<p>事务的控制语句：</p>
+<ul>
+<li><code>START TRANSACTION</code> 或者 <code>BEGIN</code>：显式开启一个事务。
+<ul>
+<li><code>begin/start transaction</code> 命令并不是一个事务真正的起点，在执行到它们之后的第一个操作表的语句，事务才真正启动。</li>
+<li><code>start transaction with consistent snapshot</code> 命令会马上启动一个事务。</li>
+</ul>
+</li>
+<li><code>COMMIT</code>：提交事务。当提交事务后，对数据库的修改是永久性的。</li>
+<li><code>ROLLBACK</code> 或者 <code>ROLLBACK TO [SAVEPOINT]</code>：回滚事务。意思是撤销正在进行的<strong>所有没有提交的事物</strong>，或者将事务回滚到某个保存点。</li>
+<li><code>SAVEPOINT</code>：在事务中创建保存点，方便后续针对保存点进行回滚。一个事务中可以存在多个保存点。
+<ul>
+<li><code>RELEASE SAVEPOINT</code>：删除某个保存点。</li>
+</ul>
+</li>
+<li><code>SET TRANSACTION</code>：设置事务的<strong>隔离级别</strong>。</li>
+</ul>
+<p>以下 SQL 可查询持续时间超过 60s 的事务：</p>
+<pre><code class="language-sql">select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))&gt;60
+</code></pre>
+<p>事务有两种方式：</p>
+<ul>
+<li><strong>隐式事务</strong>：事务自动提交，MySQL 默认是隐式提交。
+<ul>
+<li><code>set autocommit = 1</code>，打开自动提交</li>
+<li>如果没有使用 <code>START TRANSACTION</code> 或 <code>BEGIN</code> 显示开启事物，则每条 SQL 语句都会自动提交</li>
+<li>当采用 <code>START TRANSACTION</code> 或 <code>BEGIN</code> 来显式开启事务，那么这个事务只有在 <code>COMMIT</code> 时才会生效，在 <code>ROLLBACK</code> 时才会回滚。</li>
+</ul>
+</li>
+<li><strong>显示事务</strong>：事务需手动提交
+<ul>
+<li><code>set autocommit = 0</code>，关闭自动提交</li>
+<li>此时不论是否采用 <code>START TRANSACTION</code> 或者 <code>BEGIN</code> 的方式来开启事务，都需要用 <code>COMMIT</code> 进行提交</li>
+</ul>
+</li>
+</ul>
+<p><code>completion_type</code> 参数的含义：</p>
+<ul>
+<li><code>completion_type=0</code>，这是<strong>默认情况</strong>。当我们执行 <code>COMMIT</code> 的时候会提交事务，在执行下一个事务时，还需要我们使用 <code>START TRANSACTION</code> 或者 <code>BEGIN</code> 来开启。</li>
+<li><code>completion_type=1</code>，这种情况下，当我们提交事务后，相当于执行了 <code>COMMIT AND CHAIN</code>，也就是开启一个<strong>链式事务</strong>，即当我们提交事务之后会开启一个<strong>相同隔离级别的事务</strong>。</li>
+<li><code>completion_type=2</code>，这种情况下 <code>COMMIT</code> 相当于 <code>COMMIT AND RELEASE</code>，也就是当我们提交后，会自动与服务器断开连接。</li>
+</ul>
+<h4 id="233事务示例">23.3，事务示例</h4>
+<p>示例1：</p>
+<pre><code class="language-sql">CREATE TABLE test(name varchar(255), PRIMARY KEY (name)) ENGINE=InnoDB;
+BEGIN;
+INSERT INTO test SELECT '关羽';
+COMMIT;
+BEGIN;                           # 显示开启事物
+INSERT INTO test SELECT '张飞';
+INSERT INTO test SELECT '张飞';   # 由于 name 不能重复，所以插入失败
+ROLLBACK;                        # 回滚，两次插入均被回滚
+SELECT * FROM test;
+</code></pre>
+<p>结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210403224346805.png" alt="在这里插入图片描述"></p>
+<p>示例 2：</p>
+<pre><code class="language-sql">CREATE TABLE test(name varchar(255), PRIMARY KEY (name)) ENGINE=InnoDB;
+BEGIN;
+INSERT INTO test SELECT '关羽';
+COMMIT;
+INSERT INTO test SELECT '张飞'; # 没有显示开启事物，执行完自动提交
+INSERT INTO test SELECT '张飞'; # 出错
+ROLLBACK;                      # 只回滚了最后一个 insert
+SELECT * FROM test;
+</code></pre>
+<p>结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210403224933150.png" alt="在这里插入图片描述"></p>
+<p>示例 3：</p>
+<pre><code class="language-sql">CREATE TABLE test(name varchar(255), PRIMARY KEY (name)) ENGINE=InnoDB;
+SET @@completion_type = 1;       # 每次提交之后，自动开启下一个事物
+BEGIN;
+INSERT INTO test SELECT '关羽';
+COMMIT;                          # 自动开启下一个事物，直到下一个 COMMIT 提交
+INSERT INTO test SELECT '张飞';   # 没有执行COMMIT，不提交
+INSERT INTO test SELECT '张飞';   # 出错
+ROLLBACK;                        # 两个 `张飞` 都回滚
+SELECT * FROM test;
+</code></pre>
+<p>结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210403225340433.png" alt="在这里插入图片描述"></p>
+<h3 id="24事务的隔离级别">24，事务的隔离级别</h3>
+<p>事务在并发处理时会出现 3 种异常（SQL92 标准定义了这三种异常）：</p>
+<ul>
+<li>脏读：还没有提交的事物，就别读到了。</li>
+<li>不可重复读：在同一个事务里读同一条记录，两次读的结果不一样。</li>
+<li>幻读</li>
+</ul>
+<p>事物的隔离级别用于解决这 3 种异常。</p>
+<p>SQL92 标准定义了事务的 4 个 隔离级别：</p>
+<ul>
+<li>读未提交：可以读到没有提交的事务。</li>
+<li>读已提交：只能读到已提交的事务。</li>
+<li>可重复读：保证一个事务在相同的查询条件下读到的数据是一致的。
+- MySQL 的默认隔离级别。</li>
+<li>串行化：所有的事务只能串行处理，不能并发处理，能解决所有的异常问题，但是性能最低。</li>
+</ul>
+<p>不同的隔离级别能够解决不同的异常问题：</p>
+<p><img src="https://img-blog.csdnimg.cn/7d19cba4f52b43a98c553e59ff47f5c8.png" alt="在这里插入图片描述"></p>
+<p>查看当前的隔离级别：</p>
+<pre><code class="language-sql">mysql&gt; SHOW VARIABLES LIKE 'transaction_isolation';
+</code></pre>
+<p>结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/6570809aa60e43dc9fe99513a616ba98.png" alt="在这里插入图片描述"></p>
+<p>设置事务的隔离级别：</p>
+<pre><code class="language-sql">mysql&gt; SET SESSION/global TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+</code></pre>
+<h4 id="241脏读">24.1，脏读</h4>
+<p><img src="https://img-blog.csdnimg.cn/bf656bebd11d48249e982d52a98b7950.png" alt="在这里插入图片描述"></p>
+<h4 id="242不可重复读">24.2，不可重复读</h4>
+<p><img src="https://img-blog.csdnimg.cn/7b84d8c583a049a08c897fb761b9d1ce.png" alt="在这里插入图片描述"></p>
+<h4 id="243幻读">24.3，幻读</h4>
+<p>看以下场景：</p>
+<p><img src="https://img-blog.csdnimg.cn/01103bc9e84c48b79aeafb4e8d93d29f.png" alt="在这里插入图片描述"></p>
+<p>session A 里执行了三次查询，分别是 Q1、Q2 和 Q3。它们的 SQL 语句相同，都是 <code>select * from t where d=5 for update</code>（<strong>当前读</strong>：就是要能读到所有已经提交的记录的最新值）。</p>
+<p>Q3 读到 id=1 这一行的现象，被称为<strong>幻读</strong>。幻读指的是<strong>一个事务在前后两次查询同一个范围的时候，后一次查询看到了前一次查询没有看到的行</strong>。</p>
+<p><strong>说明</strong>：</p>
+<ul>
+<li>在可重复读隔离级别下，普通的查询是快照读，是不会看到别的事务插入的数据的。因此，<strong>幻读在“当前读”下才会出现</strong>。</li>
+<li>上面 session B 的修改结果，被 session A 之后的 select 语句用“当前读”看到，不能称为幻读。<strong>幻读仅专指“新插入的行”</strong>。</li>
+</ul>
+<p>在 T3 时刻，我们给所有行加锁的时候，id=1 这一行还不存在，不存在也就加不上锁。也就是说，即使把所有的记录都加上锁，还是阻止不了新插入的记录。这就是<strong>幻读出现的原因</strong>。</p>
+<h4 id="244不可重复读-vs-幻读的区别">24.4，不可重复读 VS 幻读的区别</h4>
+<p><strong>不可重复读</strong>是同一条记录的内容被修改了，重点在于<strong>UPDATE或DELETE</strong>。</p>
+<p><strong>幻读</strong>是查询<strong>某一个范围的数据行</strong>变多了或者少了，重点在于<strong>INSERT</strong>。比如，SELECT 显示不存在，但是INSERT的时候发现已存在，说明符合条件的数据行发生了变化，也就是幻读的情况，而不可重复读指的是同一条记录的内容被修改了。</p>
+<h4 id="245幻读的解决办法">24.5，幻读的解决办法</h4>
+<p>产生幻读的原因是，行锁只能锁住行，但是新插入记录这个动作，要更新的是记录之间的“间隙”。因此，为了解决幻读问题，InnoDB 只好引入新的锁，也就是<strong>间隙锁</strong> (Gap Lock)。间隙锁，<strong>锁的就是两个值之间的空隙</strong>。</p>
+<p>间隙锁和行锁合称 <code>next-key lock</code>。</p>
+<p>主键索引上的<strong>行锁和间隙锁</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210720095020607.png" alt="在这里插入图片描述"></p>
+<p>这样，当执行 <code>select * from t where d=5 for update</code> 时，就不止是给数据库中已有的 6 个记录加上了行锁，还同时加了 7 个间隙锁。这样就确保了无法再插入新的记录。</p>
+<p>间歇锁的缺点：</p>
+<ul>
+<li>间隙锁的引入，可能会导致同样的语句锁住更大的范围，这其实影响了并发度</li>
+</ul>
+<p><strong>间隙锁是在可重复读隔离级别下才会生效的</strong>。所以，如果把隔离级别设置为读提交（要看业务需求），就没有间隙锁了。但同时，你要解决可能出现的数据和日志不一致问题，需要把 <strong>binlog 格式设置为 row</strong>。这，也是现在不少公司使用的配置组合。</p>
+<h3 id="25mysql-中的锁">25，MySQL 中的锁</h3>
+<p>事务有 4 大隔离级别，这些隔离级别的实现都是通过锁来完成的。</p>
+<p>加锁的目的是为了，在多线程同时操作一个数据的时候，保证数据的一致性。</p>
+<h4 id="251锁的划分">25.1，锁的划分</h4>
+<p>数据库中的锁有以下三种划分方式：</p>
+<ul>
+<li>按照锁的粒度划分</li>
+<li>从数据库管理的角度对锁进行划分</li>
+<li>从程序员的视角来看锁</li>
+</ul>
+<h5 id="1按照锁的粒度划分">1，按照锁的粒度划分</h5>
+<p>可分为 5 种：</p>
+<ul>
+<li><strong>行锁</strong>：按照行的粒度对数据进行锁定。锁定力度小，发生锁冲突概率低，可以实现的并发度高，但是对于锁的开销比较大，加锁会比较慢，容易出现死锁情况。InnoDB 三种行锁的方式：
+<ul>
+<li><code>记录锁</code>：针对单个行记录添加锁。</li>
+<li><code>间隙锁</code>（Gap Locking）：可以锁住一个范围（索引之间的空隙），但不包括记录本身。采用间隙锁的方式可以防止幻读情况的产生。</li>
+<li><code>Next-Key 锁</code>：可以锁住一个范围，同时锁定记录本身，相当于间隙锁 + 记录锁，可以解决幻读的问题。</li>
+</ul>
+</li>
+<li><strong>页锁</strong>：在页的粒度上进行锁定，锁定的数据资源比行锁要多，因为一个页中可以有多个行记录。当我们使用页锁的时候，会出现数据浪费的现象，但这样的浪费最多也就是一个页上的数据行。页锁的开销介于表锁和行锁之间，会出现死锁。锁定粒度介于表锁和行锁之间，并发度一般。</li>
+<li><strong>表锁</strong>：对数据表进行锁定，锁定粒度很大，同时发生锁冲突的概率也会较高，数据访问的并发度低。不过好处在于对锁的使用开销小，加锁会很快。</li>
+<li><strong>区锁</strong></li>
+<li><strong>数据库锁</strong>（全局锁）：就是对整个数据库实例加锁</li>
+</ul>
+<p>不同的数据库和存储引擎支持的锁粒度不同：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">行锁</th>
+<th align="left">页锁</th>
+<th align="left">表锁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">InnoDB</td>
+<td align="left">支持</td>
+<td align="left"></td>
+<td align="left">支持</td>
+</tr>
+<tr>
+<td align="left">MyISAM</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">支持</td>
+</tr>
+<tr>
+<td align="left">Oracle</td>
+<td align="left">支持</td>
+<td align="left"></td>
+<td align="left">支持</td>
+</tr>
+<tr>
+<td align="left">SQL Server</td>
+<td align="left">支持</td>
+<td align="left">支持</td>
+<td align="left">支持</td>
+</tr>
+<tr>
+<td align="left">BDB</td>
+<td align="left"></td>
+<td align="left">支持</td>
+<td align="left">支持</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2从数据库管理的角度对锁划分">2，从数据库管理的角度对锁划分</h5>
+<p>常见的有以下 2 种：</p>
+<ul>
+<li><strong>共享锁</strong>：也叫读锁或 S 锁。<strong>共享锁锁定的资源可以被其他用户读取，但不能修改</strong>。在进行SELECT的时候，会将对象进行共享锁锁定，当数据读取完毕之后，就会释放共享锁，这样就可以保证数据在读取时不被修改。</li>
+<li><strong>排它锁</strong>：也叫独占锁、写锁或 X 锁。<strong>排它锁锁定的数据只允许进行锁定操作的事务使用，其他事务无法对已锁定的数据进行查询或修改</strong>。</li>
+</ul>
+<h5 id="3从程序员的视角来看锁">3，从程序员的视角来看锁</h5>
+<p>可以将锁分成：</p>
+<ul>
+<li><strong>乐观锁</strong>：乐观锁认为对同一数据的并发操作不会总发生，属于小概率事件，不用每次都对数据上锁，也就是<strong>不采用数据库自身的锁机制，而是通过程序来实现</strong>。在程序上，一般可以采用<strong>版本号机制</strong>或者<strong>时间戳机制</strong>实现。
+<ul>
+<li><em>乐观锁的版本号机制</em>：在表中设计一个版本字段 <code>version</code>，第一次读的时候，会获取 <code>version</code> 字段的取值。然后对数据进行更新或删除操作时，会执行 <code>UPDATE ... SET version=version+1 WHERE version=version</code>。此时如果已经有事务对这条数据进行了更改，修改就不会成功。</li>
+<li><em>乐观锁的时间戳机制</em>：时间戳和版本号机制一样，也是在更新提交的时候，将当前数据的时间戳和更新之前取得的时间戳进行比较，如果两者一致则更新成功，否则就是版本冲突。</li>
+</ul>
+</li>
+<li><strong>悲观锁</strong>：对数据被其他事务的修改持保守态度，会通过<strong>数据库自身的锁机制来实现</strong>，从而保证数据操作的排它性。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/f26757f55aea4d46a7eebb1b4e0b6d02.png" alt="在这里插入图片描述"></p>
+<p>乐观锁与悲观锁的适用场景：</p>
+<ul>
+<li>乐观锁：适合读多写少的场景，它的优点在于不存在死锁问题。</li>
+<li>悲观锁：适合写多读少的场景，因为写的操作具有排它性。采用悲观锁的方式，可以在数据库层面阻止其他事务对该数据的操作权限，防止<code>读 - 写</code>和<code>写 - 写</code>的冲突。</li>
+</ul>
+<h4 id="252锁升级">25.2，锁升级</h4>
+<p>每个层级的锁数量是有限制的，因为锁会占用内存空间，锁空间的大小是有限的。</p>
+<p>当某个层级的锁数量超过了这个层级的阈值时，就会进行<strong>锁升级</strong>。</p>
+<p><strong>锁升级就是用更大粒度的锁替代多个更小粒度的锁</strong>，比如 InnoDB 中行锁升级为表锁，这样做的好处是占用的锁空间降低了，但同时数据的并发度也下降了。</p>
+<h4 id="253意向锁">25.3，意向锁</h4>
+<p>当我们想要获取某个数据表的<strong>排它锁</strong>的时候，需要先看下这张数据表有没有上了排它锁。如果这个数据表中的某个数据行被上了行锁，我们就无法获取排它锁。这时需要对数据表中的行逐一排查，检查是否有行锁，如果没有，才可以获取这张数据表的排它锁。</p>
+<p>这个过程有些麻烦，这里就需要用到<strong>意向锁</strong>。</p>
+<p><strong>意向锁（Intent Lock）</strong>，简单来说就是给更大一级别的空间示意里面是否已经上过锁。举个例子，你可以给整个房子设置一个标识，告诉它里面有人，即使你只是获取了房子中某一个房间的锁。这样其他人如果想要获取整个房子的控制权，只需要看这个房子的标识即可，不需要再对房子中的每个房间进行查找。</p>
+<p>返回数据表的场景，<strong>如果我们给某一行数据加上了排它锁，数据库会自动给更大一级的空间，比如数据页或数据表加上意向锁，告诉其他人这个数据页或数据表已经有人上过排它锁了，这样当其他人想要获取数据表排它锁的时候，只需要了解是否有人已经获取了这个数据表的意向排他锁即可</strong>。</p>
+<p>如果事务想要获得数据表中某些记录的共享锁，就需要在数据表上添加意向共享锁。同理，事务想要获得数据表中某些记录的排他锁，就需要在数据表上添加意向排他锁。这时，意向锁会告诉其他事务已经有人锁定了表中的某些记录，不能对整个表进行全表扫描。</p>
+<h4 id="254死锁">25.4，死锁</h4>
+<p>死锁就是多个事务在执行过程中，因为竞争某个相同的资源而造成阻塞的现象。</p>
+<p>如何避免死锁：</p>
+<ul>
+<li>如果事务涉及多个表，操作比较复杂，那么可以尽量一次锁定所有的资源，而不是逐步来获取，这样可以减少死锁发生的概率；</li>
+<li>如果事务需要更新数据表中的大部分数据，数据表又比较大，这时可以采用锁升级的方式，比如将行级锁升级为表级锁，从而减少死锁产生的概率；</li>
+<li>不同事务并发读写多张数据表，可以约定访问表的顺序，采用相同的顺序降低死锁发生的概率。</li>
+<li>采用乐观锁的方式</li>
+</ul>
+<p><em><strong>MySQL 遇到死锁时的策略</strong></em></p>
+<p>有两种策略（只能选其中一个）：</p>
+<ul>
+<li>进入等待，直到超时。这个超时时间可以通过参数 <code>innodb_lock_wait_timeout</code> 来设置，默认值是 50s。</li>
+<li>发起死锁检测，发现死锁后，主动回滚死锁链条中的某一个事务，让其他事务得以继续执行。
+<ul>
+<li>将参数 <code>innodb_deadlock_detect</code> 设置为 <code>on</code>（默认值），表示开启这个逻辑（超时逻辑回被关闭）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="255锁操作命令">25.5，锁操作命令</h4>
+<h5 id="1数据库锁全局锁">1，数据库锁（全局锁）</h5>
+<p>MySQL 提供了加<strong>全局读锁</strong>的命令（<code>FTWRL</code>）：</p>
+<pre><code class="language-sql">&gt; flush tables with read lock -- 加锁
+&gt; unlock tables				  -- 释放锁
+</code></pre>
+<p>该命令会使整个库处于只读状态，之后其他线程的以下语句会被阻塞：</p>
+<ul>
+<li>数据更新语句（数据的增删改）、</li>
+<li>数据定义语句（包括建表、修改表结构等）</li>
+<li>更新类事务的提交语句</li>
+</ul>
+<p>如果执行 <code>FTWRL</code> 命令之后，客户端发生异常断开，那么 MySQL 会<strong>自动释放这个全局锁</strong>。</p>
+<h5 id="2表级锁">2，表级锁</h5>
+<p>MySQL 里面表级别的锁有两种：</p>
+<ul>
+<li>表锁：客户端断开的时候自动释放
+<ul>
+<li>加锁：<code>lock tables … read/write</code>
+<ul>
+<li>示例：<code>lock tables t1 read, t2 write</code></li>
+</ul>
+</li>
+<li>释放锁：<code>unlock tables</code></li>
+</ul>
+</li>
+<li>元数据锁（MDL）：
+<ul>
+<li>MDL 的作用是，保证读写的正确性。</li>
+<li>MDL 不需要显式使用，在访问一个表的时候会被自动加上。</li>
+<li>在 MySQL 5.5 版本中引入了 MDL
+<ul>
+<li>当对一个表做增删改查操作的时候，加 MDL 读锁；</li>
+<li>当要对表做结构变更操作的时候，加 MDL 写锁。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>读写锁的互斥关系：</p>
+<ul>
+<li>读锁之间不互斥，因此可以有多个线程同时对一张表增删改查。</li>
+<li>读写锁之间、写锁之间是互斥的，用来保证变更表结构操作的安全性。</li>
+</ul>
+<p>表锁一般是在数据库引擎不支持行锁/事务的时候才会被用到的。</p>
+<p>共享锁操作：</p>
+<pre><code class="language-sql"># 给表加共享锁
+LOCK TABLE tableName READ;
+
+# 当对数据表加上共享锁的时候，该数据表就变成了只读模式，此时想要更新表中的数据，比如：
+UPDATE tableName SET product_id = 10002 WHERE user_id = 912178;
+
+# 系统会做出如下提示：
+ERROR 1099 (HY000): Table 'product_comment' was locked with a READ lock and can't be updated
+
+# 解除共享锁，不需要参数
+UNLOCK TABLE;
+
+# 给某一行加共享锁，可以像下面这样：
+SELECT comment_id, product_id, comment_text, user_id FROM product_comment WHERE user_id = 912178 LOCK IN SHARE MODE;
+</code></pre>
+<p>排它锁操作：</p>
+<pre><code class="language-sql"># 给表加排它锁
+LOCK TABLE tableName WRITE;
+
+# 这时只有获得排它锁的事务可以对 tableName 进行查询或修改，
+# 其他事务如果想要在 tableName 表上查询数据，则需要等待。
+
+# 在某个数据行上添加排它锁，则写成如下这样：
+SELECT comment_id, product_id, comment_text, user_id FROM product_comment WHERE user_id = 912178 FOR UPDATE;
+
+# 释放排它锁
+UNLOCK TABLE;
+</code></pre>
+<blockquote>
+<p>命令 <code>&gt; show open tables</code> 可以查看当前数据库中关于<strong>表锁</strong>的使用情况。
+命令 <code>&gt; unlock tables</code> 可以释放所有的<strong>表锁</strong>。</p>
+</blockquote>
+<p>执行 <code>&gt; show open tables</code> 命令后，结果如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/1c656ca1b4ac467e8873fc647bf9b205.png" alt="在这里插入图片描述"></p>
+<p>其中 <code>1</code> 表示有锁占用，<code>0</code>  表示无锁占用。</p>
+<p>另外，当我们对数据进行更新的时候，也就是 <code>INSERT</code>、<code>DELETE</code> 或者 <code>UPDATE</code> 的时候，<strong>数据库也会自动使用排它锁，防止其他事务对该数据行进行操作</strong>。</p>
+<p>命令 <code>show status like '%row_lock%';</code> 可以查看当前系统中<strong>行锁</strong>的状态：</p>
+<p><img src="https://img-blog.csdnimg.cn/5cebfaef65ac48fb89624811d2e30502.png" alt="在这里插入图片描述"></p>
+<p>对各个状态量的说明如下：</p>
+<ul>
+<li><code>Innodb_row_lock_current_waits</code>：当前正在等待锁的数量（<code>重要</code>）</li>
+<li><code>Innodb_row_lock_time</code>：从系统启动到现在，锁定的总时间（<code>重要</code>）</li>
+<li><code>Innodb_row_lock_time_avg</code>：每次等待锁，花费的平均时长（<code>重要</code>）</li>
+<li><code>Innodb_row_lock_time_max</code>：从系统启动到现在，等待最长的一次时间</li>
+<li><code>Innodb_row_lock_waits</code>：从系统启动到现在，总共等待的次数（<code>重要</code>）</li>
+</ul>
+<h5 id="3行级锁">3，行级锁</h5>
+<p>不支持行锁意味着并发控制只能使用表锁，对于这种引擎的表，同一张表上任何时刻只能有一个更新在执行，这就会影响到业务并发度。</p>
+<p>InnoDB 引擎支持行锁。行锁，分成读锁和写锁。下图是这两种类型行锁的冲突关系：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021072009531777.png" alt="在这里插入图片描述"></p>
+<p>行锁就是针对数据表中行记录的锁。比如事务 A 更新了一行，而这时候事务 B 也要更新同一行，则必须等事务 A 的操作完成后才能进行更新。</p>
+<p><strong>两阶段锁协议</strong>：在 InnoDB 事务中，行锁是在<strong>需要的时候才加上</strong>的，但<strong>并不是不需要了就立刻释放</strong>，而是要等到<strong>事务结束时</strong>才释放。</p>
+<p>例如下图中：</p>
+<p><img src="https://img-blog.csdnimg.cn/e39cb06b41084fc19fb4133fc9686dff.png" alt="在这里插入图片描述"></p>
+<p>事务 B 会被阻塞，直到事务 A 的 <code>commit</code> 执行。</p>
+<h3 id="26mvcc-多版本并发控制">26，MVCC 多版本并发控制</h3>
+<p>MVCC 就是采用乐观锁思想的一种实现。</p>
+<h4 id="261mvcc-的作用">26.1，MVCC 的作用</h4>
+<p>数据库有四种隔离方式，前三种都存在一定的问题，只有串行化不存在问题，但是串行化的并发性能最低。</p>
+<p><img src="https://img-blog.csdnimg.cn/f628a6138ea84da0897f6589ad78126b.png" alt="在这里插入图片描述"></p>
+<p>MVCC 的存在就是采用乐观锁的方式，即能解决各种读的问题，又不影响数据库的并发性能；它可以在大多数情况下<strong>替代行级锁，降低系统的开销</strong>。</p>
+<p>MVCC 可以解决以下问题：</p>
+<ul>
+<li>读写之间阻塞的问题，通过 MVCC 可以让读写互相不阻塞，即读不阻塞写，写不阻塞读，这样就可以提升事务并发处理能力。</li>
+<li>降低了死锁的概率。这是因为 MVCC 采用了乐观锁的方式，读取数据时并不需要加锁，对于写操作，也只锁定必要的行。</li>
+<li>解决一致性读的问题。一致性读也被称为<strong>快照读</strong>，当我们查询数据库在某个时间点的快照时，只能看到这个时间点之前事务提交更新的结果，而不能看到这个时间点之后事务提交的更新结果。</li>
+</ul>
+<blockquote>
+<p>在可重复读的情况下，InnoDB 可以通过 <strong>Next-Key 锁</strong> + <strong>MVCC</strong> 来解决幻读问题。</p>
+</blockquote>
+<h4 id="262mvcc-的实现原理">26.2，MVCC 的实现原理</h4>
+<p>MVCC 是通过数据行的<strong>多个版本管理</strong>来实现数据库的并发控制，简单来说就是<strong>保存数据的历史版本</strong>。这样我们就可以<strong>通过比较版本号决定数据是否显示出来</strong>，从而达到读取数据的时候不需要加锁也可以保证事务的隔离效果。</p>
+<p>MVCC 的核心是 <code>Undo Log + Read View</code>：</p>
+<ul>
+<li>“MV” 是通过 Undo Log 来保存数据的历史版本，实现多版本的管理</li>
+<li>“CC” 是通过 Read View 来实现管理，通过 Read View 原则来决定数据是否显示。同时针对不同的隔离级别，Read View 的生成策略不同，也就实现了不同的隔离级别。</li>
+</ul>
+<p>MVCC 是一种机制，MySQL、Oracle、SQL Server 和 PostgreSQL 的实现方式均有不同。</p>
+<h4 id="263什么是快照读">26.3，什么是快照读</h4>
+<p>快照读读取的是快照数据。<strong>不加锁的 SELECT 或者说普通的 SELECT 都属于快照读</strong>，比如：</p>
+<pre><code class="language-sql">SELECT * FROM tableName WHERE ...
+</code></pre>
+<h4 id="264什么是当前读">26.4，什么是当前读</h4>
+<p><strong>当前读就是读取最新数据，而不是历史版本的数据</strong>。加锁的 SELECT，或者对数据进行增删改都会进行当前读，比如：</p>
+<pre><code class="language-sql">-- 加锁的 select
+SELECT * FROM player LOCK IN SHARE MODE;
+
+-- 相当于加锁的 select
+SELECT * FROM player FOR UPDATE;
+
+-- Insert 操作
+INSERT INTO player values ...
+
+-- Update 操作
+UPDATE player SET ...
+
+-- Delete 操作
+DELETE FROM player WHERE ...
+</code></pre>
+<h4 id="265记录的多个版本包括哪些内容">26.5，记录的多个版本包括哪些内容</h4>
+<p>在 InnoDB 中，MVCC 是通过 Undo Log + Read View 进行数据读取，Undo Log 保存了历史快照，而 Read View 规则帮我们判断当前版本的数据是否可见。</p>
+<p>一个记录的多个版本包括以下：</p>
+<ul>
+<li><strong>事务版本号</strong>：每开启一个事务，会从数据库中获得一个事务 ID（事务版本号），这个事务 ID 是自增长的，通过 ID 大小，可以判断事务的时间顺序。</li>
+<li><strong>行记录中的隐藏列</strong>：InnoDB 的叶子段存储了数据页，数据页中保存了行记录，行记录中有一些重要的隐藏字段：
+<ul>
+<li><code>b_row_id</code>：隐藏的行 ID，用来生成默认聚集索引。<em>如果我们创建数据表的时候没有指定聚集索引，这时 InnoDB 就会用这个隐藏 ID 来创建聚集索引。采用聚集索引的方式可以提升数据的查找效率。</em></li>
+<li><code>db_trx_id</code>：操作这个数据的事务 ID，也就是最后一个对该数据进行插入或更新的事务 ID。</li>
+<li><code>db_roll_ptr</code>：回滚指针，也就是指向这个记录的 Undo Log 信息。</li>
+</ul>
+</li>
+<li><strong>Undo Log</strong>：InnoDB 将行记录快照保存在了 Undo Log 里，我们可以在回滚段中找到它们。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/c7620fd86acb4a069a3e5e16ffc33e5b.png" alt="在这里插入图片描述"></p>
+<h4 id="266read-view-原理">26.6，Read View 原理</h4>
+<p><img src="https://img-blog.csdnimg.cn/38ba8b0788f14484b196f0c8431289ee.png" alt="在这里插入图片描述"></p>
+<h3 id="27mysql-传输数据的原理">27，MySQL 传输数据的原理</h3>
+<p>对于一个 <strong>Select</strong> 操作，MySQL 会将查到的每一行都放到<strong>结果集</strong>里面，然后返回给客户端。</p>
+<p>MySQL 服务端并不保存一个完整的结果集，而是<strong>边读边发</strong>。这就意味着，如果客户端接收得慢，会导致 MySQL 服务端发数据变慢。</p>
+<p>MySQL 取数据和发数据的流程是：</p>
+<ul>
+<li>获取一行数据，写到 <code>net_buffer 中</code>。这块内存的大小是由参数 <code>net_buffer_length</code> 定义的，默认是 16k。
+<ul>
+<li>因此，一个查询在发送过程中，占用的 MySQL 内部的内存最大就是 <code>net_buffer_length</code> 这么大</li>
+</ul>
+</li>
+<li>重复获取行，直到 <code>net_buffer</code> 写满，调用网络接口发出去。</li>
+<li>如果发送成功，就清空 <code>net_buffer</code>，然后继续取下一行，并写入 <code>net_buffer</code>。</li>
+<li>如果发送函数返回 <code>EAGAIN</code> 或 <code>WSAEWOULDBLOCK</code>，就表示本地网络栈（<code>socket send buffer</code>）写满了，进入等待。直到网络栈重新可写，再继续发送。
+<ul>
+<li>如果 <code>show processlist</code> 命令的执行结果中有 <code>Sending to client</code>，则表示 <code>socket send buffer</code> 写满了：</li>
+<li><img src="https://img-blog.csdnimg.cn/2021071317243528.png" alt="在这里插入图片描述"></li>
+<li>还有一个类似的状态是 <code>Sending data</code>，表是正在查询数据，还没有到发送数据的阶段：</li>
+<li><img src="https://img-blog.csdnimg.cn/20210713173235772.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<p>MySQL 取数据和发数据的流程图：</p>
+<p><img src="https://img-blog.csdnimg.cn/202107131738102.png" alt="在这里插入图片描述"></p>
+<p>MySQL 中提供了两个接口来获取数据：</p>
+<ul>
+<li><code>mysql_use_result</code>：一行一行的返回数据</li>
+<li><code>mysql_store_result</code>：一下子将整个结果集返回，如果结果集非常大（则会很消耗客户端的内存），则不建议使用该接口</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-12
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/mysql-learn4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">MySQL学习笔记4-进阶篇-下</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/mysql-learn2/">
+            <span class="next-text nav-default">MySQL学习笔记2-进阶篇-上</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/mysql-learn3/" class="leancloud_visitors" data-flag-title="MySQL学习笔记3-进阶篇-中">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

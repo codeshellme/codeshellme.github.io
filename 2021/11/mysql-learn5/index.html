@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MySQL学习笔记5-调优篇 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/11/mysql-learn5/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="MySQL学习笔记5-调优篇" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/11/mysql-learn5/" />
+<meta property="article:published_time" content="2021-11-14T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-11-14T21:41:52+08:00" />
+<meta itemprop="name" content="MySQL学习笔记5-调优篇">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
+<meta itemprop="datePublished" content="2021-11-14T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-11-14T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="7981">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MySQL学习笔记5-调优篇"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">MySQL学习笔记5-调优篇</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-11-14 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 7981 字 </span>
+          <span class="more-meta"> 阅读约需 16 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#34关于-mysql-索引">34，关于 MySQL 索引</a></li>
+        <li><a href="#35定位数据库-sql-性能问题">35，定位数据库 SQL 性能问题</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<blockquote>
+<p><strong><code>这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记：</code></strong></p>
+<ul>
+<li><a href="/2021/11/mysql-learn1/"><strong>第一篇 MySQL 学习笔记1-基础篇</strong></a>
+<ul>
+<li>1，关于 SQL</li>
+<li>2，一条 SQL 的执行步骤</li>
+<li>3，MySQL 存储引擎</li>
+<li>4，数据库的基本操作</li>
+<li>5，关于自增主键</li>
+<li>6，SELECT 语句顺序</li>
+<li>7，WHERE 子句</li>
+<li>8，DISTINCT 去重</li>
+<li>9，关于 COUNT(*) 操作</li>
+<li>10，MYSQL 函数</li>
+<li>11，GROUP BY 数据分组</li>
+<li>12，子查询(嵌套查询)</li>
+<li>13，JOIN 连接查询</li>
+<li>14，VIEW 视图</li>
+<li>15，存储过程</li>
+<li>16，临时表</li>
+<li>17，MySQL 权限管理</li>
+<li>18，Python 操作 MySQL 的库</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn2/"><strong>第二篇 MySQL 学习笔记2-进阶篇-上</strong></a>
+<ul>
+<li>19，MySQL 的基础架构</li>
+<li>20，数据库缓冲池</li>
+<li>21，数据库中的存储结构</li>
+<li>22，InnoDB 中表数据的存储</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn3/"><strong>第三篇 MySQL 学习笔记3-进阶篇-中</strong></a>
+<ul>
+<li>23，事务处理</li>
+<li>24，事务的隔离级别</li>
+<li>25，MySQL 中的锁</li>
+<li>26，MVCC 多版本并发控制</li>
+<li>27，MySQL 传输数据的原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn4/"><strong>第四篇 MySQL 学习笔记4-进阶篇-下</strong></a>
+<ul>
+<li>28，Join 语句的原理</li>
+<li>29，MySQL 如何进行排序</li>
+<li>30，MySQL 中 kill 命令的原理</li>
+<li>31，MySQL 中的 mysqldump 命令</li>
+<li>32，MySQL 主从同步</li>
+<li>33，MySQL 主备原理</li>
+</ul>
+</li>
+<li><a href="/2021/11/mysql-learn5/"><strong>第五篇 MySQL 学习笔记5-调优篇</strong></a>
+<ul>
+<li>34，关于 MySQL 索引</li>
+<li>35，定位数据库 SQL 性能问题</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="34关于-mysql-索引">34，关于 MySQL 索引</h3>
+<p>索引的本质目的是快速定位想要查找的数据。</p>
+<h4 id="341mysql-索引的种类">34.1，MySQL 索引的种类</h4>
+<p>MySQL 中的索引分为：</p>
+<ul>
+<li>普通索引：没有任何约束，主要用于提高查询效率。</li>
+<li>唯一索引：在普通索引的基础上增加了数据唯一性的约束，一张数据表里可以有多个唯一索引。</li>
+<li>主键索引：在唯一索引的基础上增加了不为空的约束，也就是 <code>NOT NULL+UNIQUE</code>，一张表里最多只有一个主键索引。
+<ul>
+<li>与主键索引相对应的是<strong>非主键索引</strong>（又叫<strong>二级索引</strong>），在使用非主键索引查询数据时，会涉及到<strong>回表</strong>，因此比主键索引略慢。</li>
+<li>主键索引又叫<strong>聚集索引</strong>，非主键索引又叫<strong>非聚集索引</strong>。
+<ul>
+<li>聚集索引：叶子节点包含了行中的所有数据。</li>
+<li>非聚集索引：叶子节点只包含了<strong>行 id</strong>，不包含其它数据，只有通过<strong>行 id</strong> 去<strong>回表</strong>才能查到其它数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>全文索引：使用的不多，MySQL 自带的全文索引只支持英文。
+<ul>
+<li>通常可以采用专门的全文搜索引擎，比如 ElasticSearch。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>InnoDB 中的数据保存在<strong>主键索引</strong>上，所以，对于全表扫描(<code>select * from t;</code>)，是直接扫描表 t 的主键索引。</p>
+</blockquote>
+<h4 id="342普通索引与唯一索引的选择">34.2，普通索引与唯一索引的选择</h4>
+<p>这两类索引在查询能力上是没差别的，主要考虑的是对更新性能的影响，建议你尽量选择普通索引，因为普通索引可以利用change buffer，而唯一索引不能（<em>具体见 24.5 节 change buffer</em>）。</p>
+<p>一个即有主键索引，又有非主键索引的例子：</p>
+<pre><code class="language-sql">create table T(
+	id int primary key, 
+	k int not null, 
+	name varchar(16),
+	index (k)
+) engine=InnoDB;
+
+# 表中 R1~R5 的 (ID,k) 值分别为 
+# (100,1)、(200,2)、(300,3)、(500,5) 和 (600,6)
+</code></pre>
+<p>其索引结构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210618171109171.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>由图可知，主键长度越小，普通索引的叶子节点就越小，普通索引占用的空间也就越小。</p>
+</blockquote>
+<p>以下 SQL 分别使用主键索引和非主键索引：</p>
+<ul>
+<li><code>select * from T where ID=500</code> 主键索引</li>
+<li><code>select * from T where k=5</code>  非主键索引</li>
+</ul>
+<h4 id="343单一索引与联合索引">34.3，单一索引与联合索引</h4>
+<ul>
+<li>单一索引：索引列为一列；</li>
+<li>联合索引：多个列组合在一起创建的索引。
+<ul>
+<li>创建联合索引时，需要注意索引的顺序，因为联合索引 <code>(x, y, z)</code> 和 <code>(z, y, x)</code> 在使用的时候效率可能会存在差别。</li>
+<li>联合索引存在<strong>最左匹配原则</strong>，就是当查询条件中有多个列时，<strong>必须按照索引的创建顺序，从左到右，并且不能跳过某一列</strong>。
+<ul>
+<li>比如联合索引<code> (x, y, z)</code>，如果查询条件是 <code>WHERE x=1 AND y=2 AND z=3</code>，就可以匹配上联合索引；
+<ul>
+<li><code>WHERE x=1</code> 和 <code>WHERE x=1 AND y=2</code> 也可以使用到索引</li>
+</ul>
+</li>
+<li>如果查询条件是 <code>WHERE y=2</code>，就无法匹配上联合索引（因为跳过了 <code>x</code>）。
+<ul>
+<li><code>WHERE y=2 AND z=3</code> 和 <code>WHERE z=3</code> 也无法使用索引</li>
+</ul>
+</li>
+<li>使用一部分（非全部）索引的情况 （可观察 explain 结果中的 key_len）
+<ul>
+<li><code>WHERE x=1 AND z=3</code> （因为跳过了 <code>y</code>）</li>
+<li><code>WHERE x=1 AND y&gt;2 AND z=3</code>（因为 <code>y</code> 的条件是范围，所以此时只会用到索引的 <code>x</code> 和 <code>y</code>，而不会用到 <code>z</code>）</li>
+</ul>
+</li>
+<li><strong>SQL条件语句中的字段顺序不重要，因为在逻辑查询优化阶段会自动进行查询重写</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>一份练习题：</p>
+<p><img src="https://img-blog.csdnimg.cn/ddb8c2a407634be1afbe158ac51ab217.png" alt="在这里插入图片描述"></p>
+<p>创建联合索引的例子：</p>
+<pre><code class="language-sql">CREATE TABLE `tuser` (
+  `id` int(11) NOT NULL,
+  `id_card` varchar(32) DEFAULT NULL,
+  `name` varchar(32) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `ismale` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),           # 主键索引
+  KEY `id_card` (`id_card`),    # 普通索引
+  KEY `name_age` (`name`,`age`)	# 联合索引
+) ENGINE=InnoDB
+</code></pre>
+<p>联合索引的结构图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210618173821323.png" alt="在这里插入图片描述"></p>
+<p>对于 SQL <code>where name like ‘张 %’&quot;</code> 也可以使用到<strong>最左前缀</strong>原则。</p>
+<p><em><strong>关于联合索引的索引顺序</strong></em></p>
+<p>因为可以支持最左前缀，所以<strong>当已经有了 (a,b) 这个联合索引后，一般就不需要单独在 a 上建立索引了</strong>。因此，<em>第一原则是，如果通过调整顺序，可以少维护一个索引，那么这个顺序往往就是需要优先考虑采用的</em>。</p>
+<p>那么，如果既有联合查询，又有基于 a、b 各自的查询呢？<strong>查询条件里面只有 b 的语句，是无法使用 (a,b) 这个联合索引的</strong>，这时候你不得不维护另外一个索引，也就是说你需要<strong>同时维护 (a,b)、(b) 这两个索引</strong>。</p>
+<h4 id="344关于索引下推">34.4，关于索引下推</h4>
+<p>索引下推的机制是为了减少回表次数，从而提高查询效率。</p>
+<p>对于 SQL 语句：</p>
+<pre><code class="language-sql">select * from tuser where name like '张%' and age=10 and ismale=1;
+</code></pre>
+<p>在 MySQL 5.6 之前，只能从 ID3 开始一个个回表。到主键索引上找出数据行，再对比字段值。</p>
+<p>下图中，在 (name,age) 索引里面我特意去掉了 age 的值**，这个过程 InnoDB 并不会去看 age 的值**，只是按顺序把“name 第一个字是’张’”的记录一条条取出来回表。因此，需要回表 4 次。
+<img src="https://img-blog.csdnimg.cn/20210618175503488.png" alt="在这里插入图片描述"></p>
+<p>而 MySQL 5.6 引入的<strong>索引下推优化</strong>（index condition pushdown)， 可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，<strong>减少回表次数</strong>。</p>
+<p>在下图中，InnoDB 在 (name,age) 索引内部就判断了 age 是否等于 10，对于不等于 10 的记录，直接判断并跳过。在这个例子中，只需要对 ID4、ID5 这两条记录回表取数据判断，就只需要回表 2 次。
+<img src="https://img-blog.csdnimg.cn/20210618175527363.png" alt="在这里插入图片描述"></p>
+<h4 id="345关于索引覆盖">34.5，关于索引覆盖</h4>
+<p>索引的实际数据存储在 B+ 树的叶子节点上：</p>
+<ul>
+<li>唯一索引的叶子节点存储了行的所有数据，任何时候都不需要回表操作。</li>
+<li>普通索引的叶子节点只存储了行 id 和相应的索引列，如果需要别的列数据，则需要回表。</li>
+</ul>
+<p><strong>索引覆盖</strong>指的是，普通索引的叶子节点存储了我们所需要的所有（列）数据，从而不需要进行回表，加快了查询速度。</p>
+<blockquote>
+<p>如果要想使用到<code>索引覆盖</code>，尽量不要使用 <code>select *</code>，而只 <code>select</code> 索引中的字段。</p>
+</blockquote>
+<h4 id="346什么时候使用索引">34.6，什么时候使用索引</h4>
+<p>不需要创建索引的情况：</p>
+<ul>
+<li>表中的数据比较少的情况下，比如不到 1000 行；</li>
+<li>表中的数据重复度大，比如高于 10% 的时候。</li>
+</ul>
+<h4 id="347如何创建索引">34.7，如何创建索引</h4>
+<p>参照<a href="https://www.runoob.com/mysql/mysql-index.html">这里</a>。</p>
+<blockquote>
+<p>MySQL 5.6 版本以后，创建索引都支持 <strong>Online DDL</strong></p>
+</blockquote>
+<h4 id="348如何设计索引">34.8，如何设计索引</h4>
+<ul>
+<li>首先<strong>一张表的索引个数不宜过多</strong>，否则一条记录的增加和修改，会因为过多的索引造成额外的负担。
+<ul>
+<li>针对这个情况，当你需要新建索引的时候，首先考虑在原有的索引片上增加索引，也就是采用<strong>复合索引</strong>的方式，而不是新建一个新的索引。</li>
+<li>另外，我们可以<strong>定期检查索引</strong>的使用情况，对于很少使用到的索引可以及时删除，从而减少索引数量。</li>
+</ul>
+</li>
+<li>其次，在索引片中，也需要<strong>控制索引列的数量</strong>，通常情况下我们将 WHERE 里的条件列添加到索引中，而 SELECT 中的非条件列则不需要添加。除非 SELECT 中的非条件列数少，并且该字段会经常使用到。</li>
+<li>另外，<strong>单列索引和复合索引的长度也需要控制</strong>，在 MySQL InnoDB 中，系统默认单个索引长度最大为 767 bytes，如果单列索引长度超过了这个限制，就会取<strong>前缀索引</strong>，也就是取前 255 字符。这实际上也是告诉我们，字符列会占用较大的空间，在数据表设计的时候，尽量采用数值类型替代字符类型，尽量避免用字符类型做主键，同时针对字符字段最好只建前缀索引。</li>
+</ul>
+<h4 id="349为字符串数据设计索引前缀索引">34.9，为字符串数据设计索引（前缀索引）</h4>
+<p>MySQL 支持<strong>前缀索引</strong>，即你可以定义字符串的一部分作为索引，如果创建索引时不指定前缀长度，那么索引就会包含整个字符串。</p>
+<p>例如下面两个 SQL：</p>
+<pre><code class="language-sql"># index1 索引中，包含了每个记录的整个字符串
+alter table table_name add index index1(email);
+
+# index2 索引中，对于每个记录都是只取前 6 个字节
+alter table table_name add index index2(email(6));
+</code></pre>
+<p><strong>index1</strong> 与 <strong>index2</strong> 的结构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/30149cc5caff4f1494ec78ee81732133.png" alt="在这里插入图片描述"></p>
+<p><strong>index1</strong> 与 <strong>index2</strong> 的区别：</p>
+<ul>
+<li><strong>index1</strong>：占用空间更大，性能更好</li>
+<li><strong>index2</strong>：占用空间较小，性能较低，性能低的原因是：
+<ul>
+<li>每次在索引上定位到数据之后，还需要<strong>回表</strong>去判断字符串是否相等</li>
+<li>前缀索引也无法利用索引覆盖的特性</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>在使用前缀索引是，要确定适当的长度，才能确保即节省空间，又不至于太多的性能损失。</strong></p>
+</blockquote>
+<h4 id="3410索引的底层数据结构">34.10，索引的底层数据结构</h4>
+<p>MySQL 的索引存储在磁盘（速度很慢）上，读取索引时与磁盘的交互越少（重点在于将树的高度降低），性能也就越高。</p>
+<h5 id="1关于平衡二叉树">1，关于平衡二叉树</h5>
+<p>平衡二叉树不适合作为 MySQL 索引，主要是由于树的深度比较深，从而磁盘交互就比较多。常见的平衡二叉树有：</p>
+<ul>
+<li>平衡二叉搜索树：查询时间复杂度<code>O(log2n)</code>，树的深度为 <code>O(log2n)</code></li>
+<li>红黑树</li>
+<li>等</li>
+</ul>
+<h5 id="2关于-b-树">2，关于 B 树</h5>
+<p>B 树是平衡的多叉树，它的高度远小于平衡二叉树。B 树的一个节点可以存储 M 个子节点，M 成为 B 树的阶。在文件系统和数据库系统中的索引结构经常采用 B 树来实现。</p>
+<p><img src="https://img-blog.csdnimg.cn/8dd286da35c2428d933415c323097152.png" alt="在这里插入图片描述"></p>
+<h5 id="3关于-b--树">3，关于 B+  树</h5>
+<p>B+ 树是B 树的改进版，通常用在数据库中，InnoDB 使用的就是 B+ 树。</p>
+<p>B+ 树的优点：</p>
+<ul>
+<li><strong>B+ 树查询效率更稳定</strong>。因为 B+ 树每次只有访问到叶子节点才能找到对应的数据，而在 B 树中，非叶子节点也会存储数据，这样就会造成查询效率不稳定的情况，有时候访问到了非叶子节点就可以找到关键字，而有时需要访问到叶子节点才能找到关键字。</li>
+<li><strong>B+ 树的查询效率更高</strong>，这是因为通常 B+ 树比 B 树更矮胖（阶数更大，深度更低），查询所需要的磁盘 I/O 也会更少。同样的磁盘页大小，B+ 树可以存储更多的节点关键字。</li>
+<li><strong>在查询范围上，B+ 树的效率也比 B 树高</strong>。这是因为所有关键字都出现在 B+ 树的叶子节点中，并通过<strong>有序链表</strong>进行了链接。而在 B 树中则需要通过中序遍历才能完成查询范围的查找，效率要低很多。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/9f6af359881d47dbbeea6fbaffd65474.png" alt="在这里插入图片描述"></p>
+<h5 id="4关于-hash-索引">4，关于 Hash 索引</h5>
+<p><img src="https://img-blog.csdnimg.cn/104c2659804d47d0b80808b178848dc5.png" alt="在这里插入图片描述"></p>
+<p>Hash 索引与B+ 树的区别：</p>
+<ul>
+<li>Hash 索引不能进行范围查询，而 B+ 树可以。
+<ul>
+<li>因为 Hash 索引指向的数据是无序的，而 B+ 树的叶子节点是个有序的链表。</li>
+</ul>
+</li>
+<li>Hash 索引不支持联合索引的最左侧原则（即联合索引的部分索引无法使用），而 B+ 树可以。
+<ul>
+<li>对于联合索引来说，Hash 索引在计算 Hash 值的时候是将索引键合并后再一起计算 Hash 值，所以不会针对每个索引单独计算 Hash 值。因此如果用到联合索引的一个或者几个索引时，联合索引无法被利用。</li>
+</ul>
+</li>
+<li>Hash 索引不支持 <strong>ORDER BY 排序</strong>
+<ul>
+<li>因为 Hash 索引指向的数据是无序的，因此无法起到排序优化的作用，而 B+ 树索引数据是有序的，可以起到对该字段 ORDER BY 排序优化的作用。</li>
+<li>同理，我们也无法用 Hash 索引进行<strong>模糊查询</strong>，而 B+ 树可以使用 LIKE 进行模糊查询。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3411mysql-如何使用索引查询数据">34.11，MySQL 如何使用索引查询数据</h4>
+<p>一般我们在写 SQL 语句的时候，并没有指定使用哪个索引，使用哪个索引是由 MySQL 自身（优化器）来确定的。</p>
+<p>不过我们也可以使用 <code>force</code> 关键字来告诉 MySQL 使用我们指定的索引去查询数据：</p>
+<pre><code class="language-sql"># 告诉 MySQL 使用索引 a 来查询数据
+select * from t force index(a) where a between 10000 and 20000;
+</code></pre>
+<p><em><strong>优化器如何选择索引</strong></em></p>
+<p>优化器会根据<strong>扫描行数，是否使用临时表，是否排序，是否要回表</strong>等因素进行综合判断。</p>
+<p>优化器在执行 SQL 之前并不能准确的知道扫描行数，而只能根据统计信息来估算记录数。</p>
+<p>可以使用 <code>explain</code> 命令查看一个 SQL 的预估扫描行数（其中 <code>rows</code> 预估扫描行数）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210621224954322.png" alt="在这里插入图片描述"></p>
+<p>这个统计信息就是索引的“区分度”（一个索引上不同的值越多，这个索引的区分度就越好）。一个索引上不同的值的个数，我们称之为“<strong>基数</strong>”（<code>cardinality</code>），这个基数越大，索引的区分度越好。</p>
+<p>命令 <code>show index from table_name</code> 可以查看一个表的索引基数（但不一定准确）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210621224404545.png" alt="在这里插入图片描述"></p>
+<p>MySQL 通过<strong>采样统计</strong>来的到索引基数。</p>
+<p><em><strong>重建索引信息</strong></em></p>
+<p>MySQL 有时候会判断错误扫描行数，当你认为 MySQL 判断错误时（大多数时候MySQL是不会选择错误的），可以使用 <code>analyze table table_name</code> 命令来修正索引信息：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210621225636477.png" alt="在这里插入图片描述"></p>
+<h4 id="3412什么是回表">34.12，什么是回表</h4>
+<p><strong>回表</strong>是指，<em>InnoDB 在普通索引 a 上查到主键 id 的值后，再根据一个个主键 id 的值到主键索引上去查整行数据的过程</em>。</p>
+<p>那么，<em><strong>回表过程是一行行的查数据，还是批量的查数据？</strong></em></p>
+<p>以下面语句为例：</p>
+<pre><code class="language-sql"># 字段 a 上有索引
+select * from t1 where a&gt;=1 and a&lt;=100;
+</code></pre>
+<p><strong>默认的查询过程是这样的</strong>：主键索引是一棵 B+ 树，在这棵树上，每次只能根据一个主键 id 查到一行数据。因此，<strong>回表是一行行搜索主键索引的</strong>。</p>
+<p>流程图如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/bfed5221e75d44ed9d8e0ddecd3f4903.png" alt="在这里插入图片描述"></p>
+<p>随着 a 的值递增顺序查询的话，id 的值就变成随机的，那么就会出现随机访问，<strong>性能相对较差</strong>。虽然“按行查”这个机制不能改，但是<strong>调整查询的顺序，还是能够加速的</strong>。</p>
+<p>因为大多数的数据都是按照主键递增顺序插入得到的，所以，如果按照主键的递增顺序查询的话，对磁盘的读比较接近顺序读，能够提升读性能。这就是 <strong>MRR 优化的设计思路</strong>，MRR 即 Multi-Range Read，主要目的是尽量使用顺序读盘。</p>
+<p><strong>MRR</strong> 优化后的执行流程：</p>
+<ul>
+<li>根据索引 a，定位到满足条件的记录，将 id 值放入 <code>read_rnd_buffer</code> 中 ;</li>
+<li>将 <code>read_rnd_buffer</code> 中的 id 进行递增排序；</li>
+<li>排序后的 id 数组，依次到主键 id 索引中查记录，并作为结果返回。</li>
+</ul>
+<p><code>read_rnd_buffer</code> 的大小由 <code>read_rnd_buffer_size</code> 参数控制。如果步骤 1 中，<code>read_rnd_buffer</code> 放满了，就会先执行完步骤 2 和 3，然后清空 <code>read_rnd_buffer</code>。之后继续找索引 a 的下个记录，并继续循环。</p>
+<p>注意：如果想要稳定地使用 MRR 算法，需要设置<code>set optimizer_switch=&quot;mrr_cost_based=off&quot;</code>。（官方文档的说法是：现在的优化器策略，判断消耗的时候，会更倾向于不使用 MRR，把 mrr_cost_based 设置为 off，就是固定使用 MRR ）</p>
+<p>使用了 MRR 优化后的执行流程和 explain 结果：</p>
+<p><img src="https://img-blog.csdnimg.cn/7aaf55db2d2c49f4b458fb7b354e947d.png" alt="在这里插入图片描述"></p>
+<p>explain：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210715174306192.png" alt="在这里插入图片描述"></p>
+<p>可以看到 Extra 字段多了 Using MRR，表示用上了 MRR 优化。</p>
+<p><strong>MRR 能够提升性能的核心在于</strong>，这条查询语句在索引 a 上做的是一个范围查询，可以得到足够多的主键 id。这样通过排序以后，再去主键索引查数据，能体现出“<strong>顺序性</strong>”的优势。</p>
+<h4 id="3413索引失效的几种情况">34.13，索引失效的几种情况</h4>
+<p>以下几种 where 子句会导致索引失效：</p>
+<ul>
+<li>在 where 子句中对字段做<strong>函数处理</strong>或<strong>数据类型转换</strong>或<strong>表达式计算</strong>。比如：
+<ul>
+<li><code>select * from table_name where month(time_col) = 3</code></li>
+<li><code>select * from table_name where id + 1 &gt; 10</code></li>
+<li>注意：当主键是<strong>整数类型条件是字符串时，会走索引</strong>，比如：</li>
+<li><code>select * from member WHERE id = 90000</code> 与</li>
+<li><code>select * from member WHERE id = '90000'</code> 是一样的（前提 id 是数字类型）。</li>
+</ul>
+</li>
+<li>在 where 子句中对字段使用<code>&lt;&gt;，!=</code>，或进行<code> NULL</code> 判断（包括 <code>IS NULL</code>,<code> IS NOT NULL</code>）。</li>
+<li>在 where 子句中使用 <code>IN</code> 或 <code>NOT IN</code>。</li>
+<li>在 where 子句中使用 <code>like</code> 语句，且以 <code>%</code> 开头。</li>
+<li>在 where 子句中使用到<strong>字符串类型</strong>字段时，没有加<strong>单引号</strong><code>''</code>
+<ul>
+<li>这种情况会导致<strong>数据类型转换</strong></li>
+<li>比如：<code>select * from member WHERE name = 90000</code>（<code>name</code> 是字符串类型）</li>
+</ul>
+</li>
+<li>在 where 子句中，如果在 <code>OR</code> 前的条件列进行了索引，而在 OR 后的条件列没有进行索引，那么索引会失效。
+<ul>
+<li>只要用到 <code>OR</code> 就会导致索引失效</li>
+</ul>
+</li>
+</ul>
+<h3 id="35定位数据库-sql-性能问题">35，定位数据库 SQL 性能问题</h3>
+<h4 id="351数据库优化步骤">35.1，数据库优化步骤</h4>
+<p><img src="https://img-blog.csdnimg.cn/20210526140037955.png" alt="在这里插入图片描述" style="zoom:60%;" /></p>
+<h4 id="352慢查询">35.2，慢查询</h4>
+<p>查看慢查询是否已经开启：</p>
+<pre><code class="language-sql">mysql &gt; show variables like '%slow_query_log';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526154331100.png" alt="在这里插入图片描述"></p>
+<p>打开慢查询：</p>
+<pre><code class="language-sql">mysql &gt; set global slow_query_log='ON';
+</code></pre>
+<blockquote>
+<p>注意：这种设置只对当前数据库生效，<strong>数据库重启后则会失效</strong>。若想永久生效则需在配置文件中设置。</p>
+</blockquote>
+<p>在配置文件中设置，可永久生效：</p>
+<p><img src="https://img-blog.csdnimg.cn/c546748970544dcaaa323ed649ddfd0f.png" alt="在这里插入图片描述"></p>
+<p>查看慢查询日志是否开启，以及慢查询日志文件的位置：</p>
+<pre><code class="language-sql">mysql &gt; show variables like '%slow_query_log%';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526154610749.png" alt="在这里插入图片描述"></p>
+<p>查看慢查询的时间阈值（单位<code>秒</code>，默认是<code>10</code>）：</p>
+<pre><code class="language-sql">mysql &gt; show variables like '%long_query_time%';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526154747317.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>注意：判断条件是<strong>大于</strong>该时间阈值，而不是<strong>大于等于</strong></p>
+</blockquote>
+<p>设置慢查询时间阈值：</p>
+<pre><code class="language-sql">mysql &gt; set global long_query_time = 3;
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526154907267.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>如果在设置值后，查询发现没有改变，可以关闭当前连接，重新建立与 MySQL 的连接，再次查询。
+或者使用 <code>show global variables like '%long_query_time%'</code></p>
+</blockquote>
+<p>如果将 <code>long_query_time</code> 的值设置为 0，那么所有的查询语句都将被记录在慢查询日志中。</p>
+<blockquote>
+<p>一般情况下，生产环境会设置为 1 秒。</p>
+</blockquote>
+<p>以下命令可以查看当前系统中<strong>慢SQL</strong>的条数：</p>
+<pre><code class="language-sql">&gt; show global status like '%slow_queries%'
+</code></pre>
+<p>关于<strong>慢查询</strong>，还可以参考<a href="https://blog.csdn.net/LUAOHAN/article/details/117226122">这里</a>。</p>
+<h4 id="353分析慢查询日志">35.3，分析慢查询日志</h4>
+<p>使用 MySQL 自带的 <code>mysqldumpslow</code> 工具统计慢查询日志（这个工具是个 Perl 脚本，需要先安装好 Perl）。</p>
+<p><code>mysqldumpslow</code> 命令的具体参数如下：</p>
+<ul>
+<li><code>-s</code>：采用 order 排序的方式，排序方式可以有以下几种。分别是：
+<ul>
+<li>c（访问次数）</li>
+<li>t（查询时间）</li>
+<li>l（锁定时间）</li>
+<li>r（返回记录）</li>
+<li>ac（平均查询次数）</li>
+<li>al（平均锁定时间）</li>
+<li>ar（平均返回记录数）</li>
+<li>at（平均查询时间），为默认排序方式。</li>
+</ul>
+</li>
+<li><code>-t</code>：返回前 N 条数据 。</li>
+<li><code>-g</code>：后面可以是正则表达式，对大小写不敏感。</li>
+</ul>
+<p>比如要按照查询时间排序，查看前两条 SQL 语句：</p>
+<pre><code class="language-sql">perl mysqldumpslow.pl -s t -t 2 &quot;C:\ProgramData\MySQL\MySQL Server 8.0\Data\DESKTOP-4BK02RP-slow.log&quot;
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526155748331.png" alt="在这里插入图片描述"></p>
+<h4 id="354explain-命令">35.4，EXPLAIN 命令</h4>
+<p>关于 Explain 命令的官方地址：<code>https://dev.mysql.com/doc/refman/8.0/en/explain-output.html</code></p>
+<p>当定位到了查询慢的 SQL 之后，就可以使用 <code>EXPLAIN</code> 工具做针对性的分析：</p>
+<pre><code class="language-sql">EXPLAIN SELECT comment_id, product_id, comment_text, product_comment.user_id, user_name 
+FROM product_comment 
+JOIN user on product_comment.user_id = user.user_id 
+</code></pre>
+<p>结果如下：
+<img src="https://img-blog.csdnimg.cn/20210526160206719.png" alt="在这里插入图片描述"></p>
+<p>每列的含义如下：</p>
+<ul>
+<li><strong>id</strong>：每个select子句的标识id，描述表的加载顺序
+<ul>
+<li><code>id 相同时</code>，执行顺序由上到下</li>
+<li><code>id 不同时</code>，id 值越大，越先执行</li>
+</ul>
+</li>
+<li><strong>select_type</strong>：select 语句的类型，常见类型：
+<ul>
+<li><code>SIMPLE</code>：简单查询（查询中不包含子查询或UNION）</li>
+<li><code>PRIMARY</code>：主查询（最外层查询-最后加载），查询中包含子查询，那么最外层查询被标记为 <code>PRIMARY</code></li>
+<li><code>SUBQUERY</code>：子查询</li>
+<li><code>DERIVED</code>：衍生临时表</li>
+<li><code>UNION</code>：<code>UNION</code> 之后的 select 被标记为 <code>UNION </code></li>
+<li><code>UNION RESULT</code>：多个 <code>UNION</code> 合并的结果</li>
+</ul>
+</li>
+<li><strong>table</strong>：当前使用的表名</li>
+<li><strong>partitions</strong>：显示查询将访问的分区，如果你的查询是基于分区表</li>
+<li><strong>type</strong>：当前表的访问方式</li>
+<li><strong>possible_keys</strong>：有可能被使用到的索引（理论上要用到的索引）</li>
+<li><strong>key</strong>：经过优化器评估最终<strong>使用的索引</strong>（实际上用到的索引，从 <code>possible_keys</code> 中选出）
+<ul>
+<li>如果值为 <code>NULL</code> 表示没有使用索引</li>
+<li>如果值为 <code>PRIMARY</code> 表示使用了主键索引</li>
+</ul>
+</li>
+<li><strong>key_len</strong>：使用到的索引长度，值越小，表示性能越好</li>
+<li><strong>ref</strong>：引用到的上一个表的列</li>
+<li><strong>rows</strong>：要扫描的行数</li>
+<li><strong>filtered</strong>：表示存储引擎返回的数据在server层过滤后，剩下多少满足查询的记录数量的比例，注意是百分比，不是具体记录数</li>
+<li><strong>Extra</strong>：额外的信息说明</li>
+</ul>
+<p>数据表的<strong>访问类型</strong>所对应的 <strong><code>type</code></strong> 列是比较关键的信息，<strong><code>type</code></strong> 可能有以下取值：</p>
+<p><img src="https://img-blog.csdnimg.cn/d8c984be87e847d188ff7b74c85a8558.png" alt="在这里插入图片描述"></p>
+<p>在这些情况里：</p>
+<ul>
+<li><code>all</code> 是最坏的情况，表示全表扫描。</li>
+<li><code>index</code> 和 <code>all</code> 差不多，只不过 index 对索引表进行全扫描，这样做的好处是不再需要对数据进行排序，但是开销依然很大。
+<ul>
+<li>例如：<code>select id from t;</code></li>
+<li>如果我们在 Extral 列中看到 <code>Using index</code>，说明采用了索引覆盖，也就是索引可以覆盖所需的 SELECT 字段，就不需要进行回表，这样就减少了数据查找的开销。</li>
+</ul>
+</li>
+<li><code>range</code> 表示索引范围扫描。</li>
+<li><code>index_merge</code> 说明查询同时使用了两个或以上的索引，最后取了交集或者并集。</li>
+<li><code>ref</code> 表示非唯一索引，或者是唯一索引的非唯一性前缀。</li>
+<li><code>eq_ref</code> 表示使用主键或唯一索引时产生的访问方式，通常使用在多表联查中。</li>
+<li><code>const</code> 表示使用了主键或者唯一索引（所有的部分）与常量值进行比较。
+<ul>
+<li>例如：<code>select * from t where id = 1;</code></li>
+<li>需要说明的是：<em>const 类型和 eq_ref 都使用了主键或唯一索引，不过这两个类型有所区别，const 是与常量进行比较，查询效率会更快，而 eq_ref 通常用于多表联查中</em>。</li>
+</ul>
+</li>
+<li><code>system</code> 一般用于 MyISAM 或 Memory 表，属于 const 类型的特例，当表只有一行时连接类型为 system。</li>
+</ul>
+<p>除了 all 类型外，其他类型都可以使用到索引，但不同的连接方式的效率也会有所不同，效率从低到高依次为：</p>
+<ul>
+<li><code>all &lt; index &lt; range &lt; index_merge &lt; ref &lt; eq_ref &lt; const/system</code>。</li>
+</ul>
+<p>我们在查看执行计划的时候，通常希望执行计划至少可以使用到 range 级别以上的连接方式，如果只使用到了 all 或者 index 连接方式，我们可以从 <strong>SQL 语句和索引设计</strong>的角度上进行改进。</p>
+<p><em><strong>Extra 字段的含义</strong></em></p>
+<p>我们从 Extra 字段中的内容，也可以获取很多有用的信息。</p>
+<p>Extra 字段的常用取值及含义：</p>
+<ul>
+<li><code>Using where</code>：表示使用了过滤（SQL中有 where 子句）</li>
+<li><code>Using filesort</code>：表示使用了<strong>文件排序</strong>（<code>不利于性能</code>）</li>
+<li><code>Using index</code>：表示使用了索引覆盖（<code>有利于性能</code>）</li>
+<li><code>Using index condition</code>：表示使用了普通索引（二级索引）过滤</li>
+<li><code>Using temporary</code>：表示查询过程中使用到了<strong>临时表</strong>（<code>不利于性能</code>）
+<ul>
+<li>常见于 <code>order by</code> 和 <code>group by</code></li>
+</ul>
+</li>
+<li><code>Impossible WHERE</code>：表示 where 子句的条件始终为 false</li>
+<li><code>Impossible HAVING</code>：表示 having 子句的条件始终为 false</li>
+</ul>
+<blockquote>
+<p><strong>说明：</strong>
+如果 where 子句中是普通字段（非索引字段）的过滤，这种过滤是在 server 层完成的，也就是 <code>Using where</code>（主键id 有些特殊）；
+如果 where 子句中是普通索引（二级索引）的过滤，这种过滤是在 engine 层完成的，也就是 <code>Using index condition</code>。</p>
+</blockquote>
+<h4 id="355show-profile-命令">35.5，SHOW PROFILE 命令</h4>
+<p><code>SHOW PROFILE</code> 相比 <code>EXPLAIN</code> 能看到更进一步的执行解析，包括 SQL 都做了什么、所花费的时间等。</p>
+<p>默认情况下，<code>profiling</code> 是关闭的：</p>
+<pre><code class="language-sql">mysql &gt; show variables like 'profiling';
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526163823377.png" alt="在这里插入图片描述"></p>
+<p>开启命令如下：</p>
+<pre><code class="language-sql">mysql &gt; set profiling = 'ON';
+</code></pre>
+<p>查看下当前会话都有哪些 <code>profiles</code>：</p>
+<pre><code class="language-sql">mysql &gt; show profiles;
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210526164055529.png" alt="在这里插入图片描述"></p>
+<p>查看上一个查询的开销：</p>
+<pre><code class="language-sql">mysql &gt; show profile;
+
+# 也可以查看指定的 Query ID 的开销，比如：
+# `show profile for query 2`
+# 查询结果是一样的
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/f527209732614159ad353cb76dfddfbe.png" alt="在这里插入图片描述"></p>
+<p>命令 <code>&gt; show profile cpu,block io for query Query_ID号</code> 可以查看更详细的信息，下面这些提示都是不利因素：</p>
+<p><img src="https://img-blog.csdnimg.cn/ca56dfc31b7f4098a2bf0e39f5fa2aff.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>注意：<code>SHOW PROFILE</code> 命令将被弃用，我们可以从 <code>information_schema</code> 中的 <code>profiling 数据表</code>进行查看。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-11-14
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2021/11/redis-learn1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Redis学习笔记1-理论篇</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/mysql-learn4/">
+            <span class="next-text nav-default">MySQL学习笔记4-进阶篇-下</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/11/mysql-learn5/" class="leancloud_visitors" data-flag-title="MySQL学习笔记5-调优篇">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
