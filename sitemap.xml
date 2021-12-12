@@ -37,8 +37,22 @@
   </url>
   
   <url>
+    <loc>https://codeshellme.github.io/book-manager/</loc>
+    <lastmod>2021-12-10T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://codeshellme.github.io/about/</loc>
     <lastmod>2020-03-28T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://codeshellme.github.io/</loc>
+    <lastmod>2021-12-10T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -130,13 +144,6 @@
   <url>
     <loc>https://codeshellme.github.io/2021/11/mysql-learn1/</loc>
     <lastmod>2021-11-10T21:41:52+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://codeshellme.github.io/</loc>
-    <lastmod>2021-08-10T21:41:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

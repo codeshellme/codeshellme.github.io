@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Tue, 10 Aug 2021 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 10 Dec 2021 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -55,6 +55,15 @@
       
       <guid>https://codeshellme.github.io/learn-book/</guid>
       <description>这里是我的一些学习笔记。 1，MySQL 学习笔记 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学习笔记1-基础篇 第二篇 MySQL 学习笔记2-进阶</description>
+    </item>
+    
+    <item>
+      <title>BM</title>
+      <link>https://codeshellme.github.io/book-manager/</link>
+      <pubDate>Fri, 10 Dec 2021 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/book-manager/</guid>
+      <description>BM 是 BookManager 的缩写。 1，项目介绍 book-manager 是一套图书管理系统，前端界面使用了 EasyUI 框架，后端基于SpringBoot+MyBatis 实现。 本系统包含首页门户、</description>
     </item>
     
     <item>
