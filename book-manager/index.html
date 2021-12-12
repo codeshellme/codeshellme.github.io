@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>BM - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农充电站" /><meta name="description" content="BM 是 BookManager 的缩写。 1，项目介绍 book-manager 是一套图书管理系统，前端界面使用了 EasyUI 框架，后端基于SpringBoot&#43;MyBatis 实现。 本系统包含首页门户、" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/book-manager/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="BM" />
+<meta property="og:description" content="BM 是 BookManager 的缩写。 1，项目介绍 book-manager 是一套图书管理系统，前端界面使用了 EasyUI 框架，后端基于SpringBoot&#43;MyBatis 实现。 本系统包含首页门户、" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/book-manager/" />
+<meta property="article:published_time" content="2021-12-10T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-12-10T21:41:52+08:00" />
+<meta itemprop="name" content="BM">
+<meta itemprop="description" content="BM 是 BookManager 的缩写。 1，项目介绍 book-manager 是一套图书管理系统，前端界面使用了 EasyUI 框架，后端基于SpringBoot&#43;MyBatis 实现。 本系统包含首页门户、">
+<meta itemprop="datePublished" content="2021-12-10T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-12-10T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5144">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="BM"/>
+<meta name="twitter:description" content="BM 是 BookManager 的缩写。 1，项目介绍 book-manager 是一套图书管理系统，前端界面使用了 EasyUI 框架，后端基于SpringBoot&#43;MyBatis 实现。 本系统包含首页门户、"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <div class="post-content">
+    <blockquote>
+<p><strong>BM 是 BookManager 的缩写。</strong></p>
+</blockquote>
+<h3 id="1项目介绍">1，项目介绍</h3>
+<p><a href="https://gitee.com/codeshellme/book-manager">book-manager</a> 是一套图书管理系统，前端界面使用了 <a href="https://www.jeasyui.net/">EasyUI</a> 框架，后端基于SpringBoot+MyBatis 实现。</p>
+<p>本系统包含首页门户、系统管理、权限管理、图书管理等模块。</p>
+<h3 id="2技术选型">2，技术选型</h3>
+<p><em><strong>主要技术</strong></em></p>
+<table>
+<thead>
+<tr>
+<th align="left">技术</th>
+<th align="left">说明</th>
+<th align="left">官网</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>Java</strong></td>
+<td align="left">后端语言</td>
+<td align="left"><a href="https://www.java.com/zh-CN/">https://www.java.com/zh-CN/</a></td>
+</tr>
+<tr>
+<td align="left"><strong>MySQL</strong></td>
+<td align="left">数据库</td>
+<td align="left"><a href="https://www.mysql.com/">https://www.mysql.com/</a></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>前端技术框架</strong></em></p>
+<table>
+<thead>
+<tr>
+<th align="left">技术</th>
+<th align="left">说明</th>
+<th align="left">官网</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>JQuery</strong></td>
+<td align="left">JavaScript 库</td>
+<td align="left"><a href="https://jquery.com/">https://jquery.com/</a></td>
+</tr>
+<tr>
+<td align="left"><strong>EasyUI</strong></td>
+<td align="left">Web UI 框架</td>
+<td align="left"><a href="https://www.jeasyui.net/">https://www.jeasyui.net/</a></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>后端技术框架</strong></em></p>
+<table>
+<thead>
+<tr>
+<th align="left">技术</th>
+<th align="left">说明</th>
+<th align="left">官网</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>SpringBoot</strong></td>
+<td align="left">容器+MVC框架</td>
+<td align="left"><a href="https://spring.io/projects/spring-boot">https://spring.io/projects/spring-boot</a></td>
+</tr>
+<tr>
+<td align="left"><strong>SpringSecurity</strong></td>
+<td align="left">认证和授权框架</td>
+<td align="left"><a href="https://spring.io/projects/spring-security">https://spring.io/projects/spring-security</a></td>
+</tr>
+<tr>
+<td align="left"><strong>JWT</strong></td>
+<td align="left">JWT 登录支持</td>
+<td align="left"><a href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a></td>
+</tr>
+<tr>
+<td align="left"><strong>MyBatis</strong></td>
+<td align="left">ORM 框架</td>
+<td align="left"><a href="http://www.mybatis.org/mybatis-3/zh/index.html">http://www.mybatis.org/mybatis-3/zh/index.html</a></td>
+</tr>
+<tr>
+<td align="left"><strong>Lombok</strong></td>
+<td align="left">Java 对象封装工具</td>
+<td align="left"><a href="https://github.com/rzwitserloot/lombok">https://github.com/rzwitserloot/lombok</a></td>
+</tr>
+<tr>
+<td align="left"><strong>PageHelper</strong></td>
+<td align="left">MyBatis 分页插件</td>
+<td align="left"><a href="https://pagehelper.github.io">https://pagehelper.github.io</a></td>
+</tr>
+<tr>
+<td align="left"><strong>Hutool</strong></td>
+<td align="left">Java 工具类库</td>
+<td align="left"><a href="https://www.hutool.cn">https://www.hutool.cn</a></td>
+</tr>
+<tr>
+<td align="left"><strong>Maven</strong></td>
+<td align="left">项目构建工具</td>
+<td align="left"><a href="https://maven.apache.org">https://maven.apache.org</a></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>开发工具</strong></em></p>
+<table>
+<thead>
+<tr>
+<th align="left">工具</th>
+<th align="left">说明</th>
+<th align="left">官网</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>IDEA</strong></td>
+<td align="left">Java 集成开发环境</td>
+<td align="left"><a href="https://www.jetbrains.com/idea/download/">https://www.jetbrains.com/idea/download/</a></td>
+</tr>
+<tr>
+<td align="left"><strong>X-shell</strong></td>
+<td align="left">Linux 远程连接工具</td>
+<td align="left"><a href="https://www.netsarang.com/zh/all-downloads/">https://www.netsarang.com/zh/all-downloads/</a></td>
+</tr>
+<tr>
+<td align="left"><strong>Navicat</strong></td>
+<td align="left">数据库连接工具</td>
+<td align="left"><a href="https://www.navicat.com.cn">https://www.navicat.com.cn</a></td>
+</tr>
+<tr>
+<td align="left"><strong>Git</strong></td>
+<td align="left">版本控制工具</td>
+<td align="left"><a href="https://git-scm.com">https://git-scm.com</a></td>
+</tr>
+<tr>
+<td align="left"><strong>Typora</strong></td>
+<td align="left">Markdown 编辑器</td>
+<td align="left"><a href="https://typora.io/">https://typora.io/</a></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>Idea 插件</strong></em></p>
+<p>这里介绍两个 Idea 插件（<code>File -&gt; Settings -&gt; Plugins</code>）：</p>
+<ul>
+<li>Lombok</li>
+<li>Free MyBatis plugin</li>
+</ul>
+<p>因为项目中使用了 <strong>Lombok</strong>，所以 <strong>Lombok</strong> 插件是必须的；<strong>Free MyBatis plugin</strong> 可以实现 Dao 层接口到 Mapper 文件的跳转。</p>
+<p><img src="https://img-blog.csdnimg.cn/67c11e9cc08747419c230b1e5e04e4ba.png" alt="在这里插入图片描述"></p>
+<h3 id="3数据库构建">3，数据库构建</h3>
+<p>数据库使用的是 MySQL。</p>
+<h4 id="1创建库">1，创建库</h4>
+<p>新建 <code>book</code> 数据库：</p>
+<p><img src="https://img-blog.csdnimg.cn/0d3fe135b358450fb2eb072a7ca0c34e.png" alt="在这里插入图片描述"></p>
+<pre><code class="language-sql">CREATE DATABASE `book` CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+</code></pre>
+<h4 id="2创建表">2，创建表</h4>
+<p>1，创建<strong>用户表</strong> <code>ums_user</code>：</p>
+<pre><code class="language-sql">-- Table structure for ums_user
+DROP TABLE IF EXISTS `ums_user`;
+CREATE TABLE `ums_user`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
+  `username` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `password` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `nickname` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '昵称',
+  `pincode` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '拼音简码',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '帐号启用状态：0-&gt;禁用；1-&gt;启用',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `role_id` int(0) UNSIGNED NOT NULL COMMENT '角色 ID',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_username`(`username`) USING BTREE COMMENT '唯一索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of ums_user
+INSERT INTO `ums_user` VALUES (1, 'admin', '3', '超级管理员', 'cjgly', 1, now(), now(), 1);
+INSERT INTO `ums_user` VALUES (2, 'book', '5', '图书管理员', 'tsgly', 1, now(), now(), 2);
+INSERT INTO `ums_user` VALUES (3, '11', '11', '11', '11', 1, now(), now(), 3);
+INSERT INTO `ums_user` VALUES (4, '12', '12', '12', '12', 1, now(), now(), 3);
+</code></pre>
+<p>2，创建<strong>角色表</strong> <code>ums_role</code>：</p>
+<pre><code class="language-sql">-- Table structure for ums_role
+DROP TABLE IF EXISTS `ums_role`;
+CREATE TABLE `ums_role`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `name` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
+  `sign` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色标识',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色说明',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '帐号启用状态：0-&gt;禁用；1-&gt;启用',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_sign`(`sign`) USING BTREE COMMENT '唯一索引，sign 作为唯一标识，不能重复'
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of ums_role
+INSERT INTO `ums_role` VALUES (1, '超级用户', 'super', '拥有最高权限', 1, now(), now());
+INSERT INTO `ums_role` VALUES (2, '图书管理员', 'manager', '图书管理员', 1, now(), now());
+INSERT INTO `ums_role` VALUES (3, '普通用户', 'user', '普通用户', 1, now(), now());
+</code></pre>
+<p>3，创建<strong>菜单表</strong> <code>ums_menu</code>：</p>
+<pre><code class="language-sql">-- Table structure for ums_menu
+DROP TABLE IF EXISTS `ums_menu`;
+CREATE TABLE `ums_menu`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
+  `parent_id` int(0) UNSIGNED NOT NULL COMMENT '上级菜单id',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单名称',
+  `icon` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
+  `url` varchar(80) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单url',
+  `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单类型:DIR/SUBMENU',
+  `order` tinyint(0) UNSIGNED NOT NULL COMMENT '菜单排序',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '启用状态：0-&gt;禁用；1-&gt;启用',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of ums_menu
+INSERT INTO `ums_menu` VALUES (1, 0, '权限管理', 'icon-computer-edit', '/', 'DIR', 1, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (2, 1, '菜单管理', 'icon-node-tree16', '/menu', 'SUBMENU', 1, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (3, 1, '角色管理', 'icon-user-group', '/role', 'SUBMENU', 2, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (4, 0, '图书管理', 'icon-book-open', '/', 'DIR', 2, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (5, 4, '图书借阅', 'icon-book-tabs', '/book_borrow', 'SUBMENU', 3, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (11, 1, '用户管理', 'icon-users', '/user', 'SUBMENU', 3, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (12, 0, '系统管理', 'icon-wrench', '/', 'DIR', 4, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (13, 12, '字典管理', 'icon-application-view-columns', '/sys_dict', 'SUBMENU', 1, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (14, 12, '作者管理', 'icon-user-suit', '/sys_author', 'SUBMENU', 2, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (15, 4, '图书条目', 'icon-application-side-list', '/sys_book', 'SUBMENU', 1, 1, now(), now());
+INSERT INTO `ums_menu` VALUES (16, 4, '图书库存', 'icon-book-key', '/book_stock', 'SUBMENU', 2, 1, now(), now());
+</code></pre>
+<p>4，创建<strong>角色菜单关系表</strong> <code>ums_role_menu</code>：</p>
+<pre><code class="language-sql">-- Table structure for ums_role_menu
+DROP TABLE IF EXISTS `ums_role_menu`;
+CREATE TABLE `ums_role_menu`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `role_id` int(0) UNSIGNED NOT NULL COMMENT '角色 id',
+  `menu_id` int(0) UNSIGNED NOT NULL COMMENT '角色 id 对应的菜单 id',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_role_menu`(`role_id`, `menu_id`) USING BTREE COMMENT '联合唯一索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of ums_role_menu
+INSERT INTO `ums_role_menu` VALUES (11, 1, 1);
+INSERT INTO `ums_role_menu` VALUES (55, 1, 2);
+INSERT INTO `ums_role_menu` VALUES (14, 1, 3);
+INSERT INTO `ums_role_menu` VALUES (71, 1, 4);
+INSERT INTO `ums_role_menu` VALUES (69, 1, 5);
+INSERT INTO `ums_role_menu` VALUES (70, 1, 6);
+INSERT INTO `ums_role_menu` VALUES (3, 1, 7);
+INSERT INTO `ums_role_menu` VALUES (5, 1, 9);
+INSERT INTO `ums_role_menu` VALUES (67, 1, 11);
+INSERT INTO `ums_role_menu` VALUES (73, 1, 12);
+INSERT INTO `ums_role_menu` VALUES (72, 1, 13);
+INSERT INTO `ums_role_menu` VALUES (74, 1, 14);
+INSERT INTO `ums_role_menu` VALUES (76, 1, 15);
+INSERT INTO `ums_role_menu` VALUES (78, 1, 16);
+INSERT INTO `ums_role_menu` VALUES (60, 2, 1);
+INSERT INTO `ums_role_menu` VALUES (59, 2, 3);
+INSERT INTO `ums_role_menu` VALUES (44, 2, 4);
+INSERT INTO `ums_role_menu` VALUES (43, 2, 6);
+INSERT INTO `ums_role_menu` VALUES (42, 2, 7);
+INSERT INTO `ums_role_menu` VALUES (41, 2, 9);
+INSERT INTO `ums_role_menu` VALUES (66, 3, 4);
+INSERT INTO `ums_role_menu` VALUES (65, 3, 5);
+</code></pre>
+<p>5，创建<strong>字典表</strong> <code>sys_dict</code>：</p>
+<pre><code class="language-sql">-- Table structure for sys_dict
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `father_id` int(0) UNSIGNED NOT NULL COMMENT '父 id',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+  `keyname` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '关键字',
+  `dicttype` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典类型',
+  `sn` int(0) UNSIGNED NOT NULL COMMENT '排序',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '启用状态：0-&gt;禁用；1-&gt;启用',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `pincode` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称简码',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of sys_dict
+INSERT INTO `sys_dict` VALUES (1, 0, '国籍', 'Nationality', 'Nationality', 0, 1, now(), now(), 'gj');
+INSERT INTO `sys_dict` VALUES (2, 1, '中国', 'China', 'Nationality', 1, 1, now(), now(), 'zg');
+INSERT INTO `sys_dict` VALUES (3, 1, '美国', 'America', 'Nationality', 2, 1, now(), now(), 'mg');
+INSERT INTO `sys_dict` VALUES (4, 1, '俄罗斯', 'Russia', 'Nationality', 3, 1, now(), now(), 'els');
+INSERT INTO `sys_dict` VALUES (5, 1, '法国', 'France', 'Nationality', 4, 1, now(), now(), 'fg');
+INSERT INTO `sys_dict` VALUES (6, 1, '德国', 'Germany', 'Nationality', 5, 1, now(), now(), 'dg');
+INSERT INTO `sys_dict` VALUES (7, 1, '日本', 'Japan', 'Nationality', 6, 1, now(), now(), 'rb');
+INSERT INTO `sys_dict` VALUES (8, 1, '新加坡', 'Singapore', 'Nationality', 7, 1, now(), now(), 'xjp');
+INSERT INTO `sys_dict` VALUES (9, 0, '性别', 'Sex', 'Sex', 0, 1, now(), now(), 'xb');
+INSERT INTO `sys_dict` VALUES (10, 9, '男', 'Man', 'Sex', 1, 1, now(), now(), 'n');
+INSERT INTO `sys_dict` VALUES (11, 9, '女', 'Women', 'Sex', 2, 1, now(), now(), 'n');
+INSERT INTO `sys_dict` VALUES (12, 0, '图书类型', 'Booktype', 'Booktype', 0, 1, now(), now(), 'tslx');
+INSERT INTO `sys_dict` VALUES (13, 12, '小说', 'Novel', 'Booktype', 1, 1, now(), now(), 'xs');
+INSERT INTO `sys_dict` VALUES (14, 12, '文学', 'Literature', 'Booktype', 2, 1, now(), now(), 'wx');
+INSERT INTO `sys_dict` VALUES (15, 12, '传记', 'Biography', 'Booktype', 3, 1, now(), now(), 'zj');
+INSERT INTO `sys_dict` VALUES (16, 12, '艺术', 'Art', 'Booktype', 4, 1, now(), now(), 'ys');
+INSERT INTO `sys_dict` VALUES (17, 12, '摄影', 'Photography', 'Booktype', 5, 1, now(), now(), 'sy');
+INSERT INTO `sys_dict` VALUES (18, 12, '哲学', 'Philosophy', 'Booktype', 6, 1, now(), now(), 'zx');
+INSERT INTO `sys_dict` VALUES (19, 12, '历史', 'History', 'Booktype', 7, 1, now(), now(), 'ls');
+INSERT INTO `sys_dict` VALUES (20, 12, '军事', 'Military', 'Booktype', 8, 1, now(), now(), 'js');
+INSERT INTO `sys_dict` VALUES (21, 12, '计算机', 'Computer', 'Booktype', 9, 1, now(), now(), 'jsj');
+</code></pre>
+<p>6，创建<strong>图书作者表</strong> <code>book_author</code>：</p>
+<pre><code class="language-sql">-- Table structure for book_author
+DROP TABLE IF EXISTS `book_author`;
+CREATE TABLE `book_author`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
+  `pincode` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名简码',
+  `sex` tinyint(0) UNSIGNED NOT NULL COMMENT '性别：0-&gt;女，1-&gt;男',
+  `nationality_id` int(0) UNSIGNED NOT NULL COMMENT '国籍 id，见 sys_dict 表',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '启用状态：0-&gt;禁用；1-&gt;启用',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_name`(`name`) USING BTREE COMMENT '唯一索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of book_author
+INSERT INTO `book_author` VALUES (1, '鲁迅', 'lx', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (2, '沈从文', 'scw', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (3, '张爱玲', 'zal', 0, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (4, '巴金', 'bj', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (5, '钱钟书', 'qzs', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (6, '茅盾', 'md', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (7, '莫言', 'my', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (8, '史铁生', 'sts', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (9, '余秋雨', 'yqy', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (10, '韩寒', 'hh', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (11, '郭敬明', 'gjm', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (12, '易中天', 'yzt', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (14, '余华', 'yh', 1, 2, 1, now(), now());
+INSERT INTO `book_author` VALUES (15, '刘震云', 'lzy', 1, 2, 1, now(), now());
+</code></pre>
+<p>7，创建<strong>图书条目表</strong> <code>book_item</code>：</p>
+<pre><code class="language-sql">-- Table structure for book_item
+DROP TABLE IF EXISTS `book_item`;
+CREATE TABLE `book_item`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `name` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '书名',
+  `pincode` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '书名简码',
+  `type_id` int(0) UNSIGNED NOT NULL COMMENT '书的类型',
+  `author_id` int(0) UNSIGNED NOT NULL COMMENT '作者 id',
+  `publisher` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '出版社',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '0-&gt;禁用；1-&gt;启用',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx`(`name`) USING BTREE COMMENT '唯一索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of book_item
+INSERT INTO `book_item` VALUES (1, '呐喊', 'nh', 14, 1, 'aaa', 1, 'aaaaa', now(), now());
+INSERT INTO `book_item` VALUES (2, '彷徨', 'ph', 14, 1, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (3, '围城', 'wc', 13, 5, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (4, '人·兽·鬼', 'rsg', 13, 5, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (5, '丰乳肥臀', 'frft', 13, 7, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (6, '生死疲劳', 'sspl', 13, 7, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (7, '红高粱家族', 'hgljz', 13, 7, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (8, '我与地坛', 'wydt', 14, 8, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (9, '务虚笔记', 'wxbj', 14, 8, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (10, '病隙碎笔', 'bxsb', 14, 8, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (11, '文化苦旅', 'whkl', 14, 9, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (12, '山居笔记', 'sjbj', 14, 9, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (13, '千年一叹', 'qnyt', 14, 9, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (14, '行者无疆', 'xzwj', 14, 9, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (15, '霜冷长河', 'slch', 14, 9, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (16, '借我一生', 'jwys', 14, 9, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (17, '三重门', 'scm', 13, 10, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (18, '零下一度', 'lxyd', 13, 10, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (19, '像少年啦飞驰', 'xsnlfc', 13, 10, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (20, '一座城池', 'yzcc', 13, 10, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (21, '杂的文', 'zdw', 14, 10, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (22, '我所理解的生活', 'wsljdsh', 14, 10, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (23, '活着', 'hz', 13, 14, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (24, '许三观卖血记', 'xsgmxj', 13, 14, NULL, 1, NULL, now(), now());
+INSERT INTO `book_item` VALUES (25, '兄弟', 'xd', 13, 14, NULL, 1, NULL, now(), now());
+</code></pre>
+<p>8，创建<strong>图书库存表</strong> <code>book_stock</code>：</p>
+<pre><code class="language-sql">-- Table structure for book_stock
+DROP TABLE IF EXISTS `book_stock`;
+CREATE TABLE `book_stock`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `book_id` int(0) UNSIGNED NOT NULL COMMENT 'book_item.id',
+  `num` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存数',
+  `status` tinyint(0) UNSIGNED NOT NULL DEFAULT 1 COMMENT '0-&gt;禁用；1-&gt;启用',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `idx_bookid`(`book_id`) USING BTREE COMMENT '唯一索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of book_stock
+INSERT INTO `book_stock` VALUES (2, 5, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (3, 8, 5, 1, now(), now());
+INSERT INTO `book_stock` VALUES (4, 9, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (5, 10, 10, 1, now(), now());
+INSERT INTO `book_stock` VALUES (6, 2, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (7, 3, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (8, 4, 8, 1, now(), now());
+INSERT INTO `book_stock` VALUES (9, 6, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (10, 7, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (12, 11, 0, 1, now(), now());
+INSERT INTO `book_stock` VALUES (13, 17, 3, 1, now(), now());
+</code></pre>
+<p>9，创建<strong>图书借阅表</strong> <code>book_borrow</code>：</p>
+<pre><code class="language-sql">-- Table structure for book_borrow
+DROP TABLE IF EXISTS `book_borrow`;
+CREATE TABLE `book_borrow`  (
+  `id` int(0) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增 id',
+  `stock_id` int(0) UNSIGNED NOT NULL COMMENT 'book_stock.id',
+  `student_id` int(0) UNSIGNED NOT NULL COMMENT '学生 id',
+  `student_name` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '学生姓名',
+  `status` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Y' COMMENT '借书状态 Y-&gt; 借书 N-&gt;已还书',
+  `borrow_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '借书时间',
+  `return_time` datetime(0) NULL DEFAULT NULL COMMENT '还书时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- Records of book_borrow
+INSERT INTO `book_borrow` VALUES (1, 5, 1, '学生01', 'Y', now(), NULL);
+INSERT INTO `book_borrow` VALUES (4, 8, 1, '学生01', 'N', now(), now());
+INSERT INTO `book_borrow` VALUES (5, 8, 2, '学生02', 'N', now(), now());
+INSERT INTO `book_borrow` VALUES (6, 9, 2, '学生02', 'Y', now(), NULL);
+INSERT INTO `book_borrow` VALUES (7, 10, 3, '学生03', 'Y', now(), NULL);
+</code></pre>
+<h3 id="4项目构建">4，项目构建</h3>
+<p>从 GitHub 上拉去代码到 Idea 中，在配置文件 <code>application.properties</code> 中配置数据库信息。</p>
+<p>启动类是 <code>com.codeshellme.bookmanager.BookManagerApplication</code>，运行它就可以启动项目。</p>
+<h3 id="5功能介绍">5，功能介绍</h3>
+<h4 id="1用户首页">1，用户首页</h4>
+<p><img src="https://img-blog.csdnimg.cn/df58775787ef4553a2818e21c6424df2.png?" alt="在这里插入图片描述"></p>
+<h4 id="2登录界面">2，登录界面</h4>
+<p><img src="https://img-blog.csdnimg.cn/c9c076a7857c4dac9f622e0424f49385.png?" alt="在这里插入图片描述"></p>
+<h4 id="3菜单列表">3，菜单列表</h4>
+<p>目前的菜单列表如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/d1cfd59738524b6683b3e18ac92bcb6f.png" alt="在这里插入图片描述"></p>
+<p>分别有：</p>
+<ul>
+<li><strong>权限管理</strong>：包括菜单管理，角色管理和用户管理
+<ul>
+<li><strong>菜单管理</strong>：管理整个系统的菜单，每项菜单对应不同的功能</li>
+<li><strong>角色管理</strong>：管理整个系统的角色，每个角色可配置不同的菜单功能，比如：
+<ul>
+<li><code>super</code> 角色拥有系统的最高权限，拥有系统中的所有功能</li>
+<li><code>manager</code> 角色主要分配给图书管理员，可以拥有图书管理和系统管理功能，但不能拥有权限管理功能</li>
+</ul>
+</li>
+<li><strong>用户管理</strong>：管理整个系统的用户，每个用户只能属于一种角色，拥有所属角色的所有功能</li>
+</ul>
+</li>
+<li><strong>图书管理</strong>：主要用于管理图书
+<ul>
+<li><strong>图书条目</strong>：最基础的图书信息</li>
+<li><strong>图书库存</strong>：代表图书馆中的所有图书库存，所有能进入库存的图书，都必须先进入图书条目</li>
+<li><strong>图书借阅</strong>：图书借阅相关功能，只有在库存中的图书才能被借阅</li>
+<li>以上三者的范围关系为：图书条目 &gt;= 图书库存 &gt;= 图书借阅</li>
+</ul>
+</li>
+<li><strong>系统管理</strong>：
+<ul>
+<li><strong>字典管理</strong>：管理一些基础信息，比如图书都有哪些类型，作者的国籍都有哪些等</li>
+<li><strong>作者管理</strong>：每本书都有作者，该功能管理了系统中所有的作者信息</li>
+</ul>
+</li>
+</ul>
+<h4 id="4菜单管理">4，菜单管理</h4>
+<p><img src="https://img-blog.csdnimg.cn/43d67777b9864faea1f6615f0e1513fb.png?" alt="在这里插入图片描述"></p>
+<h4 id="5角色管理">5，角色管理</h4>
+<p><img src="https://img-blog.csdnimg.cn/81ff9d72270f404ab9c3145f38b49654.png" alt="在这里插入图片描述"></p>
+<h4 id="6用户管理">6，用户管理</h4>
+<p><img src="https://img-blog.csdnimg.cn/47b0cb380c9c4c27bf2f4ac4c2030f8e.png" alt="在这里插入图片描述"></p>
+<h4 id="7图书条目">7，图书条目</h4>
+<p><img src="https://img-blog.csdnimg.cn/89c6dd82651f4e2fbb24358f40379cee.png" alt="在这里插入图片描述"></p>
+<h4 id="8图书库存">8，图书库存</h4>
+<p><img src="https://img-blog.csdnimg.cn/9d6e37c9177d4c5eb171dbb76c77c200.png?" alt="在这里插入图片描述"></p>
+<h4 id="9图书借阅">9，图书借阅</h4>
+<p><img src="https://img-blog.csdnimg.cn/6eb2158715554643bedc4cf5d927e34a.png?" alt="在这里插入图片描述"></p>
+<h4 id="10字典管理">10，字典管理</h4>
+<p><img src="https://img-blog.csdnimg.cn/55fbc128fab64275aea102fed1cbb966.png?" alt="在这里插入图片描述"></p>
+<h4 id="11作者管理">11，作者管理</h4>
+<p><img src="https://img-blog.csdnimg.cn/f17a0af44ff447c695d84aad4a540148.png?" alt="在这里插入图片描述"></p>
+<h3 id="6项目部署">6，项目部署</h3>
+<p>下面介绍两种部署服务的方式：</p>
+<ul>
+<li>以 <strong>jar</strong> 包方式部署
+<ul>
+<li>此方式使用 <strong>springboot 内置的 tomcat</strong> 运行</li>
+</ul>
+</li>
+<li>以 <strong>war</strong> 包方式部署
+<ul>
+<li>此方式使用外部 Tomcat</li>
+</ul>
+</li>
+</ul>
+<h4 id="1以-jar-包方式部署">1，以 jar 包方式部署</h4>
+<p>用 Idea 打 jar 包非常方便，无需修改任何 <code>pom.xml</code> 配置，先双击 <code>clean</code>，然后双击 <code>package</code>，就可打成 jar 包。</p>
+<p><img src="https://img-blog.csdnimg.cn/63409bf2bb264dfb9aaeae7d4214bc75.png" alt="在这里插入图片描述"></p>
+<p>打包成功后，会在 <code>target</code> 目录下生成一个 <code>book-manager-0.0.1-SNAPSHOT.jar</code> 文件，直接用 <code>java</code> 命令运行它即可启动项目：</p>
+<pre><code class="language-shell">&gt; java -jar book-manager-0.0.1-SNAPSHOT.jar
+</code></pre>
+<h4 id="2以-war-包方式部署">2，以 war 包方式部署</h4>
+<p>首先需在 <code>pom.xml</code> 中加入打包方式：</p>
+<pre><code class="language-xml">&lt;packaging&gt;war&lt;/packaging&gt;
+</code></pre>
+<p>然后，启动类 <code>BookManagerApplication</code> 继承 <code>SpringBootServletInitializer</code>，并覆盖 <code>configure</code> 方法：</p>
+<pre><code class="language-java">@SpringBootApplication
+public class BookManagerApplication extends SpringBootServletInitializer {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BookManagerApplication.class, args);
+    }
+
+    // 继承 SpringBootServletInitializer 实现 configure
+    // 以便打 war 包，进行外部服务器部署
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(BookManagerApplication.class);
+    }
+}
+</code></pre>
+<p>然后，再次使用 <code>maven</code> 打包：</p>
+<p><img src="https://img-blog.csdnimg.cn/63409bf2bb264dfb9aaeae7d4214bc75.png" alt="在这里插入图片描述"></p>
+<p>打包成功后，会在 <code>target</code> 目录下生成一个 <code>book-manager-0.0.1-SNAPSHOT.war</code> 文件，将其重命名为 <code>book-manager.war</code>，放入 <strong>tomcat</strong> 的 <code>webapps</code> 目录中。</p>
+<p>然后需要配置 Tomcat 的配置文件 <code>server.xml</code>，其中可设置服务器端口号等信息，我们需在 <code>Server&gt;Service&gt;Engine&gt;Host</code> 标签内加入下面配置：</p>
+<pre><code class="language-xml">&lt;Context docBase=&quot;Tomcat根目录/webapps/book-manager&quot; path=&quot;/&quot; reloadable=&quot;true&quot;/&gt;
+</code></pre>
+<p>最后启动 <strong>Tomcat</strong> 即可。</p>
+<p>另外，关于 <strong>springboot</strong> 相关的配置在 <code>Tomcat根目录\webapps\book-manager\WEB-INF\classes\application.properties</code> 文件中，其中包括<strong>数据库配置</strong>。</p>
+<p>需要注意的是，该文件中的 <code>server.port</code> 已不起作用（因为现在的服务器是外部 Tomcat，所以端口号要去 Tomcat 的配置文件中进行配置）。</p>
+
+  </div>
+</article>
+        </div>
+        
+
+  <span id="/book-manager/" class="leancloud_visitors" data-flag-title="BM">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
