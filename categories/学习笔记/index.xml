@@ -7,10 +7,100 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Fri, 19 Nov 2021 21:38:52 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Mar 2022 21:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）</title>
+      <link>https://codeshellme.github.io/2022/03/jvm3/</link>
+      <pubDate>Mon, 28 Mar 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/03/jvm3/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，ps 找到消耗资源最高的线程 ID 先用 ps 命令找到 Java 进程I</description>
+    </item>
+    
+    <item>
+      <title>JVM性能调优实战笔记2</title>
+      <link>https://codeshellme.github.io/2022/03/jvm2/</link>
+      <pubDate>Fri, 18 Mar 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/03/jvm2/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 6，线程私有空间-TLAB 7，逃逸分析 对于没有发生逃逸</description>
+    </item>
+    
+    <item>
+      <title>JVM性能调优实战笔记1</title>
+      <link>https://codeshellme.github.io/2022/03/jvm1/</link>
+      <pubDate>Tue, 15 Mar 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/03/jvm1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，性能优化的步骤 性能优化步骤： 发现问题-性能监控 GC 频</description>
+    </item>
+    
+    <item>
+      <title>Tomcat学习笔记</title>
+      <link>https://codeshellme.github.io/2022/03/tomcat-learn/</link>
+      <pubDate>Thu, 10 Mar 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/03/tomcat-learn/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 0，Tomcat 的下载与安装 到 Tomcat 官网下载： 点击 Tomcat8 如下：</description>
+    </item>
+    
+    <item>
+      <title>Java并发编程学习笔记2</title>
+      <link>https://codeshellme.github.io/2022/02/java-concurrent2/</link>
+      <pubDate>Mon, 28 Feb 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/02/java-concurrent2/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 8，Java 内存模型 JMM（Java Memory Model） 体现</description>
+    </item>
+    
+    <item>
+      <title>Java并发编程学习笔记1</title>
+      <link>https://codeshellme.github.io/2022/02/java-concurrent1/</link>
+      <pubDate>Fri, 18 Feb 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/02/java-concurrent1/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，查看线程的方法 Window 系统 任务管理器可以查看进程和线程数</description>
+    </item>
+    
+    <item>
+      <title>Netty学习笔记</title>
+      <link>https://codeshellme.github.io/2022/02/netty-learn/</link>
+      <pubDate>Thu, 10 Feb 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/02/netty-learn/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，初始 Netty Netty 是一个异步事件驱动的网络应用程序框架，可用</description>
+    </item>
+    
+    <item>
+      <title>MySQL集群搭建</title>
+      <link>https://codeshellme.github.io/2022/01/mysql-cluster/</link>
+      <pubDate>Fri, 28 Jan 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/01/mysql-cluster/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，MySQL 主从架构 1，MySQL 主从复制原理 2，一</description>
+    </item>
+    
+    <item>
+      <title>消息队列学习笔记</title>
+      <link>https://codeshellme.github.io/2022/01/msg-queue/</link>
+      <pubDate>Tue, 18 Jan 2022 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/01/msg-queue/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 1，消息队列的适用场景 消息队列适合处理的问题： 异步处理</description>
+    </item>
+    
+    <item>
+      <title>分布式学习笔记</title>
+      <link>https://codeshellme.github.io/2021/12/distributed/</link>
+      <pubDate>Sat, 18 Dec 2021 21:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2021/12/distributed/</guid>
+      <description>公号：码农充电站pro 主页：https://codeshellme.github.io 分布式的目的是用更多的机器，处理更多的数据和更复杂的任</description>
+    </item>
     
     <item>
       <title>架构学习笔记2</title>

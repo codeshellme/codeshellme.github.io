@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JVM性能调优实战笔记2 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 6，线程私有空间-TLAB 7，逃逸分析 对于没有发生逃逸" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/03/jvm2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="JVM性能调优实战笔记2" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 6，线程私有空间-TLAB 7，逃逸分析 对于没有发生逃逸" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/03/jvm2/" />
+<meta property="article:published_time" content="2022-03-18T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-03-18T21:41:52+08:00" />
+<meta itemprop="name" content="JVM性能调优实战笔记2">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 6，线程私有空间-TLAB 7，逃逸分析 对于没有发生逃逸">
+<meta itemprop="datePublished" content="2022-03-18T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-03-18T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4315">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JVM性能调优实战笔记2"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 6，线程私有空间-TLAB 7，逃逸分析 对于没有发生逃逸"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JVM性能调优实战笔记2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-03-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 4315 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#6线程私有空间-tlab">6，线程私有空间-TLAB</a></li>
+        <li><a href="#7逃逸分析">7，逃逸分析</a></li>
+        <li><a href="#9方法区">9，方法区</a></li>
+        <li><a href="#10string-的基本特性">10，String 的基本特性</a></li>
+        <li><a href="#11垃圾回收">11，垃圾回收</a></li>
+        <li><a href="#12垃圾回收算法">12，垃圾回收算法</a></li>
+        <li><a href="#13java-中的几种引用">13，Java 中的几种引用</a></li>
+        <li><a href="#14垃圾回收器">14，垃圾回收器</a></li>
+        <li><a href="#15class-文件结构">15，Class 文件结构</a></li>
+        <li><a href="#16类的加载">16，类的加载</a></li>
+        <li><a href="#17类的加载器">17，类的加载器</a></li>
+        <li><a href="#18双亲委派机制">18，双亲委派机制</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="6线程私有空间-tlab">6，线程私有空间-TLAB</h3>
+<p><img src="https://img-blog.csdnimg.cn/6fe85b94b4e1413e8249f84d8cdf8687.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/dd075d07f61d44febb7194223dedc906.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/7224d9ff38f241218c6143aefea0bc98.png?" alt="在这里插入图片描述"></p>
+<h3 id="7逃逸分析">7，逃逸分析</h3>
+<p><img src="https://img-blog.csdnimg.cn/919ac93529ff4f039141a5cd301551a7.png?" alt="在这里插入图片描述"></p>
+<p>对于没有发生逃逸的对象，可将其内存分配在栈上，从而<strong>减少堆的使用</strong>。</p>
+<p>代码分析：</p>
+<p>案例 1：
+<img src="https://img-blog.csdnimg.cn/48c194fd77bd4865903229fc454f5efe.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/2910d170977a4328afbdd5ad3514ed87.png" alt="在这里插入图片描述"></p>
+<p><strong>结论：开发中能使用局部变量的，就不要在方法外定义。</strong></p>
+<h3 id="9方法区">9，方法区</h3>
+<p><strong>方法区</strong>（又叫非堆）是一块独立于堆的内存空间。</p>
+<ul>
+<li>其大小可设置</li>
+<li>方法区的大小决定了系统可以保存多少个类，如果系统定义了太多的类，导致方法区溢出，JVM 会抛出内存溢出错误：
+<ul>
+<li>OutOfMemoryError：PermGen space（Jdk7 及之前）</li>
+<li>OutOfMemoryError：Metaspace （Jdk8 及之后）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/1f29e37937914a279dba97d95bc05838.png" alt="在这里插入图片描述"></p>
+<p>结合代码看：</p>
+<p><img src="https://img-blog.csdnimg.cn/131ecceae51a422883a11de11de9d50a.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/fba8b52750aa4b7a8ff68b9d4193a807.png?" alt="在这里插入图片描述"></p>
+<h4 id="1设置方法区的大小">1，设置方法区的大小</h4>
+<p>方法区的大小不必是固定的，jvm 可以根据应用的需要动态调整。</p>
+<p><strong>JDK7 及以前：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/06ee03cc872341628a4cb90ff75a60cb.png" alt="在这里插入图片描述"></p>
+<p><strong>JDK8 及以后：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/fdabc07faa1a463696f067ef6bc621bd.png" alt="在这里插入图片描述"></p>
+<h4 id="2方法区的内部结构">2，方法区的内部结构</h4>
+<p><img src="https://img-blog.csdnimg.cn/d4b17d485ff4403a887db94d96a7ad18.png?" alt="在这里插入图片描述"></p>
+<p>方法区主要存储的内容有：</p>
+<ul>
+<li>类型信息（class，interface，enum，annotation）
+<ul>
+<li>域信息：域名称、域类型、域修饰符、域的声明顺序</li>
+<li>方法信息：方法名称、返回类型、参数信息、方法修饰符、方法声明顺序等</li>
+</ul>
+</li>
+<li>常量</li>
+<li>静态变量</li>
+<li>即时编译器编译后的代码缓存</li>
+<li>等</li>
+</ul>
+<h4 id="3运行时常量池">3，运行时常量池</h4>
+<p>常量池中的数据类型包括：</p>
+<ul>
+<li>数字值</li>
+<li>字符串</li>
+<li>类引用</li>
+<li>字段引用</li>
+<li>方法引用</li>
+</ul>
+<p>关于运行时常量池：</p>
+<ul>
+<li>运行时常量池是方法区的一部分</li>
+<li>常量池表是 Class 文件的一部分，用于存放编译期生成的各种字面量与符号引用，这部分内容将在类加载后存放到方法区的运行时常量池</li>
+<li>JVM 为每个已加载的类型都维护一个常量池，池中的数据项如数组项一样，通过索引访问</li>
+<li>运行时常量池类似传统编程语言中的符号表，但是它所包含的数据比符号表更加丰富</li>
+</ul>
+<h3 id="10string-的基本特性">10，String 的基本特性</h3>
+<ul>
+<li>String 是 final 的，不可被继承</li>
+<li>String 内部：
+<ul>
+<li>jdk8 及之前内部是 char[]，字符数组</li>
+<li>jdk9 及之后内部是 byte[]，字节数组，更加节省空间</li>
+</ul>
+</li>
+<li>String 的两种声明方式：
+<ul>
+<li><code>String a = &quot;123&quot;;</code> 存储在<strong>字符串常量池</strong>中
+<ul>
+<li>常量池是堆的一部分</li>
+<li><strong>常量池中不会有重复的字符串</strong></li>
+<li>常量池中的字符串是<strong>不可变</strong>的</li>
+<li>常量池是一个固定大小的 Hashtable
+<ul>
+<li>jdk6 中池的默认大小是 1009</li>
+<li>jdk7 中池的默认大小是 60013，最小值是 1009</li>
+<li>可通过 <code>-XX:StringTableSize</code> 设置池的大小</li>
+</ul>
+</li>
+<li><code>String s = new String(&quot;xxx&quot;); s.intern();</code> 方法：
+<ul>
+<li>如果常量池中有 s 对应的字符串，则将 s 指向池中的串</li>
+<li>如果常量池中没有 s 对应的字符串，则先在池中生成串，再将 s 指向池中的串</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>String b = new String(&quot;456&quot;);</code> 存储在<strong>堆</strong>中</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-java">String s1 = &quot;Runoob&quot;;              // String 直接创建
+String s2 = &quot;Runoob&quot;;              // String 直接创建
+String s3 = s1;                    // 相同引用
+String s4 = new String(&quot;Runoob&quot;);   // String 对象创建
+String s5 = new String(&quot;Runoob&quot;);   // String 对象创建
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/be8e00eb0a814df286ccfa6de9409fde.png?" alt="在这里插入图片描述"></p>
+<h4 id="1常量池">1，常量池</h4>
+<p>常量池不只有字符串常量池，也有其它基本数据类型的常量池。</p>
+<p>Java 语言中有 8 种基本数据类型，和比较特殊的类型 String。为了使这些内容在运行时更快，更节省内存，都提供了<strong>常量池</strong>的概念。</p>
+<p><img src="https://img-blog.csdnimg.cn/f7aa9871014742efb16dd48fb60992bf.png" alt="在这里插入图片描述"></p>
+<p>运行时常量池的空间比较小，所以 StringTable 移到了堆中。</p>
+<h4 id="2字符串的拼接">2，字符串的拼接</h4>
+<ul>
+<li>常量与常量的拼接，结果在常量池，原理是编译期优化</li>
+<li>只要其中有一个是变量，结果就在堆中。变量拼接的原理是 <strong>StringBuilder</strong></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/5fc3001ecd95422a96c910dbe7ede11e.png?" alt="在这里插入图片描述"></p>
+<h3 id="11垃圾回收">11，垃圾回收</h3>
+<p>什么是垃圾？</p>
+<ul>
+<li>没有任何指针指向的对象</li>
+</ul>
+<p>Java 垃圾回收的区域：</p>
+<p><img src="https://img-blog.csdnimg.cn/d316ab0bafc04051b30f94e631010b9c.png?" alt="在这里插入图片描述"></p>
+<p>Java 堆（Heap）是垃圾回收的重点区域，从回收频率上讲：</p>
+<ul>
+<li>年轻代，频繁收集</li>
+<li>老年代，较少收集</li>
+<li>永久代 <strong>/</strong> 元空间，基本不收集</li>
+</ul>
+<h3 id="12垃圾回收算法">12，垃圾回收算法</h3>
+<p>垃圾回收有两个阶段：</p>
+<ul>
+<li><strong>标记阶段</strong>（确认哪些是垃圾），有两种算法：
+<ul>
+<li>引用计数算法：对每个对象保存一个整型的引用计数属性，用于记录对象被引用的次数（Python 使用）
+<ul>
+<li>优点：实现简单，垃圾对象便于辨识；判定效率高，回收没有延迟性</li>
+<li>缺点：无法处理循环引用的情况（致命缺点，导致该算法无法使用）</li>
+</ul>
+</li>
+<li>可达性分析算法：也叫追踪性垃圾收集（Java，C# 使用）
+<ul>
+<li>思路：以根对象（GC Roots）为起始点，从上到下搜索每个对象是否可达</li>
+<li>内存中的存活对象都会被根对象直接或间接连接着，搜索所走过的路径称为<strong>引用链</strong>，如果目标对象没有与任何引用链相连，则是不可达的</li>
+<li>优点：实现简单，执行高效，能处理循环引用的情况</li>
+<li><img src="https://img-blog.csdnimg.cn/a5d15ed27f724615a674dc8dc5516464.png?" alt="在这里插入图片描述"></li>
+<li><strong>Java 语音中可以作为 GC Roots 的对象包括以下几类</strong>：
+<ul>
+<li>虚拟机栈中引用的对象</li>
+<li>本地方法栈内 JNI 引用的对象</li>
+<li>方法区中静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+<li>所有被同步锁 synchronized 持有的对象</li>
+<li>Java 虚拟机内部的引用</li>
+<li>等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>清除阶段</strong>（清理垃圾），有三种算法：
+<ul>
+<li><strong>标记-清除算法</strong>：该算法在 1960 年提出并应用于 Lisp 语言
+<ul>
+<li>标记：从引用根节点开始遍历，标记所有被引用的对象（可达对象）</li>
+<li>清除：对所有不可达的对象进行回收</li>
+<li>缺点：效率不高，需要遍历两次，标记一次，清除一次</li>
+</ul>
+</li>
+<li><strong>复制算法</strong>：将内存空间分为两块，每次只使用其中一块；在垃圾回收时，将正在使用的内存中的存活对象复制到未被使用的内存块中，然后清除正在使用的内存块中的所有对象，然后交换两个内存的角色
+<ul>
+<li>优点：没有标记和清除过程，实现简单，运行高效，不会出现内存碎片</li>
+<li>缺点：需要两倍的内存空间</li>
+<li>比较适用于垃圾比较多的情况（新生代中的幸存者区使用的就是该算法）</li>
+</ul>
+</li>
+<li><strong>标记-压缩（整理）算法</strong>：其最终效果等同于标记-清除算法执行后，再进行一次内存碎片整理
+<ul>
+<li>比<strong>标记-清除算法</strong>多了一个整理内存碎片的阶段</li>
+<li>比<strong>复制算法</strong>多了一个标记的阶段</li>
+</ul>
+</li>
+<li><strong>分代收集算法</strong>：不同的对象的生命周期是不一样的，不同生命周期的对象可以使用不同的收集方式，以便可以提高效率
+<ul>
+<li>比如 Java 堆分为新生代和老年代</li>
+<li>分代的思想被现在的虚拟机广泛使用，几乎所有的垃圾收集器都区分新生代和老年代</li>
+</ul>
+</li>
+<li><strong>增量收集算法</strong>：如果一次性将所有的垃圾进行处理，需要造成系统长时间停顿，那就让垃圾收集线程和应用程序线程交替执行。每次垃圾收集线程只收集一小片区域的内存空间，接着切换到应用程序线程。依次反复，直到垃圾收集完成
+<ul>
+<li>其基础仍是传统的标记-清除和复制算法</li>
+<li>缺点：线程切换和上下文转换的消耗，会使得垃圾回收的总体成本上升，造成系统吞吐量下降</li>
+</ul>
+</li>
+<li><strong>分区算法</strong>
+<ul>
+<li>分代算法按照对象的生命周期长短划分为两部分，分区算法将整个堆空间划分为不同的小区间</li>
+<li>每个小区间都独立使用，独立回收</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>使用 MAT 查看 GC Roots：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/3cbe1866996245679d1868a78cb5b1bf.png?" alt="在这里插入图片描述">
+<strong>GC Roots 如下：</strong>
+<img src="https://img-blog.csdnimg.cn/dd1a30a522d44dfb93a6ef90dcde78fe.png?" alt="在这里插入图片描述"></p>
+<p><strong>三种清除阶段算法的对比：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>标记清除算法</th>
+<th>标记压缩算法</th>
+<th>复制算法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>速度</strong></td>
+<td>中等</td>
+<td>最慢</td>
+<td><strong>最快</strong></td>
+</tr>
+<tr>
+<td><strong>空间开销</strong></td>
+<td>少</td>
+<td>少</td>
+<td>2倍空间</td>
+</tr>
+<tr>
+<td><strong>移动对象</strong></td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>没有最好的算法，只有最合适的算法</strong>。
+实际的 GC 要复杂的多，大部分都是复合算法。</p>
+</blockquote>
+<h3 id="13java-中的几种引用">13，Java 中的几种引用</h3>
+<p>我们希望能描述这样一类对象：</p>
+<ul>
+<li>当内存空间足够时，则能留在内存中</li>
+<li>当内存空间短缺是，则可回收它们</li>
+</ul>
+<p>在 JDK1.2 后，Java 将引用分为四种：</p>
+<p><img src="https://img-blog.csdnimg.cn/4b6441e0f54c4558ab7d8330f9195c46.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/28952c0d2df44db39c24167e74dd395d.png" alt="在这里插入图片描述"></p>
+<h4 id="1强引用-永远不回收">1，强引用-永远不回收</h4>
+<p><img src="https://img-blog.csdnimg.cn/1aa7e25ca8bf4177aa9c665dd8b5b526.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/4c6f24e01c38492485febb625a28acf1.png" alt="在这里插入图片描述"></p>
+<h4 id="2软引用-内存不够即回收">2，软引用-内存不够即回收</h4>
+<p><img src="https://img-blog.csdnimg.cn/fc38d72b44924188b583e2a5918d8963.png?" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong>发生 OOM 的时候会回收软引用</strong></p>
+</blockquote>
+<h4 id="3弱引用-gc-即回收">3，弱引用-GC 即回收</h4>
+<p><img src="https://img-blog.csdnimg.cn/9f495b7baf054540b6442fc6b80cac0c.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/6ed7ab351eb44b3fb43f25dbed09fb07.png?" alt="在这里插入图片描述"></p>
+<h4 id="4虚引用-对象回收跟踪">4，虚引用-对象回收跟踪</h4>
+<p><img src="https://img-blog.csdnimg.cn/01a84d1cb51b4cc89ab6f1d606e6c93f.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/119b28399d504297873d4de54f12c453.png?" alt="在这里插入图片描述"></p>
+<h3 id="14垃圾回收器">14，垃圾回收器</h3>
+<h4 id="1垃圾回收器的分类">1，垃圾回收器的分类</h4>
+<p>7 款经典的垃圾回收器：</p>
+<ul>
+<li>
+<p>串行回收器：只使用一个CPU，且在进行垃圾回收时，必须暂停其它所有工作线程（Stop-The-World）</p>
+<ul>
+<li><strong>Serial</strong>：最基本、最悠久的GC
+<ul>
+<li>JDK1.3 之前新生代唯一选择；HotSpot 中 Client 模式下默认新生代 GC</li>
+<li>采用复制算法，串行回收</li>
+<li><code>-XX:+UseSerialGC</code> 参数可指定串行收集器</li>
+</ul>
+</li>
+<li><strong>Serial Old</strong>
+<ul>
+<li>HotSpot 中 Client 模式下默认老年代 GC</li>
+<li>采用标记-压缩算法，串行回收</li>
+<li>在 Server 模式下有两种用途：
+<ul>
+<li>与新生代 Parallel Scavenge 配合使用</li>
+<li>作为老年代 CMS 收集器的后备方案</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><img src="https://img-blog.csdnimg.cn/0cb41b50c8ce424882ad681b2d06dc98.png?" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>并行回收器：</p>
+<ul>
+<li><strong>ParNew</strong>：Serial 的多线程版本，只处理新生代
+<ul>
+<li>采用复制算法，串行回收</li>
+<li>参数 <code>-XX:+UseParNewGC</code> 年轻代使用并行收集器，不影响老年代
+<ul>
+<li><code>-XX:ParallelGCThreads</code> 设置并行线程数，默认与CPU 数相同</li>
+</ul>
+</li>
+<li><img src="https://img-blog.csdnimg.cn/b08548758d254e198a91e5ed7cd6a888.png?" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li><strong>Parallel Scavenge（JDK8 默认）</strong>：<strong>主打吞吐量</strong>，只处理新生代
+<ul>
+<li>采用复制算法，并行回收</li>
+<li><strong>自适应调节策略（自动调整）</strong> 也是与 ParNew 的一个重要区别
+<ul>
+<li>参数 <code>-XX:+UseAdaptiveSizePolicy</code> 默认开启</li>
+<li>在这种模式下，年轻代的大小，Eden 和 Survivor 的比例、晋升老年代的年龄等参数会被自动调整</li>
+</ul>
+</li>
+<li><strong>相关参数：</strong>
+<ul>
+<li><code>-XX:+UseParallelGC</code>：与下面的一个参数互相激活</li>
+<li><code>-XX:+UseParallelOldGC</code></li>
+<li><code>-XX:+ParallelGCThreads</code>：设置并行线程数；当 CPU 数小于 8 时，默认为 CPU 数，当CPU 数大于 8 时，默认为 <code>3+[5*CPU_Count]/8</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Parallel Old（JDK8 默认）</strong>
+<ul>
+<li>采用标记-压缩算法，并行回收</li>
+<li><img src="https://img-blog.csdnimg.cn/41a167fa8e6b4f04addd6bec734da9fa.png?" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>并发回收器：</p>
+<ul>
+<li><strong>CMS</strong>（Concurrent-Mark-Sweep）：老年代GC，<strong>主打低延迟</strong>
+<ul>
+<li>在 JDK1.5 时，HotSpot 推出的，强交互应用中，认为是划时代意义的 GC</li>
+<li>是 HotSpot 中第一款并发 GC，第一次实现了让 <strong>GC线程与用户线程同时工作</strong></li>
+<li>采用<strong>标记-清除算法</strong></li>
+<li><img src="https://img-blog.csdnimg.cn/7dcf4141b74e48e9a2593fdaaa2e9ea5.png?" alt="在这里插入图片描述"></li>
+<li>参数 <code>-XX:+UseConcMarkSweepGC</code> （老年代）指定 CMS GC，该参数会将 <code>-XX:+UseParNewGC</code> （新生代）打开</li>
+<li><strong>已被 JDK9 废弃，已被 JDK14 删除</strong></li>
+</ul>
+</li>
+<li><strong>G1（JDK9 默认）</strong>：<strong>区域分代化 GC</strong>，其目标是在延迟可控的情况下获得尽可能高的吞吐量
+<ul>
+<li>G1 把堆内存分割为很多不同的区域，避免在整个堆中进行全区域的垃圾收集，优先回收垃圾最大量的区域</li>
+<li>参数 <code>-XX:+UseG1GC</code></li>
+<li><code>-XX:G1HeapRegionSize</code> 设置每个 Region 的大小，值是 2 的幂，范围是 1MB ~ 32MB 之间，默认是堆内存的 1 /2000</li>
+<li><code>-XX:MaxGCPauseMillis</code> 设置期望达到的最大 GC 停顿时间指标，默认 200ms</li>
+</ul>
+</li>
+<li><strong>ZGC</strong>：未来 GC，目前处于实验阶段</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/a55ff738dc5942e98de699ba2aeb7690.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/f3eb719f8b6c4fe880d47616ea1f88c7.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/c7c017e0c5014692980ca6bbc4199093.png?" alt="在这里插入图片描述"></p>
+<p><strong>7 款垃圾回收器总结：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/74be5c20a8fc4247b3abfb6344fb9e76.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA56CB5Yac5YWF55S156uZ,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h4 id="2查看正在使用的-gc">2，查看正在使用的 GC</h4>
+<p>两种方式：</p>
+<ul>
+<li><code>-XX:+PrintCommandLineFlags</code></li>
+<li><code>jinfo -flag 相关垃圾回收器参数 进程ID</code></li>
+</ul>
+<blockquote>
+<p><strong>JDK8</strong>：<code>UseParallelGC、UseParallelOldGC</code>
+<strong>JDK9</strong>：<code>UseG1GC</code></p>
+</blockquote>
+<h3 id="15class-文件结构">15，Class 文件结构</h3>
+<p>任何一个 Class 文件都对应着唯一一个类或接口的定义信息。Class 文件的结构并不是一成不变的，随着 Java 虚拟机的不断发展，总是不可避免的会对 Class 文件结构做出调整，但其基本结构和框架是稳定的。</p>
+<p><img src="https://img-blog.csdnimg.cn/6117c8cf9a5f43d6a67da1d4ceb4d8ea.png?" alt="在这里插入图片描述"></p>
+<p>Class 文件的总体结构如下：</p>
+<ul>
+<li>魔数：cafebabe</li>
+<li>Class 文件版本</li>
+<li>常量池</li>
+<li>访问标志</li>
+<li>类索引、父类索引、接口索引集合</li>
+<li>字段表集合</li>
+<li>方法表集合</li>
+<li>属性表集合</li>
+</ul>
+<h3 id="16类的加载">16，类的加载</h3>
+<p>Java 中的数据类型分为基本数据类型和引用数据类型，基本数据类型由虚拟机预先定义，引用数据类型则需要类的加载。</p>
+<p>按照 Java 虚拟机规范，从 class 文件到加载到内存中的类，再到类卸载出内存为止，它的生命周期包括 7 个阶段：</p>
+<p><img src="https://img-blog.csdnimg.cn/0bc1f18144e04924bd348d9b3b33b6d2.png?" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong>初始化之后的类会放在方法区</strong></p>
+</blockquote>
+<h3 id="17类的加载器">17，类的加载器</h3>
+<p><strong>ClassLoader</strong> 是 Java 的核心最贱，所有的 Class 都是由 ClassLoader 进行加载的，ClassLoader 通过各种方式将 Class 信息的二进制数据流读入 JVM 内部。</p>
+<p><img src="https://img-blog.csdnimg.cn/78607182c26d47618765872b0d68510a.png?" alt="在这里插入图片描述"></p>
+<p>类的唯一性：</p>
+<ul>
+<li>任意一个类，都需要由加载它的类加载器和这个类本身一起确认其在 Java 虚拟机中的唯一性。</li>
+<li>每一个类加载器，拥有一个独立的类名称空间，比较两个类是否相等，只有在这两个类是由同一个类加载器加载的前提下才有意义。</li>
+<li>否则，即使这两个类源自同一个 Class 文件，被同一个虚拟机加载，只要加载它的类加载器不同，那这两个类就必定是不同的。</li>
+</ul>
+<h3 id="18双亲委派机制">18，双亲委派机制</h3>
+<p>类加载器把类加载到 Java 虚拟机中，从 JDK1.2 开始，类的加载过程采用<strong>双亲委派机制</strong>，更好地保证 Java 平台的安全。</p>
+<ul>
+<li>确保一个类的全局唯一性，避免类的重复加载
+<ul>
+<li>Java 类随着它的类加载器一起具备了一种带有优先级的层次关系，通过这种层级关系可以避免类的重复加载，当父亲已经加载了该类时，就不需子类加载器再加载一次</li>
+</ul>
+</li>
+<li>保护程序安全，防止核心 API 被篡改</li>
+</ul>
+<p>定义：当一个类加载器在接到加载类的请求时，它首先不会自己尝试去加载这个类，而是把这个请求任务委托给父类加载器去完成，如果父类加载器可以完成类加载任务，就返回成功。只有父类加载器无法完成此加载任务时，才自己去加载。</p>
+<p>该机制规定了类加载的顺序：</p>
+<ul>
+<li><strong>引导类加载器</strong>先加载，若加载不到，由<strong>扩展类加载器</strong>加载</li>
+<li>若还加载不到，才会由<strong>系统类加载器</strong>或<strong>自定义类加载器</strong>进行加载</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/7abc58da6a104be8a27efdbbc7e27e2f.png?" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-03-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/03/jvm3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/03/jvm1/">
+            <span class="next-text nav-default">JVM性能调优实战笔记1</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/03/jvm2/" class="leancloud_visitors" data-flag-title="JVM性能调优实战笔记2">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

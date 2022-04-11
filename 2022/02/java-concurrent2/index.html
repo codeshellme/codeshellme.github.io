@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java并发编程学习笔记2 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 8，Java 内存模型 JMM（Java Memory Model） 体现" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/02/java-concurrent2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java并发编程学习笔记2" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 8，Java 内存模型 JMM（Java Memory Model） 体现" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/02/java-concurrent2/" />
+<meta property="article:published_time" content="2022-02-28T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-02-28T21:41:52+08:00" />
+<meta itemprop="name" content="Java并发编程学习笔记2">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 8，Java 内存模型 JMM（Java Memory Model） 体现">
+<meta itemprop="datePublished" content="2022-02-28T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-02-28T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5799">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java并发编程学习笔记2"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 8，Java 内存模型 JMM（Java Memory Model） 体现"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java并发编程学习笔记2</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-02-28 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 5799 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#8java-内存模型">8，Java 内存模型</a></li>
+        <li><a href="#9共享模型之无锁">9，共享模型之无锁</a></li>
+        <li><a href="#10原子包装类">10，原子包装类</a></li>
+        <li><a href="#11共享模型之不可变类">11，共享模型之不可变类</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="8java-内存模型">8，Java 内存模型</h3>
+<p>JMM（<code>Java Memory Model</code>） 体现在以下几个方面：</p>
+<ul>
+<li><strong>原子性</strong>：保证指令不会受到<strong>线程上下文切换</strong>的影响
+<ul>
+<li>使用 <strong>synchronized</strong> 或<strong>锁</strong></li>
+</ul>
+</li>
+<li><strong>可见性</strong>：保证指令不会受 cpu <strong>缓存</strong>的影响
+<ul>
+<li>使用 <strong>volatile</strong>（比较轻量） 或 <strong>synchronized</strong>（比较重量）</li>
+</ul>
+</li>
+<li><strong>有序性</strong>：保证指令不会受 cpu <strong>指令并行优化</strong>的影响
+<ul>
+<li><strong>volatile</strong> 可以禁止指令重排</li>
+<li><strong>synchronized</strong> 也可以禁止指令重排</li>
+<li>volatile 关键字可以禁止该关键字修饰的变量，变量代码出现的地方之前的代码发生指令重排</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-java">volatile boolean ready = false;
+
+/////////////////////////
+num = 2;
+ready = true; // 该代码之前的代码可以防止指令重排
+</code></pre>
+<blockquote>
+<p>volatile 的原理：其底层实现原理是内存屏障</p>
+<ul>
+<li>对 volatile 变量的写指令后会加入写屏障</li>
+<li>对 volatile 变量的读指令后会加入读屏障</li>
+</ul>
+</blockquote>
+<h4 id="1可见性问题-volatile">1，可见性问题 volatile</h4>
+<p><strong>可见性问题示例</strong>：</p>
+<pre><code class="language-java">// 退不出的循环
+// main 线程对 run 变量的修改对于 t 线程不可见，导致了 t 线程无法停止
+static boolean run = true;
+
+public static void main(String[] args) throws InterruptedException {
+	Thread t = new Thread(()-&gt;{
+		while(run){
+			// ....
+		}
+	});
+	
+	t.start();
+	sleep(1);
+	run = false; // 线程t不会如预想的停下来
+}
+</code></pre>
+<p><strong>原因分析：</strong></p>
+<ul>
+<li>初始状态， t 线程刚开始从主内存读取了 run 的值到工作内存</li>
+<li><img src="https://img-blog.csdnimg.cn/e828508868484ea99275af153a497855.png" alt="在这里插入图片描述"></li>
+<li>因为 t 线程要频繁从主内存中读取 run 的值，JIT 编译器会将 run 的值缓存至自己工作内存中的高速缓存中，
+减少对主存中 run 的访问，提高效率</li>
+<li><img src="https://img-blog.csdnimg.cn/20463e40063d40deae6f831bfd563503.png?" alt="在这里插入图片描述"></li>
+<li>1 秒之后，main 线程修改了 run 的值，并同步至主存，而 t 是从自己工作内存中的高速缓存中读取这个变量
+的值，结果永远是旧值</li>
+<li><img src="https://img-blog.csdnimg.cn/d1ace9cf9794415bbf7f255b73504c3b.png" alt="在这里插入图片描述"></li>
+</ul>
+<p>解决办法 <strong>volatile</strong>（易变关键字）</p>
+<ul>
+<li>volatile 它可以用来修饰成员变量和静态成员变量，可以避免线程从自己的工作缓存中查找变量的值，必须到主存中获取它的值，<strong>线程操作 volatile 变量都是直接操作主存</strong></li>
+<li>它保证的是在多个线程之间，一个线程对 volatile 变量的修改对另一个线程可见， <strong>不能保证原子性，仅用在一个写线程，多个读线程的情况</strong></li>
+<li><strong>注意 synchronized 语句块既可以保证代码块的原子性，也同时保证代码块内变量的可见性</strong>。但缺点是synchronized 是属于重量级操作，性能相对更低</li>
+</ul>
+<h4 id="2有序性问题-指令重排">2，有序性问题-指令重排</h4>
+<p>JVM 会在<strong>不影响正确性的前提</strong>下，可以调整语句的执行顺序，比如下面代码：</p>
+<pre><code class="language-java">static int i;
+static int j;
+// 在某个线程内执行如下赋值操作
+i = ...;
+j = ...;
+</code></pre>
+<p>可以看到，至于是先执行 i 还是 先执行 j ，对最终的结果不会产生影响。所以，上面代码真正执行时，既可以是：</p>
+<pre><code class="language-java">i = ...;
+j = ...;
+</code></pre>
+<p>也可以是：</p>
+<pre><code class="language-java">j = ...;
+i = ...;
+</code></pre>
+<p>这种特性称之为『<strong>指令重排</strong>』，而 <strong>多线程下『指令重排』会影响正确性</strong>。为什么要有重排指令这项优化呢？从 CPU 执行指令的原理来理解一下吧，<strong>指令重拍可以增加指令的并行度</strong>。</p>
+<p>指令重排是 JIT 编译器在运行时的一些优化，这个现象需要通过<strong>大量测试</strong>才能复现。</p>
+<p>一个例子：</p>
+<pre><code class="language-java">int num = 0;
+boolean ready = false;
+
+// 线程1 执行此方法
+public void actor1(I_Result r) {
+	if(ready) {
+		r.r1 = num + num;
+	} else {
+		r.r1 = 1;
+	}
+}
+
+// 线程2 执行此方法
+public void actor2(I_Result r) {
+    // 注意这两处代码可能发生指令重排
+	num = 2;
+	ready = true;
+}
+</code></pre>
+<p>I_Result 是一个对象，有一个属性 r1 用来保存结果，问，可能的结果有几种？</p>
+<ul>
+<li>线程1 先执行，这时 ready = false，所以进入 else 分支结果为 1</li>
+<li>线程2 先执行 num = 2，但没来得及执行 ready = true，线程1 执行，还是进入 else 分支，结果为1</li>
+<li>线程2 执行到 ready = true，线程1 执行，这回进入 if 分支，结果为 4</li>
+</ul>
+<p>注意，下面两行代码可能会发生指令重排：</p>
+<pre><code class="language-java">num = 2;
+ready = true;
+</code></pre>
+<p>而变成：</p>
+<pre><code class="language-java">ready = true;
+num = 2;
+</code></pre>
+<p>这种情况下：线程2 执行 ready = true，切换到线程1，进入 if 分支，相加为 0，再切回线程2 执行 num = 2。</p>
+<p>此时就是指令重排导致了<strong>错误的结果</strong>。</p>
+<p>此时可以通过 volatile 关键字来修饰 ready 变量：</p>
+<pre><code class="language-java">volatile boolean ready = false;
+</code></pre>
+<p>这样可以防止这两行代码发生重排序：</p>
+<pre><code class="language-java">num = 2;
+ready = true;
+</code></pre>
+<h4 id="3volatile-原理">3，volatile 原理</h4>
+<p><strong>volatile</strong> 可以解决可见性问题和指令重排问题。</p>
+<p>volatile 的其底层实现原理是<strong>内存屏障</strong></p>
+<ul>
+<li>对 volatile 变量的写指令后会加入写屏障</li>
+<li>对 volatile 变量的读指令后会加入读屏障</li>
+</ul>
+<p><strong>volatile 对可见性问题的处理：</strong></p>
+<p><strong>写屏障</strong>保证在该屏障之前的，对共享变量的改动，都同步到主存当中</p>
+<pre><code class="language-java">public void actor2(I_Result r) {
+	num = 2;
+	ready = true; // ready 是 volatile 赋值带写屏障
+	// 写屏障位置
+}
+</code></pre>
+<p>而读屏障保证在该屏障之后，对共享变量的读取，加载的是主存中最新数据：</p>
+<pre><code class="language-java">public void actor1(I_Result r) {
+	// 读屏障位置
+	// ready 是 volatile 读取值带读屏障
+	if(ready) {
+		r.r1 = num + num;
+	} else {
+		r.r1 = 1;
+	}
+}
+</code></pre>
+<p><strong>volatile 对指令重排问题的处理：</strong></p>
+<p>写屏障会确保指令重排序时，不会将写屏障之前的代码排在写屏障之后：</p>
+<pre><code class="language-java">public void actor2(I_Result r) {
+	num = 2;
+	ready = true; // ready 是 volatile 赋值带写屏障
+	// 写屏障位置
+}
+</code></pre>
+<p>读屏障会确保指令重排序时，不会将读屏障之后的代码排在读屏障之前：</p>
+<pre><code class="language-java">public void actor1(I_Result r) {
+	// 读屏障位置
+	// ready 是 volatile 读取值带读屏障
+	if(ready) {
+		r.r1 = num + num;
+	} else {
+		r.r1 = 1;
+	}
+}
+</code></pre>
+<h4 id="4happens-before-规则">4，happens-before 规则</h4>
+<p>happens-before 规定了对共享变量的写操作对其它线程的读操作可见，它是可见性与有序性的一套规则总结，抛开以下 happens-before 规则，JMM 并不能保证一个线程对共享变量的写，对于其它线程对该共享变量的读可见。</p>
+<blockquote>
+<p>变量都是指成员变量或静态成员变量</p>
+</blockquote>
+<ul>
+<li>线程解锁 m 之前对变量的写，对于接下来对 m 加锁的其它线程对该变量的读可见</li>
+</ul>
+<pre><code class="language-java">static int x;
+static Object m = new Object();
+
+new Thread(()-&gt;{
+	synchronized(m) {
+		x = 10;
+	}
+},&quot;t1&quot;).start();
+
+new Thread(()-&gt;{
+	synchronized(m) {
+		System.out.println(x);
+	}
+},&quot;t2&quot;).start();
+</code></pre>
+<ul>
+<li>线程对 volatile 变量的写，对接下来其它线程对该变量的读可见</li>
+</ul>
+<pre><code class="language-java">volatile static int x;
+
+new Thread(()-&gt;{
+	x = 10;
+},&quot;t1&quot;).start();
+
+new Thread(()-&gt;{
+	System.out.println(x);
+},&quot;t2&quot;).start();
+</code></pre>
+<ul>
+<li>线程 start 前对变量的写，对该线程开始后对该变量的读可见</li>
+</ul>
+<pre><code class="language-java">static int x;
+
+x = 10;
+
+new Thread(()-&gt;{
+	System.out.println(x);
+},&quot;t2&quot;).start();
+</code></pre>
+<ul>
+<li>线程结束前对变量的写，对其它线程得知它结束后的读可见（比如其它线程调用 t1.isAlive() 或 t1.join()等待它结束）</li>
+</ul>
+<pre><code class="language-java">static int x;
+
+Thread t1 = new Thread(()-&gt;{
+	x = 10;
+},&quot;t1&quot;);
+
+t1.start();
+t1.join();
+
+System.out.println(x);
+</code></pre>
+<ul>
+<li>线程 t1 打断 t2（interrupt）前对变量的写，对于其他线程得知 t2 被打断后对变量的读可见（通过t2.interrupted 或 t2.isInterrupted）</li>
+</ul>
+<pre><code class="language-java">static int x;
+
+public static void main(String[] args) {
+
+	Thread t2 = new Thread(()-&gt;{
+		while(true) {
+			if(Thread.currentThread().isInterrupted()) {
+				System.out.println(x);
+				break;
+			}
+		}
+	},&quot;t2&quot;);
+	
+	t2.start();
+	
+	new Thread(()-&gt;{
+		sleep(1);
+		x = 10;
+		t2.interrupt();
+	},&quot;t1&quot;).start();
+	
+	while(!t2.isInterrupted()) {
+		Thread.yield();
+	}
+	
+	System.out.println(x);
+}
+</code></pre>
+<ul>
+<li>对变量默认值（0，false，null）的写，对其它线程对该变量的读可见</li>
+<li>具有传递性，如果 <code>x hb-&gt; y</code> 并且 <code>y hb-&gt; z</code> 那么有 <code>x hb-&gt; z</code> ，配合 volatile 的防指令重排，有下面的例子</li>
+</ul>
+<pre><code class="language-java">volatile static int x;
+static int y;
+
+new Thread(()-&gt;{
+	y = 10;
+	x = 20;
+},&quot;t1&quot;).start();
+
+new Thread(()-&gt;{
+	// x=20 对 t2 可见, 同时 y=10 也对 t2 可见
+	System.out.println(x);
+},&quot;t2&quot;).start();
+</code></pre>
+<h3 id="9共享模型之无锁">9，共享模型之无锁</h3>
+<h4 id="1问题实现一个多线程取款">1，问题：实现一个多线程取款</h4>
+<p>Account 接口：</p>
+<pre><code class="language-java">public interface Account {
+
+    // 获取余额
+    Integer getBalance();
+
+    // 取款
+    void withdraw(Integer amount);
+
+    /**
+     * 方法内会启动 1000 个线程，每个线程做 -10 元 的操作
+     * 如果初始余额为 10000 那么正确的结果应当是 0
+     */
+    static void demo(Account account) {
+        List&lt;Thread&gt; ts = new ArrayList&lt;&gt;();
+        long start = System.nanoTime();
+
+        for (int i = 0; i &lt; 1000; i++) {
+            ts.add(new Thread(() -&gt; {
+                account.withdraw(10);
+            }));
+        }
+
+        ts.forEach(Thread::start);
+        ts.forEach(t -&gt; {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        long end = System.nanoTime();
+        System.out.println(account.getBalance()
+                + &quot; cost: &quot; + (end-start)/1000_000 + &quot; ms&quot;);
+    }
+}
+</code></pre>
+<h4 id="2使用锁实现-synchronized">2，使用锁实现 synchronized</h4>
+<pre><code class="language-java">public class AccountSynchronized implements Account {
+    private Integer balance;
+
+    public AccountSynchronized(Integer balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public synchronized Integer getBalance() {
+        return balance;
+    }
+
+    @Override
+    public synchronized void withdraw(Integer amount) {
+        balance -= amount;
+    }
+
+    public static void main(String[] args) {
+        Account a = new AccountSynchronized(10000);
+        Account.demo(a);
+    }
+}
+</code></pre>
+<h4 id="3使用无锁实现-atomic">3，使用无锁实现 Atomic</h4>
+<pre><code class="language-java">public class AccountAtomic implements Account {
+
+    private AtomicInteger balance;
+
+    public AccountAtomic(Integer balance) {
+        this.balance = new AtomicInteger(balance);
+    }
+
+    @Override
+    public Integer getBalance() {
+        return balance.get();
+    }
+
+    @Override
+    public void withdraw(nteger amount) {
+        while (true) {
+            int prev = balance.get();
+            int next = prev - amount;
+            
+			// compareAndSet 是原子操作
+			// 先比较再赋值
+            if (balance.compareAndSet(prev, next)) {
+                break;
+            }
+        }
+
+        // 可以简化为下面的方法
+        // addAndGet 是原子操作
+        // balance.addAndGet(-1 * amount);
+    }
+
+    public static void main(String[] args) {
+        Account a = new AccountAtomic(10000);
+        Account.demo(a);
+    }
+}
+</code></pre>
+<p>其中的关键是 <strong>compareAndSet</strong>，它的简称就是 <strong>CAS</strong> （也有 Compare And Swap 的说法），它必须是<strong>原子操作</strong>。</p>
+<blockquote>
+<p>另外，AtomicInteger 中的 value 属性是 volatile 的。
+CAS 必须借助 volatile 才能读取到共享变量的最新值来实现【比较并交换】的效果。</p>
+</blockquote>
+<p>其实 CAS 的底层是 <code>lock cmpxchg</code> 指令（X86 架构），在单核 CPU 和多核 CPU 下都能够保证【比较-交换】的原子性。</p>
+<p>在多核状态下，某个核执行到带 lock 的指令时，CPU 会让总线锁住，当这个核把此指令执行完毕，再开启总线。这个过程中不会被线程的调度机制所打断，保证了多个线程对内存操作的准确性，是原子的。</p>
+<p><strong>原子操作比锁的性能更高。</strong></p>
+<ul>
+<li>无锁情况下，即使重试失败，<strong>线程始终在高速运行，没有停歇</strong>，而 synchronized 会让线程在没有获得锁的时候，发生上下文切换，进入阻塞</li>
+<li>线程就好像高速跑道上的赛车，高速运行时，速度超快，一旦发生上下文切换，就好比赛车要减速、熄火，等被唤醒又得重新打火、启动、加速&hellip; 恢复到高速运行，代价比较大</li>
+<li>但<strong>单CPU无锁</strong>情况下，因为线程要保持运行，需要额外 CPU 的支持，CPU 在这里就好比高速跑道，没有额外的跑道，线程想高速运行也无从谈起，虽然不会进入阻塞，但由于没有分到时间片，仍然会进入可运行状态，还是会导致上下文切换</li>
+</ul>
+<h4 id="4cas-的特点">4，CAS 的特点</h4>
+<p>结合 CAS 和 volatile 可以实现无锁并发，适用于线程数少、多核 CPU 的场景下。</p>
+<ul>
+<li>CAS 是基于乐观锁的思想：最乐观的估计，不怕别的线程来修改共享变量，就算改了也没关系，我吃亏点再重试呗</li>
+<li>synchronized 是基于悲观锁的思想：最悲观的估计，得防着其它线程来修改共享变量，我上了锁你们都别想改，我改完了解开锁，你们才有机会</li>
+<li>CAS 体现的是无锁并发、无阻塞并发，请仔细体会这两句话的意思
+<ul>
+<li>因为没有使用 synchronized，所以线程不会陷入阻塞，这是效率提升的因素之一</li>
+<li>但<strong>如果竞争激烈</strong>，可以想到重试必然频繁发生，反而效率会受影响</li>
+</ul>
+</li>
+</ul>
+<h3 id="10原子包装类">10，原子包装类</h3>
+<h4 id="1原子整数类">1，原子整数类</h4>
+<p><code>java.util.concurrent.atomic</code> 包中提供了 3 个原子整数类：</p>
+<ul>
+<li><strong>AtomicBoolean</strong></li>
+<li><strong>AtomicInteger</strong></li>
+<li><strong>AtomicLong</strong></li>
+</ul>
+<p>以 AtomicInteger 为例：</p>
+<pre><code class="language-java">AtomicInteger i = new AtomicInteger(0);
+
+// 获取并自增（i = 0, 结果 i = 1, 返回 0），类似于 i++
+System.out.println(i.getAndIncrement());
+
+// 自增并获取（i = 1, 结果 i = 2, 返回 2），类似于 ++i
+System.out.println(i.incrementAndGet());
+
+// 自减并获取（i = 2, 结果 i = 1, 返回 1），类似于 --i
+System.out.println(i.decrementAndGet());
+
+// 获取并自减（i = 1, 结果 i = 0, 返回 1），类似于 i--
+System.out.println(i.getAndDecrement());
+
+// 获取并加值（i = 0, 结果 i = 5, 返回 0）
+System.out.println(i.getAndAdd(5));
+
+// 加值并获取（i = 5, 结果 i = 0, 返回 0）
+System.out.println(i.addAndGet(-5));
+
+// 获取并更新（i = 0, p 为 i 的当前值, 结果 i = -2, 返回 0）
+// 其中函数中的操作能保证原子，但函数需要无副作用
+System.out.println(i.getAndUpdate(p -&gt; p - 2));
+
+// 更新并获取（i = -2, p 为 i 的当前值, 结果 i = 0, 返回 0）
+// 其中函数中的操作能保证原子，但函数需要无副作用
+System.out.println(i.updateAndGet(p -&gt; p + 2));
+
+// 获取并计算（i = 0, p 为 i 的当前值, x 为参数1, 结果 i = 10, 返回 0）
+// 其中函数中的操作能保证原子，但函数需要无副作用
+// getAndUpdate 如果在 lambda 中引用了外部的局部变量，要保证该局部变量是 final 的
+// getAndAccumulate 可以通过 参数1 来引用外部的局部变量，但因为其不在 lambda 中因此不必是 final
+System.out.println(i.getAndAccumulate(10, (p, x) -&gt; p + x));
+
+// 计算并获取（i = 10, p 为 i 的当前值, x 为参数1, 结果 i = 0, 返回 0）
+// 其中函数中的操作能保证原子，但函数需要无副作用
+System.out.println(i.accumulateAndGet(-10, (p, x) -&gt; p + x));
+</code></pre>
+<h4 id="2原子引用类">2，原子引用类</h4>
+<p>除了以上三种原子引用类型，想要保证其它的数据类型的原子操作，需要用到<strong>原子引用类型</strong>：</p>
+<ul>
+<li><strong>AtomicReference</strong></li>
+<li><strong>AtomicMarkableReference</strong></li>
+<li><strong>AtomicStampedReference</strong></li>
+</ul>
+<h5 id="1atomicreference">1，AtomicReference</h5>
+<pre><code class="language-java">class DecimalAccountSafeCas implements DecimalAccount {
+	AtomicReference&lt;BigDecimal&gt; ref;	// 对 BigDecimal 类型 进行原子包装
+	
+	public DecimalAccountSafeCas(BigDecimal balance) {
+		ref = new AtomicReference&lt;&gt;(balance);
+	}
+}
+</code></pre>
+<p><strong>原子引用-ABA</strong>问题：</p>
+<p>ABA 问题示例：</p>
+<pre><code class="language-java">static AtomicReference&lt;String&gt; ref = new AtomicReference&lt;&gt;(&quot;A&quot;);
+
+public static void main(String[] args) throws InterruptedException {
+	log.debug(&quot;main start...&quot;);
+	// 获取值 A
+	// 这个共享变量被它线程修改过？
+	String prev = ref.get();
+	other();
+	sleep(1);
+	// 尝试改为 C
+	log.debug(&quot;change A-&gt;C {}&quot;, ref.compareAndSet(prev, &quot;C&quot;));
+}
+
+private static void other() {
+	new Thread(() -&gt; {
+		log.debug(&quot;change A-&gt;B {}&quot;, ref.compareAndSet(ref.get(), &quot;B&quot;));
+	}, &quot;t1&quot;).start();
+	
+	sleep(0.5);
+	
+	new Thread(() -&gt; {
+		log.debug(&quot;change B-&gt;A {}&quot;, ref.compareAndSet(ref.get(), &quot;A&quot;));
+	}, &quot;t2&quot;).start();
+}
+</code></pre>
+<p>主线程仅能判断出共享变量的值与最初值 A 是否相同，不能感知到这种从 A 改为 B 又 改回 A 的情况.</p>
+<p>如果主线程希望：只要有其它线程【动过了】共享变量，那么自己的 cas 就算失败，这时，仅比较值是不够的，<strong>需要再加一个版本号</strong>。</p>
+<p>此时需要用到 <strong>AtomicStampedReference</strong> 。</p>
+<h5 id="2atomicstampedreference">2，AtomicStampedReference</h5>
+<p>示例：</p>
+<pre><code class="language-java">static AtomicStampedReference&lt;String&gt; ref = new AtomicStampedReference&lt;&gt;(&quot;A&quot;, 0);
+
+public static void main(String[] args) throws InterruptedException {
+	log.debug(&quot;main start...&quot;);
+	// 获取值 A
+	String prev = ref.getReference();
+	// 获取版本号
+	int stamp = ref.getStamp();
+	log.debug(&quot;版本 {}&quot;, stamp);
+	// 如果中间有其它线程干扰，发生了 ABA 现象
+	other();
+	sleep(1);
+	// 尝试改为 C，更新失败
+	log.debug(&quot;change A-&gt;C {}&quot;, ref.compareAndSet(prev, &quot;C&quot;, stamp, stamp + 1));
+}
+
+private static void other() {
+	new Thread(() -&gt; {
+		log.debug(&quot;change A-&gt;B {}&quot;, ref.compareAndSet(ref.getReference(), &quot;B&quot;, ref.getStamp(), ref.getStamp() + 1));
+		log.debug(&quot;更新版本为 {}&quot;, ref.getStamp());
+	}, &quot;t1&quot;).start();
+	
+	sleep(0.5);
+	
+	new Thread(() -&gt; {
+		log.debug(&quot;change B-&gt;A {}&quot;, ref.compareAndSet(ref.getReference(), &quot;A&quot;, ref.getStamp(), ref.getStamp() + 1));
+		log.debug(&quot;更新版本为 {}&quot;, ref.getStamp());
+	}, &quot;t2&quot;).start();
+}
+</code></pre>
+<p>AtomicStampedReference 可以给原子引用加上版本号，追踪原子引用整个的变化过程，如： <code>A -&gt; B -&gt; A -&gt;C</code> ，通过AtomicStampedReference，我们可以知道，引用变量中途被更改了几次。</p>
+<p>但是有时候，并不关心引用变量更改了几次，只是单纯的关心是否更改过，所以就有了<strong>AtomicMarkableReference</strong>。</p>
+<h5 id="3atomicmarkablereference">3，AtomicMarkableReference</h5>
+<p>换垃圾袋示例：垃圾袋为空的时候，主人才去换垃圾袋。</p>
+<pre><code class="language-java">class GarbageBag {
+	String desc;
+	
+	public GarbageBag(String desc) {
+		this.desc = desc;
+	}
+	
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + &quot; &quot; + desc;
+	}
+}
+
+@Slf4j
+public class TestABAAtomicMarkableReference {
+	public static void main(String[] args) throws InterruptedException {
+		GarbageBag bag = new GarbageBag(&quot;装满了垃圾&quot;);
+		// 参数2 mark 可以看作一个标记，表示垃圾袋满了
+		AtomicMarkableReference&lt;GarbageBag&gt; ref = new AtomicMarkableReference&lt;&gt;(bag, true);
+		
+		log.debug(&quot;主线程 start...&quot;);
+		GarbageBag prev = ref.getReference();
+		log.debug(prev.toString());
+		
+		new Thread(() -&gt; {
+			log.debug(&quot;打扫卫生的线程 start...&quot;);
+			bag.setDesc(&quot;空垃圾袋&quot;);
+			while (!ref.compareAndSet(bag, bag, true, false)) {}
+			log.debug(bag.toString());
+		}).start();
+		
+		Thread.sleep(1000);
+		log.debug(&quot;主线程想换一只新垃圾袋？&quot;);
+		boolean success = ref.compareAndSet(prev, new GarbageBag(&quot;空垃圾袋&quot;), true, false);
+		log.debug(&quot;换了么？&quot; + success);
+		
+		log.debug(ref.getReference().toString());
+	}
+}
+</code></pre>
+<h4 id="3原子数组">3，原子数组</h4>
+<ul>
+<li><strong>AtomicIntegerArray</strong></li>
+<li><strong>AtomicLongArray</strong></li>
+<li><strong>AtomicReferenceArray</strong></li>
+</ul>
+<h4 id="4字段更新器">4，字段更新器</h4>
+<ul>
+<li><strong>AtomicReferenceFieldUpdater</strong> // 域 字段</li>
+<li><strong>AtomicIntegerFieldUpdater</strong></li>
+<li><strong>AtomicLongFieldUpdater</strong></li>
+</ul>
+<h4 id="5原子累加器">5，原子累加器</h4>
+<h4 id="6unsafe">6，Unsafe</h4>
+<h3 id="11共享模型之不可变类">11，共享模型之不可变类</h3>
+<p><strong>不可变对象，实际是另一种避免竞争的方式。</strong></p>
+<h4 id="1不可变类">1，不可变类</h4>
+<p>由于 SimpleDateFormat （是可变的）不是线程安全的，因此下面的多线程操作会出现问题：</p>
+<pre><code class="language-java">SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+for (int i = 0; i &lt; 10; i++) {
+	new Thread(() -&gt; {
+		try {
+		    // sdf.parse 会出现问题，因为其不是线程安全的
+			log.debug(&quot;{}&quot;, sdf.parse(&quot;1951-04-21&quot;));
+		} catch (Exception e) {
+			log.error(&quot;{}&quot;, e);
+		}
+	}).start();
+}
+</code></pre>
+<p><strong>同步锁</strong>可以解决问题，但带来的是性能上的损失，并不算很好：</p>
+<pre><code class="language-java">SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+for (int i = 0; i &lt; 50; i++) {
+	new Thread(() -&gt; {
+		synchronized (sdf) { // 同步处理
+			try {
+				log.debug(&quot;{}&quot;, sdf.parse(&quot;1951-04-21&quot;));
+			} catch (Exception e) {
+				log.error(&quot;{}&quot;, e);
+			}
+		}
+	}).start();
+}
+</code></pre>
+<p>因为 SimpleDateFormat 是可变的，我们还可以使用<strong>不可变类 DateTimeFormatter</strong> 来替代 SimpleDateFormat。</p>
+<p>如果一个对象不能够修改其内部状态（属性），那么它就是线程安全的，因为不存在并发修改。</p>
+<p>这样的对象在Java 中有很多，例如在 Java 8 后，提供了一个新的日期格式化类 DateTimeFormatter：</p>
+<pre><code class="language-java">DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);
+for (int i = 0; i &lt; 10; i++) {
+	new Thread(() -&gt; {
+		LocalDate date = dtf.parse(&quot;2018-10-01&quot;, LocalDate::from);
+		log.debug(&quot;{}&quot;, date);
+	}).start();
+}
+</code></pre>
+<h4 id="2不可变类的设计-final">2，不可变类的设计 final</h4>
+<p><strong>final 的使用：</strong></p>
+<ul>
+<li>类和类中所有属性都是 final 的</li>
+<li>类用 final 修饰保证了该类中的方法不能被覆盖，防止子类无意间破坏不可变性</li>
+</ul>
+<p><strong>保护性拷贝</strong>：</p>
+<ul>
+<li>通过创建副本对象来避免共享的手段称之为【保护性拷贝】</li>
+</ul>
+<h4 id="3不可变类与享元模式">3，不可变类与享元模式</h4>
+<p>不可变类通常会使用【保护性拷贝】来避免对象可变，但缺点是会频繁创建对象对象，并且对象个数较多。</p>
+<p>因此不可变类一般会与享元模式一起使用。</p>
+<p><strong>享元模式</strong>：可以重用数量有限的同一类对象，目的是重用现有的对象，而不是创建新的对象。</p>
+<p>JDK 中的享元模式：</p>
+<ul>
+<li>在JDK中 <code>Boolean，Byte，Short，Integer，Long，Character</code> 等包装类提供了 valueOf 方法，例如 Long 的 valueOf 会缓存 -128~127 之间的 Long 对象，在这个范围之间会重用对象，大于这个范围，才会新建 Long 对象。</li>
+</ul>
+<pre><code class="language-java">public static Long valueOf(long l) {
+	final int offset = 128;
+	if (l &gt;= -128 &amp;&amp; l &lt;= 127) { // will cache
+		return LongCache.cache[(int)l + offset];
+	}
+	return new Long(l);
+}
+</code></pre>
+<p>注意：</p>
+<ul>
+<li>Byte, Short, Long 缓存的范围都是 -128~127</li>
+<li>Character 缓存的范围是 0~127</li>
+<li>Integer的默认范围是 -128~127
+<ul>
+<li>最小值不能变</li>
+<li>但最大值可以通过调整虚拟机参数 <code>-Djava.lang.Integer.IntegerCache.high</code> 来改变</li>
+</ul>
+</li>
+<li>Boolean 缓存了 TRUE 和 FALSE</li>
+</ul>
+<p>除了上面的包装类，<strong>String串池、BigDecimal 和 BigInteger</strong> 也都使用了享元模式。</p>
+<h4 id="4无状态">4，无状态</h4>
+<p>在 web 阶段学习时，设计 Servlet 时为了保证其线程安全，都会有这样的建议，不要为 Servlet 设置成员变量，这种没有任何成员变量的类是线程安全的。</p>
+<p>因为成员变量保存的数据也可以称为状态信息，因此没有成员变量就称之为【<strong>无状态</strong>】。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-02-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/03/tomcat-learn/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Tomcat学习笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/02/java-concurrent1/">
+            <span class="next-text nav-default">Java并发编程学习笔记1</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/02/java-concurrent2/" class="leancloud_visitors" data-flag-title="Java并发编程学习笔记2">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

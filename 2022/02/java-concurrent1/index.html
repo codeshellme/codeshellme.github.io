@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java并发编程学习笔记1 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，查看线程的方法 Window 系统 任务管理器可以查看进程和线程数" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/02/java-concurrent1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java并发编程学习笔记1" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，查看线程的方法 Window 系统 任务管理器可以查看进程和线程数" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/02/java-concurrent1/" />
+<meta property="article:published_time" content="2022-02-18T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-02-18T21:41:52+08:00" />
+<meta itemprop="name" content="Java并发编程学习笔记1">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，查看线程的方法 Window 系统 任务管理器可以查看进程和线程数">
+<meta itemprop="datePublished" content="2022-02-18T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-02-18T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="9758">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java并发编程学习笔记1"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，查看线程的方法 Window 系统 任务管理器可以查看进程和线程数"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java并发编程学习笔记1</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-02-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 9758 字 </span>
+          <span class="more-meta"> 阅读约需 20 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1查看线程的方法">1，查看线程的方法</a></li>
+        <li><a href="#2java-线程的创建方式">2，Java 线程的创建方式</a></li>
+        <li><a href="#3java-线程池">3，Java 线程池</a></li>
+        <li><a href="#4java-线程同步-synchronized">4，Java 线程同步 synchronized</a></li>
+        <li><a href="#5java-中的锁-lock">5，Java 中的锁 Lock</a></li>
+        <li><a href="#6java-线程通信">6，Java 线程通信</a></li>
+        <li><a href="#7java-线程同步容器">7，Java 线程同步容器</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1查看线程的方法">1，查看线程的方法</h3>
+<p><strong>Window 系统</strong></p>
+<ul>
+<li>任务管理器可以查看进程和线程数，也可以用来杀死进程</li>
+<li><code>tasklist</code> 查看进程</li>
+<li><code>taskkill</code> 杀死进程</li>
+</ul>
+<p><strong>Linux 系统</strong></p>
+<ul>
+<li><code>ps -fT -p &lt;PID&gt;</code> 查看某个进程（PID）的所有线程</li>
+<li><code>top</code> 按大写 H 切换是否显示线程
+<ul>
+<li><code>top -H -p &lt;PID&gt;</code> 查看某个进程（PID）的所有线程</li>
+</ul>
+</li>
+</ul>
+<p><strong>Java 命令</strong></p>
+<ul>
+<li><code>jps</code> 查看所有 Java 进程</li>
+<li><code>jstack &lt;PID&gt;</code> 查看某个 Java 进程（PID）的所有线程状态</li>
+<li><code>jconsole</code> 来查看某个 Java 进程中线程的运行情况（图形界面）</li>
+</ul>
+<p>要使用 jconsole 命令，需要以如下方式运行你的 java 类：</p>
+<pre><code class="language-shell">java 
+-Djava.rmi.server.hostname=`ip地址` 
+-Dcom.sun.management.jmxremote 
+-Dcom.sun.management.jmxremote.port=`连接端口` 
+-Dcom.sun.management.jmxremote.ssl=是否安全连接 
+-Dcom.sun.management.jmxremote.authenticate=是否认证 
+java类
+</code></pre>
+<h3 id="2java-线程的创建方式">2，Java 线程的创建方式</h3>
+<h4 id="1继承-thread-类">1，继承 Thread 类</h4>
+<p><code>Thread</code> 类实现了 <code>Runnable</code> 接口，我们可以通过继承 <code>Thread</code> 类并重写 <code>run</code> 方法来创建线程。</p>
+<pre><code class="language-java">// 创建线程的第一种方式：
+// 继承 Thread 类，重写 run 方法，调用 start
+public class TestThread extends Thread {
+
+    // 用来停止线程
+    private boolean isStop = true;
+
+    @Override
+    public void run() {
+        if (!isStop) {
+            System.out.println(&quot;我是一个线程。。。&quot; + Thread.currentThread().getName());
+        }
+    }
+
+    // 正常停止线程的方式，建议使用本方式
+    public void stopThread() {
+        isStop = true;
+    }
+
+    public static void main(String[] args) {
+        TestThread t = new TestThread();
+        t.start();  // 调用 start 方法
+
+        new TestThread().start();
+
+        // 使用 Lamda（Java 8 提供的语法） 表达式
+        new Thread(()-&gt; {
+            System.out.println(&quot;我就是这个线程。。。&quot; + Thread.currentThread().getName());
+        }).start();
+    }
+}
+</code></pre>
+<p>线程中重要的方法：</p>
+<ul>
+<li><code>static void sleep</code>：线程休眠
+<ul>
+<li>每个对象都有一把锁，sleep 只释放 cpu 资源，而不会释放锁，因此锁依然是被当前线程占有（wait 方会释放锁）</li>
+<li>调用 sleep 会让当前线程从 <code>Running</code> 进入<code> Timed Waiting</code> 状态（阻塞）</li>
+<li>其它线程可以使用 <code>t.interrupt</code> 方法打断正在睡眠的线程，这时 sleep 方法会抛出 <code>InterruptedException</code>
+<ul>
+<li><code>t</code> 是正在 sleep 的线程对象</li>
+</ul>
+</li>
+<li>用 <code>TimeUnit</code> 的 sleep 代替 Thread 的 sleep 来获得更好的可读性</li>
+</ul>
+</li>
+<li><code>static void yield</code>：线程礼让
+<ul>
+<li>将当前线程的的 CPU 控制权让出来，让 CPU 重新选择要执行的线程（有可能礼让之后，CPU 还是选择了当前线程）</li>
+<li>调用 yield 会让当前线程从 <code>Running</code> 进入 <code>Runnable</code> 就绪状态，然后调度执行其它线程</li>
+</ul>
+</li>
+<li><code>static Thread currentThread</code>：获取当前线程</li>
+<li><code>void start</code>：start 方法只是让线程进入就绪，里面代码不一定立刻运行（CPU 的时间片还没分给它）。
+<ul>
+<li>每个线程对象的start方法只能调用一次，如果调用了多次会出现 <code>IllegalThreadStateException</code> 异常</li>
+<li>start 方法调用之前，线程的状态是 <code>NEW</code></li>
+<li>start 方法调用之后，线程的状态是 <code>RUNNABLE</code></li>
+</ul>
+</li>
+<li><code>void run</code>：线程启动后要调用的方法</li>
+<li><code>void setPriority</code>： 更改线程优先级，应该在 start 之前调用
+<ul>
+<li>线程优先级会提示（hint）调度器优先调度该线程，但它仅仅是一个提示，<strong>调度器可以忽略它</strong></li>
+<li><code>MIN_PRIORITY = 1</code></li>
+<li><code>NORM_PRIORITY = 5</code></li>
+<li><code>MAX_PRIORITY = 10</code></li>
+</ul>
+</li>
+<li><code>int getPriority</code>：获取线程优先级</li>
+<li><code>boolean isAlive</code>：测试线程是否存活</li>
+<li><code>void join</code>：等待线程终止
+<ul>
+<li>让当前线程执行完之后，再去执行其它线程（其它线程处于阻塞状态）</li>
+<li><code>join</code> 函数的底层原理是 <code>wait</code>（<strong>保护性暂停模式</strong>）</li>
+</ul>
+</li>
+<li><code>join(long n)</code>：等待线程运行结束，<strong>最多</strong>等待 n 毫秒</li>
+<li><code>getState</code>：获取线程当前状态，<code>Thread.State</code> 类中定义了 6 个线程状态
+<ul>
+<li>线程停止之后就不能再次 start 了，一个线程只能 start 一次</li>
+</ul>
+</li>
+<li><code>setDaemon</code> ：设置<strong>守护线程</strong>，一般在 start 方法之前设置
+<ul>
+<li>默认情况下，Java 进程需要等待所有线程都运行结束，才会结束。</li>
+<li>有一种特殊的线程叫做<strong>守护线程</strong>，只要其它非守护线程运行结束了，即使守护线程的代码没有执行完，也会强制结束。</li>
+</ul>
+</li>
+<li><code>getId</code>：获取线程 ID</li>
+<li><code>getName</code>：获取线程名</li>
+<li><code>setName</code>：设置线程名</li>
+<li><code>interrupt</code>：打断线程
+<ul>
+<li>如果被打断线程正在 sleep，wait，join 会导致被打断的线程抛出 <code>InterruptedException</code>，并<strong>清除打断标记</strong></li>
+<li>如果打断的正在运行的线程，则会<strong>设置打断标记</strong> ，但并不会影响被打断线程的运行，被打断线程可以根据<strong>打断标记</strong>（<code>isInterrupted</code>），去进行下一步处理（比如停止运行）</li>
+<li>park 的线程被打断，也会<strong>设置打断标记</strong></li>
+</ul>
+</li>
+<li><code>isInterrupted</code>：判断线程是否被打断，<strong>不会清除打断标记</strong></li>
+<li><code>static interrupted</code>：判断当前线程是否被打断，<strong>会清除打断标记</strong></li>
+<li><code>isAlive</code>：判断线程是否存活（没有运行完毕）</li>
+</ul>
+<p>关于<strong>线程停止</strong>：不推荐使用 <code>stop/destroy</code> 方法（已经废弃），建议使用一个标志位来终止线程。</p>
+<p>不推荐使用的方法：</p>
+<ul>
+<li><code>stop</code>：停止线程运行，是暴力停止，不推荐使用</li>
+<li><code>suspend</code>：挂起（暂停）线程运行，会破坏同步代码块，不推荐使用
+<ul>
+<li>替代方法是 <code>wait</code></li>
+</ul>
+</li>
+<li><code>resume</code>：恢复线程运行，会破坏同步代码块，不推荐使用
+<ul>
+<li>替代方法是 <code>notify</code></li>
+</ul>
+</li>
+</ul>
+<p><code>join</code> 方法的一个例子：</p>
+<pre><code class="language-java">public class TestRunnableJoin implements Runnable{
+
+    @Override
+    public void run() {
+        for (int i = 0; i &lt; 1000; i++) {
+            System.out.println(&quot;线程 vip 来了:&quot; + i);
+            try {
+                Thread.sleep(1000);     // 要注意 sleep 只释放 cpu 资源，但是不释放锁，所以锁依然是被当前线程占有
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        // 启动线程
+        TestRunnableJoin j = new TestRunnableJoin();
+        Thread t = new Thread(j);
+        t.start();
+
+        // 主线程
+        for (int i = 0; i &lt; 100; i++) {
+            if (i == 50) {
+                t.join(); // 让 t 线程执行完，再往下走，所有别的线程均阻塞
+                          // 注意：join 的愿意是让当前线程（这里就是主线程）陷入“等待”状态，
+                          //   等 join 的这个线程（这里就是 t）执行完成后，再继续执行当前线程（主线程）
+            }
+
+            System.out.println(&quot;Main Thread:&quot; + i);
+        }
+    }
+}
+</code></pre>
+<h4 id="2实现-runnable-接口">2，实现 Runnable 接口</h4>
+<p>从继承的角度来说，使用 Runnable 接口更好，因为还可以继承其它类。如果使用的是继承 Thread 的方式，就不能再继承其它类了，因为 Java 不支持多继承。</p>
+<p>Java 中的 Runnable 接口：</p>
+<pre><code class="language-java">@FunctionalInterface
+public interface Runnable {
+    public abstract void run();
+}
+</code></pre>
+<p>实现 Runnable 接口创建线程：</p>
+<pre><code class="language-java">// 创建线程的第二种方式：
+// 实现 Runnable 接口，重写 run 方法，调用 start
+public class TestRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println(&quot;我是线程。。。&quot; + Thread.currentThread().getName());
+    }
+
+    public static void main(String[] args) {
+        TestRunnable r = new TestRunnable();
+        Thread t = new Thread(r, &quot;我是第一个线程&quot;);
+        t.start();
+
+        new Thread(r, &quot;我是第二个线程&quot;).start();
+    }
+}
+</code></pre>
+<h4 id="3实现-callable-接口">3，实现 Callable 接口</h4>
+<p>继承 Thread 与实现 Runnable接口的方式都无法获取线程的执行结果。</p>
+<p>创建线程的第三种方式：实现 Callable 接口，该方式可以获取线程的执行结果。</p>
+<ul>
+<li>要重写 call 方法，call 方法有返回值，返回值的类型是 Callable&lt;&gt; 的泛型</li>
+<li>一般与 ExecutorService 配合来使用</li>
+</ul>
+<p><code>Future</code> 是一个接口，是对于具体的 Runnable 或者 Callable 任务的执行结果进行<strong>取消</strong>、<strong>查询是否完成</strong>、<strong>获取结果</strong>。</p>
+<p>Future 接口中声明了5个方法：</p>
+<ul>
+<li><code>isCancelled</code> 方法表示任务是否被取消成功，如果在任务正常完成前被取消成功，则返回 true</li>
+<li><code>isDone</code> 方法表示任务是否已经完成，若任务完成，则返回true</li>
+<li><code>get()</code> 方法用来获取执行结果，这个方法会产生阻塞，会一直等到任务执行完毕才返回</li>
+<li><code>get(long timeout, TimeUnit unit)</code> 用来获取执行结果
+<ul>
+<li>如果在指定时间内，还没获取到结果，就直接返回 null</li>
+</ul>
+</li>
+<li><code>cancel</code> 方法用来取消任务，如果取消任务成功则返回true，如果取消任务失败则返回false
+<ul>
+<li>参数 <code>mayInterruptIfRunning</code> 表示是否允许取消正在执行却没有执行完毕的任务</li>
+<li>如果设置true，则表示可以取消正在执行过程中的任务。</li>
+<li>如果任务已经完成，则无论mayInterruptIfRunning为true还是false，此方法肯定返回false，即如果取消已经完成的任务会返回false</li>
+<li>如果任务正在执行，若 mayInterruptIfRunning设置为true，则返回true；若mayInterruptIfRunning设置为false，则返回false</li>
+<li>如果任务还没有执行，则无论mayInterruptIfRunning为true还是false，肯定返回true</li>
+</ul>
+</li>
+</ul>
+<p><code>FutureTask</code> 是 <code>Future</code> 接口的一个唯一实现类。</p>
+<p>示例：</p>
+<pre><code class="language-java">// call 方法的返回值的类型是 Callable&lt;&gt; 的泛型
+public class TestCallable implements Callable&lt;Boolean&gt; {
+
+    @Override
+    public Boolean call() {
+        System.out.println(&quot;我是线程。。。&quot; + Thread.currentThread().getName());
+        return true;
+    }
+
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        TestCallable c1 = new TestCallable();
+        TestCallable c2 = new TestCallable();
+        TestCallable c3 = new TestCallable();
+
+        // 创建执行服务  线程池
+        ExecutorService service = Executors.newFixedThreadPool(3);
+
+        // 提交执行 r1 r2 r3 是 call 方法的返回值
+        Future&lt;Boolean&gt; r1 = service.submit(c1);
+        Future&lt;Boolean&gt; r2 = service.submit(c2);
+        Future&lt;Boolean&gt; r3 = service.submit(c3);
+
+        // 获取返回结果 call 方法的返回值
+        boolean rs1 = r1.get();         // get 方法会阻塞直到任务返回结果
+        boolean rs2 = r2.get();
+        boolean rs3 = r3.get();
+
+        // 关闭服务
+        service.shutdownNow();
+    }
+}
+</code></pre>
+<h3 id="3java-线程池">3，Java 线程池</h3>
+<p>详见：<a href="https://blog.csdn.net/LUAOHAN/article/details/117675114">Java 线程池 ThreadPoolExecutor</a></p>
+<p>一个示例：</p>
+<pre><code class="language-java">// 线程池
+public class TestThreadPool {
+    public static void main(String[] args) {
+        // 1 创建服务，创建了一个拥有 10 个线程的线程池
+        ExecutorService service = Executors.newFixedThreadPool(10);
+
+        // 2 执行线程
+        service.execute(new MyThread());
+        service.execute(new MyThread());
+        service.execute(new MyThread());
+
+        // 3 关闭线程
+        service.shutdown();
+    }
+}
+
+class MyThread implements Runnable {
+
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName());
+    }
+}
+</code></pre>
+<h3 id="4java-线程同步-synchronized">4，Java 线程同步 synchronized</h3>
+<p>在 Java 中，线程同步使用 <code>synchronized</code> 关键字（也称<strong>对象锁</strong>），synchronized 实际是用<strong>对象锁</strong>保证了<strong>临界区内代码的原子性</strong>，<strong>临界区内的代码对外是不可分割的，不会被线程切换所打断</strong>。</p>
+<p>其有两种使用方式：</p>
+<ul>
+<li><code>synchronized</code> 修饰方法
+<ul>
+<li>关键字在实例方法上，锁为当前实例
+<ul>
+<li><code>public synchronized void instanceLock() {}</code></li>
+</ul>
+</li>
+<li>关键字在静态方法上，锁为当前Class对象
+<ul>
+<li><code>public static synchronized void classLock() {}</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>synchronized</code> 修饰代码块： <code>synchronized(obj) {}</code>
+<ul>
+<li>其实 obj 就是锁对象</li>
+<li>注意：obj 应该是变化的对象，即是需要增删改的对象，否则会不起作用</li>
+<li>obj 的选择是关键</li>
+</ul>
+</li>
+</ul>
+<p><strong>synchronized 的原理：</strong></p>
+<ul>
+<li>Java多线程的锁都是基于对象的，Java中的每一个对象都可以作为一个锁</li>
+<li>每个 Java 对象都有一把锁，每个 synchronized 方法都必须获得调用该方法的对象的锁才能执行，否则线程就会阻塞，synchronized 方法一旦执行，就会独占该锁，其它想获取该锁的线程就会阻塞</li>
+<li>Java 中的类锁：类锁其实也是对象锁
+<ul>
+<li>Java类只有一个Class对象（可以有多个实例对象，多个实例共享这个Class对象），而 Class对象也是特殊的Java对象</li>
+</ul>
+</li>
+<li><strong>synchronized 锁的释放</strong>，有两种情况：
+<ul>
+<li>获取锁的线程执行完了该代码块，然后线程释放对锁的占有</li>
+<li>或者线程执行发生异常，此时JVM会让线程自动释放锁</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/21e98f8dd3b444f38a4fd5fab701acd3.png?" alt="在这里插入图片描述"></p>
+<p><strong>synchronized 的底层原理：</strong> 每个 Java 对象实际上对应了一个 <strong>Monitor</strong> 锁（由操作系统提供），同一个 Java 对象对应了相同的 Monitor 锁，不同的 Java 对象对应了不同的 Monitor 锁。</p>
+<ul>
+<li>刚开始 Monitor 中 Owner 为 null</li>
+<li>当 Thread-2 执行 synchronized(obj) 就会将 Monitor 中的 Owner 置为 Thread-2</li>
+<li>在 Thread-2 持有锁的过程中，如果 Thread-3，Thread-4，Thread-5 也来执行 synchronized(obj)，就会进入 EntryList 阻塞队列</li>
+<li>Thread-2 执行完同步代码块后，会唤醒 EntryList 中的线程，被唤醒的线程会再去竞争 Monitor 锁</li>
+<li>图中 WaitSet 中的 Thread-0，Thread-1 是之前获得过锁，但条件不满足，进入 WAITING 状态的线程</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>synchronized(obj) 必须是进入同一个对象的 monitor 才有上述效果</li>
+<li>不加 synchronized(obj) 的对象不会关联 Monitor 锁，不遵循以上规则</li>
+</ul>
+<h3 id="5java-中的锁-lock">5，Java 中的锁 Lock</h3>
+<h4 id="1lock-接口">1，Lock 接口</h4>
+<p>Java 中的锁 Lock 接口，比 synchronized 拥有更多，更细致的功能。</p>
+<pre><code class="language-java">// java.util.concurrent.locks.Lock
+public interface Lock {
+	// 获取锁，如果锁已被其他线程获取，则进行等待
+	void lock();
+
+	// 获取锁，可被 interrupt 打断
+	void lockInterruptibly() throws InterruptedException;
+
+	// 获取锁，如果获取成功，则返回true，如果获取失败（即锁已被其他线程获取），则返回false
+	// 该方法无论如何都会立即返回，在拿不到锁时不会一直在那等待
+	boolean tryLock();
+
+	// 在拿不到锁时会等待一定的时间
+	// 在时间期限内如果还拿不到锁，就返回false。
+	// 如果一开始拿到锁或者在等待期间内拿到了锁，则返回true
+	// 该方法也是可打断的
+	boolean tryLock(long time, TimeUnit unit) throws InterruptedException;
+
+	// 释放锁
+	void unlock();
+
+	// 条件变量，用于线程协作
+	Condition newCondition();
+}
+</code></pre>
+<p><code>Lock.lock</code> 方法使用模板：</p>
+<pre><code class="language-java">lock.lock();    // 必须在 try 块之外，不能在里边
+                // lock 方法与 try 块之间最好不要有任何代码，以免出现异常，导致 unlock 无法执行
+try{
+   //处理任务
+}catch(Exception ex){
+
+}finally{
+   lock.unlock();   //释放锁
+}
+</code></pre>
+<p><code>Lock.tryLock</code> 方法使用模板：</p>
+<pre><code class="language-java">if(lock.tryLock()) {
+     try{
+         // 获取到了锁，处理任务
+     }catch(Exception ex){
+
+     }finally{
+         lock.unlock();   //释放锁
+     }
+}else {
+    // 不能获取到锁，则直接做其他事情
+}
+</code></pre>
+<p><code>Lock.lockInterruptibly</code> 方法使用模板：</p>
+<pre><code class="language-java">try {
+	lock.lockInterruptibly();
+} catch (InterruptedException e) {
+	// 获取锁时被打断
+	// e.printStackTrace();
+	return;
+}
+
+try {
+	// 获得了锁，do someThing()
+} catch(Exception ex){
+
+} finally {
+	lock.unlock();
+}
+</code></pre>
+<h4 id="2reentrantlock-类">2，ReentrantLock 类</h4>
+<p><code>ReentrantLock</code>（可重入锁） 类，是唯一实现了 <code>Lock</code> 接口的类。与 synchronized 一样，都支持可重入。</p>
+<p>相对于 <code>synchronized</code> 它具备如下特点</p>
+<ul>
+<li>可中断
+<ul>
+<li><code>lock()</code> 方法是不可打断的，<code>lockInterruptibly()</code> 是可打断的</li>
+</ul>
+</li>
+<li>可以设置超时时间</li>
+<li>可以设置为公平锁（防止线程饥饿，某些线程一直持有锁，某些线程一直得不到锁）</li>
+<li>支持多个条件变量</li>
+</ul>
+<p>其中的一些方法：</p>
+<pre><code class="language-java">isLocked()                  //判断锁是否被任何线程获取了
+isHeldByCurrentThread()     //判断锁是否被当前线程获取了
+hasQueuedThreads()          //判断是否有线程在等待该锁
+</code></pre>
+<h4 id="3synchronized-与-lock-对比">3，synchronized 与 Lock 对比</h4>
+<ul>
+<li>synchronized 是隐式的锁，使用方便</li>
+<li>synchronized 不需要手动释放锁（不会出现死锁现象），而 Lock 需要开发者负责锁的释放，否则会导致死锁</li>
+<li>Lock 是显示的锁，性能更好</li>
+</ul>
+<p><strong>性能高低</strong>： Lock &gt; synchronized 块 &gt; synchronized 方法</p>
+<h4 id="4readwritelock-接口">4，ReadWriteLock 接口</h4>
+<p><code>ReadWriteLock</code> 接口是 Java 中的读写锁接口：</p>
+<pre><code class="language-java">public interface ReadWriteLock {
+
+    Lock readLock();	// 获取读锁
+
+    Lock writeLock();	// 获取写锁
+}
+</code></pre>
+<p>读写锁的特点：</p>
+<ul>
+<li>当一个线程已经占用了<strong>读锁</strong>
+<ul>
+<li>此时其他线程如果要申请读锁，则可以申请到</li>
+<li>此时其他线程如果要申请写锁，则申请写锁的线程会一直等待释放读锁</li>
+</ul>
+</li>
+<li>当一个线程已经占用了<strong>写锁</strong>
+<ul>
+<li>此时其他线程如果申请写锁或者读锁，则申请的线程会一直等待释放写锁</li>
+</ul>
+</li>
+</ul>
+<p><code>ReentrantReadWriteLock</code> （可重入读写锁）类实现了 <code>ReadWriteLock</code> 接口。</p>
+<p>读写锁特点：</p>
+<ul>
+<li><strong>读-读</strong>：可并发</li>
+<li><strong>读-写</strong>：互斥</li>
+<li><strong>写-写</strong>：互斥</li>
+</ul>
+<p>当<strong>读操作</strong>远远高于<strong>写操作</strong>时，这时候使用<strong>读写锁</strong> 让<strong>读-读</strong>可以并发，提高性能。</p>
+<p>使用方式：</p>
+<pre><code class="language-java">ReentrantReadWriteLock rw = new ReentrantReadWriteLock();	// 读写锁
+ReentrantReadWriteLock.ReadLock r = rw.readLock();			// 获取读锁
+ReentrantReadWriteLock.WriteLock w = rw.writeLock();		// 获取写锁
+
+// 读操作用读锁控制
+public Object read() {
+	r.lock();	    // 获取读锁
+	try {
+		return data;// 读取数据
+	} finally {
+		r.unlock();	// 释放读锁
+	}
+}
+
+// 写操作用写锁控制
+public void write() {
+	w.lock();		// 获取写锁
+	try {
+		log.debug(&quot;写入操作&quot;);
+	} finally {
+		w.unlock();	// 释放写锁
+	}
+}
+</code></pre>
+<p>注意事项：</p>
+<ul>
+<li>读锁不支持条件变量</li>
+<li>重入时升级不支持：即持有读锁的情况下去获取写锁，会导致获取写锁永久等待</li>
+<li>重入时降级支持：即持有写锁的情况下去获取读锁</li>
+</ul>
+<h4 id="5锁的分类">5，锁的分类</h4>
+<p>锁的分类：</p>
+<ul>
+<li><strong>可重入锁</strong>：可重入性表明了锁的分配机制：<strong>基于线程的分配，而不是基于方法调用的分配</strong>。
+<ul>
+<li>像 synchronized 和 ReentrantLock 都是可重入锁</li>
+<li>举个简单的例子，当一个线程执行到某个 synchronized 方法时，比如说method1，而在method1中会调用另外一个synchronized方法method2，此时线程不必重新去申请锁，而是可以直接执行方法 method2</li>
+<li>(假如synchronized不具备可重入性，此时线程A需要重新申请锁，这样就会线程A一直等待永远不会获取到)</li>
+</ul>
+</li>
+<li><strong>可中断锁</strong>： 是指可以被中断的锁
+<ul>
+<li>在Java中，synchronized 不是可中断锁，而 Lock 是可中断锁</li>
+<li>如果某一线程A正在执行锁中的代码，另一线程B正在等待获取该锁，可能由于等待时间过长，线程B不想等待了，想先处理其他事情，我们可以让它中断自己或者在别的线程中中断它，这种就是可中断锁。</li>
+<li><code>lockInterruptibly()</code> 的用法体现了Lock的可中断性。</li>
+<li>注意：<code>lock()</code> 方法是不可打断的，<code>lockInterruptibly()</code> 是可打断的</li>
+</ul>
+</li>
+<li><strong>读写锁</strong>：读写锁将对一个资源（比如文件）的访问分成了2个锁，一个读锁和一个写锁，使得多个线程之间的读操作不会发生冲突。</li>
+<li><strong>公平锁</strong>：公平锁尽量以请求锁的顺序来获取锁
+<ul>
+<li>比如同时有多个线程在等待一个锁，当这个锁被释放时，等待时间最久的线程（最先请求的线程）会获得该所，这种就是公平锁</li>
+<li><strong>非公平锁</strong>即无法保证锁的获取是按照请求锁的顺序进行的，这样就可能导致某个或者一些线程永远获取不到锁</li>
+<li>在Java中，<code>synchronized</code> 就是非公平锁，它无法保证等待的线程获取锁的顺序</li>
+<li>而对于<code>ReentrantLock</code>和<code>ReentrantReadWriteLock</code>，它默认情况下是非公平锁，但是<strong>可以设置为公平锁</strong>
+<ul>
+<li>比如 <code>ReentrantLock lock = new ReentrantLock(true);</code></li>
+<li><code>isFair()</code> 方法判断锁是否是公平锁</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>可重入锁的例子：</p>
+<pre><code class="language-java">class MyClass {
+    public synchronized void method1() {
+        method2();
+    }
+
+    public synchronized void method2() {}
+}
+</code></pre>
+<h4 id="6死锁">6，死锁</h4>
+<p>一个例子：</p>
+<pre><code class="language-java">Object A = new Object();
+Object B = new Object();
+
+Thread t1 = new Thread(() -&gt; {
+	synchronized (A) {
+		log.debug(&quot;lock A&quot;);
+		sleep(1);
+		synchronized (B) {
+			log.debug(&quot;lock B&quot;);
+			log.debug(&quot;操作...&quot;);
+		}
+	}
+}, &quot;t1&quot;);
+
+Thread t2 = new Thread(() -&gt; {
+	synchronized (B) {
+		log.debug(&quot;lock B&quot;);
+		sleep(0.5);
+		synchronized (A) {
+			log.debug(&quot;lock A&quot;);
+			log.debug(&quot;操作...&quot;);
+		}
+	}
+}, &quot;t2&quot;);
+
+t1.start();
+t2.start();
+// 此代码将进入死锁
+</code></pre>
+<p>定位死锁的方法：</p>
+<ul>
+<li>使用 jps 定位进程 id，再用 jstack 定位死锁</li>
+<li>使用 jconsole工具</li>
+<li>另外，如果由于某个线程进入了死循环，导致其它线程一直等待，对于这种情况 linux 下可以通过 <code>top</code> 先定位到 CPU 占用高的 Java 进程，再利用 <code>top -Hp 进程id</code> 来定位是哪个线程，最后再用 <code>jstack</code> 排查</li>
+</ul>
+<p>jstack 的输出内容：</p>
+<p><img src="https://img-blog.csdnimg.cn/a7f1fbf85485434f85567227cf88e784.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/ccaa00e0b60c42ea924fc161dd6977e1.png" alt="在这里插入图片描述"></p>
+<p><em><strong>哲学家就餐问题是一个经典的死锁问题</strong></em></p>
+<p>有五位哲学家，围坐在圆桌旁</p>
+<ul>
+<li>他们只做两件事，思考和吃饭，思考一会吃口饭，吃完饭后接着思考</li>
+<li>吃饭时要用两根筷子吃，桌上共有 5 根筷子，每位哲学家左右手边各有一根筷子</li>
+<li>如果筷子被身边的人拿着，自己就得等待</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/9ddd5781431544209c1148f3549a00c1.png" alt="在这里插入图片描述"></p>
+<p>代码实现：</p>
+<pre><code class="language-java">// 筷子类
+class Chopstick {
+	String name;
+	
+	public Chopstick(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return &quot;筷子{&quot; + name + '}';
+	}
+}
+
+// 哲学家类
+class Philosopher extends Thread {
+	Chopstick left;
+	Chopstick right;
+	
+	public Philosopher(String name, Chopstick left, Chopstick right) {
+		super(name);
+		this.left = left;
+		this.right = right;
+	}
+
+	private void eat() {
+		log.debug(&quot;eating...&quot;);
+		Sleeper.sleep(1);
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			synchronized (left) {		// 获得左手筷子
+				synchronized (right) {	// 获得右手筷子
+					eat();	// 吃饭
+				}	// 放下右手筷子
+			}		// 放下左手筷子
+		}
+	}
+}
+
+// main 方法
+Chopstick c1 = new Chopstick(&quot;1&quot;);
+Chopstick c2 = new Chopstick(&quot;2&quot;);
+Chopstick c3 = new Chopstick(&quot;3&quot;);
+Chopstick c4 = new Chopstick(&quot;4&quot;);
+Chopstick c5 = new Chopstick(&quot;5&quot;);
+new Philosopher(&quot;苏格拉底&quot;, c1, c2).start();
+new Philosopher(&quot;柏拉图&quot;, c2, c3).start();
+new Philosopher(&quot;亚里士多德&quot;, c3, c4).start();
+new Philosopher(&quot;赫拉克利特&quot;, c4, c5).start();
+new Philosopher(&quot;阿基米德&quot;, c5, c1).start();
+</code></pre>
+<p>程序执行一会就会死锁，可以使用 jconsole 工具检测死锁。</p>
+<h3 id="6java-线程通信">6，Java 线程通信</h3>
+<h4 id="1操作系统线程状态转换">1，操作系统线程状态转换</h4>
+<p><img src="https://img-blog.csdnimg.cn/d2424c5c4dbb4974865f00293b11fd17.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>初始状态</strong>：刚创建完线程对象，还未与系统线程关联</li>
+<li><strong>可运行状态 / 就绪转态</strong>：已与系统线程关联，可以由 CPU 调度执行</li>
+<li><strong>运行状态</strong>：获取了 CPU 时间片，线程正在运行中</li>
+<li><strong>阻塞状态</strong>：一般指阻塞与系统IO（文件/网络）
+<ul>
+<li>当 IO 完毕，会由操作系统唤醒阻塞的线程，转换至【可运行状态】</li>
+</ul>
+</li>
+<li><strong>终止转态</strong>：线程已经执行完毕，生命周期已经结束</li>
+</ul>
+<h4 id="2java-线程状态转换">2，Java 线程状态转换</h4>
+<p><img src="https://img-blog.csdnimg.cn/efb79f39ba3e4a94bfc97a767f9f1ccb.png" alt="在这里插入图片描述"></p>
+<h4 id="3java-wait-join-原理">3，Java wait join 原理</h4>
+<p><strong>wait 原理：</strong></p>
+<ul>
+<li>一开始小南正持有锁，由于条件不满足，小南不能继续进行计算</li>
+<li>但小南如果一直占用着锁，其它人就得一直阻塞，效率太低</li>
+<li><img src="https://img-blog.csdnimg.cn/77debcb327c4408996b12e84f0a2dd20.png" alt="在这里插入图片描述"></li>
+<li>于是老王单开了一间休息室（调用 wait 方法），让小南到休息室（WaitSet）等着去了，但这时锁释放开，其它人可以由老王随机安排进屋</li>
+<li>直到小M将烟送来，大叫一声 [ 你的烟到了 ] （调用 notify 方法）</li>
+<li><img src="https://img-blog.csdnimg.cn/0a94e7c197ea4a328dec1fd07c862a40.png" alt="在这里插入图片描述"></li>
+<li>小南于是可以离开休息室，重新进入竞争锁的队列</li>
+<li><img src="https://img-blog.csdnimg.cn/672335a541284cdeb2ca69d34e99b89a.png" alt="在这里插入图片描述"></li>
+</ul>
+<p><strong>wait/notify 原理</strong> 
+<img src="https://img-blog.csdnimg.cn/b9625a7c438e42a3a9845a66430a647b.png?" alt="在这里插入图片描述"></p>
+<ul>
+<li>Owner 线程发现条件不满足，调用 wait 方法，即可进入 WaitSet 变为 WAITING 状态</li>
+<li>BLOCKED 和 WAITING 的线程都处于阻塞状态，不占用 CPU 时间片</li>
+<li>BLOCKED 线程会在 Owner 线程释放锁时唤醒</li>
+<li>WAITING 线程会在 Owner 线程调用 notify 或 notifyAll 时唤醒，但唤醒后并不意味者立刻获得锁，仍需进入 EntryList 重新竞争</li>
+</ul>
+<p><strong>Join 原理：是调用者轮询检查线程 alive 状态</strong></p>
+<pre><code class="language-java">t1.join();
+// 等价于下面的代码
+synchronized (t1) {
+	// 调用者线程进入 t1 的 waitSet 等待, 直到 t1 运行结束
+	while (t1.isAlive()) {
+		t1.wait(0);
+	}
+}
+</code></pre>
+<p>Java 中提供了几个方法（这些方法都在 <code>Object</code> 类中定义）来解决线程之间的通信问题：</p>
+<ul>
+<li><code>wait()</code>：该方法使得线程（释放掉锁，处于等待状态）一直等待（阻塞），直到其它线程通知(notify)
+<ul>
+<li>假如线程 A 持有了一个锁 lock 并开始执行，它可以使用 lock.wait() 让自己进入等待状态，这个时候，lock 这个锁是被释放了的。</li>
+<li>当线程 B 获得了 lock 这个锁并开始执行，它可以在某一时刻，使用 lock.notify() ，通知之前持有 lock 锁并进入等待状态的线程 A。</li>
+<li>（注意：这时线程 B 并没有释放锁 lock，除非线程 B 使用 lock.wait() 释放锁，或者线程B执行结束自行释放锁，线程A才能得到 lock 锁。）</li>
+</ul>
+</li>
+<li><code>wait(long timeout)</code>：可指定等待时长</li>
+<li><code>notify()</code>：随机唤醒一个处于等待状态的线程</li>
+<li><code>notifyAll()</code>：唤醒同一个对象上所有调用 wait() 方法的线程，优先级高的线程优先调度</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li><strong>以上这些方法都是 Object 类中的方法，都只能在同步方法或者同步代码块中使用，否则会抛异常</strong></li>
+<li><strong>等待/通知</strong>机制使用的是<strong>同一个对象锁</strong>，如果你两个线程使用的是不同的对象锁，那它们之间是不能用等待/通知机制通信的</li>
+</ul>
+<p>一个例子：</p>
+<pre><code class="language-java">public class TestCommunication {
+
+    private static final Object lock = new Object();
+
+    static class ThreadA implements Runnable {
+        @Override
+        public void run() {
+            synchronized (lock) {
+                for (int i = 0; i &lt; 5; i++) {
+                    try {
+                        System.out.println(&quot;ThreadA: &quot; + i);
+                        lock.notify();
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                lock.notify();
+            }
+        }
+    }
+
+    static class ThreadB implements Runnable {
+        @Override
+        public void run() {
+            synchronized (lock) {
+                for (int i = 0; i &lt; 5; i++) {
+                    try {
+                        System.out.println(&quot;ThreadB: &quot; + i);
+                        lock.notify();
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                lock.notify();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new Thread(new ThreadA()).start();
+        Thread.sleep(1000);
+        new Thread(new ThreadB()).start();
+    }
+}
+</code></pre>
+<h3 id="7java-线程同步容器">7，Java 线程同步容器</h3>
+<p><code>ArrayList、LinkedList、HashMap</code> 这些容器都是<strong>非线程安全</strong>的，如果有多个线程并发地访问这些容器时，就会出现问题。</p>
+<h4 id="1java-同步安全容器">1，Java 同步安全容器</h4>
+<p><code>Vector、Stack、HashTable</code> 中的方法都进行了 <code>synchronized</code> 同步，是线程安全的， 因为有了 <code>synchronized</code>，所以性能较低。</p>
+<p>另外 <code>java.util.Collections</code> 类中的几个以 <code>synchronizedXXX</code> 开头的静态方法，也可以创建同步容器。</p>
+<h4 id="2java-并发容器">2，Java 并发容器</h4>
+<p>Java 并发容器 <code>java.util.concurrent</code> 包下的东西，这些比<strong>同步容器</strong>性能更好，更加安全。</p>
+<ul>
+<li><code>ConcurrentHashMap</code>：并发的 HashMap</li>
+<li><code>CopyOnWriteArrayList</code>：并发的 ArrayList，写时复制的容器</li>
+<li><code>CopyOnWriteArraySet</code>：并发的 ArraySet，写时复制的容器</li>
+<li><code>ConcurrentLinkedQueue</code>：并发的 LinkedQueue</li>
+<li><code>ConcurrentSkipListMap</code>：并发的 SkipListMap，可以在高效并发中替代 SoredMap（用<code>Collections.synchronzedMap</code>包装的TreeMap）</li>
+<li><code>ConcurrentSkipListSet</code>：并发的 SkipListSet，可以在高效并发中替代 SoredSet（用<code>Collections.synchronzedSet</code>包装的TreeMap）</li>
+</ul>
+<p><strong>CopyOnWrite 写时复制</strong>：</p>
+<ul>
+<li>当往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行 Copy 复制出一个新的容器</li>
+<li>然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器</li>
+<li>这样做的好处是我们可以对 CopyOnWrite 容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素，所以CopyOnWrite容器也是一种读写分离的思想，读和写不同的容器</li>
+</ul>
+<p><strong>CopyOnWrite 应用场景</strong>：</p>
+<ul>
+<li>CopyOnWrite 并发容器用于读多写少的并发场景；比如白名单，黑名单，商品类目的访问和更新场景</li>
+</ul>
+<p><strong>CopyOnWrite 的缺点</strong>：CopyOnWrite 容器有很多优点，但是同时也存在两个问题：</p>
+<ul>
+<li><strong>内存问题</strong>：会很占内存</li>
+<li><strong>数据一致性问题</strong>：
+<ul>
+<li>CopyOnWrite 容器只能保证数据的最终一致性，不能保证数据的实时一致性</li>
+<li>所以如果你希望写入的的数据，马上能读到，则不要使用CopyOnWrite容器</li>
+</ul>
+</li>
+</ul>
+<h4 id="3java-非阻塞队列">3，Java 非阻塞队列</h4>
+<p>Java 非阻塞队列包括 <code>java.util.PriorityQueue</code> 和 <code>java.util.LinkedList</code>。</p>
+<p>对于非阻塞队列，一般情况下建议使用 <code>offer、poll</code> 和 <code>peek</code> 三个方法，不建议使用 <code>add</code> 和 <code>remove</code> 方法。</p>
+<p>因为使用 <code>offer、poll</code> 和 <code>peek</code> 三个方法可以通过返回值判断操作成功与否，而使用 <code>add</code> 和 <code>remove</code> 方法却不能达到这样的效果。</p>
+<p>注意，非阻塞队列中的方法都没有进行同步措施。</p>
+<ul>
+<li><code>add(E e)</code>：将元素e插入到队列末尾
+<ul>
+<li>如果插入成功，则返回true；</li>
+<li>如果插入失败（即队列已满），则会抛出异常</li>
+</ul>
+</li>
+<li><code>remove()</code>：移除队首元素
+<ul>
+<li>若移除成功，则返回true；</li>
+<li>如果移除失败（队列为空），则会抛出异常</li>
+</ul>
+</li>
+<li><code>offer(E e)</code>：将元素e插入到队列末尾
+<ul>
+<li>如果插入成功，则返回true</li>
+<li>如果插入失败（即队列已满），则返回false</li>
+</ul>
+</li>
+<li><code>poll()</code>：移除并获取队首元素
+<ul>
+<li>若成功，则返回队首元素</li>
+<li>否则返回null</li>
+</ul>
+</li>
+<li><code>peek()</code>：获取队首元素
+<ul>
+<li>若成功，则返回队首元素</li>
+<li>否则返回null</li>
+</ul>
+</li>
+</ul>
+<h4 id="4java-阻塞队列">4，Java 阻塞队列</h4>
+<p><strong>阻塞队列</strong>会对当前线程产生阻塞：</p>
+<ul>
+<li>比如一个线程从一个空的阻塞队列中取元素，此时线程会被阻塞直到阻塞队列中有了元素</li>
+<li>当队列中有元素后，被阻塞的线程会自动被唤醒（不需要我们编写代码去唤醒），这样提供了极大的方便性</li>
+</ul>
+<p>阻塞队列包括了非阻塞队列中的大部分方法，但是要注意这些方法在阻塞队列中都进行了同步措施。</p>
+<p>除此之外，阻塞队列提供了另外4个非常有用的方法：</p>
+<ul>
+<li><code>put(E e)</code>   向队尾存入元素，如果队列满，则等待</li>
+<li><code>take()</code>     从队首取元素，如果队列为空，则等待</li>
+<li><code>offer(E e,long timeout, TimeUnit unit)</code>
+<ul>
+<li>向队尾存入元素，如果队列满，则等待一定的时间</li>
+<li>当时间期限达到时，如果还没有插入成功，则返回false；否则返回true</li>
+</ul>
+</li>
+<li><code>poll(long timeout, TimeUnit unit)</code>
+<ul>
+<li>从队首取元素，如果队列空，则等待一定的时间</li>
+<li>当时间期限达到时，如果取到，则返回null；否则返回取得的元素</li>
+</ul>
+</li>
+</ul>
+<p>在 <code>java.util.concurrent</code> 包下提供了若干个阻塞队列，主要有以下几个：</p>
+<ul>
+<li><code>ArrayBlockingQueue</code>：基于数组实现的一个阻塞队列
+<ul>
+<li>在创建 <code>ArrayBlockingQueue</code> 对象时必须制定容量大小</li>
+<li>并且可以指定公平性与非公平性，默认情况下为非公平的（即不保证等待时间最长的队列最优先能够访问队列）</li>
+</ul>
+</li>
+<li><code>LinkedBlockingQueue</code>：基于链表实现的一个阻塞队列
+<ul>
+<li>在创建 <code>LinkedBlockingQueue</code> 对象时如果不指定容量大小，则默认大小为 <code>Integer.MAX_VALUE</code></li>
+</ul>
+</li>
+<li><code>PriorityBlockingQueue</code>：以上2种队列都是先进先出队列，而 <code>PriorityBlockingQueue</code> 却不是
+<ul>
+<li>它会按照元素的优先级对元素进行排序，按照优先级顺序出队，每次出队的元素都是优先级最高的元素</li>
+<li>注意，此阻塞队列为<strong>无界</strong>阻塞队列，即容量没有上限，前面2种都是有界队列</li>
+</ul>
+</li>
+<li><code>DelayQueue</code>：基于 <code>PriorityQueue</code>，一种是延时阻塞队列，
+<ul>
+<li><code>DelayQueue</code> 中的元素只有当其指定的延迟时间到了，才能够从队列中获取到该元素。</li>
+<li><code>DelayQueue</code> 也是一个无界队列，因此往队列中插入数据的操作（生产者）永远不会被阻塞，而只有获取数据的操作（消费者）才会被阻塞。</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-02-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/02/java-concurrent2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java并发编程学习笔记2</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/02/netty-learn/">
+            <span class="next-text nav-default">Netty学习笔记</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/02/java-concurrent1/" class="leancloud_visitors" data-flag-title="Java并发编程学习笔记1">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

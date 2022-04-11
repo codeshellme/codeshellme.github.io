@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题） - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ps 找到消耗资源最高的线程 ID 先用 ps 命令找到 Java 进程I" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/03/jvm3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ps 找到消耗资源最高的线程 ID 先用 ps 命令找到 Java 进程I" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/03/jvm3/" />
+<meta property="article:published_time" content="2022-03-28T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-03-28T21:41:52+08:00" />
+<meta itemprop="name" content="Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ps 找到消耗资源最高的线程 ID 先用 ps 命令找到 Java 进程I">
+<meta itemprop="datePublished" content="2022-03-28T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-03-28T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="1446">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ps 找到消耗资源最高的线程 ID 先用 ps 命令找到 Java 进程I"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-03-28 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 1446 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1ps-找到消耗资源最高的线程-id">1，ps 找到消耗资源最高的线程 ID</a></li>
+        <li><a href="#2jstack-打印线程栈信息">2，jstack 打印线程栈信息</a></li>
+        <li><a href="#3jdk-内置命令行工具">3，JDK 内置命令行工具</a></li>
+        <li><a href="#4java-内存问题排查">4，Java 内存问题排查</a></li>
+        <li><a href="#5linux-其它监控工具">5，Linux 其它监控工具</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1ps-找到消耗资源最高的线程-id">1，ps 找到消耗资源最高的线程 ID</h3>
+<p>先用 ps 命令找到 Java 进程ID：</p>
+<pre><code class="language-shell">ps -aux| grep ...
+</code></pre>
+<p>使用 <code>top</code> 命令查看<strong>某进程</strong>中的<strong>所有线程</strong>的资源使用情况：</p>
+<pre><code class="language-shell">top -Hp `进程id`
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/29218b32976f487b8f2b3eea71bf12c8.png" alt="在这里插入图片描述"></p>
+<p>也可以使用如下命令：</p>
+<pre><code class="language-shell">ps H -eo pid,tid,%cpu| grep `进程id`
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/8748c2af3b3c486d97afb15b3c24e27e.png" alt="在这里插入图片描述"></p>
+<p>将要分析的线程ID转换成十六进制：</p>
+<pre><code class="language-shell">printf &quot;%x\n&quot; `线程ID`
+</code></pre>
+<h3 id="2jstack-打印线程栈信息">2，jstack 打印线程栈信息</h3>
+<p>使用 <code>jstack</code> 打印 <strong>Java 进程</strong>中的<strong>线程栈信息</strong>：</p>
+<pre><code class="language-shell">jstack `进程ID`
+</code></pre>
+<blockquote>
+<p><strong><code>要特别注意</code>：使用 <code>jstack</code> 命令时的用户一定要与启动 Java 进程的用户一样，否则会出现如下错误</strong>：</p>
+</blockquote>
+<pre><code class="language-shell">9798: Unable to open socket file: target process not responding or HotSpot VM not loaded
+The -F option can be used when the target process is not responding
+</code></pre>
+<p><code>jstack</code> 输出正常的话，会输出下面一样的信息：</p>
+<pre><code class="language-shell">&quot;Thread-34&quot; #613 daemon prio=5 os_prio=0 tid=0x00007fb9b006f800 nid=0x13a9c waiting on condition [0x00007fb90acaa000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  &lt;0x00000006c10a8828&gt; (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1081)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:809)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1074)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1134)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+</code></pre>
+<p>然后，从这些信息中查找某个线程 <code>nid</code> 的状态等信息。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://blog.csdn.net/fanxb92/article/details/108751146">https://blog.csdn.net/fanxb92/article/details/108751146</a></li>
+</ul>
+<h3 id="3jdk-内置命令行工具">3，JDK 内置命令行工具</h3>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>jps/jinfo</strong></td>
+<td align="left">查看 java 进程</td>
+</tr>
+<tr>
+<td align="left"><strong>jstat</strong></td>
+<td align="left">查看 JVM 内部 gc 相关信息</td>
+</tr>
+<tr>
+<td align="left"><strong>jmap</strong></td>
+<td align="left">查看 heap 或类占用空间统计</td>
+</tr>
+<tr>
+<td align="left"><strong>jstack</strong></td>
+<td align="left">查看线程信息</td>
+</tr>
+<tr>
+<td align="left"><strong>jcmd</strong></td>
+<td align="left">执行 JVM 相关分析命令</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4java-内存问题排查">4，Java 内存问题排查</h3>
+<p>一般 Java 内存问题可以通过生成 HeapDump （堆转储）文件来分析，它是一个Java进程在某个时间点上的内存快照。</p>
+<p>堆转储文件是诊断内存相关问题的重要信息来源，例如内存泄漏，垃圾收集问题 和 java.lang.OutOfMemoryError，同时它也是优化内存消耗的重要依据。</p>
+<p>生成堆转储文件有多种方式：</p>
+<ul>
+<li><strong>jmap</strong>：在服务器上使用该方式比较合适
+<ul>
+<li>格式：<code>jmap -dump:format=b,file=&lt;file-path&gt; &lt;pid&gt; </code></li>
+<li>示例：<code>jmap -dump:format=b,file=/opt/tmp/dumpfile.hprof 87960</code></li>
+</ul>
+</li>
+<li><strong>jvisualvm</strong>：可视化监控工具</li>
+</ul>
+<p>jvisualvm 可以监控 Java 的CPU、堆、类、线程等指标：</p>
+<p><img src="https://img-blog.csdnimg.cn/d4b257c91453485ea50dfdf0217fd399.png" alt="在这里插入图片描述"></p>
+<hr>
+<p>要想使用 <code>jvisualvm</code>  或 <code>jconsole</code> 连接，需要先在服务端（Tomcat）开启 jmx 服务，在 <code>Tomcat/bin/setenv.sh</code> 文件中加入：</p>
+<pre><code class="language-shell">JAVA_OPTS=&quot;$JAVA_OPTS -Dcom.sun.management.jmxremote&quot;
+JAVA_OPTS=&quot;$JAVA_OPTS -Dcom.sun.management.jmxremote.ssl=false&quot;
+JAVA_OPTS=&quot;$JAVA_OPTS -Dcom.sun.management.jmxremote.authenticate=false&quot;
+JAVA_OPTS=&quot;$JAVA_OPTS -Djava.rmi.server.hostname=192.168.0.222&quot;  # 服务器IP
+JAVA_OPTS=&quot;$JAVA_OPTS -Dcom.sun.management.jmxremote.port=12345&quot; # 端口
+</code></pre>
+<p>然后需要打开防火墙端口：</p>
+<pre><code class="language-shell">firewall-cmd --add-port=12345/tcp --permanent
+firewall-cmd --reload
+</code></pre>
+<p>除了打开上面的端口外，还需要打开两个端口，使用 <code>grep</code> 查找：</p>
+<pre><code class="language-shell"># 先找到 Tomcat 进程 id
+netstat -npl| grep 12345
+tcp6       0      0 :::12345    :::*    LISTEN      25613/java
+
+# tomcat pid 为 25613
+# 再找出其它两个端口
+netstat -npl| grep 25613
+tcp6       0      0 :::43853    :::*    LISTEN      25613/java # 这个
+tcp6       0      0 :::12345    :::*    LISTEN      25613/java
+tcp6       0      0 :::45985    :::*    LISTEN      25613/java # 这个
+
+# 将 43853 和 45985 端口也开放
+firewall-cmd --add-port=43853/tcp --permanent
+firewall-cmd --add-port=45985/tcp --permanent
+firewall-cmd --reload
+
+# 查看开放的端口
+firewall-cmd --list-ports
+</code></pre>
+<hr>
+<p>生成堆dump 文件后，使用 <a href="https://www.eclipse.org/mat/downloads.php">MemoryAnalyzer</a> 来分析。</p>
+<p>MemoryAnalyzer 下载页面：
+<img src="https://img-blog.csdnimg.cn/bec6e237643843b89446fcdefd6d07cd.png" alt="在这里插入图片描述"></p>
+<p>软件版本解压后目录内有个MemoryAnalyzer.ini文件，该文件里面有个 Xmx 参数，该参数表示最大内存占用量，默认为1024m，根据堆转储文件大小修改该参数即可。</p>
+<ul>
+<li>MemoryAnalyzer.ini中的参数一般默认为 -vmargs– Xmx1024m，这就够用了。假如你机器的内存不大，改大该参数的值，会导致MemoryAnalyzer启动时，报错:Failed to create the Java Virtual Machine。</li>
+<li>当你导出的dump文件的大小大于你配置的1024m（说明1中，提到的配置：-vmargs– Xmx1024m），MAT输出分析报告的时候，会报错：An internal error occurred during: &ldquo;Parsing heap dump from XXX”。适当调大说明1中的参数即可。</li>
+</ul>
+<p>分析示例：
+<img src="https://img-blog.csdnimg.cn/ca52c192d6bf419fbfd2343c9d40f850.png" alt="在这里插入图片描述"></p>
+<h3 id="5linux-其它监控工具">5，Linux 其它监控工具</h3>
+<h4 id="1vmstat-命令">1，vmstat 命令</h4>
+<p>vmstat 是一款指定采样周期和次数的功能性监测工具，它不仅可以统计内存的使用情况，还可以观测到 CPU 的使用率、swap 的使用情况。</p>
+<p><img src="https://img-blog.csdnimg.cn/0352ab5d130f46bcb7cfc76ba2da0b93.png" alt="在这里插入图片描述"></p>
+<p>各项参数的含义：</p>
+<ul>
+<li>r：等待运行的进程数</li>
+<li>b：处于非中断睡眠状态的进程数</li>
+<li>swpd：虚拟内存使用情况</li>
+<li>free：空闲的内存</li>
+<li>buff：用来作为缓冲的内存数</li>
+<li>si：从磁盘交换到内存的交换页数量</li>
+<li>so：从内存交换到磁盘的交换页数量</li>
+<li>bi：发送到块设备的块数</li>
+<li>bo：从块设备接收到的块数</li>
+<li>in：每秒中断数</li>
+<li>cs：每秒上下文切换次数</li>
+<li>us：用户 CPU 使用时间</li>
+<li>sy：内核 CPU 系统使用时间</li>
+<li>id：空闲时间</li>
+<li>wa：等待 I/O 时间</li>
+<li>st：运行虚拟机窃取的时间</li>
+</ul>
+<h4 id="2阿里-arthas">2，阿里 Arthas</h4>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-03-28
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2022/03/jvm2/">
+            <span class="next-text nav-default">JVM性能调优实战笔记2</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/03/jvm3/" class="leancloud_visitors" data-flag-title="Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

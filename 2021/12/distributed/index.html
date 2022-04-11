@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>分布式学习笔记 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 分布式的目的是用更多的机器，处理更多的数据和更复杂的任" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2021/12/distributed/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="分布式学习笔记" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 分布式的目的是用更多的机器，处理更多的数据和更复杂的任" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2021/12/distributed/" />
+<meta property="article:published_time" content="2021-12-18T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-12-18T21:41:52+08:00" />
+<meta itemprop="name" content="分布式学习笔记">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 分布式的目的是用更多的机器，处理更多的数据和更复杂的任">
+<meta itemprop="datePublished" content="2021-12-18T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-12-18T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="11765">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="分布式学习笔记"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 分布式的目的是用更多的机器，处理更多的数据和更复杂的任"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">分布式学习笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-18 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 11765 字 </span>
+          <span class="more-meta"> 阅读约需 24 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1分布式系统的指标">1，分布式系统的指标</a></li>
+        <li><a href="#2分布式协调与同步">2，分布式协调与同步</a></li>
+        <li><a href="#3分布式体系结构">3，分布式体系结构</a></li>
+        <li><a href="#4分布式调度架构">4，分布式调度架构</a></li>
+        <li><a href="#5分布式计算技术">5，分布式计算技术</a></li>
+        <li><a href="#6分布式通信技术">6，分布式通信技术</a></li>
+        <li><a href="#7分布式数据存储">7，分布式数据存储</a></li>
+        <li><a href="#8分布式高可靠性">8，分布式高可靠性</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<p>分布式的目的是用更多的机器，处理更多的数据和更复杂的任务。</p>
+<h3 id="1分布式系统的指标">1，分布式系统的指标</h3>
+<p>分布式系统的指标：</p>
+<ul>
+<li><strong>性能</strong>，常见的性能指标有：
+<ul>
+<li>吞吐量：系统在一定时间内可以处理的任务数，常见的性能指标有：
+<ul>
+<li>QPS：用于衡量一个系统每秒处理的<strong>查询数</strong>，如果应用主要是<strong>读操作</strong>，那么需要重点考虑如何提高 QPS</li>
+<li>TPS：用于衡量一个系统每秒处理的<strong>事务数</strong>，如果应用主要是<strong>写操作</strong>，那么需要重点考虑如何提高 TPS</li>
+<li>BPS：用于衡量一个系统每秒处理的<strong>数据量</strong></li>
+</ul>
+</li>
+<li>响应时间</li>
+<li>完成时间</li>
+</ul>
+</li>
+<li><strong>资源占用</strong>：一个系统提供正常能力需要占用的硬件资源，比如 CPU、内存、硬盘等</li>
+<li><strong>可用性</strong>：系统在面对各种异常时可以正确提供服务的能力
+<ul>
+<li>可用性可以用系统停止服务的时间与总的时间之比衡量</li>
+<li>也可以用某功能的失败次数与总的请求次数之比来衡量</li>
+</ul>
+</li>
+<li><strong>可扩展性</strong>：分布式系统通过扩展集群机器规模提高系统性能、存储容量、计算能力的特性
+<ul>
+<li>常见指标是<strong>加速比</strong>，即一个系统进行扩展后相对扩展前的性能提升</li>
+</ul>
+</li>
+</ul>
+<h3 id="2分布式协调与同步">2，分布式协调与同步</h3>
+<p>如何让程序通过协作共同去达成一个业务目标？</p>
+<h4 id="1分布式互斥算法">1，分布式互斥算法</h4>
+<p>对于同一共享资源，一个程序正在使用的时候也不希望被其他程序打扰。这就要求同一时刻只能有一个程序能够访问这种资源。</p>
+<p>在分布式系统里，这种排他性的资源访问方式，叫作<strong>分布式互斥</strong>，而这种被互斥访问的共享资源就叫作<strong>临界资源</strong>。</p>
+<p>三种典型的分布式互斥方法：</p>
+<ul>
+<li><strong>集中式算法</strong>：引入一个<strong>协调者程序</strong>，每个应用程序需要访问临界资源时，先给协调者发送一个请求。所有程序只需和协调者通信，程序之间无需通信。如果协调者故障，会导致所有的程序均无法访问临界资源，导致整个系统不可用。
+<ul>
+<li>如果当前没有程序使用这个资源，协调者直接授权请求程序访问；</li>
+<li>否则，按照先来后到的顺序为请求程序“排一个号”。如果有程序使用完资源，则通知协调者，协调者从“排号”的队列里取出排在最前面的请求，并给它发送授权消息。</li>
+<li>拿到授权消息的程序，可以去访问临界资源。</li>
+</ul>
+</li>
+<li><strong>分布式算法</strong>：当一个程序要访问临界资源时，先向系统中的<strong>其他程序</strong>发送一条请求消息，在接收到所有程序返回的同意消息后，才可以访问临界资源。
+<ul>
+<li>在大型系统中使用分布式算法，消息数量会随着需要访问临界资源的程序数量呈指数级增加，容易导致高昂的“沟通成本”。</li>
+<li>分布式算法是一个“先到先得”和“投票全票通过”的公平访问机制，但通信成本较高，可用性也比集中式算法低，适用于临界资源使用频度较低，且系统规模较小的场景。</li>
+<li>Hadoop 中的文件修改就是一个典型的应用分布式算法的场景。</li>
+</ul>
+</li>
+<li><strong>令牌环算法</strong>（轮值 CEO 算法）：所有程序构成一个环结构，令牌按照顺时针（或逆时针）方向在程序之间传递，收到令牌的程序有权访问临界资源，访问完成后将令牌传送到下一个程序；若该程序不需要访问临界资源，则直接把令牌传送给下一个程序。
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/9eff89ec04cb4541921ff3841c8de55b.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<h4 id="2分布式选举算法">2，分布式选举算法</h4>
+<p>常见的选主算法有：</p>
+<ul>
+<li><strong>Bully 算法</strong>：在所有活着的节点中，选取 ID 最大的节点作为主节点
+<ul>
+<li>比如 MongoDB 的副本集故障转移功能</li>
+</ul>
+</li>
+<li><strong>Raft 算法</strong>：核心思想是“少数服从多数”，获得投票最多的节点成为主。选主是周期进行的，包括选主和任值两个时间段。集群节点的角色有 3 种：
+<ul>
+<li><code>Leader</code>：即主节点，同一时刻只有一个 Leader，负责协调和管理其他节点；</li>
+<li><code>Candidate</code>：即候选者，每一个节点都可以成为 Candidate，节点在该角色下才可以被选为新的 Leader；</li>
+<li><code>Follower</code>：Leader 的跟随者，不可以发起选举。</li>
+<li>每一轮选举，每个节点只能投一次票。</li>
+<li>Kubernetes 的选主采用的是开源的 etcd 组件。而 etcd 的集群管理器 etcds，是一个高可用、强一致性的服务发现存储仓库，就是采用了 Raft 算法来实现选主和一致性的。</li>
+</ul>
+</li>
+<li><strong>ZAB 算法</strong>：ZAB 算法可以说是对 Raft 算法的改进，是为 ZooKeeper 实现分布式协调功能而设计的。集群中每个节点拥有 3 种角色：
+<ul>
+<li><code>Leader</code>，主节点；</li>
+<li><code>Follower</code>，跟随者节点；</li>
+<li><code>Observer</code>，观察者，无投票权。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>多数派选主算法通常采用奇数节点，以防两个节点均获得一半投票，无法选出主节点。</p>
+</blockquote>
+<p>每个节点都有选举权和被选举权。大部分选举方法采用多数策略，也就是说一个节点只有得到了大部分节点的同意或认可才能成为主节点，然后主节点向其他节点宣告主权。</p>
+<h4 id="3分布式共识算法">3，分布式共识算法</h4>
+<p>本质上，分布式选举问题，其实就是传统的分布式共识方法，主要是基于多数投票策略实现的。</p>
+<p>基于多数投票策略的分布式选举方法，如果用于分布式在线记账一致性问题中，那么记账权通常会完全掌握到主节点的手里，这使得<strong>主节点非常容易造假</strong>，且存在性能瓶颈。因此，<strong>分布式选举不适用于分布式在线记账的一致性问题</strong>。</p>
+<blockquote>
+<p>这里说的分布式在线记账，就是区块链技术解决的问题。而分布式共识技术，就是区块链技术共识机制的核心。</p>
+</blockquote>
+<p><strong>分布式共识</strong>就是在多个节点均可独自操作或记录的情况下，使得<strong>所有节点针对某个状态达成一致的过程</strong>。通过共识机制，我们可以使得分布式系统中的多个节点的数据达成一致。</p>
+<p>假设，现在有 5 台服务器，分别对应着用户{A,B,C,D,E}。现在，用户 A 给用户 B 转了 100 元，那么 5 台机器要达成一致。(而在传统的记账中，有一个集中的节点-银行)</p>
+<p>在分布式在线记账问题中，针对同一笔交易，有且仅有一个节点可以获得记账权，然后其他节点或服务器同意该节点或服务器的记账结果，达成一致。<strong>分布式共识包括两个关键点，获得记账权和所有节点达成一致</strong>。</p>
+<p>有三种主流的解决分布式在线记账一致性问题的共识技术，即：</p>
+<ul>
+<li>PoW（工作量证明）：是以每个节点的计算能力（即“算力”）来竞争记账权的机制，因此是一种使用工作量证明机制的共识算法。也就是说，谁的计算力强、工作能力强，谁获得记账权的可能性就越大。
+<ul>
+<li>PoW 的容错机制，允许全网 50% 的节点出错，因此，如果要破坏系统，则需要投入极大成本（若你有全球 51% 的算力，则可尝试攻击比特币）。</li>
+<li>PoW 机制的缺点也很明显，共识达成的周期长、效率低，资源消耗大。</li>
+</ul>
+</li>
+<li>PoS（权益证明）：由<strong>系统权益</strong>代替算力来决定区块记账权，拥有的权益越大获得记账权的概率就越大。
+<ul>
+<li>这里的权益，就是每个节点占有货币的数量和时间，而货币就是节点所获得的奖励。</li>
+<li>PoS 算法中持币越多或持币越久，币龄就会越高，持币人就越容易挖到区块并得到激励，而持币少的人基本没有机会，这样整个系统的安全性实际上会被持币数量较大的一部分人掌握，容易出现垄断现象。</li>
+</ul>
+</li>
+<li>DPoS（委托权益证明）：DPoS 算法的原理，类似股份制公司的董事会制度，普通股民虽然拥有股权，但进不了董事会，他们可以投票选举代表（受托人）代他们做决策。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/02e1da9924f5427a843c26e7f30e98ed.png" alt="在这里插入图片描述"></p>
+<h4 id="4分布式事务算法">4，分布式事务算法</h4>
+<p>事务具备四大基本特征 ACID，分布式事务，就是在分布式系统中运行的事务，由多个本地事务组合而成。</p>
+<p>分布式事务主要是解决在分布式环境下，<strong>组合事务的一致性问题</strong>。实现分布式事务有以下 3 种基本方法：</p>
+<ul>
+<li>基于 XA 协议的二阶段提交协议方法（强一致性）
+<ul>
+<li>XA 是一个分布式事务协议，包括<strong>事务管理器</strong>和本<strong>地资源管理器（接口）</strong> 两个部分</li>
+<li>事务管理器相当于协调者，负责各个本地资源的提交和回滚；</li>
+<li>资源管理器是分布式事务的参与者，通常由数据库实现（比如 Oracle、DB2 等商业数据库都实现了 XA 接口）</li>
+<li>二阶段提交协议（2PC），用于保证分布式系统中事务提交时的数据一致性，是 XA 在全局事务中用于协调多个资源的机制。</li>
+</ul>
+</li>
+<li>三阶段提交协议方法（强一致性）</li>
+<li>基于消息的最终一致性方法（最终一致性）</li>
+</ul>
+<p><em><strong>二阶段提交协议</strong></em></p>
+<p>为了保证分布在不同节点上的分布式事务的一致性，两阶段提交协议引入一个<strong>协调者来管理所有的节点</strong>。</p>
+<p>二阶段提交协议的执行过程，分为<strong>投票（Voting）</strong> 和<strong>提交（Commit）</strong> 两个阶段。协调者向参与者下发请求事务操作，参与者接收到请求后，进行相关操作并将操作结果通知协调者，协调者根据所有参与者的反馈结果决定各参与者是要提交操作还是撤销操作。</p>
+<ul>
+<li>第一阶段（投票）：
+<ul>
+<li>协调者（<code>Coordinator</code>，即事务管理器）向事务的参与者（<code>Cohort</code>，即本地资源管理器）发起执行操作的 <code>CanCommit</code> 请求，并等待参与者的响应。</li>
+<li>参与者接收到请求后，会执行请求中的事务操作，将操作信息记录到事务日志中但不提交，待参与者执行成功，则向协调者发送“Yes”消息，表示同意操作；若不成功，则发送“No”消息，表示终止操作。</li>
+</ul>
+</li>
+<li>第二阶段（提交）：当所有的参与者都返回了操作结果（Yes 或 No 消息）后，系统进入了第二阶段提交阶段。
+<ul>
+<li>协调者根据所有参与者返回的信息向参与者发送 <code>DoCommit</code> 或 <code>DoAbort</code> 指令。具体规则如下：
+<ul>
+<li>若协调者从参与者那里收到的都是“Yes”消息，则向参与者发送“DoCommit”消息。参与者收到“DoCommit”消息后，完成剩余的操作（比如修改数据库中的数据）并释放资源（整个事务过程中占用的资源），然后向协调者返回“HaveCommitted”消息；</li>
+<li>若协调者从参与者收到的消息中包含“No”消息，则向所有参与者发送“DoAbort”消息。此时投票阶段发送“Yes”消息的参与者，则会根据之前执行操作时的事务日志对操作进行回滚，就好像没有执行过请求操作一样，然后所有参与者会向协调者发送“HaveCommitted”消息；</li>
+<li>协调者接收到来自所有参与者的“HaveCommitted”消息后，就意味着整个事务结束了。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>XA 的二阶段提交算法尽量保证了数据的强一致性，但依然有以下三个问题：</p>
+<ul>
+<li><strong>同步阻塞问题</strong>：二阶段提交算法在执行过程中，所有参与节点都是事务阻塞型的。也就是说，当本地资源管理器占有临界资源时，其他资源管理器如果要访问同一临界资源，会处于阻塞状态。因此，基于 XA 的二阶段提交协议<strong>不支持高并发场景</strong>。</li>
+<li><strong>单点故障问题</strong>：一旦事务管理器发生故障，整个系统都处于停滞状态。</li>
+<li><strong>数据不一致问题</strong>：在提交阶段，当协调者向所有参与者发送“DoCommit”请求时，如果发生了局部网络异常，或者在发送提交请求的过程中协调者发生了故障，就会导致只有一部分参与者接收到了提交请求并执行提交操作，但其他未接到提交请求的那部分参与者则无法执行事务提交。于是整个分布式系统便出现了数据不一致的问题。</li>
+</ul>
+<p><em><strong>三阶段提交协议</strong></em></p>
+<p>三阶段提交协议（3PC），是对二阶段提交的改进。为了更好地处理两阶段提交的同步阻塞和数据不一致问题，三阶段提交引入了<strong>超时机制和准备阶段</strong>。</p>
+<ul>
+<li>与 2PC 只是在协调者引入超时机制不同，3PC 同时在协调者和参与者中引入了超时机制。
+<ul>
+<li>如果协调者或参与者在规定的时间内没有接收到来自其他节点的响应，就会根据当前的状态选择提交或者终止整个事务，从而减少了整个集群的阻塞时间，在一定程度上减少或减弱了 2PC 中出现的同步阻塞问题。</li>
+</ul>
+</li>
+<li>在第一阶段和第二阶段中间引入了一个准备阶段，也就是在提交阶段之前，加入了一个预提交阶段。
+<ul>
+<li>在预提交阶段尽可能排除一些不一致的情况，保证在最后提交之前各参与节点的状态是一致的。</li>
+</ul>
+</li>
+</ul>
+<p>三阶段提交协议有以下三个阶段：</p>
+<ul>
+<li><strong>CanCommit</strong>：协调者向参与者发送 <code>CanCommit</code> 请求，询问参与者是否可以执行事务提交操作，然后等待参与者的响应；参与者收到 CanCommit 请求之后，回复 Yes，表示可以顺利执行事务；否则回复 No。
+<ul>
+<li>当协调者接收到所有参与者回复的消息后，进入预提交阶段（PreCommit 阶段）</li>
+</ul>
+</li>
+<li><strong>PreCommit</strong>：协调者根据参与者的回复情况，来决定是否可以进行 PreCommit 操作
+<ul>
+<li>如果所有参与者回复的都是“Yes”，那么协调者就会执行事务的预执行：
+<ul>
+<li>协调者向参与者发送 PreCommit 请求，进入预提交阶段。</li>
+<li>参与者接收到 PreCommit 请求后执行事务操作，并将 Undo 和 Redo 信息记录到事务日志中。</li>
+<li>如果参与者成功执行了事务操作，则返回 ACK 响应，同时开始等待最终指令。</li>
+</ul>
+</li>
+<li>如果任何一个参与者向协调者发送了“No”消息，或者等待超时之后，协调者都没有收到参与者的响应，就执行中断事务的操作：
+<ul>
+<li>协调者向所有参与者发送“Abort”消息。</li>
+<li>参与者收到“Abort”消息之后，或超时后仍未收到协调者的消息，执行事务的中断操作。</li>
+</ul>
+</li>
+<li>预提交阶段保证了在最后提交阶段（DoCmmit 阶段）之前所有参与者的状态是一致的。</li>
+</ul>
+</li>
+<li><strong>DoCommit</strong>：该阶段进行真正的事务提交，根据 PreCommit 阶段协调者发送的消息，进入执行提交阶段或事务中断阶段。</li>
+</ul>
+<p>3PC 协议在协调者和参与者均引入了超时机制。即当参与者在预提交阶段向协调者发送 Ack 消息后，如果长时间没有得到协调者的响应，在默认情况下，参与者会自动将超时的事务进行提交，从而减少整个集群的阻塞时间，在一定程度上减少或减弱了 2PC 中出现的同步阻塞问题。</p>
+<p>但三阶段提交仍然存在数据不一致的情况，比如在 PreCommit 阶段，部分参与者已经接受到 ACK 消息进入执行阶段，但部分参与者与协调者网络不通，导致接收不到 ACK 消息，此时接收到 ACK 消息的参与者会执行任务，未接收到 ACK 消息且网络不通的参与者无法执行任务，最终导致数据不一致。</p>
+<p><strong>基于分布式消息的最终一致性方案</strong></p>
+<p>2PC 和 3PC 核心思想均是以集中式的方式实现分布式事务，这两种方法都存在两个共同的缺点，一是，同步执行，性能差；二是，数据不一致问题。</p>
+<p>在基于分布式消息的最终一致性方案中，将需要分布式处理的事务通过消息的方式异步执行，消息可以存到本地文件、数据库或消息队列中，再通过业务规则进行失败重试。</p>
+<p>基于分布式消息的最终一致性方案采用消息传递机制，并使用异步通信的方式，避免了通信阻塞，从而增加系统的吞吐量。</p>
+<p><img src="https://img-blog.csdnimg.cn/10850427a25b44ee8ce6d92a2b9e3d21.png" alt="在这里插入图片描述"></p>
+<p><em><strong>BASE 理论</strong></em></p>
+<p>BASE 理论包括基本可用（Basically Available）、柔性状态（Soft State）和最终一致性（Eventual Consistency）。</p>
+<p>BASE 理论为了支持大型分布式系统，通过牺牲强一致性，保证最终一致性，来获得高可用性，是对 ACID 原则的弱化。</p>
+<p>二阶段提交、三阶段提交方法，遵循的是 ACID 原则，而消息最终一致性方案遵循的就是 BASE 理论。</p>
+<h4 id="5分布式锁的实现">5，分布式锁的实现</h4>
+<p>实现分布式锁的 3 种主流方法：</p>
+<ul>
+<li><strong>基于数据库实现分布式锁</strong>，这里的数据库指的是关系型数据库
+<ul>
+<li>首先创建一张表用于记录共享资源信息，然后通过操作该表的数据来实现共享资源信息的修改</li>
+<li>当要锁住某个资源时，就在该表中增加一条记录，想要释放锁的时候就删除这条记录。</li>
+<li>数据库对共享资源做了唯一性约束，如果有多个请求被同时提交到数据库的话，数据库会保证只有一个操作可以成功，操作成功的那个线程就获得了访问共享资源的锁，可以进行操作。</li>
+<li>这种分布式锁<strong>适用于并发量低，对性能要求低的场景</strong>。</li>
+<li>其缺点主要有两个：
+<ul>
+<li>单点故障问题：一旦数据库不可用，会导致整个系统崩溃。</li>
+<li>死锁问题：数据库锁没有失效时间，如果已获得共享资源访问权限的进程突然挂掉、或者解锁操作失败，使得锁记录一直存在数据库中，无法被删除，而其他进程也无法获得锁，从而产生死锁现象。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>基于缓存实现分布式锁</strong>：把数据存放在计算机内存中，不需要写入磁盘，提高了性能
+<ul>
+<li>比如用 Redis 实现的分布式锁</li>
+</ul>
+</li>
+<li><strong>基于 ZooKeeper 实现分布式锁</strong>：ZooKeeper 基于树形结构实现分布式锁，主要由 4 种节点构成：
+<ul>
+<li>持久节点：这是默认的节点类型，一直存在于 ZooKeeper 中</li>
+<li>持久顺序节点：根据节点创建的时间顺序对节点进行编号命名</li>
+<li>临时节点：当客户端与 ZooKeeper 断开连接后，临时节点会被删除</li>
+<li>临时顺序节点</li>
+<li>使用 ZooKeeper 实现的分布式锁，可以解决前两种方法提到的各种问题，比如单点故障、不可重入、死锁等问题。但该方法实现较复杂，且需要频繁地添加和删除节点，所以性能不如基于缓存实现的分布式锁。</li>
+</ul>
+</li>
+</ul>
+<p>基于 Zookeeper 实现的分布式锁的步骤：</p>
+<ul>
+<li>客户端 1 和 2 都尝试创建<strong>临时节点</strong>，例如 <code>/lock</code></li>
+<li>假设客户端 1 先到达，则加锁成功，客户端 2 加锁失败</li>
+<li>客户端 1 操作共享资源</li>
+<li>客户端 1 删除 /lock 节点，释放锁</li>
+</ul>
+<p>Zookeeper 不需要考虑锁的过期时间问题，它是采用了<strong>临时节点</strong>，保证客户端 1 拿到锁后，只要连接不断，就可以一直持有锁。</p>
+<p><em><strong>Zookeeper 是如何保证客户端一直持有锁的？</strong></em></p>
+<p>客户端会与 Zookeeper 服务器维护一个 <strong>Session</strong>，这个 Session 会依赖客户端<strong>定时心跳</strong>来维持连接。如果 Zookeeper 长时间收不到客户端的心跳，就认为这个 Session 过期了。</p>
+<p><img src="https://img-blog.csdnimg.cn/ffae50ddc6b3492aad08eef46b512b17.png" alt="在这里插入图片描述"></p>
+<p>三种实现方式对比：</p>
+<p><img src="https://img-blog.csdnimg.cn/30361ca60b514ddcbbe10f7b309e1e9a.png" alt="在这里插入图片描述"></p>
+<p>ZooKeeper 分布式锁的可靠性最高，有封装好的框架，很容易实现分布式锁的功能，并且几乎解决了数据库锁和缓存式锁的不足，因此是实现分布式锁的首选方法。</p>
+<h3 id="3分布式体系结构">3，分布式体系结构</h3>
+<h4 id="1集中式结构">1，集中式结构</h4>
+<p>集中式结构就是，由一台或多台服务器组成中央服务器，系统内的所有数据都存储在中央服务器中，系统内所有的业务也均先由中央服务器处理。</p>
+<ul>
+<li>多个节点服务器与中央服务器连接，并将自己的信息汇报给中央服务器，由中央服务器统一进行资源和任务调度</li>
+<li>中央服务器根据这些信息，将任务下达给节点服务器；节点服务器执行任务，并将结果反馈给中央服务器</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/0ab59be98aaa47c192f895fbdbc68276.png" alt="在这里插入图片描述"></p>
+<p>经典的集中式集群管理系统：</p>
+<ul>
+<li><strong>Google Borg</strong>：在 Borg 中，一个集群称为一个 Cell，每个 Cell 里面有一个 Leader，称为 BorgMaster，即为中央服务器；其他服务器为节点服务器或从服务器，被称为 Borglet。</li>
+<li><strong>Kubernetes</strong>：Kubernetes 是 Google 开源的容器集群管理系统，是 Borg 的开源版本。Kubernetes 是用于自动部署、扩展和管理容器化应用程序的开源系统。
+<ul>
+<li>一个 Kubernetes 集群，主要由 Master 节点和 Worker 节点组成，以及客户端命令行工具 kubectl 和其他附加项。</li>
+</ul>
+</li>
+<li><strong>Apache Mesos</strong>： Mesos 是 Apache 旗下的开源分布式资源管理框架。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/16b1beb4b9d149099f2a0d07435756ac.png" alt="在这里插入图片描述"></p>
+<h4 id="2非集中式结构">2，非集中式结构</h4>
+<p>集中式结构对中心服务器性能要求很高，而且存在单点瓶颈和单点故障问题，因此出现了非集中式结构。</p>
+<p>在非集中式结构中，服务的执行和数据的存储被分散到不同的服务器集群，服务器集群间通过消息传递进行通信和协调。</p>
+<p>在非集中式结构中，没有中央服务器和节点服务器之分，所有的服务器地位都是平等的。</p>
+<p>3 种典型的非集中式架构系统：</p>
+<ul>
+<li>Akka 集群</li>
+<li>Redis 集群：Redis 集群中不存在中央节点，是典型的去中心化结构，每个节点均可与其他节点通信。所有节点均可负责存储数据、记录集群的状态，客户端可以访问任一节点。
+<ul>
+<li>节点之间的数据传输仍采用了 Gossip 协议，来保证集群中数据的最终一致性。</li>
+</ul>
+</li>
+<li>Cassandra 集群</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/f4e99a12a9b949dc9e26785b7cdd04d8.png" alt="在这里插入图片描述"></p>
+<h3 id="4分布式调度架构">4，分布式调度架构</h3>
+<p>为用户任务寻找合适的服务器这个过程，在分布式领域中叫作调度。在分布式系统架构中，调度器就是一个非常重要的组件。它通常会提供多种调度策略，负责完成具体的调度工作。</p>
+<h4 id="1单体调度">1，单体调度</h4>
+<p>分布式系统中的单体调度是指，一个集群中只有一个节点运行调度进程，该节点对集群中的其他节点具有访问权限，可以对其他节点的资源信息、节点状态等进行统一管理，同时根据用户下发的任务对资源的需求，在调度器中进行任务与资源匹配，然后根据匹配结果将任务指派给合适的节点。</p>
+<h4 id="2两层调度">2，两层调度</h4>
+<h4 id="3共享状态调度">3，共享状态调度</h4>
+<h3 id="5分布式计算技术">5，分布式计算技术</h3>
+<h4 id="1分布式计算模式之-mr">1，分布式计算模式之 MR</h4>
+<p>适合用<strong>分治法</strong>解决的问题具有的特征：</p>
+<ul>
+<li>问题规模比较大，且可以分解为几个规模较小的、简单的同类型问题进行求解</li>
+<li>子问题之间相互独立，不包含公共子问题</li>
+<li>子问题的解可以合并得到原问题的解</li>
+</ul>
+<p>Google 提出的 MapReduce 分布式计算模型，就是分治法的典型代表，被广泛用于解决各种海量数据的计算问题。</p>
+<p>MapReduce 分为 Map 和 Reduce 两个核心阶段：</p>
+<p><img src="https://img-blog.csdnimg.cn/6730fddcc407487dacb5e22c3072a8c2.png" alt="在这里插入图片描述"></p>
+<h4 id="2分布式计算模式之-stream">2，分布式计算模式之 Stream</h4>
+<p>实时性任务主要是针对流数据的处理，对处理时延要求很高，通常需要有常驻服务进程，等待数据的随时到来随时处理，以保证低时延。处理流数据任务的计算模式，在分布式领域中叫作 <strong>Stream</strong>。</p>
+<p><img src="https://img-blog.csdnimg.cn/2c5f1ec63ca742b39bb792d54468f3d2.png" alt="在这里插入图片描述"></p>
+<p>流计算不提供流式数据的存储服务，数据是持续流动的，在计算完成后就会立刻丢弃。流计算适用于需要处理持续到达的流数据、对数据处理有较高实时性要求的场景。为了及时处理流数据，流计算框架必须是低延迟、可扩展、高可靠的。</p>
+<p>目前流计算相关的框架和平台可分为如下 3 类：</p>
+<ul>
+<li><strong>商业级的流计算平台</strong>，比如：
+<ul>
+<li>IBM 的 InfoSphere Streams</li>
+<li>TIBCO 的 StreamBase。</li>
+</ul>
+</li>
+<li><strong>开源流计算框架</strong>，典型代表是：
+<ul>
+<li>Apache Storm（由 Twitter 开源）</li>
+<li>S4（由 Yahoo 开源）</li>
+</ul>
+</li>
+<li>各大公司根据自身业务特点而开发的流计算框架，比如：
+<ul>
+<li>Facebook 的 Puma</li>
+<li>百度的 Dstream（旨在处理有向无环的数据流）</li>
+<li>淘宝的银河流数据处理平台（一个通用的、低延迟、高吞吐、可复用的流数据实时计算系统）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Spark 和 Flink 与 Storm 框架的不同之处在于，Spark 和 Flink 除了支持流计算，还支持批量计算。</p>
+</blockquote>
+<h4 id="3分布式计算模式之-actor">3，分布式计算模式之 Actor</h4>
+<p>Actor 模型，代表一种分布式并行计算模型。这种模型有自己的一套规则，规定了 Actor 的内部计算逻辑，以及多个 Actor 之间的通信规则。在 Actor 模型里，每个 Actor 相当于系统中的一个组件，都是基本的计算单元。</p>
+<p>Actor 模式采用了异步模式，并且每个 Actor 封装了自己的数据、方法等。</p>
+<p>Actor 模型的三要素是<strong>状态、行为和消息</strong>。</p>
+<p>有哪些框架或语言支持 Actor 编程模型：</p>
+<ul>
+<li>Erlang/OTP。Erlang 是一种通用的、面向并发的编程语言，使用 Erlang 编写分布式应用比较简单，而 OTP 就是 Erlang 技术栈中的标准库。</li>
+<li>Akka。Akka 是一个为 Java 和 Scala 构建高度并发、分布式和弹性的消息驱动应用程序的工具包。</li>
+<li>Quasar (Java) 。Quasar 是一个开源的 JVM 库，极大地简化了高度并发软件的创建。</li>
+</ul>
+<h4 id="4分布式计算模式之流水线">4，分布式计算模式之流水线</h4>
+<p>分布式领域的流水线计算模式，就是参考了工业生产中的流水作业模式，将一个任务分为多个步骤执行，使得不同任务可以并行执行。</p>
+<h3 id="6分布式通信技术">6，分布式通信技术</h3>
+<p>分布式的本质就是多进程协作，共同完成任务。要协作，自然免不了通信。</p>
+<h4 id="1远程调用">1，远程调用</h4>
+<p><strong>本地调用</strong>通常指的是，进程内函数之间的相互调用；而<strong>远程调用</strong>，是进程间函数的相互调用，是一种进程间通信模式。</p>
+<p>根据进程是否部署在同一台机器上，远程调用可以分为如下两类：</p>
+<ul>
+<li><strong>本地过程调用</strong>（LPC），是指同一台机器上运行的不同进程之间的互相通信，即在多进程操作系统中，运行的不同进程之间可以通过 LPC 进行函数调用。</li>
+<li><strong>远程过程调用</strong>（RPC），是指不同机器上运行的进程之间的相互通信，某一机器上运行的进程在不知道底层通信细节的情况下，就像访问本地服务一样，去调用远程机器上的服务。</li>
+</ul>
+<p>两种常用的远程调用机制：</p>
+<ul>
+<li><strong>远程过程调用</strong> RPC(Remote Procedure Call)
+<ul>
+<li>RPC 就是像调用本机器上的函数或方法一样，去执行远程机器上的函数或方法，并返回结果。在整个过程中，不感知底层具体的通信细节。</li>
+<li>大部分 RPC 框架采用的是 TCP 协议。</li>
+</ul>
+</li>
+<li><strong>远程方法调用</strong> RMI(Remote Method Invocation)
+<ul>
+<li>RMI 是一个用于实现 RPC 的 Java API，能够让本地 Java 虚拟机上运行的对象调用远程方法如同调用本地方法，隐藏通信细节。</li>
+<li>RMI 可以说是 RPC 的一种具体形式，其原理与 RPC 基本一致，唯一不同的是 RMI 是基于对象的，充分利用了面向对象的思想去实现整个过程，其本质就是一种基于对象的 RPC 实现。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Apache Dubbo</strong> 是一个具有代表性的框架，其中引入了<strong>服务注册中心</strong>，又加入了<strong>监控中心组件</strong>（用来监控服务的调用情况，以方便进行服务治理）。</p>
+<p>Dubbo 的架构主要包括 4 部分：</p>
+<ul>
+<li><strong>服务提供方</strong>。服务提供方会向服务注册中心注册自己提供的服务。</li>
+<li><strong>服务注册中心</strong>。服务注册与发现中心，负责存储和管理服务提供方注册的服务信息和服务调用方订阅的服务类型等。</li>
+<li><strong>服务调用方</strong>。根据服务注册中心返回的服务所在的地址列表，通过远程调用访问远程服务。</li>
+<li><strong>监控中心</strong>。主要统计服务的调用次数和调用时间等信息，以方便进行服务管理或服务失败分析等。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/54525f21b1b34e53a5be7a2e98b2347d.png" alt="在这里插入图片描述"></p>
+<h4 id="2发布订阅">2，发布订阅</h4>
+<p>发布订阅的三要素是：</p>
+<ul>
+<li><strong>生产者</strong>：负责产生数据放到消息中心</li>
+<li><strong>消费者</strong>：向消息中心订阅自己感兴趣的消息
+<ul>
+<li>当发布者推送数据到消息中心后，消息中心根据消费者订阅情况将相关数据推送给对应的订阅者</li>
+</ul>
+</li>
+<li><strong>消息中心</strong></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/2b645b078e8a4ceea963b682adbbf279.png" alt="在这里插入图片描述"></p>
+<p>Kafka 是一种典型的发布订阅消息系统，其系统架构也是包括生产者、消费者和消息中心三部分：</p>
+<ul>
+<li>生产者（Producer）</li>
+<li>消费者（Consumer）</li>
+<li>消息中心（Broker）</li>
+</ul>
+<h4 id="3消息队列">3，消息队列</h4>
+<p>消息队列模式也是包括 3 个核心部分：</p>
+<ul>
+<li><strong>生产者</strong>：产生消息或数据，并将消息或数据插入到消息队列中。</li>
+<li><strong>消息队列</strong>：一种具有先进先出特点的数据结构，用于存储消息。</li>
+<li><strong>消费者</strong>：从消息队列中获取消息或数据，进行相关处理。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/2c5cc1a10413462a861c4e39e28132f1.png" alt="在这里插入图片描述"></p>
+<h3 id="7分布式数据存储">7，分布式数据存储</h3>
+<p>分布式存储系统的核心逻辑，就是将用户需要存储的数据根据某种规则存储到不同的机器上，当用户想要获取指定数据时，再按照规则到存储数据的机器里获取。</p>
+<p>分布式系统中的三要素：</p>
+<ul>
+<li>顾客：数据生产者 / 消费者</li>
+<li>导购：数据索引，将访问数据的请求转发到数据所在的存储节点
+<ul>
+<li><strong>数据分片</strong>技术，是指分布式存储系统按照一定的规则将数据存储到相对应的存储节点中，或者到相对应的存储节点中获取想要的数据，这是一种很常用的导购技术。</li>
+<li>这种技术，一方面可以降低单个存储节点的存储和访问压力；另一方面，可以通过规定好的规则快速找到数据所在的存储节点，从而大大降低搜索延迟，提高用户体验。</li>
+<li>数据分片的方案有：<strong>按照数据范围</strong>，<strong>采用哈希映射</strong>、<strong>一致性哈希环</strong>等</li>
+</ul>
+</li>
+<li>货架：数据存储</li>
+</ul>
+<p>根据数据的特征，数据通常被划分为三类：</p>
+<ul>
+<li>结构化数据</li>
+<li>半结构化数据</li>
+<li>非结构化数据</li>
+</ul>
+<h4 id="1数据分片方案">1，数据分片方案</h4>
+<p><strong>数据分布</strong>的本质是，<strong>将原数据集划分为多个数据子集</strong>，以存储到不同的地方。</p>
+<p><strong>哈希</strong>是一种非常常用的数据分片方法，其核心思想是，首先确定一个哈希函数，然后通过计算得到对应的存储节点。哈希方法适用于同类型节点且节点数量比较固定的场景。</p>
+<p><strong>一致性哈希</strong>是指将存储节点和数据都映射到一个首尾相连的哈希环上，存储节点可以根据 IP 地址进行哈希，数据通常通过顺时针方向寻找的方式，来确定自己所属的存储节点，即从数据映射在环上的位置开始，顺时针方向找到的第一个存储节点。一致性哈希方法比较适合同类型节点、节点规模会发生变化的场景。</p>
+<p><img src="https://img-blog.csdnimg.cn/d69f86a865bc406188159e9232714a77.png" alt="在这里插入图片描述"></p>
+<p><strong>带有限负载的一致性哈希方法</strong>的核心原理是，给每个存储节点设置了一个存储上限值来控制存储节点添加或移除造成的数据不均匀。当数据按照一致性哈希算法找到相应的存储节点时，要先判断该存储节点是否达到了存储上限；如果已经达到了上限，则需要继续寻找该存储节点顺时针方向之后的节点进行存储。</p>
+<p><strong>带虚拟节点的一致性哈希方法</strong>，核心思想是根据每个节点的性能，为每个节点划分不同数量的虚拟节点，并将这些虚拟节点映射到哈希环中，然后再按照一致性哈希算法进行数据映射和存储。</p>
+<p><img src="https://img-blog.csdnimg.cn/f2d8f446e95b4c0fbae0e5f708a2a547.png" alt="在这里插入图片描述"></p>
+<h4 id="2数据复制方案">2，数据复制方案</h4>
+<p>在进行分布式数据存储设计时，通常会考虑对数据进行备份，以提高数据的可用性和可靠性，而实现数据备份的关键技术就是<strong>数据复制技术</strong>。</p>
+<p>数据复制技术，可以保证存储在不同节点上的同一份数据是一致的。这样当一个节点故障后，可以从其他存储该数据的节点获取数据，避免数据丢失，进而提高了系统的可靠性。</p>
+<p>在这个过程中，又是<strong>如何实现备数据库替代主数据库的呢</strong>？这涉及到数据一致性的问题，即只有主备数据库中的数据保持一致时，才可实现主备的替换。因此，<strong>数据复制技术</strong>实际就是指，<strong>如何让主备数据库保持数据一致的技术</strong>。</p>
+<p>根据 CAP 定理，在分布式存储系统中，分区容错性是肯定要满足的，为此需要在一致性和可用性之间做出权衡。对于分布式存储系统中的<strong>数据复制技术来讲</strong>，也需要在一致性和可用性之间做出一些权衡。</p>
+<p>因此，数据复制技术方法，大体上有三类：</p>
+<ul>
+<li>同步复制技术：比较注重一致性
+<ul>
+<li>当用户请求更新数据时，主数据库必须要同步到备数据库之后才可给用户返回</li>
+</ul>
+</li>
+<li>异步复制技术：更注重可用性
+<ul>
+<li>当用户请求更新数据时，主数据库处理完请求后可直接给用户响应，而不必等待备数据库完成同步</li>
+</ul>
+</li>
+<li>半同步复制技术：介于前两者之间
+<ul>
+<li>用户发出写请求后，主数据库会执行写操作，并给备数据库发送同步请求，但主数据库不用等待所有备数据库回复数据同步成功便可响应用户，也就是说主数据库可以等待一部分备数据库同步完成后响应用户写操作执行成功</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/6ef23454e8704d5385c3dfabbbad794d.png" alt="在这里插入图片描述"></p>
+<h4 id="3分布式缓存技术">3，分布式缓存技术</h4>
+<p><strong>分布式缓存</strong>就是指在分布式环境或系统下，把一些热门数据存储到离用户近、离应用近的位置，并尽量存储到更快的设备，以减少远程数据传输的延迟，让用户和应用可以很快访问到想要的数据。</p>
+<p>比如 Redis，Memcache。</p>
+<h3 id="8分布式高可靠性">8，分布式高可靠性</h3>
+<h4 id="1负载均衡">1，负载均衡</h4>
+<p>通常情况下，负载均衡可以分为两种：</p>
+<ul>
+<li>请求负载均衡</li>
+<li>数据负载均衡</li>
+</ul>
+<p>常见的负载均衡策略主要包括：</p>
+<ul>
+<li><strong>轮询策略</strong>：分为顺序轮询和加权轮询两种</li>
+<li><strong>随机策略</strong></li>
+<li><strong>哈希</strong></li>
+<li><strong>一致性哈希</strong></li>
+</ul>
+<h4 id="2流量控制">2，流量控制</h4>
+<p>分布式流量控制就是在分布式系统下，控制每个服务器接收的请求数，以保证服务器来得及处理这些请求，也就是说尽可能保证用户请求持续地被处理，而不是让大量的用户请求“阻塞”在服务器中。</p>
+<p>常见的流量控制策略：</p>
+<ul>
+<li><strong>消息队列</strong></li>
+<li><strong>漏桶策略</strong>：无论用户请求有多少，无论请求速率有多大，“漏桶”都会接收下来，但从漏桶里出来的请求是固定速率的，保证服务器可以处理得游刃有余。当“漏桶”因为容量限制放不下更多的请求时，就会选择丢弃部分请求。
+<ul>
+<li>这样的话，无论请求速率有多大，都能达到限流的目的，避免服务器在短暂时间内需要处理大量请求，但由于处理能力受限导致系统崩溃，从而保证了系统的高可靠。</li>
+<li>比如阿里开源的流量控制框架 <strong>Sentinel</strong> 中的匀速排队限流策略，就采用了漏桶算法；</li>
+</ul>
+</li>
+<li><strong>令牌桶策略</strong>：指的是桶里放着很多令牌，请求只有拿到令牌才能被服务器处理。
+<ul>
+<li>原理：有一个固定容量的存放令牌的桶，我们以固定速率向桶里放入令牌，桶满时会丢弃多出的令牌。每当请求到来时，必须先到桶里取一个令牌才可被服务器处理，也就是说只有拿到了令牌的请求才会被服务器处理。（可以将令牌理解为门卡，只有拿到了门卡才能顺利进入房间）</li>
+<li><img src="https://img-blog.csdnimg.cn/3a26ce761b0f48d5a33264821c16952e.png" alt="在这里插入图片描述"></li>
+<li>Google 开源工具包 <strong>Guava</strong> 提供的限流工具类 RateLimiter，就是基于令牌桶算法来完成限流的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3故障隔离">3，故障隔离</h4>
+<p><strong>故障隔离</strong>就是，把故障通过某种方式与其他正常模块进行隔离，以保证某一模块出现故障后，不会影响其他模块。</p>
+<p>故障隔离，可以避免分布式系统出现大规模的故障，甚至是瘫痪，降低损失。</p>
+<p>三种比较常见的故障隔离策略：</p>
+<ul>
+<li>线程级隔离：使用不同的线程池处理不同的请求任务。当某种请求任务出现故障时，负责其他请求任务的线程池不会受到影响。
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/45e0510e335e46a7bb4a7dc82a9c6a1f.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>进程级隔离：将系统按照功能分为不同的进程，分布到相同或不同的机器中。
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/5062f57a5c414016b534ea3b7a36ca31.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>资源隔离：将分布式系统的所有资源分成几个部分，每部分资源负责一个模块，这样系统各个模块就不会争抢资源，即资源之间互不干扰。</li>
+</ul>
+<h4 id="4故障恢复">4，故障恢复</h4>
+<p>在任何一个分布式系统中，故障都是不可避免的。通常包括两类：</p>
+<ul>
+<li>物理故障，比如硬盘损坏、断电断网、硬件升级等</li>
+<li>软件层故障，比如系统存在 Bug 导致系统崩溃、系统负载过高导致系统崩溃等</li>
+</ul>
+<p>故障恢复就是故障发生之后的弥补方案，可以理解为对故障进行修正或修复，以保证服务正常运行。</p>
+<p>在分布式系统中，常见的<strong>故障检测方法是心跳机制</strong>。</p>
+<p>故障恢复策略，主要涉及备升主、数据复制等关键技术。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2021-12-18
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/01/msg-queue/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">消息队列学习笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2021/11/arch2/">
+            <span class="next-text nav-default">架构学习笔记2</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2021/12/distributed/" class="leancloud_visitors" data-flag-title="分布式学习笔记">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

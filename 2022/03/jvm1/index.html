@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JVM性能调优实战笔记1 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，性能优化的步骤 性能优化步骤： 发现问题-性能监控 GC 频" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/03/jvm1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="JVM性能调优实战笔记1" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，性能优化的步骤 性能优化步骤： 发现问题-性能监控 GC 频" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/03/jvm1/" />
+<meta property="article:published_time" content="2022-03-15T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-03-15T21:41:52+08:00" />
+<meta itemprop="name" content="JVM性能调优实战笔记1">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，性能优化的步骤 性能优化步骤： 发现问题-性能监控 GC 频">
+<meta itemprop="datePublished" content="2022-03-15T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-03-15T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5812">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JVM性能调优实战笔记1"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，性能优化的步骤 性能优化步骤： 发现问题-性能监控 GC 频"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JVM性能调优实战笔记1</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-03-15 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 5812 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1性能优化的步骤">1，性能优化的步骤</a></li>
+        <li><a href="#2常用命令工具">2，常用命令工具</a></li>
+        <li><a href="#3图形化分析工具">3，图形化分析工具</a></li>
+        <li><a href="#4jvm-运行时参数">4，JVM 运行时参数</a></li>
+        <li><a href="#5gc-日志分析">5，GC 日志分析</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1性能优化的步骤">1，性能优化的步骤</h3>
+<p>性能优化步骤：</p>
+<ul>
+<li><strong>发现问题-性能监控</strong>
+<ul>
+<li>GC 频繁、CPU 负载过高、OOM、内存泄漏、内存负载过高、死锁、程序响应缓慢</li>
+<li><code>jvisualvm、jconsole</code> 等工具</li>
+</ul>
+</li>
+<li><strong>排查问题-性能分析</strong>
+<ul>
+<li>打印 GC 日志，通过 GCviewer 或者 <a href="http://gceasy.io">http://gceasy.io</a> 来分析</li>
+<li>灵活使用 <code>jstack、jmap、jinfo</code> 等工具
+<ul>
+<li>这些命令的字节码文件都在 <code>C:\Program Files\Java\jdk1.8.0_211\lib\tools.jar</code> 中</li>
+</ul>
+</li>
+<li>使用<code>阿里 arthas、jconsole、jvisualvm</code> 查看 jvm 状态</li>
+<li>生成堆 dump 文件，使用 <a href="https://www.eclipse.org/mat/downloads.php">MemoryAnalyzer</a> 或 <strong>Jprofiler</strong> 或 <strong>Jconsole</strong> 或 <strong>JvisualVm</strong> 或 <strong>jhat</strong> 来分析</li>
+</ul>
+</li>
+<li><strong>解决问题-性能调优</strong>
+<ul>
+<li>适当增加内存，根据业务背景选择垃圾回收器</li>
+<li>优化代码，控制内存使用</li>
+<li>增加机器，分散节点压力</li>
+<li>合理设置线程池线程数量</li>
+<li>等。。</li>
+</ul>
+</li>
+</ul>
+<p>内存泄漏的几种情况：</p>
+<ul>
+<li><strong>静态集合类</strong>：如 HashMap、LinkedList 等
+<ul>
+<li>如果这些容器是静态的，则它们的生命周期与 JVM 程序一致，容器中的对象在程序结束前不能被释放</li>
+<li><img src="https://img-blog.csdnimg.cn/a0d300f2ec3e44c1af22138b0ebe602c.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li><strong>单例模式</strong>：单例的生命周期与 JVM 的生命周期一样长</li>
+<li><strong>各种连接</strong>：如数据库连接，网络连接、IO 连接等
+<ul>
+<li>如果连接没有正常关闭，则造成内存和系统资源浪费</li>
+</ul>
+</li>
+<li><strong>变量不合理的作用域</strong>
+<ul>
+<li>下图中的 msg 变量只被 receiveMsg 方法用到，可将其移到方法内部</li>
+<li><img src="https://img-blog.csdnimg.cn/f13af91b39084578a00e9a442ff24292.png?" alt="在这里插入图片描述"></li>
+<li>另外字符串及时置 <code>null</code>，也可使字符串及时被回收</li>
+</ul>
+</li>
+</ul>
+<h3 id="2常用命令工具">2，常用命令工具</h3>
+<h4 id="1jps查看-java-进程">1，jps：查看 Java 进程</h4>
+<p><strong>jps</strong>：查看正在运行的 java 进程</p>
+<ul>
+<li><code>jps</code>：显示进程 id 与类名</li>
+<li><code>jps -l</code>：显示进程 id 与全类名</li>
+<li><code>jps -m</code>：显示进程 id 与类名与程序参数</li>
+<li><code>jps -v</code>：显示 JVM 参数</li>
+<li><code>jps -q</code>：只显示进程 id</li>
+<li>如果启动 Java 进程时使用了 <code>-XX:-UserPerfData</code> 参数，那么 jps 将查看不到该进程</li>
+</ul>
+<h4 id="2jstat查看-jvm-统计信息">2，jstat：查看 JVM 统计信息</h4>
+<p><strong>jstat</strong>：查看 JVM 统计信息，常用于检查垃圾回收与内存泄漏问题</p>
+<p>命令格式：<code>jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</code> (使用时要注意参数的顺序)</p>
+<ul>
+<li><code>-option</code></li>
+<li><code>-t</code>：输出进程从开始执行到现在的时间（秒）</li>
+<li><code>-h&lt;lines&gt;</code>：间隔多少行输出一次标头信息（紧挨着，没空格）</li>
+<li><code>vmid</code>：指定进程 id</li>
+<li><code>interval</code>：指定输出统计数据的间隔时间，单位毫秒</li>
+<li><code>count</code>：指定查询的总次数</li>
+</ul>
+<p>查看 <code>option</code> 支持的选项：<code>jstat -options</code></p>
+<ul>
+<li><code>-class</code>：显示 ClassLoader 的相关信息：类的装载、卸载数量、总空间、类装载所消耗的时间等</li>
+<li><code>-gc</code>：显示与 GC 相关的堆信息：Eden 区、两个 Survivor 区、老年代、永久代等的容量、已用空间、GC时间合计等信息
+<ul>
+<li><strong>S0C/S1C</strong>：幸存者区大小（单位字节）</li>
+<li><strong>S0U/S1U</strong>：幸存者区已使用的大小</li>
+<li><strong>EC/EU</strong>：Eden区大小 <strong>/</strong> Eden区已使用的大小</li>
+<li><strong>OC/OU</strong>：老年代大小 <strong>/</strong> 老年代已使用的大小
+<ul>
+<li>如果老年代的使用比例越来越高，而无法降低，则有可能出现内存泄漏</li>
+</ul>
+</li>
+<li><strong>MC/MU</strong>：方法区大小 <strong>/</strong> 方法区已使用的大小</li>
+<li><strong>CCSC/CCSU</strong>：压缩类空间大小 <strong>/</strong> 压缩类已使用的大小</li>
+<li><strong>YGC/YGCT</strong>：进程从启动到目前的 young gc 的<strong>次数/消耗时间（秒）</strong></li>
+<li><strong>FGC/FGCT</strong>：进程从启动到目前的 full gc 的<strong>次数/消耗时间（秒）</strong></li>
+<li><strong>GCT</strong>：进程从启动到目前的 gc 的消耗时间（秒）
+<ul>
+<li>如果 GCT 时间占程序运行时间的 20%，则说明目前堆的压力较大</li>
+<li>如果 GCT 时间占程序运行时间的 90%，则随时可能 OOM</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>-gccapacity</code>：显示内容与 <code>-gc</code> 基本相同，但输出主要关注 Java 堆各个区域使用到的最大、最小空间</li>
+<li><code>-gcutil</code>：显示内容与 <code>-gc</code> 基本相同，但输出主要关注已使用空间占总空间的百分比</li>
+<li><code>-gccause</code>：与 <code>-gcutil</code> 功能一样，但会额外输出导致最后一次或当前正在发生的 GC 产生的原因</li>
+<li><code>-gcnew/-gcold</code>：显示<strong>新生代/老年代</strong> GC 状况</li>
+<li><code>-gcnewcapcity/-gcoldcapacity</code>：与 <code>-gcnew/-gcold</code> 基本相同，输出主要关注使用到的最大、最小空间</li>
+<li><code>-gcmetacapacity</code>：</li>
+<li><code>-compiler</code>：显示 JIT 编译器编译过的方法、耗时等信息</li>
+<li><code>-printcompilation</code>：输出已经被 JIT 编译的方法</li>
+</ul>
+<h4 id="3jinfo查看修改-jvm-配置参数">3，jinfo：查看修改 JVM 配置参数</h4>
+<p><strong>jinfo</strong>：实时查看和修改 JVM 配置参数</p>
+<p>并非所有的参数都支持动态修改，只有标记为 manageable 的才能被实时修改</p>
+<ul>
+<li><code>java -XX:+PrintFlagsFinal -version | grep manageable</code></li>
+<li><code>java -XX:+PrintFlagsFinal </code> 查看所有 JVM参数的最终值</li>
+<li><code>java -XX:+PrintFlagsInitial </code> 查看所有 JVM参数的初始值</li>
+</ul>
+<p>jinfo 参数：</p>
+<ul>
+<li><code>-sysprops</code>：查看系统属性信息</li>
+<li><code>-flags</code>：查看所有赋过值的参数</li>
+<li><code>-flag name</code>：查看某个具体的参数的使用用情况</li>
+<li><code>-flag +/-name</code>：设置虚拟机参数</li>
+<li><code>-flag name=value</code>：设置虚拟机参数</li>
+</ul>
+<h4 id="4jmap导出内存映像文件">4，jmap：导出内存映像文件</h4>
+<p><strong>jmap</strong>：导出内存映像文件和内存使用情况</p>
+<p>基本语法：<code>jmap [option] &lt;pid&gt;</code></p>
+<p>option 选项：</p>
+<ul>
+<li><code>-dump:&lt;dump-options&gt;</code>：生成堆转储文件
+<ul>
+<li><code>dump:live</code>：只保存堆中的活跃对象</li>
+<li><code>dump:fomat=b</code></li>
+<li><code>dump:file=&lt;file_path&gt;</code></li>
+</ul>
+</li>
+<li><code>-heap</code>：输出整个堆空间的详细信息，包括 GC 的使用，对配置信息，以及内存的使用信息等
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/a608f052449a4e368c107ee9ce85a6e7.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li><code>-histo[:live]</code>：输出堆中对象的同级信息，包括类、实例数量和合计容量
+<ul>
+<li><code>-histo:live</code> 只统计堆中的存活对象</li>
+<li><img src="https://img-blog.csdnimg.cn/0eb5161bd3bd462f857e5a23e5679ba7.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li><code>-permstat</code>：以 ClassLoader 为统计口径输出永久代的内存状态信息</li>
+<li><code>-finalizerinfo</code>：显示在 F-Queue 中等待 Finalizer 线程执行 finalize 方法的对象</li>
+<li><code>-F</code>：当虚拟机进程对 -dump 选项没有任何响应时，强制生成 dump 文件</li>
+</ul>
+<p>导出内存映像文件的两种方式：</p>
+<ul>
+<li>使用 jmap：
+<ul>
+<li><code>jmap -dump:format=b,file=&lt;file_name.hprof&gt; &lt;pid&gt;</code></li>
+<li><code>jmap -dump:live,format=b,file=&lt;file_name.hprof&gt; &lt;pid&gt;</code> 生成的文件更小，一般情况使用此命令较多</li>
+</ul>
+</li>
+<li>在进程发生 OOM 时，自动生成堆 dump 文件
+<ul>
+<li><code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=&lt;file_name.hprof&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="5jhat分析堆转储文件">5，jhat：分析堆转储文件</h4>
+<p><strong>jhat</strong>：堆转储文件分析工具。</p>
+<ul>
+<li><code>jhat file_name.hprof</code></li>
+</ul>
+<p>jhat 内置了一个 HTTP 服务器，生成分析结果后，用户可以在浏览器中查看分析结果。jhat 会启动一个 http 服务器，端口是 7000，即 <code>http://localhost:7000</code>，用浏览器访问即可。</p>
+<blockquote>
+<p>该命令在 jdk9 及其之后被移除，官方建议使用 jvisualvm 代替 jhat</p>
+</blockquote>
+<h4 id="6jstack查看线程快照">6，jstack：查看线程快照</h4>
+<p><strong>jstack</strong>：查看 JVM 中<strong>线程快照</strong>。常用于分析线程长时间卡顿问题，如线程死锁，死循环，请求外部资源导致长时间等待等问题。</p>
+<p>需要关注的几种线程状态：</p>
+<ul>
+<li><strong>死锁</strong>：Deadlock（重点关注）</li>
+<li><strong>等待资源</strong>：Waiting on condition（重点关注）</li>
+<li><strong>等待获取监视器</strong>：Waiting on monitor entry（重点关注）</li>
+<li><strong>阻塞</strong>：Blocked（重点关注）</li>
+<li><strong>执行中</strong>：Runnable</li>
+<li><strong>暂停</strong>：Suspended</li>
+<li><strong>对象等待中</strong>：TIMED_WATING <strong>/</strong> WATING</li>
+<li><strong>停止</strong>：Parked</li>
+</ul>
+<p><strong>基本语法</strong>：<code>jstack [option] &lt;pid&gt;</code></p>
+<ul>
+<li><code>jstack pid</code> ：直接查看线程栈信息</li>
+<li><code>jstack -F pid</code> ：强制输出线程栈信息</li>
+<li><code>jstack -l pid</code> ：除堆栈外，显示锁的附加信息</li>
+<li><code>jstack -m pid</code> ：如果调用到本地方法，显示 C/C++ 堆栈信息</li>
+</ul>
+<h4 id="7jcmd多功能命令行">7，jcmd：多功能命令行</h4>
+<p><strong>jcmd</strong> 可以用来实现上面除了 jstat 之外所有的功能，比如：导出堆，内存使用，查看进程，导出线程信息，执行 GC，JVM 运行时间等。</p>
+<p>命令示例：</p>
+<pre><code class="language-shell"># 查看某个 Java 进程的所有支持的命令替换
+jcmd &lt;pid&gt; help
+---------------
+25801:
+The following commands are available:
+JFR.stop
+JFR.start
+JFR.dump
+JFR.check
+VM.native_memory
+VM.check_commercial_features
+VM.unlock_commercial_features
+ManagementAgent.stop
+ManagementAgent.start_local
+ManagementAgent.start
+VM.classloader_stats
+GC.rotate_log
+Thread.print					# 打印线程栈
+GC.class_stats
+GC.class_histogram              # class 直方图
+GC.heap_dump					# 导出堆dump文件
+GC.finalizer_info
+GC.heap_info
+GC.run_finalization
+GC.run
+VM.uptime                       # 显示进程执行的总时间
+VM.dynlibs
+VM.flags                        # 显示虚拟机参数配置信息
+VM.system_properties            # 显示系统属性信息
+VM.command_line
+VM.version                      # 打印 jdk 版本
+help
+</code></pre>
+<h3 id="3图形化分析工具">3，图形化分析工具</h3>
+<p>JVM 常用图形化分析工具：</p>
+<ul>
+<li>jdk 自带工具
+<ul>
+<li>jconsole：基于 JMX</li>
+<li>jvisualvm</li>
+<li>jmc</li>
+</ul>
+</li>
+<li>第三方工具
+<ul>
+<li><a href="https://www.eclipse.org/mat/downloads.php">MemoryAnalyzer</a> （MAT）：主要用于分析堆 dump 文件</li>
+<li>Jprofiler（商业付费）</li>
+<li>Arthas（阿里出品-命令行工具）</li>
+<li>Btrace</li>
+</ul>
+</li>
+</ul>
+<h3 id="4jvm-运行时参数">4，JVM 运行时参数</h3>
+<h4 id="1jvm-参数选项的类型">1，JVM 参数选项的类型</h4>
+<p>JVM 参数选项的类型：</p>
+<ul>
+<li><strong>标准参数选项</strong>：以 <code>-</code> 开头，运行 <code>java -help</code> 可见
+<ul>
+<li>参数比较稳定，基本不变动</li>
+</ul>
+</li>
+<li><strong>-X 参数选项</strong>（非标准参数）：以 <code>-X</code> 开头，运行 <code>java -X</code> 可见
+<ul>
+<li>参数变动小</li>
+<li><code>-Xmixed</code>：JIT 变异模式，混合模式，默认模式</li>
+<li><code>-Xint</code>：JIT 变异模式，只是用解释器，所有字节码被解释执行，速度较慢</li>
+<li><code>-Xmx</code>：最大堆内存
+<ul>
+<li>等价于 <code>-XX:MaxHeapSize</code></li>
+<li>单位 <code>g/G，m/M，k/K</code></li>
+</ul>
+</li>
+<li><code>-Xms</code>：初始堆内存，最好与 <code>-Xmx </code>一样，避免扩容带来的损耗
+<ul>
+<li>等价于 <code>-XX:InitialHeapSize</code></li>
+</ul>
+</li>
+<li><code>-Xss</code>：线程栈大小
+<ul>
+<li>等价于 <code>-XX:ThreadStackSize</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>-XX 参数选项</strong>（非标准参数）：以 <code>-XX</code> 开头，运行 <code>-XX:PrintFlagsFinal</code> 显示所有参数
+<ul>
+<li>实验性，参数变动大</li>
+<li>布尔类型：
+<ul>
+<li><code>-XX:+&lt;option&gt;</code>：启用某参数</li>
+<li><code>-XX:-&lt;option&gt;</code>：禁用某参数</li>
+</ul>
+</li>
+<li>非布尔类型：<code>-XX:&lt;name&gt;=&lt;value&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="2打印及设置-jvm-参数">2，打印及设置 JVM 参数</h4>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-XX:+PrintCommandLineFlags</td>
+<td align="left">打印用户手动设置或JVM自动设置的参数</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintFlagsInitial</td>
+<td align="left">打印所有 XX 选项的默认值</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintFlagsFinal</td>
+<td align="left">打印 XX 选项的生效值</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintVMOptions</td>
+<td align="left">打印 JVM 参数</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3设置堆栈方法区等大小">3，设置堆、栈、方法区等大小</h4>
+<p><strong>堆</strong>是GC 执行垃圾回收的重点区域。在方法结束后，堆中的对象不会马上被回收，而是在垃圾收集的时候才会被回收。</p>
+<p><strong>运行时数据区结构图：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/3be63f7465a94d92bdd0c7af0b132255.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/9a3eaa23bdff4842bf77a85bc5c81864.png?" alt="在这里插入图片描述"></p>
+<p>JVM 堆空间分配：</p>
+<ul>
+<li>Java 7 及之前：
+<ul>
+<li>新生代（Young）：Eden、S0（From）、S1（To）</li>
+<li>老年代（Old）</li>
+<li>永久区（Perm）</li>
+</ul>
+</li>
+<li>Java 8 及之后
+<ul>
+<li>新生代（Young）：IBM研究表明，新生代中的80% 的对象，在经过 GC 之后，都会被回收
+<ul>
+<li>Eden：对象第一次创建时（<code>new</code>）的区域，如果Eden 放不下，则会直接在 Old 区创建</li>
+<li>S0（From）</li>
+<li>S1（To）
+<ul>
+<li>S0 与 S1 谁空谁是 To</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>老年代（Old）</li>
+<li>元空间（Meta）</li>
+</ul>
+</li>
+</ul>
+<p><strong>堆区中 S1 和 S2 两块区域，同一时刻只会有一块区域使用，另一块是空闲状态。</strong></p>
+<blockquote>
+<p>分代的目的就是为了优化 GC 的性能</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/5e3a49f83c4d46f3b827c1f6d19a2f9a.png?" alt="在这里插入图片描述"></p>
+<p><strong>对象从新生代到老年代的过程：</strong></p>
+<ul>
+<li>new 的对象先放入 Eden 区</li>
+<li>当 Eden 区满，再创建对象时，垃圾回收器将对 Eden 区进行垃圾回收（Minor GC）；Eden 区中不再被引用的对象将被销毁，Eden 区中剩余的对象移动到 S0 区。新 new 的对象依然放入 Eden 区</li>
+<li>再次发生GC 时，S0 中幸存的对象将放入 S1中，</li>
+<li>再次发生GC 时，S1 中幸存的对象将放入 S0中，如此 S0 与 S1 交替往复</li>
+<li>当达到一定<strong>次数</strong>后，对象将被放入 Old 区
+<ul>
+<li>该次数可通过参数 -XX:MaxTenuringThreshold 设置，默认 15</li>
+</ul>
+</li>
+<li>当 Old 区空间不足时，会发生 Major GC，清理 Old 区对象
+<ul>
+<li>Major GC 会比 Minor GC 慢 10 倍以上</li>
+</ul>
+</li>
+<li>若发生 Major GC 后，Old 空间依然不足，将发生 OOM 异常</li>
+</ul>
+<blockquote>
+<p>只有当 Eden 区满了才会触发 Minor GC，Minor GC 会将 Eden 区和 From 区一起回收
+如果 To 区满（不会触发 GC），会直接将对象放入 Old 区</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/e1fbb81b30024b52ac5882bfcf54717a.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong>发生 GC 时，将 Stop The World</strong></p>
+</blockquote>
+<p>使用 jstat 命令可查看堆中各个区域的空间：</p>
+<pre><code class="language-shell">jstat -gc pid
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/7787da8f96f2481cb26806eaea0dec7d.png" alt="在这里插入图片描述"></p>
+<p><strong>堆空间分配：</strong></p>
+<table>
+    <tr>
+        <td></td> <td>区域</td> <td>大小</td><td>比例</td>
+   </tr>
+    <tr>
+        <td rowspan="3">新生代</td><td >Eden</td><td >153600</td><td >6</td>   
+    </tr>
+    <tr>
+        <td >S0（From）</td><td >25600</td><td >1</td>  
+    </tr>
+    <tr>
+        <td >S1（To）</td><td >25600</td><td >1</td>
+    </tr>
+    <tr>
+        <td >老年代</td><td >Old</td><td >409600</td><td >16</td>  
+    </tr>
+</table>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-Xss/-XX:ThreadStackSize</td>
+<td align="left">设置线程栈大小</td>
+</tr>
+<tr>
+<td align="left">-Xms/-XX:InitialHeapSize</td>
+<td align="left">设置JVM初始堆大小，默认是机器内存的 1/64</td>
+</tr>
+<tr>
+<td align="left">-Xmx/-XX:MaxHeapSize</td>
+<td align="left">设置JVM最大堆大小，默认是机器内存的 1/4，当实际堆使用量大于此值时，将发生 OOM（<strong>一般不设置</strong>）</td>
+</tr>
+<tr>
+<td align="left">-Xmn/-XX:NewSize,-XX:MaxNewSize</td>
+<td align="left">设置年轻代初始值/最大值，官方推荐配置为堆大小的<code>3/8</code> （<strong>一般不设置</strong>）</td>
+</tr>
+<tr>
+<td align="left">-XX:SurvivorRatio</td>
+<td align="left">设置年轻代中 Eden区与一个Survior区的比值，默认为 8，<code>8:1:1</code>，<strong>实际上</strong>真正看内存的话是 <code>6:1:1</code> （<strong>一般不设置</strong>）</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseAdaptiveSizePolicy</td>
+<td align="left">自动选择各区大小比例，默认开启 （<strong>一般不设置</strong>）</td>
+</tr>
+<tr>
+<td align="left">-XX:NewRatio</td>
+<td align="left">设置老年代与年轻代（1个Eden区和2个Survivor区）的比值，默认为 2，<code>2:1</code> （<strong>一般不设置</strong>）</td>
+</tr>
+<tr>
+<td align="left">-XX:PretenureSizeThreadshould</td>
+<td align="left">让大于此值的对象直接分配在老年代，单位字节，只对 Serial、ParNew 收集器有效</td>
+</tr>
+<tr>
+<td align="left">-XX:MaxTenuringThreshold</td>
+<td align="left">新生代每次MinorGC后，还存活的对象年龄+1，当对象的年龄大于此值时就进入老年代，默认为 15</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintTenuringDistribution</td>
+<td align="left">让JVM在每次MinorGC后打印出当前使用的Survivor中对象的年龄分布</td>
+</tr>
+<tr>
+<td align="left">-XX:TargeSurvivorRatio</td>
+<td align="left">设置MinorGC结束后，Survivor 区域中占用空间的期望比例</td>
+</tr>
+<tr>
+<td align="left">-XX:PermSize</td>
+<td align="left">设置方法区永久代初始值</td>
+</tr>
+<tr>
+<td align="left">-XX:MaxPermSize</td>
+<td align="left">设置方法区永久代最大值</td>
+</tr>
+<tr>
+<td align="left">-XX:MetaspaceSize</td>
+<td align="left">设置方法区元空间初始值</td>
+</tr>
+<tr>
+<td align="left">-XX:MaxMetaspaceSize</td>
+<td align="left">设置方法区元空间最大值</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseCompressedOops</td>
+<td align="left">使用压缩对象指针</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseCompressedClassPointers</td>
+<td align="left">是引用压缩类指针</td>
+</tr>
+<tr>
+<td align="left">-XX:CompressedClassSpaceSize</td>
+<td align="left">设置Klass Metaspace 的大小，默认 1 G</td>
+</tr>
+<tr>
+<td align="left">-XX:MaxDirectMemorySize</td>
+<td align="left">指定直接内存容量，默认与堆最大值一样</td>
+</tr>
+</tbody>
+</table>
+<h4 id="4内存溢出相关参数">4，内存溢出相关参数</h4>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-XX:+HeapDumpOnOutMemoryError</td>
+<td align="left">在内存出现OOM时，生成堆转储文件</td>
+</tr>
+<tr>
+<td align="left">-XX:+HeapDumpBeforeFullGC</td>
+<td align="left">在出现FullGC时，生成堆转储文件，有几次FullGC，就生成几个文件</td>
+</tr>
+<tr>
+<td align="left">-XX:HeapDumpPath</td>
+<td align="left">设置堆转储文件路径</td>
+</tr>
+<tr>
+<td align="left">-XX:OnOutOfMemoryError</td>
+<td align="left">设置一个可执行程序或脚本路径，当发生OOM是，执行它</td>
+</tr>
+</tbody>
+</table>
+<h4 id="5垃圾收集器相关参数">5，垃圾收集器相关参数</h4>
+<p><img src="https://img-blog.csdnimg.cn/7c837f68aa3b43c082455f8ea98b111e.png?" alt="在这里插入图片描述"></p>
+<p><strong>Java 垃圾收集器：</strong></p>
+<ul>
+<li><strong>SerialGC</strong>：HotSpot 中 Client模式下的默认新生代垃圾收集器
+<ul>
+<li>串行收集器，可获得最高的单线程收集效率</li>
+<li><strong>SerialOldGC</strong>：HotSpot 中 Client模式下的默认老年代垃圾收集器</li>
+</ul>
+</li>
+<li><strong>ParNewGC</strong>：SerialGC 的并行版本（不重要）</li>
+<li><strong>ParallelGC</strong>：并行收集器，主打吞吐量（jdk 8 默认开启）
+<ul>
+<li><strong>ParallelOldGC</strong>：老年代 GC</li>
+</ul>
+</li>
+<li><strong>CMS 收集器</strong>：并发收集器，主打低延迟（未来将被丢弃）
+<ul>
+<li>使用<strong>标记清除</strong>算法</li>
+</ul>
+</li>
+<li><strong>G1 收集器</strong>：主打低延迟</li>
+</ul>
+<p><strong>如何选择垃圾收集器：</strong></p>
+<ul>
+<li>优先调整堆的大小，让JVM自适应完成</li>
+<li>如果内存小于 100M，使用串行收集器</li>
+<li>如果是单核，单机程序，且没有停顿时间的要求，使用串行收集器</li>
+<li>如果是多核CPU，需要高吞吐量，允许停顿时间超过 1 秒，选择并行或者 JVM 自己选择</li>
+<li>如果是多核CPU，追求低停顿时间，需快速响应，使用并发收集器，官方推荐 G1，性能高
+<ul>
+<li>现在互联网的项目，基本都是 G1</li>
+</ul>
+</li>
+</ul>
+<p><strong>ParallelGC 垃圾收集器相关参数：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/036e0d730e354b71a299d9d1bbc0cc61.png" alt="在这里插入图片描述"></p>
+<p><strong>CMS 垃圾收集器相关参数：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/e2e0e2160efd446a8c4245074197ea77.png" alt="在这里插入图片描述"></p>
+<p>补充参数：</p>
+<p><img src="https://img-blog.csdnimg.cn/16d91239c0e84fdebdfd8b379dbee436.png" alt="在这里插入图片描述"></p>
+<p>特别说明：</p>
+<p><img src="https://img-blog.csdnimg.cn/4ca004dd6ade444d95d475c9a88d2a34.png?" alt="在这里插入图片描述"></p>
+<p><strong>G1 垃圾收集器：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/8b4a2c1cfa964c2d82b518fbe283675d.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/8f765a144f664bc18c93dc57a1fcbaed.png?" alt="在这里插入图片描述"></p>
+<h4 id="6gc-日志相关参数">6，GC 日志相关参数</h4>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-verbose:gc/-XX:+PrintGC</td>
+<td align="left">输出GC日志信息</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintGCDetails</td>
+<td align="left">在发生垃圾回收时打印内存回收详细日志，并在进程退出时输出当前内存各区域的分配情况</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintGCTimeStamps</td>
+<td align="left">程序启动到GC发生的时间秒数，需配合 PrintGCDetails 使用</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintGCDateStamps</td>
+<td align="left">输出GC发生时的时间戳，需配合 PrintGCDetails 使用</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintHeapAtGC</td>
+<td align="left">每次GC前和GC后，都打印堆信息</td>
+</tr>
+<tr>
+<td align="left"><code>-Xloggc:&lt;file&gt;</code></td>
+<td align="left">将GC日志写入文件中</td>
+</tr>
+<tr>
+<td align="left">-XX:TraceClassLoading</td>
+<td align="left">监控类的加载</td>
+</tr>
+<tr>
+<td align="left">-XX:PrintGCApplicationStoppedTime</td>
+<td align="left">打印GC时线程的停顿时间</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintGCApplicationConcurrentTime</td>
+<td align="left">垃圾收集之前，打印应用未中断的执行时间</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintReferenceGC</td>
+<td align="left">记录回收了多少种不同引用类型的引用</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintTenuringDistribution</td>
+<td align="left">每次MinorGC后打印出当前使用的Survivor中对象的年龄分布</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseGCLogFileRotation</td>
+<td align="left">启用GC日志文件的自动转储</td>
+</tr>
+<tr>
+<td align="left">-XX:NumberOfGCLogFiles</td>
+<td align="left">GC日志文件的循环数目</td>
+</tr>
+<tr>
+<td align="left">-XX:GCLogFileSize</td>
+<td align="left">控制GC日志文件的大小</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7其它参数">7，其它参数</h4>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-XX:+DisableExplicitGC</td>
+<td align="left">禁用hotspot 执行 System.gc()，默认禁用</td>
+</tr>
+<tr>
+<td align="left">-XX:ReservedCodeCacheSize, -XX:InitialCodeCacheSize</td>
+<td align="left">指定代码缓存大小</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseCodeCacheFlushing</td>
+<td align="left">让JVM放弃一些被编译的代码，避免代码缓存被占满时JVM切换到 interpreted-only 的情况</td>
+</tr>
+<tr>
+<td align="left">-XX:+DoEscapeAnalysis</td>
+<td align="left">开启逃逸分析</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseBiasedLocking</td>
+<td align="left">开启偏向锁</td>
+</tr>
+<tr>
+<td align="left">-XX:+UseLargePages</td>
+<td align="left">开启使用大页面</td>
+</tr>
+<tr>
+<td align="left">-XX:+PrintTLAB</td>
+<td align="left">打印TLAB的使用情况</td>
+</tr>
+<tr>
+<td align="left">-XX:TLABSize</td>
+<td align="left">设置TLAB大小</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5gc-日志分析">5，GC 日志分析</h3>
+<p>对于 HotSpot VM，它的GC 按照回收区域又分为两大类：</p>
+<ul>
+<li><strong>部分收集</strong>（Partial GC）：非整堆收集，其中又分为：
+<ul>
+<li>新生代收集（Minor GC/Young GC）：只是新生代（Eden\S0，S1）的垃圾收集
+<ul>
+<li>当 Eden 区满的时候就会进行新生代收集</li>
+<li>新生代收集比老年代收集更加简单，快速，频繁</li>
+</ul>
+</li>
+<li>老年代收集（Minor GC/Old GC）：只是老年代的垃圾收集
+<ul>
+<li>目前，只有 CMS GC 会有单独收集老年代的行为</li>
+<li>进行老年代收集之前会先进行一次年轻代收集，原因如下：</li>
+<li>一个比较大的对象无法放入新生代，那它自然会往老年代去放，如果老年代也放不下，那会先进行一次新生代收集，</li>
+<li>之后尝试往新生代放，如果还是放不下，才会进行老年代的垃圾收集，然后往老年代去放</li>
+</ul>
+</li>
+<li>混合收集（Mixed GC）：收集整个新生代以及部分老年代
+<ul>
+<li>目前，只有 G1 GC 会有这种行为</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>整堆收集</strong>（Full GC）：收集整个 java 堆和方法区
+<ul>
+<li>堆包含新生代，老年代，元空间/永久代</li>
+<li>哪些情况会触发Full GC：
+<ul>
+<li>老年代空间不足</li>
+<li>方法区空间不足</li>
+<li>调用 System.gc()</li>
+<li>Minor GC 进入老年代的数据的平均大小大于老年代的可用空间</li>
+<li>大对象直接进入老年代，而老年代的空间不足</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-03-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/03/jvm2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">JVM性能调优实战笔记2</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/03/tomcat-learn/">
+            <span class="next-text nav-default">Tomcat学习笔记</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/03/jvm1/" class="leancloud_visitors" data-flag-title="JVM性能调优实战笔记1">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Tomcat学习笔记 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 0，Tomcat 的下载与安装 到 Tomcat 官网下载： 点击 Tomcat8 如下：" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/03/tomcat-learn/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Tomcat学习笔记" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 0，Tomcat 的下载与安装 到 Tomcat 官网下载： 点击 Tomcat8 如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/03/tomcat-learn/" />
+<meta property="article:published_time" content="2022-03-10T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-03-10T21:41:52+08:00" />
+<meta itemprop="name" content="Tomcat学习笔记">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 0，Tomcat 的下载与安装 到 Tomcat 官网下载： 点击 Tomcat8 如下：">
+<meta itemprop="datePublished" content="2022-03-10T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-03-10T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4114">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tomcat学习笔记"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 0，Tomcat 的下载与安装 到 Tomcat 官网下载： 点击 Tomcat8 如下："/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Tomcat学习笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-03-10 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 4114 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0tomcat-的下载与安装">0，Tomcat 的下载与安装</a></li>
+        <li><a href="#1servlet-与-web-容器">1，Servlet 与 Web 容器</a></li>
+        <li><a href="#2tomcat-系统架构">2，Tomcat 系统架构</a></li>
+        <li><a href="#3优化-tomcat-启动速度">3，优化 Tomcat 启动速度</a></li>
+        <li><a href="#4如何监控-tomcat-性能">4，如何监控 Tomcat 性能</a></li>
+        <li><a href="#5tomcat-io-和线程池的并发调优">5，Tomcat I/O 和线程池的并发调优</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="0tomcat-的下载与安装">0，Tomcat 的下载与安装</h3>
+<p>到 <a href="https://tomcat.apache.org/">Tomcat 官网</a>下载：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210711202430438.png" alt="在这里插入图片描述"></p>
+<p>点击 Tomcat8 如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210711204232553.png" alt="在这里插入图片描述"></p>
+<p>下载之后解压即可使用。</p>
+<h4 id="1tomcat-目录结构">1，Tomcat 目录结构</h4>
+<p>目录结构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/2021071120285723.png" alt="在这里插入图片描述"></p>
+<p>重要的几个程序，用于启动和停止服务：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210711203254534.png" alt="在这里插入图片描述"></p>
+<p>重要的配置文件：<code>server.xml</code>。</p>
+<blockquote>
+<p>在启动 Tomcat 之前，要确保 Java 环境已存在，因为 Tomcat 是 Java 语言开发的。</p>
+</blockquote>
+<h3 id="1servlet-与-web-容器">1，Servlet 与 Web 容器</h3>
+<p>随着互联网的发展，我们已经不满足于仅仅浏览静态页面，还希望通过一些交互操作，来获取<strong>动态结果</strong>，因此也就需要一些扩展机制能够让 <strong>HTTP 服务器调用服务端程序</strong>。</p>
+<p>于是 Sun 公司推出了 Servlet 技术，Servlet 技术是 Web 开发的原点。Servlet 可以简单理解为运行在服务端的 Java 小程序，但是 Servlet 没有 main 方法，不能独立运行，因此<strong>必须把它部署到 Servlet 容器中</strong>，<strong>由容器来实例化并调用 Servlet</strong>。</p>
+<p>而 Tomcat 和 Jetty 就是一个 Servlet 容器。为了方便使用，它们也具有 HTTP 服务器的功能，因此 Tomcat 或者 Jetty 就是一个“HTTP 服务器 + Servlet 容器”，我们也叫它们 Web 容器。</p>
+<p>SpringMVC 框架就是对 Servlet 的封装，Spring 应用本身就是一个 Servlet。在 JavaWeb 中，Servlet（<code>javax.servlet.Servlet</code>） 也是一个接口，我们把实现了 Servlet 接口的业务类叫作 Servlet。</p>
+<p><img src="https://img-blog.csdnimg.cn/83773dcf31594456aa84eed60a3972bd.png" alt="在这里插入图片描述"></p>
+<p>Servlet 容器用来加载和管理业务类。HTTP 服务器不直接跟业务类打交道，而是把请求交给 Servlet 容器去处理，Servlet 容器会将请求转发到具体的 Servlet，如果这个 Servlet 还没创建，就加载并实例化这个 Servlet，然后调用这个 Servlet 的接口方法。</p>
+<p>因此 Servlet 接口其实是 Servlet 容器跟具体业务类之间的接口，Servlet 接口和 Servlet 容器的出现，达到了 HTTP 服务器与业务类解耦的目的。</p>
+<p><img src="https://img-blog.csdnimg.cn/7f04c7e22d624c499e06f2a93fce2dab.png" alt="在这里插入图片描述"></p>
+<h4 id="1http-请求处理过程">1，HTTP 请求处理过程</h4>
+<p><img src="https://img-blog.csdnimg.cn/24e2bdf7c9d24dacb5597b271503d4df.png" alt="在这里插入图片描述"></p>
+<ol>
+<li>当客户请求某个资源时，HTTP 服务器会用一个 ServletRequest 对象把客户的请求信息封装起来，然后调用 Servlet 容器的 service 方法</li>
+<li>Servlet 容器拿到请求后，根据请求的 URL 和 Servlet 的映射关系，找到相应的 Servlet（如果 Servlet 还没有被加载，就用反射机制创建这个 Servlet，并调用 Servlet 的 init 方法来完成初始化）</li>
+<li>接着调用 Servlet 的 service 方法来处理请求，把 ServletResponse 对象返回给 HTTP 服务器</li>
+<li>HTTP 服务器会把响应发送给客户端</li>
+</ol>
+<h4 id="2web-应用">2，Web 应用</h4>
+<p>根据 Servlet 规范，Web 应用程序有一定的目录结构，在这个目录下分别放置了 Servlet 的类文件、配置文件以及静态资源，Servlet 容器通过读取配置文件，就能找到并加载 Servlet。</p>
+<p>Web 应用的目录结构：</p>
+<pre><code class="language-shell">| -  MyWebApp
+      | -  WEB-INF/web.xml        -- 配置文件，用来配置Servlet等
+      | -  WEB-INF/lib/           -- 存放Web应用所需各种JAR包
+      | -  WEB-INF/classes/       -- 存放你的应用类，比如Servlet类
+      | -  META-INF/              -- 目录存放工程的一些信息
+</code></pre>
+<p>Servlet 规范里定义了 ServletContext 这个接口来对应一个 Web 应用。Web 应用部署好后，Servlet 容器在启动时会加载 Web 应用，并为每个 Web 应用创建唯一的 ServletContext 对象。</p>
+<p>你可以把 ServletContext 看成是一个全局对象，一个 Web 应用可能有多个 Servlet。由于 ServletContext 持有所有 Servlet 实例，你还可以通过它来实现 Servlet 请求的转发。</p>
+<h4 id="3filter-与-listener">3，Filter 与 Listener</h4>
+<p>Servlet 规范提供了两种扩展机制：Filter 和 Listener。</p>
+<p>Filter 是过滤器，这个接口允许你对请求和响应做一些统一的定制化处理。过滤器的工作原理是这样的：Web 应用部署完成后，Servlet 容器需要实例化 Filter 并把 Filter 链接成一个 FilterChain。当请求进来时，获取第一个 Filter 并调用 doFilter 方法，doFilter 方法负责调用这个 FilterChain 中的下一个 Filter。</p>
+<p>Listener 是监听器。当 Web 应用在 Servlet 容器中运行时，Servlet 容器内部会不断的发生各种事件，如 Web 应用的启动和停止、用户请求到达等。 Servlet 容器提供了一些默认的监听器来监听这些事件，当事件发生时，Servlet 容器会负责调用监听器的方法。</p>
+<p>当然，你可以定义自己的监听器去监听你感兴趣的事件，将监听器配置在web.xml中。比如 Spring 就实现了自己的监听器，来监听 ServletContext 的启动事件，目的是当 Servlet 容器启动时，创建并初始化全局的 Spring 容器。</p>
+<h3 id="2tomcat-系统架构">2，Tomcat 系统架构</h3>
+<p>Tomcat 的两个核心组件及功能：</p>
+<ul>
+<li><strong>连接器</strong>（Connector）：处理 Socket 连接，负责网络字节流与 Request 和 Response 对象的转化。
+<ul>
+<li>每个连接器都监听不同的端口，比如 Tomcat 默认的 HTTP 连接器监听 8080 端口、默认的 AJP 连接器监听 8009 端口</li>
+</ul>
+</li>
+<li><strong>容器</strong>（Container）：加载和管理 Servlet，以及具体处理 Request 请求。</li>
+</ul>
+<p><strong>Tomcat 支持的 I/O 模型有</strong>：</p>
+<ul>
+<li>NIO：非阻塞 I/O，采用 Java NIO 类库实现。</li>
+<li>NIO.2：异步 I/O，采用 JDK 7 最新的 NIO.2 类库实现。</li>
+<li>APR：采用 Apache 可移植运行库实现，是 C/C++ 编写的本地库。</li>
+</ul>
+<p><strong>Tomcat 支持的应用层协议有</strong>：</p>
+<ul>
+<li>HTTP/1.1：这是大部分 Web 应用采用的访问协议。</li>
+<li>AJP：用于和 Web 服务器集成（如 Apache）。</li>
+<li>HTTP/2：HTTP 2.0 大幅度的提升了 Web 性能。</li>
+</ul>
+<p>一个 Server 中有一个或者多个 Service（通过在 Tomcat 中配置多个 Service，可以实现通过不同的端口号来访问同一台机器上部署的不同应用）。</p>
+<p>一个 Service 中有多个连接器和一个容器（一个容器可对接多个连接器，就好比一个房间有多个门）。连接器与容器之间通过标准的 ServletRequest 和 ServletResponse 通信。</p>
+<p><img src="https://img-blog.csdnimg.cn/cefd4dbee6cc4f41b1eae1b0f86dbf6c.png" alt="在这里插入图片描述"></p>
+<h4 id="1连接器">1，连接器</h4>
+<p>连接器的功能如下：</p>
+<ul>
+<li>监听网络端口。接受网络连接请求。读取网络请求字节流。</li>
+<li>根据具体应用层协议（HTTP/AJP）解析字节流，生成统一的 Tomcat Request 对象。</li>
+<li>将 Tomcat Request 对象转成标准的 ServletRequest。</li>
+<li>调用 Servlet 容器，得到 ServletResponse。</li>
+<li>将 ServletResponse 转成 Tomcat Response 对象。</li>
+<li>将 Tomcat Response 转成网络字节流。</li>
+<li>将响应字节流写回给浏览器。</li>
+</ul>
+<p>连接器中的三个核心组件（其中 Endpoint 和 Processor 放在一起抽象成了 ProtocolHandler 组件）：</p>
+<ul>
+<li><strong>Endpoint</strong>：负责提供字节流给 Processor
+<ul>
+<li>Endpoint 是通信端点，即通信监听的接口，Endpoint 在 Java 代码中是一个接口</li>
+<li><strong>Acceptor</strong> 用于监听 Socket 连接请求</li>
+<li><strong>SocketProcessor</strong> 用于处理接收到的 Socket 请求，它实现 Runnable 接口，在 run 方法里调用协议处理组件 Processor 进行处理</li>
+<li>为了提高处理能力，SocketProcessor 被提交到线程池来执行，这个线程池叫作执行器（<strong>Executor</strong>)</li>
+</ul>
+</li>
+<li><strong>Processor</strong>：负责提供 Tomcat Request 对象给 Adapter</li>
+<li><strong>Adapter</strong>：负责提供 ServletRequest 对象给容器</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/e4222d1c91694e54b432171fe347a06f.png" alt="在这里插入图片描述"></p>
+<h4 id="2容器">2，容器</h4>
+<p>Tomcat 通过一种<strong>分层的架构</strong>，使得 Servlet 容器具有很好的灵活性。</p>
+<p>Tomcat 设计了 4 种容器，分别是 Engine、Host、Context 和 Wrapper，它们的关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/0eceb355016447338818d74d8d500d90.png" alt="在这里插入图片描述"></p>
+<p>Tomcat 用<strong>组合模式</strong>来管理这些容器，所有容器组件都实现了 Container 接口。</p>
+<p>说明：</p>
+<ul>
+<li>Engine 表示引擎，用来管理多个虚拟站点，一个 Service 最多只能有一个 Engine</li>
+<li>Host 代表的是一个虚拟主机（站点），可以给 Tomcat 配置多个虚拟主机地址，而一个虚拟主机下可以部署多个 Web 应用程序</li>
+<li>Context 表示一个 Web 应用程序</li>
+<li>Wrapper 表示一个 Servlet，一个 Web 应用程序中可能会有多个 Servlet</li>
+</ul>
+<p>Tomcat 配置文件的结构：</p>
+<p><img src="https://img-blog.csdnimg.cn/e46095dee08748b49e3e07195e8dd08e.png" alt="在这里插入图片描述"></p>
+<p>Tomcat 用 Mapper 组件将用户请求的 URL 定位到一个 Servlet，Mapper 组件里保存了容器组件与访问路径的映射关系。</p>
+<p><img src="https://img-blog.csdnimg.cn/1844878d41da4494b67bcc741ca38dde.png" alt="在这里插入图片描述"></p>
+<p>类图关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/e82fa7c7dc70405fab47c38e6de2326d.png" alt="在这里插入图片描述"></p>
+<p>每一层容器都是一个 Pipeline-Valve 管道，Valve 表示一个处理点，每个管道有多个处理点，处理点之间用链表连接。每个管道的第一个处理点加 First，最后一个处理点叫 Basic。上层容器的 Basic 会调用下层容器的 First。</p>
+<blockquote>
+<p><strong>Pipeline-Valve</strong> 是责任链模式，责任链模式是指在一个请求处理的过程中有很多处理者依次对请求进行处理，每个处理者负责做自己相应的处理，处理完之后将再调用下一个处理者继续处理。</p>
+</blockquote>
+<p>Wrapper 容器的最后一个 Valve 会创建一个 Filter 链，并调用 doFilter 方法，最终会调到 Servlet 的 service 方法。</p>
+<p><img src="https://img-blog.csdnimg.cn/2ce7c24734564d33977edc5ec7e4c13a.png" alt="在这里插入图片描述"></p>
+<p>最后到业务层的 Controller 是这样调用的：<strong>Wrapper -&gt; Filter -&gt; DispatcherServlet -&gt; Controller</strong>。</p>
+<h3 id="3优化-tomcat-启动速度">3，优化 Tomcat 启动速度</h3>
+<p>可优化项：</p>
+<ul>
+<li>
+<p><strong>清理你的 Tomcat</strong></p>
+<ul>
+<li><strong>清理不必要的 Web 应用</strong>。即删除掉 webapps 文件夹下不需要的工程，一般是 host-manager、example、doc 等这些默认的工程</li>
+<li><strong>清理 XML 配置文件</strong>。Tomcat 在启动的时候会解析所有的 XML 配置文件，保持配置文件的简洁，需要解析的东西越少，速度就会越快。</li>
+<li><strong>清理不必要的 JAR 文件</strong>。</li>
+<li><strong>清理其他文件</strong>。删除 logs 文件夹下不需要的日志文件。还有 work 文件夹下的 catalina 文件夹，它其实是 Tomcat 把 JSP 转换为 Class 文件的工作目录。</li>
+</ul>
+</li>
+<li>
+<p><strong>禁止 Tomcat TLD 扫描</strong></p>
+<ul>
+<li>Tomcat 为了支持 JSP，在应用启动的时候会扫描 JAR 包里面的 TLD 文件，加载里面定义的标签库</li>
+<li>如果你的项目没有使用 JSP 作为 Web 页面模板，而是使用 Velocity 之类的模板引擎，你完全可以把 TLD 扫描禁止掉</li>
+<li>方法是在 <strong>conf/</strong> 目录下的context.xml文件里的 Context 标签下，加上 JarScanner 和 JarScanFilter 子标签</li>
+<li><img src="https://img-blog.csdnimg.cn/41f706e485b849b98975bdb986481324.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p><strong>关闭 WebSocket 支持</strong></p>
+<ul>
+<li>Tomcat 会扫描 WebSocket 注解的 API 实现，如果用不到，可将其关闭</li>
+<li>方法是在 conf/ 目录下的 context.xml文件，给 Context 标签加一个 containerSciFilter 的属性</li>
+<li><img src="https://img-blog.csdnimg.cn/48dd2d315d2b4d30831283ebb1c7a3a3.png" alt="在这里插入图片描述"></li>
+<li>同时可以把 Tomcat lib 目录下的websocket-api.jar和tomcat-websocket.jar这两个 JAR 文件删除掉</li>
+</ul>
+</li>
+<li>
+<p><strong>关闭 JSP 支持</strong></p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/b0d8aa2886e642c7af33983648a04220.png" alt="在这里插入图片描述"></li>
+<li>如果想把 WebSocket 和 JSP 都关闭，那就这样配置：</li>
+<li><img src="https://img-blog.csdnimg.cn/7a6e8c7f450e43c580a4ed8f4ffe300e.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p><strong>禁止 Servlet 注解扫描</strong></p>
+<ul>
+<li>Servlet  3.0 引入了注解 Servlet，Tomcat 为了支持这个特性，会在 Web 应用启动时扫描你的类文件。</li>
+<li>因此如果你没有使用 Servlet 注解这个功能，可以告诉 Tomcat 不要去扫描 Servlet 注解。</li>
+<li>方法是，在你的 Web 应用的web.xml文件中，设置 <code>&lt;web-app&gt;</code>元素的属性 <code>metadata-complete=&quot;true&quot;</code></li>
+<li><img src="https://img-blog.csdnimg.cn/ed13e163bfb24d7a95970759eb0d4a15.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<p>如果你是用嵌入式的方式运行 Tomcat，比如 Spring Boot，你也可以通过 Spring Boot 的方式去修改 Tomcat 的参数，调优的原理都是一样的。</p>
+<h3 id="4如何监控-tomcat-性能">4，如何监控 Tomcat 性能</h3>
+<p>Tomcat 的关键指标有吞吐量、响应时间、错误数、线程池、CPU 以及 JVM 内存。</p>
+<p>Tomcat 可以通过 JMX 将上述指标暴露出来的。JMX（Java Management Extensions，即 Java 管理扩展）是一个为应用程序、设备、系统等植入监控管理功能的框架。</p>
+<p>首先需要开启 JMX 端口，然后通过 JConsole 监控 Tomcat 的各种指标。</p>
+<blockquote>
+<p>可以使用 JMeter 来对服务性能进行测试</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/c5f19cccdfba4b40b93b436f6a2ec302.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/f8c7665ce5b845a6850a61b9e0bf133d.png" alt="在这里插入图片描述"></p>
+<p>在 Linux 系统中还可以使用下面的命令来查看 Tomcat 的情况：</p>
+<pre><code class="language-shell">&gt; top -p 进程ID
+
+# 查看端口8080 的连接列表
+&gt; netstat -na | grep 8080
+</code></pre>
+<h3 id="5tomcat-io-和线程池的并发调优">5，Tomcat I/O 和线程池的并发调优</h3>
+<p>所谓的 I/O 调优指的是选择 <strong>NIO</strong>、<strong>NIO.2</strong> 还是 <strong>APR</strong>，而线程池调优指的是给 Tomcat 的<strong>线程池</strong>设置合适的参数，使得 Tomcat 能够又快又好地处理请求。</p>
+<p>I/O 模型：默认都是 NIO</p>
+<ul>
+<li><strong>NIO</strong>：如果在 Linux 平台上，建议使用 NIO</li>
+<li><strong>NIO.2</strong>：如果在 Windows 平台上，并且 HTTP 请求的数据量比较大，可以考虑 NIO.2</li>
+<li><strong>APR</strong>：如果你的 Web 应用用到了 TLS 加密传输，而且对性能要求极高，这个时候可以考虑 APR</li>
+</ul>
+<p>Connector 配置：</p>
+<p><img src="https://img-blog.csdnimg.cn/4e27382fc62e4d1aaa23e4304c8720e7.png" alt="在这里插入图片描述"></p>
+<p>Executor 线程池中的关键参数：</p>
+<p><img src="https://img-blog.csdnimg.cn/d6eaed6bb67e40ec8004801bc105818b.png" alt="在这里插入图片描述"></p>
+<p>其中最核心的是如何确定 <strong>maxThreads</strong> 的值：</p>
+<ul>
+<li>如果这个参数设置小了，Tomcat 会发生线程饥饿，并且请求的处理会在队列中排队等待，导致响应时间变长</li>
+<li>如果 maxThreads 参数值过大，线程数太多会导致线程在 CPU 上来回切换，耗费大量的切换开销</li>
+</ul>
+<p>那么在实际情况下，线程池的个数如何确定呢？这是一个迭代的过程，可以先用默认值，再反复压测调整，从而达到最优。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-03-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/03/jvm1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">JVM性能调优实战笔记1</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/02/java-concurrent2/">
+            <span class="next-text nav-default">Java并发编程学习笔记2</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/03/tomcat-learn/" class="leancloud_visitors" data-flag-title="Tomcat学习笔记">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

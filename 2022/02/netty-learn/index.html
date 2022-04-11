@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Netty学习笔记 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，初始 Netty Netty 是一个异步事件驱动的网络应用程序框架，可用" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/02/netty-learn/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Netty学习笔记" />
+<meta property="og:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，初始 Netty Netty 是一个异步事件驱动的网络应用程序框架，可用" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/02/netty-learn/" />
+<meta property="article:published_time" content="2022-02-10T21:38:52+08:00" />
+<meta property="article:modified_time" content="2022-02-10T21:41:52+08:00" />
+<meta itemprop="name" content="Netty学习笔记">
+<meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，初始 Netty Netty 是一个异步事件驱动的网络应用程序框架，可用">
+<meta itemprop="datePublished" content="2022-02-10T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-02-10T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="4359">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Netty学习笔记"/>
+<meta name="twitter:description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，初始 Netty Netty 是一个异步事件驱动的网络应用程序框架，可用"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python简明教程</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python简明教程</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Netty学习笔记</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-02-10 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
+            </div>
+          <span class="more-meta"> 4359 字 </span>
+          <span class="more-meta"> 阅读约需 9 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1初始-netty">1，初始 Netty</a></li>
+        <li><a href="#2经典的三种-io-模式">2，经典的三种 I/O 模式</a></li>
+        <li><a href="#3reactor-模式">3，Reactor 模式</a></li>
+        <li><a href="#4tcp-keepalive">4，TCP Keepalive</a></li>
+        <li><a href="#5java-中的锁">5，Java 中的锁</a></li>
+        <li><a href="#6unpooled-类">6，Unpooled 类</a></li>
+        <li><a href="#7编码与解码">7，编码与解码</a></li>
+        <li><a href="#8netty-主要组件">8，Netty 主要组件</a></li>
+        <li><a href="#9tcp-拆包和粘包">9，TCP 拆包和粘包</a></li>
+        <li><a href="#10netty-源码剖析">10，Netty 源码剖析</a></li>
+        <li><a href="#11netty-实例">11，Netty 实例</a></li>
+        <li><a href="#12netty-编程之参数优化">12，Netty 编程之参数优化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <blockquote>
+<p><strong>公号：码农充电站pro</strong></p>
+<p><strong>主页：<a href="https://codeshellme.github.io">https://codeshellme.github.io</a></strong></p>
+</blockquote>
+<h3 id="1初始-netty">1，初始 Netty</h3>
+<p><strong>Netty</strong> 是一个异步事件驱动的网络应用程序框架，可用于快速开发可维护的高性能网络服务器和客户端。</p>
+<p>Netty 项目地址：</p>
+<ul>
+<li>官网：<code>https://netty.io/</code></li>
+<li>Github：<code>https://github.com/netty/netty</code></li>
+</ul>
+<p>Netty 结构图：</p>
+<p><img src="https://img-blog.csdnimg.cn/0f8acca12077478f817d82b96c9e05af.png" alt="在这里插入图片描述"></p>
+<p><em><strong>Netty 的版本迭代</strong></em></p>
+<p>Netty 版本迭代：</p>
+<ul>
+<li>2004 年 6 月 Netty2 发布</li>
+<li>2008 年 10 月 Netty3 发布</li>
+<li>2013 年 7 月 Netty4 发布</li>
+<li>2013 年 12 月 Netty 5.0Alphal 发布</li>
+<li>2015 年 11 月 Netty 5.0 废弃</li>
+<li>2016 年 6 月 Netty 3.10.6.Final 发布</li>
+<li>2018 年 2 月 Netty 4.0.56.Final 发布</li>
+<li>2019 年 8 月 Netty 4.1.39.Final 发布</li>
+</ul>
+<p>Netty5.0 已不在被官网支持，其废弃原因是：</p>
+<ul>
+<li>太过复杂</li>
+<li>没有明显性能优势</li>
+<li>维护不过来</li>
+</ul>
+<p>Netty 的使用者 <code>https://netty.io/wiki/related-projects.html</code>。</p>
+<p>Netty 学习资料：</p>
+<ul>
+<li><a href="https://jeff-duan.github.io/downloads/resource/netty/Netty%20in%20Action-%E4%B8%AD%E6%96%87%E7%89%88.pdf">Netty 实战-中文版</a></li>
+</ul>
+<h3 id="2经典的三种-io-模式">2，经典的三种 I/O 模式</h3>
+<p>三种 I/O 模式：</p>
+<ul>
+<li><strong>BIO</strong>：同步阻塞 IO（JDK1.4 之前）
+<ul>
+<li>如果 Socket 上没有数据可读，就一直等待</li>
+</ul>
+</li>
+<li><strong>NIO</strong>：同步非阻塞 IO（JDK1.4 2002年，java.nio 包）
+<ul>
+<li>如果 Socket 上没有数据可读，不会等待，当 Socket 上有数据时，会接到通知，再去读数据</li>
+</ul>
+</li>
+<li><strong>AIO</strong>：异步非阻塞 IO（JDK1.7 2011年）
+<ul>
+<li>在 Socket 上注册回调函数，当有数据时，让回调函数去处理</li>
+</ul>
+</li>
+</ul>
+<h4 id="1java-nio-概念">1，Java NIO 概念</h4>
+<p>BIO 以流的方式处理数据，而 NIO 以块的方式处理数据，块 I/O 的效率比流 I/O 高很多。</p>
+<p>BIO 基于字节流和字符流进行操作，而 NIO 基于 Channel 和 Buffer 进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入到通道中，<strong>Buffer 和Channel 之间的数据流向是双向的</strong>（BIO 中要么是输入流，或者是输出流，不能双向）。</p>
+<p>Selector 用于监听多个通道的事件（比如：连接请求，数据到达等），因此使用单个线程就可以监听多个客户端通道。</p>
+<p>Java NIO 三大概念：</p>
+<ul>
+<li>
+<p><strong>Channels</strong>（通道）：每个 Channel 都会对应一个 Buffer</p>
+<ul>
+<li>Channel 提供从文件、网络读取数据的渠道，但是读取或写入的数据都必须经由 Buffer</li>
+<li>常用的 Channel 类有：
+<ul>
+<li>FileChannel：用于本地文件的数据读写</li>
+<li>DatagramChannel：用于 UDP 的数据读写</li>
+<li>ServerSocketChannel：类似 ServerSocket</li>
+<li>SocketChannel：类似 Socket</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Buffers</strong>（缓冲区）：Buffer 是一个内存块，底层是一个容器（数组）</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/264edd9c14d744409c6c666dba9d36fe.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p><strong>Selectors</strong>（选择器）：一个 Selector 监听多个 Channel（连接），Selector 会根据不同的 Event （事件），在各个通道上切换。</p>
+<ul>
+<li>SelectionKey 中的事件类型：<code>OP_READ，OP_WRITE，OP_CONNECT， OP_ACCEPT</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/a26c767433de431794056d0e7def3ea3.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/44b55ecad6be410890f26d19e340d800.png" alt="在这里插入图片描述"></p>
+<p>Java NIO 学习资料：</p>
+<ul>
+<li><a href="https://youthlql.gitee.io/javayouth/#/docs/netty/introduction/Netty%E5%85%A5%E9%97%A8-%E7%AC%AC%E4%B8%80%E8%AF%9D">Java NIO 学习笔记</a></li>
+</ul>
+<p>原生 NIO 存在的问题：</p>
+<ul>
+<li>NIO 的类库和 API 繁杂，使用麻烦：需要熟练掌握 Selector、ServerSocketChannel、SocketChannel、ByteBuffer 等</li>
+<li>需要具备其他的额外技能：要熟悉 Java 多线程编程，因为 NIO 编程涉及到 Reactor 模式，你必须对多线程和网络编程非常熟悉，才能编写出高质量的 NIO 程序</li>
+<li>开发工作量和难度都非常大：例如客户端面临断连重连、网络闪断、半包读写、失败缓存、网络拥塞和异常流的处理等等</li>
+<li>JDK NIO 的 Bug：例如臭名昭著的 Epoll Bug，它会导致 Selector 空轮询，最终导致 CPU100%。直到 JDK1.7 版本该问题仍旧存在，没有被根本解决</li>
+</ul>
+<h4 id="2零拷贝-dma直接内存访问不经过cpu">2，零拷贝 DMA（直接内存访问，不经过CPU）</h4>
+<p>常用的零拷贝有 <code>mmap</code>（内存映射）和 <code>sendFile</code>。</p>
+<p>mmap 和 sendFile 的区别：</p>
+<ul>
+<li>mmap 适合小数据量读写，sendFile 适合大文件传输。</li>
+<li>mmap 需要 4 次上下文切换，3 次数据拷贝；sendFile 需要 3 次上下文切换，最少 2 次数据拷贝。</li>
+<li>sendFile 可以利用 DMA 方式，减少 CPU 拷贝，mmap 则不能（必须从内核拷贝到 Socket缓冲区）。</li>
+</ul>
+<p>Java NIO 中零拷贝方式通过 <code>transferTo</code> 方法实现。</p>
+<h4 id="3netty-中的-io-模式">3，Netty 中的 IO 模式</h4>
+<p>Netty 对三种 IO 模式的支付：</p>
+<ul>
+<li><strong>BIO</strong>：<code>不建议使用</code>
+<ul>
+<li><em>ThreadPerChannelEventLoopGroup</em></li>
+<li><em>ThreadPerChannelEventLoop</em></li>
+<li><em>OioServerSocketChannel</em></li>
+<li><em>OioSocketChannel</em></li>
+</ul>
+</li>
+<li><strong>NIO</strong>：
+<ul>
+<li><strong>COMMON</strong>
+<ul>
+<li><em>NioEventLoopGroup</em></li>
+<li><em>NioEventLoop</em></li>
+<li><em>NioServerSocketChannel</em></li>
+<li><em>NioSocketChannel</em></li>
+</ul>
+</li>
+<li><strong>Linux</strong>
+<ul>
+<li><em>EpollEventLoopGroup</em></li>
+<li><em>EpollEventLoop</em></li>
+<li><em>EpollServerSocketChannel</em></li>
+<li><em>EpollSocketChannel</em></li>
+<li>通用的 NIO 实现（Common）在 Linux 下也是使用 epoll，但是 Netty 更好，例如：
+<ul>
+<li>JDK 的 NIO 默认实现是水平触发</li>
+<li>Netty 是边缘触发（默认）和水平触发可切换</li>
+<li>Netty 实现的垃圾回收更少、性能更好</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>macOS/BSD</strong>
+<ul>
+<li><em>KQueueEventLoopGroup</em></li>
+<li><em>KQueueEventLoop</em></li>
+<li><em>KQueueServerSocketChannel</em></li>
+<li><em>KQueueSocketChannel</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>AIO</strong>：<code>已移除</code>
+<ul>
+<li><em>AioEventLoopGroup</em></li>
+<li><em>AioEventLoop</em></li>
+<li><em>AioServerSocketChannel</em></li>
+<li><em>AioSocketChannel</em></li>
+</ul>
+</li>
+</ul>
+<p>为什么删掉已经做好的 AIO 支持？</p>
+<ul>
+<li>Windows 实现成熟，但是很少用来做服务器</li>
+<li>Linux 常用来做服务器，但是 AIO 实现不够成熟</li>
+<li>Linux 下 AIO 相比较 NIO 的性能提升不明显</li>
+</ul>
+<h4 id="4netty-异步模型">4，Netty 异步模型</h4>
+<p>异步的概念和同步相对：</p>
+<ul>
+<li>当一个异步过程调用发出后，调用者不能立刻得到结果。实际处理这个调用的组件在完成后，通过状态、通知和回调来通知调用者</li>
+<li>Netty 中的 I/O 操作是异步的，包括 <code>Bind、Write、Connect</code> 等操作会先返回一个 ChannelFuture</li>
+<li>调用者并不能立刻获得结果，而是通过 Future-Listener 机制，用户可以方便的主动获取或者通过通知机制获得 IO 操作结果</li>
+</ul>
+<p><code>ChannelFuture.sync()</code>，等待异步操作执行完毕</p>
+<h3 id="3reactor-模式">3，Reactor 模式</h3>
+<p>Reactor 的中文是“反应堆”，其实就是 <strong>I/O 多路复用结合线程池</strong>。</p>
+<p>Reactor 模式的核心组成部分包括 <strong>Reactor</strong> 和<strong>处理资源池</strong>（进程池或线程池）：</p>
+<ul>
+<li>Reactor 负责监听和分配事件</li>
+<li>处理资源池负责处理事件</li>
+</ul>
+<p>Reactor 的三种实现：</p>
+<ul>
+<li>
+<p>单线程，所有的处理都由一个线程完成</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/674b2bf288b546b68bfb057a82b6dd09.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>多线程</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/f0dd1302784f42dcbdea599830d2fe78.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+<li>
+<p>主从多线程：最高效的模式</p>
+<ul>
+<li><img src="https://img-blog.csdnimg.cn/3d91ad87fe214a76967a3760d0b52d64.png?" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<p>Netty Reactor 工作架构图</p>
+<p><img src="https://img-blog.csdnimg.cn/592b44e7fe744f7a905cbfcefa7030f5.png" alt="在这里插入图片描述"></p>
+<p><strong>在 Netty 中使用 Reactor 模式</strong></p>
+<p>Reactor 单线程模式：</p>
+<pre><code class="language-java">EventLoopGroup eventGroup = new NioEventLoopGroup(1);
+ServerBootstrap serverBootstrap = new ServerBootstrap();
+serverBootstrap.group(eventGroup);
+</code></pre>
+<p>非主从 Reactor 多线程模式：</p>
+<pre><code class="language-java">EventLoopGroup eventGroup = new NioEventLoopGroup();
+ServerBootstrap serverBootstrap = new ServerBootstrap();
+serverBootstrap.group(eventGroup);
+</code></pre>
+<p>主从 Reactor 多线程模式：</p>
+<pre><code class="language-java">EventLoopGroup bossGroup = new NioEventLoopGroup();
+EventLoopGroup workerGroup = new NioEventLoopGroup();
+ServerBootstrap serverBootstrap = new ServerBootstrap();
+serverBootstrap.group(bossGroup, workerGroup);
+</code></pre>
+<h3 id="4tcp-keepalive">4，TCP Keepalive</h3>
+<p>TCP Keepalive 机制一般用在 Server 端，用于确认 Client 是否存活。</p>
+<p>TCP keepalive 核心参数：</p>
+<pre><code class="language-shell"># sysctl -a|grep tcp_keepalive
+net.ipv4.tcp_keepalive_time = 7200
+net.ipv4.tcp_keepalive_intvl = 75
+net.ipv4.tcp_keepalive_probes = 9
+</code></pre>
+<p>其含义是：</p>
+<ul>
+<li>当启用（默认关闭）keepalive 时，TCP 在连接没有数据通过的7200秒后发送 keepalive 消息</li>
+<li>当探测没有确认时，按75秒的重试频率重发</li>
+<li>一直发 9 个探测包都没有确认，就认定连接失效</li>
+</ul>
+<p><strong>总耗时一般为：2 小时 11 分钟</strong> (7200 秒 + 75 秒* 9 次)</p>
+<p>HTTP 协议中的 Keep-Alive 与 TCP 中的不是一回事， HTTP Keep-Alive 指的是对长连接和短连接的选择：</p>
+<ul>
+<li>Connection : Keep-Alive 长连接（HTTP/1.1 默认长连接，不需要带这个 header）</li>
+<li>Connection : Close 短连接</li>
+</ul>
+<p>Netty 中开启 Keepalive 的方法：</p>
+<pre><code class="language-java">// Server 端开启 TCP keepalive 有两种方式
+
+// 第一种方式
+bootstrap.childOption(ChannelOption.SO_KEEPALIVE,true)
+
+// 第二种方式
+bootstrap.childOption(NioChannelOption.of(StandardSocketOptions.SO_KEEPALIVE), true)
+
+// 注意该方式无效
+bootstrap.option(ChannelOption.SO_KEEPALIVE,true)
+</code></pre>
+<h3 id="5java-中的锁">5，Java 中的锁</h3>
+<p>锁的分类：</p>
+<ul>
+<li>对竞争的态度：乐观锁（java.util.concurrent 包中的原子类）与悲观锁（Synchronized)</li>
+<li>等待锁的人是否公平而言：公平锁 new ReentrantLock (true)与非公平锁 new ReentrantLock ()</li>
+<li>是否可以共享：共享锁与独享锁：ReadWriteLock ，其读锁是共享锁，其写锁是独享锁</li>
+</ul>
+<h3 id="6unpooled-类">6，Unpooled 类</h3>
+<p>该类是 Netty 提供的一个专门用来操作缓冲区（<code>ByteBuf</code>）的工具类。</p>
+<pre><code class="language-java">// 创建一个 10 字节的缓冲区
+ByteBuf buffer = Unpooled.buffer(10);
+
+// 创建 ByteBuf
+ByteBuf byteBuf = Unpooled.copiedBuffer(&quot;hello,world!&quot;, Charset.forName(&quot;utf-8&quot;));
+</code></pre>
+<h3 id="7编码与解码">7，编码与解码</h3>
+<p>编写网络应用程序时，因为数据在网络中传输的都是二进制字节码数据，在发送数据时就需要编码，接收数据时就需要解码。</p>
+<p>codec（编解码器）的组成部分有两个：</p>
+<ul>
+<li>encoder（编码器）：把业务数据转换成字节码数据</li>
+<li>decoder（解码器）：把字节码数据转换成业务数据</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/4e2ed40eaa4e46588cf1743fde2c80cc.png" alt="在这里插入图片描述"></p>
+<p>Netty 中提供的编解码器：</p>
+<ul>
+<li><code>StringEncoder/StringDecoder</code>：对字符串数据进行编解码</li>
+<li><code>ObjectEncoder/ObjectDecoder</code>：对Java对象进行编解码
+<ul>
+<li>底层了使用了 Java 序列化技术</li>
+</ul>
+</li>
+</ul>
+<p><strong>Java 序列化</strong>技术存在的问题：</p>
+<ul>
+<li>无法跨语言</li>
+<li>序列化后的体积太大，是二进制编码的5倍多</li>
+<li>序列化性能太低</li>
+</ul>
+<p><strong><a href="https://developers.google.com/protocol-buffers/docs/proto">Protobuf</a></strong> 是 Google 发布的开源项目，全称 <em>Google Protocol Buffers</em>，是一种轻便高效的结构化数据存储格式，可以用于结构化数据串行化，或者说序列化。</p>
+<ul>
+<li>以 message 的方式来管理数据</li>
+<li>支持跨平台、跨语言</li>
+<li>高性能，高可靠性</li>
+</ul>
+<h3 id="8netty-主要组件">8，Netty 主要组件</h3>
+<p>Netty 的主要组件有：</p>
+<ul>
+<li><code>EventLoop</code></li>
+<li><code>Channel</code></li>
+<li><code>ChannelPipe</code></li>
+<li><code>ChannelHandler</code></li>
+<li><code>ChannelFuture</code></li>
+</ul>
+<p>ChannelHandler 充当了处理入站和出站数据的应用程序逻辑的容器。</p>
+<ul>
+<li>例如，实现 ChannelInboundHandler 接口（或 ChannelInboundHandlerAdapter），就可以接收入站事件和数据，这些数据会被业务逻辑处理。</li>
+<li>当要给客户端发送响应时，也可以从 ChannelInboundHandler 冲刷数据。业务逻辑通常写在一个或者多个 ChannelInboundHandler 中。</li>
+<li>ChannelOutboundHandler 原理一样，只不过它是用来处理出站数据的</li>
+</ul>
+<h3 id="9tcp-拆包和粘包">9，TCP 拆包和粘包</h3>
+<p>TCP 是面向连接的，面向流的，提供高可靠性服务。TCP 发送端为了将多个数据包，更有效的发给接收端，使用了优化方法（Nagle 算法），将多个间隔较小且数据量小的数据，合并成一个大的数据块，然后进行封包。</p>
+<p>这样做虽然提高了效率，但是接收端就难于分辨出完整的数据包了，因为面向流的通信是<strong>无消息保护边界</strong>的。由于 <strong>TCP 无消息保护边界</strong>，需要在接收端处理消息边界问题，也就是我们所说的粘包、拆包问题。</p>
+<p><img src="https://img-blog.csdnimg.cn/a437b2b856c94410b6a050c3375c9377.png" alt="在这里插入图片描述"></p>
+<p>TCP 出现粘包和半包现象的原因：</p>
+<ul>
+<li>粘包的主要原因：
+<ul>
+<li>发送方每次写入数据 &lt; 套接字缓冲区大小</li>
+<li>接收方读取套接字缓冲区数据不够及时</li>
+</ul>
+</li>
+<li>半包的主要原因：
+<ul>
+<li>发送方写入数据 &gt; 套接字缓冲区大小</li>
+<li>发送的数据大于协议的 MTU（最大传输单元），必须拆包</li>
+</ul>
+</li>
+<li>根本原因：<strong>TCP 是流式协议，消息无边界</strong>
+<ul>
+<li>因此应用层的处理办法是让消息有边界</li>
+</ul>
+</li>
+<li>从不同的角度看
+<ul>
+<li>消息的接收和发送：一次发送可能被多次接收，多次发送可能被一次接收</li>
+<li>消息的传输：一个发送可能占用多个传输包，多个发送可能公用一个传输包</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意 UDP 协议是有边界的，所以不会出现粘包和半包问题。</p>
+</blockquote>
+<h4 id="1netty-处理粘包半包问题-bytetomessagedecoder">1，Netty 处理粘包半包问题 ByteToMessageDecoder</h4>
+<p>处理办法：</p>
+<p><img src="https://img-blog.csdnimg.cn/dbff8277d2ed41e88c12c5f06818f289.png" alt="在这里插入图片描述"></p>
+<p>Netty 对三种常用封帧方式的支持（<code>ByteToMessageDecoder</code>）：</p>
+<ul>
+<li>固定长度方式
+<ul>
+<li><em>FixedLengthFrameDecoder</em>：解码</li>
+<li>不内置编码</li>
+</ul>
+</li>
+<li>分隔符方式
+<ul>
+<li><em>DelimiterBasedFrameDecoder</em>：解码</li>
+<li>不内置编码</li>
+</ul>
+</li>
+<li>固定长度字段存个内容的长度信息
+<ul>
+<li><em>LengthFieldBasedFrameDecoder</em>：解码</li>
+<li><em>LengthFieldPrepender</em>：编码</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>它们都是 <code>ByteToMessageDecoder</code> 的子类</p>
+</blockquote>
+<h4 id="2二次解码器-messagetomessagedecoder">2，二次解码器 MessageToMessageDecoder</h4>
+<p>如果把解决半包粘包问题的常用三种解码器叫<strong>一次解码器</strong>，一次解码的结
+果是字节；还需要和项目中所使用的对象做转化，这层解码器可以称为<strong>二次解
+码器</strong>，对应的编码器是为了将 Java 对象转化成字节流方便存储或传输。</p>
+<p>解码器：</p>
+<ul>
+<li>一次解码器：ByteToMessageDecoder
+<ul>
+<li>io.netty.buffer.ByteBuf （原始数据流）-&gt; io.netty.buffer.ByteBuf （用户数据）</li>
+</ul>
+</li>
+<li>二次解码器：MessageToMessageDecoder<I>
+<ul>
+<li>io.netty.buffer.ByteBuf （用户数据）-&gt; Java Object</li>
+</ul>
+</li>
+</ul>
+<h3 id="10netty-源码剖析">10，Netty 源码剖析</h3>
+<p>Netty 中的一些概念：</p>
+<ul>
+<li>channel:：就是连接</li>
+<li>eventloop：为连接服务的执行器
+<ul>
+<li>它是一个死循环（loop）轮训、处理 channel上发生的事件（event）。</li>
+<li>一个channel只会绑定到一个eventloop，但是一个eventloop一般服务于多个channel</li>
+</ul>
+</li>
+<li>eventloopgroup: 假设就一个eventloop服务于所有channel，肯定会有瓶颈，所以搞一个组，相当于多线程了</li>
+</ul>
+<h4 id="1启动服务">1，启动服务</h4>
+<h3 id="11netty-实例">11，Netty 实例</h3>
+<p>编写网络应用程序基本步骤：</p>
+<p><img src="https://img-blog.csdnimg.cn/2973a98899124f4ab08b033d80c19f00.png" alt="在这里插入图片描述"></p>
+<p>数据包格式：</p>
+<p><img src="https://img-blog.csdnimg.cn/32fa6eaf62e1402d88dfb8d075f52339.png" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/be3b6a1249b34cd2b94e1e6fee234c5d.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/3189e4f8a8354e25a14357b03ed539ee.png" alt="在这里插入图片描述"></p>
+<p>消息处理流程：</p>
+<p><img src="https://img-blog.csdnimg.cn/ed352a7889304ecb974feb607e4d146f.png" alt="在这里插入图片描述"></p>
+<h4 id="1netty-编程中常见易错点">1，Netty 编程中常见易错点</h4>
+<ul>
+<li><code>LengthFieldBasedFrameDecoder</code> 中 <code>initialBytesToStrip</code> 未考虑设置</li>
+<li><code>ChannelHandler</code> 顺序不正确</li>
+<li><code>ChannelHandler</code> 该共享不共享，不该共享却共享</li>
+<li>分配 ByteBuf ：分配器直接用 <code>ByteBufAllocator.DEFAULT</code> 等，而不是采用 <code>ChannelHandlerContext.alloc()</code></li>
+<li>未考虑 ByteBuf 的释放</li>
+<li>错以为 <code>ChannelHandlerContext.write(msg)</code> 就写出数据了</li>
+<li>乱用 <code>ChannelHandlerContext.channel().writeAndFlush(msg)</code>
+<ul>
+<li>应该使用 <code>ChannelHandlerContext.writeAndFlush(msg)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="12netty-编程之参数优化">12，Netty 编程之参数优化</h3>
+<h4 id="1tcp_keepalive_time">1，tcp_keepalive_time</h4>
+<p>Linux 系统参数</p>
+<pre><code class="language-shell">/proc/sys/net/ipv4/tcp_keepalive_time
+</code></pre>
+<h4 id="2so_backlog">2，SO_BACKLOG</h4>
+<pre><code class="language-shell">serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+SocketChannel -&gt; .childOption
+ServerSocketChannel -&gt; .option
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/6c2748f0115b408eab6a0b17cbde4cb2.png?" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/0357edee731147acbd2a0b92301c7658.png?" alt="在这里插入图片描述"></p>
+<h4 id="3server-端需要调的参数">3，Server 端需要调的参数</h4>
+<pre><code class="language-java">serverBootstrap.option(NioChannelOption.SO_BACKLOG, 1024);
+serverBootstrap.childOption(NioChannelOption.TCP_NODELAY, true);
+</code></pre>
+<h4 id="4client-端需要调的参数">4，Client 端需要调的参数</h4>
+<pre><code class="language-java">bootstrap.option(NioChannelOption.CONNECT_TIMEOUT_MILLIS, 10 * 1000);
+</code></pre>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-02-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/02/java-concurrent1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Java并发编程学习笔记1</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/01/mysql-cluster/">
+            <span class="next-text nav-default">MySQL集群搭建</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/02/netty-learn/" class="leancloud_visitors" data-flag-title="Netty学习笔记">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
