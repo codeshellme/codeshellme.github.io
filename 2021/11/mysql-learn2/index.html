@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
 <meta itemprop="datePublished" content="2021-11-11T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2021-11-11T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="10372">
+<meta itemprop="wordCount" content="12871">
 
 
 
@@ -155,8 +155,8 @@
         <div class="post-category">
             <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-          <span class="more-meta"> 10372 字 </span>
-          <span class="more-meta"> 阅读约需 21 分钟 </span>
+          <span class="more-meta"> 12871 字 </span>
+          <span class="more-meta"> 阅读约需 26 分钟 </span>
         
 
       </div>
@@ -462,6 +462,200 @@ commit;
 <li><code>binlog_group_commit_sync_no_delay_count</code> 参数，表示累积多少次以后才调用 fsync。</li>
 </ul>
 <p>这两个条件是或的关系，也就是说只要有一个满足条件就会调用 fsync。</p>
+<h4 id="198mysql-中的日志">19.8，MySQL 中的日志</h4>
+<p>MySQL 的日志种类非常多，包括：</p>
+<ul>
+<li>通用查询日志</li>
+<li>错误日志</li>
+<li>慢查询日志</li>
+<li>二进制日志（binlog）</li>
+<li>重做日志（redo log）</li>
+<li>回滚日志（undo log）</li>
+<li>中继日志（relaylog）</li>
+</ul>
+<h5 id="1通用查询日志">1，通用查询日志</h5>
+<p>通用查询日志记录了所有用户的连接开始时间和截止时间，以及发给 MySQL 数据库服务器的所有 SQL 指令。</p>
+<p>当我们的数据发生异常时，通过通用查询日志，可以清楚的知道当时发生了什么，帮助我们准确定位问题。</p>
+<p>相关变量：</p>
+<pre><code class="language-sql">mysql&gt; SHOW VARIABLES LIKE '%general%';
++------------------+---------------+
+| Variable_name    | Value 		   |
++------------------+---------------+
+| general_log      | OFF           | -- 通用查询日志处于关闭状态
+| general_log_file | GJTECH-PC.log | -- 通用查询日志文件的名称是 GJTECH-PC.log
++------------------+---------------+
+</code></pre>
+<ul>
+<li><code>general_log</code>：日志是否开启，OFF（未开启，默认），ON（已开启）
+<ul>
+<li>一旦开启记录通用查询日志，MySQL 会记录所有的连接起止和相关的 SQL 操作，这样会消耗系统资源并且占用磁盘空间。</li>
+<li>我们可以通过手动修改变量的值，在需要的时候开启日志。</li>
+</ul>
+</li>
+<li><code>general_log_file</code>：日志名称</li>
+</ul>
+<p>设置变量值：</p>
+<pre><code class="language-sql">mysql&gt; SET GLOBAL general_log = 'ON';
+mysql&gt; SET @@global.general_log_file = 'H:\mytest.log';
+</code></pre>
+<p>通用查询日志的内容：</p>
+<pre><code class="language-sql">2021-04-05T06:39:53.621980Z 28 Connect zhangsan@localhost on using SSL/TLS   -- 账号zhangsan从本地登录
+2021-04-05T06:39:53.622085Z 28 Connect Access denied for user 'zhangsan'@'localhost' (using password:NO)  -- 没用密码，连接被拒
+2021-04-05T06:40:02.522303Z 29 Connect zhangsan@localhost on using SSL/TLS
+2021-04-05T06:40:02.522913Z 29 Query select @@version_comment limit 1
+2021-04-05T06:40:14.211511Z 29 Query SELECT * FROM demo.invcount  -- 查询数据
+2021-04-05T06:40:37.647625Z 29 Query UPDATE demo.invcount SET plquant = - 5 WHERE itemnumber = 1   -- 更新数据
+2021-04-05T06:41:15.047067Z 29 Query SELECT * FROM demo.goodsmaster  -- 查询数据
+</code></pre>
+<p>当日志文件变的非常大时，如果想移除/更换旧的文件，需要先关闭日志，然后再将其打开：</p>
+<pre><code class="language-sql">mysql&gt; SET GLOBAL general_log = 'OFF'; -- 关闭通用查询日志
+
+-- 如果需要备份文件，就在此时备份文件
+
+mysql&gt; SET GLOBAL general_log = 'ON';  -- 打开日志，日志文件已被清空
+</code></pre>
+<h5 id="2错误日志">2，错误日志</h5>
+<p>错误日志记录了 MySQL 服务器启动、停止运行的时间，以及系统启动、运行和停止过程中的诊断信息，包括错误、警告和提示等。</p>
+<p>当我们的数据库服务器发生系统故障时，错误日志是发现问题、解决故障的首选。</p>
+<p>错误日志默认是开启的。我们可以在 MySQL 的配置文件“my.ini”中配置它：</p>
+<pre><code class="language-sql">log-error=&quot;GJTECH-PC.err&quot;  -- 错误日志文件名
+</code></pre>
+<p>文件内容示例：</p>
+<pre><code class="language-sql">2021-02-28T08:07:07.228880Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.23) starting as process 7652
+2021-02-28T08:07:07.270982Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started. -- 启动时间
+2021-02-28T08:07:08.116433Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.   -- 停止时间
+</code></pre>
+<h5 id="3慢查询日志">3，慢查询日志</h5>
+<p>参考<a href="https://blog.csdn.net/LUAOHAN/article/details/118887912">这里</a>。</p>
+<h5 id="4二进制日志">4，二进制日志</h5>
+<p>二进制日志主要记录数据库的更新事件（比如创建数据表、更新表中的数据、数据更新所花费的时长等信息），它是进行数据恢复和数据复制的利器。</p>
+<p><em><strong>查看二进制日志</strong></em></p>
+<p>查看当前正在写入的二进制日志的名称和当前写入的位置：</p>
+<pre><code class="language-sql">mysql&gt; SHOW MASTER STATUS;
++----------------------+----------+--------------+------------------+------------------+
+| File                 | Position | Binlog_Do_DB | Binlog_Ignore_DB |Executed_Gtid_Set |
++----------------------+----------+--------------+------------------+------------------+
+| GJTECH-PC-bin.000011 | 2207     |              |                  |                  |
++----------------------+----------+--------------+------------------+------------------+
+</code></pre>
+<p>查看所有的二进制日志：</p>
+<pre><code class="language-sql">mysql&gt; SHOW BINARY LOGS;
++----------------------+-----------+-----------+
+| Log_name             | File_size | Encrypted |
++----------------------+-----------+-----------+
+| GJTECH-PC-bin.000005 | 179       | No        |
+| GJTECH-PC-bin.000006 | 113316452 | No        |
+| GJTECH-PC-bin.000007 | 12125     | No        |
+| GJTECH-PC-bin.000008 | 1544      | No        |
+| GJTECH-PC-bin.000009 | 207       | No        |
+| GJTECH-PC-bin.000010 | 1758      | No        |
+| GJTECH-PC-bin.000011 | 2207      | No        |
+| GJTECH-PC-bin.000012 | 462       | No        |
++----------------------+-----------+-----------+
+</code></pre>
+<p>查看二进制日志中所有数据的更新事件：</p>
+<pre><code class="language-sql">SHOW BINLOG EVENTS IN 二进制文件名;
+</code></pre>
+<p><em><strong>刷新二进制日志</strong></em></p>
+<p>刷新二进制日志：</p>
+<pre><code class="language-sql">FLUSH BINARY LOGS;
+</code></pre>
+<p>这句话的含义是，关闭服务器正在写入的二进制日志文件，并重新打开一个新文件，文件名的后缀在现有的基础上加 1。</p>
+<p><em><strong>恢复数据</strong></em></p>
+<p>们可以用 mysqlbinlog 工具进行数据恢复：</p>
+<pre><code class="language-shell">mysqlbinlog --start-positon=xxx --stop-position=yyy 二进制文件名 | mysql -u 用户 -p
+</code></pre>
+<p>这条命令的意思是，执行二进制日志中从位置 <code>xxx</code> 开始，到 <code>yyy</code> 截止的所有数据更新操作。这里的截止位置也可以不写，意思是从位置 <code>xxx</code> 开始，执行二进制文件中的所有数据更新操作。</p>
+<p><em><strong>删除日志</strong></em></p>
+<p>如果我们已经把日志文件保存到了安全的地方，就可以通过下面的 SQL 语句删除所有二进制日志文件，以释放磁盘空间：</p>
+<pre><code class="language-sql">mysql&gt; RESET MASTER;
+Query OK, 0 rows affected (0.20 sec)
+
+mysql&gt; SHOW BINARY LOGS;
++----------------------+-----------+-----------+
+| Log_name             | File_size | Encrypted |
++----------------------+-----------+-----------+
+| GJTECH-PC-bin.000001 | 156       | No        |
++----------------------+-----------+-----------+
+</code></pre>
+<p>我们也可以删除比指定二进制日志文件编号小的所有二进制日志文件：</p>
+<pre><code class="language-sql">mysql&gt; PURGE MASTER LOGS TO 'GJTECH-PC-bin.000005';
+Query OK, 0 rows affected (0.02 sec)
+</code></pre>
+<p><em><strong>备份二进制日志</strong></em></p>
+<p>数据库 demo 中的全部数据，备份到文件 <code>mybackup.sql</code>中（全量备份）：</p>
+<pre><code class="language-shell"># demo 是数据库名称
+mysqldump -u root -p demo &gt; mybackup.sql
+Enter password: *****
+</code></pre>
+<p>刷新一下日志：</p>
+<pre><code class="language-sql">mysql&gt; FLUSH BINARY LOGS;
+</code></pre>
+<p>目的是：产生一个新的二进制日志文件，使这个文件只保存全量数据备份之后的数据更新事件。</p>
+<p><em><strong>从备份恢复数据</strong></em></p>
+<p>创建一个新的数据库：</p>
+<pre><code class="language-shell">mysql&gt; CREATE DATABASE demo1;
+</code></pre>
+<p>还原数据库：</p>
+<pre><code class="language-shell"># demo1 是数据库名称、
+mysql -u root -p demo1 &lt; mybackup.sql
+Enter password: *****
+</code></pre>
+<h5 id="5中继日志">5，中继日志</h5>
+<p>二进制日志还有一个重要的功能，就是在主从服务器的架构中，把主服务器的操作复制到从服务器。而这个操作要借助<strong>中继日志</strong>一起完成。</p>
+<p>中继日志只在主从服务器架构的从服务器上存在。从服务器为了与主服务器保持一致，要从主服务器读取二进制日志的内容，并且把读取到的信息写入本地的日志文件中，这个从服务器本地的日志文件就叫<strong>中继日志</strong>。</p>
+<p>然后，从服务器读取中继日志，并根据中继日志的内容对从服务器的数据进行更新，完成主从服务器的数据同步。</p>
+<p>中继日志的文件名格式是：<code>从服务器名-relay-bin.序号</code>。</p>
+<p>中继日志还有一个索引文件：<code>从服务器名-relay-bin.index</code>，用来定位当前正在使用的中继日志。</p>
+<h5 id="6回滚日志">6，回滚日志</h5>
+<p>回滚日志的作用是进行事务回滚。当事务执行的时候，回滚日志中记录了事务中每次数据更新前的状态。当事务需要回滚的时候，可以通过读取回滚日志，恢复到指定的位置。</p>
+<p>单个回滚日志的最大存储空间：</p>
+<pre><code class="language-sql">mysql&gt; SHOW VARIABLES LIKE '%innodb_max_undo_log_size%';
++--------------------------+------------+
+| Variable_name            | Value      |
++--------------------------+------------+
+| innodb_max_undo_log_size | 1073741824 |
++--------------------------+------------+
+</code></pre>
+<p>其它相关变量：</p>
+<pre><code class="language-sql">mysql&gt; SHOW VARIABLES LIKE '%innodb_undo%';
++--------------------------+-------+
+| Variable_name            | Value |
++--------------------------+-------+
+| innodb_undo_directory    | .\    |  -- 回滚日志的存储目录
+| innodb_undo_log_encrypt  | OFF   |  -- 表示回滚日志不加密
+| innodb_undo_log_truncate | ON    |  -- 回滚日志是否自动截断回收，前提是设置了独立表空间
+| innodb_undo_tablespaces  | 2     |  -- 表示回滚日志有自己的独立表空间，而不是在共享表空间ibdata文件中
++--------------------------+-------+
+</code></pre>
+<h5 id="7重做日志">7，重做日志</h5>
+<p>重做日志是存储在磁盘上的一种日志文件，主要有 2 个作用。</p>
+<ul>
+<li>在系统遇到故障的恢复过程中，可以修复被未完成的事务修改的数据。</li>
+<li>MySQL 为了提高数据存取的效率，减少磁盘操作的频率，对数据的更新操作不会立即写到磁盘上，而是把数据更新先保存在内存中，积累到一定程度，再集中进行磁盘读写操作。
+<ul>
+<li>这样就存在一个问题：一旦出现宕机或者停电等异常情况，内存中保存的数据更新操作可能会丢失。</li>
+<li>这个时候就可以通过读取重做日志中记录的数据更新操作，把没来得及写到磁盘上的数据更新写到磁盘上，确保数据的完整性。</li>
+</ul>
+</li>
+</ul>
+<p>相关变量：</p>
+<pre><code class="language-sql">mysql&gt; SHOW VARIABLES LIKE '%innodb_log_files_in_group%';
++---------------------------+-------+
+| Variable_name             | Value |
++---------------------------+-------+
+| innodb_log_files_in_group | 2     |
++---------------------------+-------+
+</code></pre>
+<p>表示有 2 个重做日志文件。</p>
+<p>变量 <code>innodb_log_files_in_group</code> 值的取值范围是 1~4，这四个文件分别用于记录不同的操作：</p>
+<ul>
+<li>用户创建表的插入操作</li>
+<li>用户创建表的更新和删除操作</li>
+<li>临时表的插入操作</li>
+<li>临时表的更新和删除操作</li>
+</ul>
+<p>那为什么 <code>innodb_log_files_in_group</code> 值是 2 呢？这是因为，只执行了表的插入操作和更新删除操作，所以，只用到了 2 个文件。如果还执行了临时表的插入和更新删除的操作，那么这个变量的值就会变成 4，也就是会有 4 个重做日志文件了。</p>
 <h3 id="20数据库缓冲池">20，数据库缓冲池</h3>
 <p>数据库缓冲池（<code>buffer pool</code>）用于加快数据的读写性能。</p>
 <h4 id="201缓冲池原理">20.1，缓冲池原理</h4>
