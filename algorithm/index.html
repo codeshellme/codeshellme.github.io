@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>算法笔记 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农充电站" /><meta name="description" content="1，数据结构 线性表： 非线性表： 线性表 数组 链表 单链表 双向链表 循环链表 双向循环链表 静态链表 栈：顺序栈、链式栈 队列 普通队列、双端队列 阻塞队列、并发" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/algorithm/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="算法笔记" />
+<meta property="og:description" content="1，数据结构 线性表： 非线性表： 线性表 数组 链表 单链表 双向链表 循环链表 双向循环链表 静态链表 栈：顺序栈、链式栈 队列 普通队列、双端队列 阻塞队列、并发" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/algorithm/" />
+<meta property="article:published_time" content="2021-02-02T21:38:52+08:00" />
+<meta property="article:modified_time" content="2021-02-02T21:41:52+08:00" />
+<meta itemprop="name" content="算法笔记">
+<meta itemprop="description" content="1，数据结构 线性表： 非线性表： 线性表 数组 链表 单链表 双向链表 循环链表 双向循环链表 静态链表 栈：顺序栈、链式栈 队列 普通队列、双端队列 阻塞队列、并发">
+<meta itemprop="datePublished" content="2021-02-02T21:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-02T21:41:52&#43;08:00" />
+<meta itemprop="wordCount" content="5462">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="算法笔记"/>
+<meta name="twitter:description" content="1，数据结构 线性表： 非线性表： 线性表 数组 链表 单链表 双向链表 循环链表 双向循环链表 静态链表 栈：顺序栈、链式栈 队列 普通队列、双端队列 阻塞队列、并发"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">机器学习</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">机器学习</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+  <div class="post-content">
+    <h3 id="1数据结构">1，数据结构</h3>
+<p>线性表：</p>
+<p><img src="https://img-blog.csdnimg.cn/f357f8a54f5145c69cd671d53e9bc5ba.png" alt="在这里插入图片描述"></p>
+<p>非线性表：</p>
+<p><img src="https://img-blog.csdnimg.cn/8bb360d36c3a4d749c2efc28a3e15baf.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>线性表
+<ul>
+<li>数组</li>
+<li>链表
+<ul>
+<li>单链表</li>
+<li><img src="https://img-blog.csdnimg.cn/47f58a26381849c1bcbda0a01c2b5e79.png" alt="在这里插入图片描述"></li>
+<li><img src="https://img-blog.csdnimg.cn/cf2050ff436f495ba378e4306a26fa52.png" alt="在这里插入图片描述"></li>
+<li>双向链表</li>
+<li><img src="https://img-blog.csdnimg.cn/23b9f22a70ae4506b094b82bb9691b28.png" alt="在这里插入图片描述"></li>
+<li>循环链表</li>
+<li><img src="https://img-blog.csdnimg.cn/3f7643f214cf4275837e4906415b7ab0.png" alt="在这里插入图片描述"></li>
+<li>双向循环链表</li>
+<li><img src="https://img-blog.csdnimg.cn/f488374e3df243439ab96aeb460128b0.png" alt="在这里插入图片描述"></li>
+<li>静态链表</li>
+</ul>
+</li>
+<li>栈：顺序栈、链式栈</li>
+<li>队列
+<ul>
+<li>普通队列、双端队列</li>
+<li>阻塞队列、并发队列、阻塞并发队列</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>散列表
+<ul>
+<li>散列函数</li>
+<li>冲突解决：链表法、开放寻址</li>
+<li>动态扩容</li>
+<li>位图</li>
+</ul>
+</li>
+<li>树
+<ul>
+<li>二叉树
+<ul>
+<li>平衡二叉树、二叉查找树</li>
+<li>平衡二叉查找树：AVL 树、红黑树</li>
+<li>完全二叉树、满二叉树</li>
+</ul>
+</li>
+<li>多路查找树
+<ul>
+<li>B 树、B+ 树</li>
+<li>2-3 树、2-3-4 树</li>
+</ul>
+</li>
+<li>堆
+<ul>
+<li>小顶堆、大顶堆</li>
+<li>优先级队列、斐波那契堆、二项堆</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>图
+<ul>
+<li>图的存储：邻接矩阵、邻接表</li>
+<li>拓扑排序、最短路径、关键路径</li>
+<li>最小生成树、二分图、最大流</li>
+</ul>
+</li>
+</ul>
+<h3 id="2算法">2，算法</h3>
+<ul>
+<li>复杂度分析
+<ul>
+<li>空间复杂度</li>
+<li>时间复杂度：最好、最坏、平均、均摊</li>
+</ul>
+</li>
+<li>基本算法思想
+<ul>
+<li>贪心算法、分治算法、动态规划</li>
+<li>回溯算法、枚举算法</li>
+</ul>
+</li>
+<li>排序
+<ul>
+<li>O(n^2)：冒泡排序、插入排序、选择排序、希尔排序</li>
+<li>O(nlogn)：归并排序、快速排序、堆排序</li>
+<li>O(n)：计数排序、基数排序、桶排序</li>
+</ul>
+</li>
+<li>搜索：深度优先搜索、广度优先搜索</li>
+<li>查找：线性表查找、树结构查找、散列表查找</li>
+<li>字符串匹配
+<ul>
+<li>朴素、KMP</li>
+<li>Robin-Karp、Boyer-Moore</li>
+<li>AC 自动机、Trie、后缀数组</li>
+</ul>
+</li>
+</ul>
+<h3 id="3排序算法">3，排序算法</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>排序算法</th>
+<th>平均时间复杂度</th>
+<th>空间复杂度</th>
+<th>是否原地排序</th>
+<th>是否稳定</th>
+<th>是否基于比较</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>冒泡</td>
+<td>O(n^2)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td></td>
+<td>插入</td>
+<td>O(n^2)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td></td>
+<td>选择</td>
+<td>O(n^2)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td></td>
+<td>希尔</td>
+<td>O(n^2)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>递归思想</td>
+<td>快排</td>
+<td>O(nlogn)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>递归思想</td>
+<td>归并</td>
+<td>O(nlogn)</td>
+<td>O(n)</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td></td>
+<td>堆排序</td>
+<td>O(nlogn)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>线性排序</td>
+<td>桶排序</td>
+<td>O(n)</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>线性排序</td>
+<td>计数排序</td>
+<td>O(n)</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>线性排序</td>
+<td>基数排序</td>
+<td>O(n)</td>
+<td></td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>希尔排序是对插入排序的优化。
+原地排序算法：指空间复杂度是 O(1) 的排序算法。
+稳定性是指：如果待排序的序列中存在值相等的元素，经过排序之后，相等元素之间保持原有的先后顺序。</p>
+</blockquote>
+<ul>
+<li>冒泡排序、插入排序、选择排序这三种排序算法，时间复杂度都是O(n^2)，比较高，适合小规模数据的排序。</li>
+<li>归并排序，快速排序这两种排序算，都采用了分治思想，时间复杂度都是O(nlogn)，适合大规模的数据排序。</li>
+<li>分治思想，顾名思义，就是分而治之，将一个大问题分解成小的子问题来解决。小的子问题解决了，大问题也就解决了。</li>
+<li>分治算法一般都是用递归来实现的。分治是一种解决问题的处理思想，递归是一种编程技巧。</li>
+<li>线性排序算法的速度很快，但是它们对要排序的数据的要求非常苛刻。所以一定要注意它们的使用场景。</li>
+</ul>
+<h4 id="1冒泡排序">1，冒泡排序</h4>
+<p>冒泡排序只会操作相邻的两个数据。</p>
+<p>每次冒泡操作都会对相邻的两个元素进行比较，看是否满足大小关系要求，如果不满足就让他两互换。</p>
+<p>一次冒泡会让至少一个元素移动到它应该在的位置，重复 n  次，就完成了 n 个数据的排序。</p>
+<p>例如对一组数据 [4，5，6，3，2，1] 进行一趟冒泡排序操作是这样的：</p>
+<p><img src="https://img-blog.csdnimg.cn/25351c180e0b47fb9a4ffb6e349e400c.png" alt="在这里插入图片描述"></p>
+<p>整个冒泡过程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/b0643eb7e51044e0a65148f5d9745630.png" alt="在这里插入图片描述"></p>
+<p>冒泡过程还可以优化。</p>
+<ul>
+<li>当某次冒泡操作已经没有数据交换时，说明已经达到完全有序，不用再继续执行后续的冒泡操作。</li>
+</ul>
+<p>下面的例子有6个元素，只需要4次就可以：</p>
+<p><img src="https://img-blog.csdnimg.cn/ba2a5e00d0c841778ee9dd32a3e6ddbe.png" alt="在这里插入图片描述"></p>
+<h4 id="2插入排序">2，插入排序</h4>
+<p>一个本来有序的数组，在插入一个元素后，使其保持有序。这个过程就相当于插入排序算法的过程。</p>
+<p><img src="https://img-blog.csdnimg.cn/a40d284762024fa992fb5657049dc67e.png" alt="在这里插入图片描述"></p>
+<p><strong>插入排序算法：</strong></p>
+<ul>
+<li>首先，将数组中的数据分为两个区，<strong>已排序区</strong>和<strong>未排序区</strong>。</li>
+<li>初始已排序区只有一个元素，就是数组的第一个元素。</li>
+<li>然后，取未排序区中的元素，在已排序区中找到合适的位置将其插入，并保证已排序区一直有序。</li>
+<li>重复这个过程，直到未排序区中的元素为空</li>
+</ul>
+<p>以数据 [4，5，6，1，3，2] 为例，其中左侧为已排序区间，右侧是未排序区间，其排序过程如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/e691b4aee1a948449c5086e2926e6126.png" alt="在这里插入图片描述"></p>
+<h4 id="3选择排序">3，选择排序</h4>
+<p>选择排序也分为已排序区和未排序区，每次从未排序区中找到最小的元素，将其放到已排序区的末尾。</p>
+<p><img src="https://img-blog.csdnimg.cn/18978f8a0b3f4a73b161c1806cec9780.png" alt="在这里插入图片描述"></p>
+<h4 id="4归并排序">4，归并排序</h4>
+<p><strong>归并排序</strong>是一个先分后合的过程。</p>
+<p>如果要排序一个数组，我们先把数组从中间分成前后两部分，然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组就都有序了。</p>
+<p><img src="https://img-blog.csdnimg.cn/cb29e566ba9744fd9694ffef91b5994f.png" alt="在这里插入图片描述"></p>
+<p><strong>两个有序数组的 merge 过程：</strong></p>
+<ul>
+<li>申请一个临时数组 tmp，大小与 A[p&hellip;r] 相同。</li>
+<li>用两个游标 i 和 j，分别指向 A[p&hellip;q] 和 A[q+1&hellip;r] 的第一个元素。比较这两个元素 A[i] 和 A[j]：
+<ul>
+<li>如果 A[i] &lt;= A[j]，就把 A[i] 放入 tmp，且将 i 后移一位</li>
+<li>如果 A[i] &gt; A[j]，就把 A[j] 放入 tmp，且将 j 后移一位</li>
+</ul>
+</li>
+<li>继续上述比较过程，直到其中一个子数组中的所有数据都放入 tmp 中，再把另一个数组中的数据依次放入 tmp 的末尾</li>
+<li>这时，tmp 就是两个子数组合并之后的结果，最后将 tmp 中的数据拷贝到 A[p&hellip;r] 中</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/124862e18b8c48e384be0e4e664b422a.png" alt="在这里插入图片描述"></p>
+<h4 id="5快速排序">5，快速排序</h4>
+<p>快排也是利用分治思想。</p>
+<p>如果要排序数组中下标从 p 到 r 之间的数据，我们选择 p 到 r 之间的任意一个数据作为 pivot（分区点，一般选择区间中的最后一个），遍历 p 到 r 之间的数据：</p>
+<ul>
+<li>将小于 pivot 的放到左边</li>
+<li>将大于 pivot 的放到右边</li>
+<li>将 pivot 放到中间</li>
+</ul>
+<p>那么，p 到 r 之间的数据被分成了三个部分：</p>
+<ul>
+<li>p 到 q-1 之间的都小于 pivot</li>
+<li>中间是 pivot</li>
+<li>q+1 到 r 之间的都大于 pivot</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/11f620b099d8446cae718626c17d3af4.png" alt="在这里插入图片描述"></p>
+<p>根据分治、递归思想，可以用递归排序下标从 p 到 p-1 之间的数据和 q+1 到 r 之间的数据，直到区间缩小到 1。</p>
+<p><img src="https://img-blog.csdnimg.cn/561f25b7d1074f159708582ea8a9406a.png" alt="在这里插入图片描述"></p>
+<h4 id="6通用排序算法">6，通用排序算法</h4>
+<p>如何实现一个通用的排序算法？</p>
+<ul>
+<li>线性排序算法虽然时间复杂度低，但其对原数据的要求较高，使用场景较特殊。所以，它不适合用来实现一个通用的排序算法。</li>
+<li>对于数据规模小的，可以使用 O(n^2) 的排序算法。</li>
+<li>对于数据量较大的，一般会使用O(nlogn) 算法，所以为了兼顾数据规模一般会选用O(nlogn) 算法。</li>
+<li>O(nlogn) 算法中有归并排序，快速排序，推排序。因为归并排序需要额外的空间，所以归并排序的使用并不多。</li>
+<li>Java 语言的排序使用推排序实现，C 语言的排序使用快速排序实现。</li>
+</ul>
+<h3 id="4查找算法">4，查找算法</h3>
+<table>
+<thead>
+<tr>
+<th>查找算法</th>
+<th>时间复杂度</th>
+<th>空间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>有序链表</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>二分查找</td>
+<td>O(logn)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>跳表</td>
+<td>O(logn)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>哈希表</td>
+<td>O(1)</td>
+<td></td>
+</tr>
+<tr>
+<td>二叉查找树</td>
+<td>O(logn)</td>
+<td></td>
+</tr>
+<tr>
+<td>红黑树</td>
+<td>O(logn)</td>
+<td></td>
+</tr>
+<tr>
+<td>最大/最小堆</td>
+<td>O(logn)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>图的广度优先搜索</td>
+<td>O(V+E)</td>
+<td>O(v)</td>
+</tr>
+<tr>
+<td>图的深度优先搜索</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>V是顶点的个数，E是边的个数</p>
+</blockquote>
+<p><em><strong>几种常见的复杂度量级</strong></em></p>
+<ul>
+<li>常量阶 <code>O(1)</code></li>
+<li>对数阶 <code>O(logn)</code>，线性阶 <code>O(n)</code>，线性对数阶 <code>O(nlogn)</code></li>
+<li>平方阶 <code>O(n^2)</code>，立方阶 <code>O(n^3)</code>，K 方阶 <code>O(n^k)</code></li>
+<li>指数阶 <code>O(2^n)</code>，阶乘阶 <code>O(n!)</code></li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/fa523c4bdc594e42ba456286ee78c6a4.png" alt="在这里插入图片描述"></p>
+<h4 id="1二分查找">1，二分查找</h4>
+<p>二分查找，针对的是一个<strong>有序的数据集</strong>，每次都通过跟区间的<strong>中间元素</strong>对比，将待查找的区间缩小为之前的一半，直到找到要查找的元素，或者区间被缩小为 0。</p>
+<p>例子：在 [8，11，19，23，27，33，45，55，67，98] 中查找数字19。</p>
+<p><img src="https://img-blog.csdnimg.cn/40c5c59bce1d443d8449a5622fc33623.png" alt="在这里插入图片描述"></p>
+<p><em><strong>二分查找应用场景的局限性</strong></em></p>
+<ul>
+<li>二分查找只使用数组结构，而不能是链表
+<ul>
+<li>因为数组查找中间元素的时间复杂度是O(1)</li>
+<li>而链表查找中间元素的时间复杂度是O(n)，时间成本会大大增加</li>
+</ul>
+</li>
+<li>二分查找只能使用有序数据
+<ul>
+<li>如果是无序的数据，需要先排序。排序的时间复杂度是O(nlogn)</li>
+<li>所以，如果我们针对的是一组静态的数据，没有频繁地插入、删除，我们可以进行一次排序，多次二分查找。这样排序的成本可被均摊，二分查找的边际成本就会比较低</li>
+<li>如果数据的插入，删除比较频繁，要想使用二分查找，就需要维护一个有序的数组，这样的成本是比较高的。对于动态的数据集合，为了快速查找，二叉树是更好的选择</li>
+</ul>
+</li>
+<li>数据量太小时不太适合二分查找，这时普通的顺序查找也行</li>
+<li>数据量太大是也不适合，因为二分查找需要一个数组结构，而数组结构要求连续的内存空间
+<ul>
+<li>如果数据有1G，那寻找一个连续的1G 的内存空间是一个比较苛刻的条件</li>
+</ul>
+</li>
+</ul>
+<h4 id="2跳表">2，跳表</h4>
+<p>之前讲的二分查找都是基于数组结构，如果数据存储在链表中，而非数组中，需要对链表稍加改造，就可以支持<strong>二分查找</strong>。这种改造后的数据结构就是<strong>跳表</strong>。</p>
+<p>跳表基于<strong>有序链表</strong>（可以很好的支持范围查找），是一种各个方面都比较优秀的动态数据结构，可以支持快速的插入，删除，查找操作，实现起来也不复杂，甚至可以替代<strong>红黑树</strong>。</p>
+<p>对于有序的单链表来说，查找一个元素只能从头到尾挨个查找，时间复杂度是O(n)。</p>
+<p><img src="https://img-blog.csdnimg.cn/b08f2ba59ed746939dab2e2af225008c.png" alt="在这里插入图片描述"></p>
+<p>为了使链表支持更快的查找，可以为链表建立“索引”，每两个节点向上一级抽取一个节点，这一级称为索引层。索引层使用down  指针指向原始链表。</p>
+<p>当查找一个节点的时候，先从索引层查找，再到原始链表查找，这样可以提高速度。</p>
+<p><img src="https://img-blog.csdnimg.cn/a8d5a5f6e1274c09b5ad50a255f69c1b.png" alt="在这里插入图片描述"></p>
+<p>如果再向上抽取一层，如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/e2c7b055bdfc4136893d5e1322e93b81.png" alt="在这里插入图片描述"></p>
+<p>当数据量比较大的时候，跳表可以明显的提高单链表的查找速度。</p>
+<h4 id="3哈希表">3，哈希表</h4>
+<p>哈希表是数组的一种扩展，依赖数组下标的随机访问，没有数组就没有哈希表。</p>
+<p>哈希表用的就是数组支持按照下标随机访问的时候，时间复杂度是 O(1) 的特性。</p>
+<p><em><strong>哈希函数</strong></em></p>
+<p>哈希函数设计的基本要求：</p>
+<ul>
+<li>散列函数计算得到的散列值是一个非负整数</li>
+<li>如果 key1 = key2，那 hash(key1) = hash(key2)</li>
+<li>如果 key1 ≠ key2，那 hash(key1) ≠ hash(key2)</li>
+</ul>
+<p>对于第3个要求，实际上是不可能实现的。即便像业界著名的MD5、SHA、CRC等哈希算法，也无法完全避免这种散列冲突。另外数组的存储空间有限，也会大大增加哈希冲突的可能性。</p>
+<p><em><strong>哈希算法</strong></em></p>
+<p>将任意长度的二进制值串映射为<strong>固定长度的二进制值串</strong>，这个映射的规则就是<strong>哈希算法</strong>，而通过原始数据映射之后得到的二进值串就是<strong>哈希值</strong>。</p>
+<p>哈希算法满足的四点要求：</p>
+<ul>
+<li>从哈希值不能反向推导出原始数据</li>
+<li>对数据非常敏感，即使原始数据只修改了一个 Bit，得到的哈希值也不同</li>
+<li>哈希冲突的概率要很小</li>
+<li>哈希算法的执行效率要高效</li>
+</ul>
+<p>MD5 算法就是一种哈希算法，哈希值是固定的128位二进制串，也就是32位字符串。其最多能表示 2^128 个数据。</p>
+<pre><code class="language-java">// 当多于这个数的时候，md5 值就会发生冲突，已经是天文数字了
+2^128 = 340282366920938463463374607431768211456
+</code></pre>
+<p>下面两个串的哈希值就是相同的：</p>
+<p><img src="https://img-blog.csdnimg.cn/f3f64ca0ffc045dcb71be256491261c7.png" alt="在这里插入图片描述"></p>
+<p><em><strong>装载因子</strong></em></p>
+<ul>
+<li>
+<p>装载因子 = 填入表中的元素个数 / 散列表的长度</p>
+</li>
+<li>
+<p>装载因子越大，说明空闲位置越少，冲突越多，散列表的性能会下降</p>
+</li>
+<li>
+<p>当装载因子过大时，就需要对哈希表进行<strong>动态扩容</strong></p>
+<ul>
+<li>假如新申请的空间是之前的两倍，那么扩容后的装载因子就会比之前缩小两倍。</li>
+<li>哈希表的扩容，会将数据从老表迁移到新表，因为表的大小变了，所以数据的位置也会变。</li>
+</ul>
+</li>
+<li>
+<p>当动态因子过小时，为避免空间浪费，也可以<strong>缩容</strong></p>
+</li>
+</ul>
+<p><em><strong>解决哈希冲突的办法</strong></em></p>
+<ul>
+<li>
+<p><strong>开放寻址法</strong>：如果发生冲突，就再找一个空闲位置，比如：</p>
+<ul>
+<li>线性探测：每次将下标 <code>+1，+2，+3，+4，+5 ...</code> 。即从当前位置依次往后查找，实际上问题比较大。</li>
+<li>二重探测：每次将下标 <code>+1^2，+2^2，+3^2 ... </code>。都是加平方。</li>
+<li>双重探测</li>
+<li><img src="https://img-blog.csdnimg.cn/c1a6f830a378462db7381f2f04d57af4.png" alt="在这里插入图片描述"></li>
+<li>适合数据量比较小的场景</li>
+</ul>
+</li>
+<li>
+<p><strong>链表法</strong>：比较常用，每个桶都对应一个链表</p>
+<ul>
+<li>链表法可以使用跳表或红黑树，来使得效率更高</li>
+<li><img src="https://img-blog.csdnimg.cn/48e09a15e3524df0afc6b9627e21361a.png" alt="在这里插入图片描述"></li>
+</ul>
+</li>
+</ul>
+<p>Java 中 LinkedHashMap 就采用了链表法解决冲突，ThreadLocalMap 是通过线性探测的开放寻址法来解决冲突。</p>
+<p><em><strong>工业级哈希表（Java HashMap）分析</strong></em></p>
+<ul>
+<li>初始大小默认值是16，可以设置。</li>
+<li>最大装载因子默认是 0.75，当表中元素大于 0.75*capacity 时，会扩容为原来的2倍</li>
+<li>在JDK1.8 中，当链表的长度超过 8 时，链表会转化为红黑树，当长度低于 8 时，又会转回链表</li>
+<li>哈希函数，简单高效，分布平均</li>
+</ul>
+<h4 id="4二叉查找树">4，二叉查找树</h4>
+<p><strong>什么是树形结构</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/0ac2f81349354482bad4c245cef971d5.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>A 节点是 B 节点的<strong>父节点</strong></li>
+<li>B 节点是 A 节点的<strong>子节点</strong></li>
+<li>B、C、D 互为<strong>兄弟节点</strong></li>
+<li>没有父节点的节点为<strong>根节点</strong>（E 节点）</li>
+<li>没有子节点的节点为<strong>叶节点</strong>（G）</li>
+</ul>
+<p>几个概念：</p>
+<ul>
+<li>节点的高度：节点到叶节点的最长路径（边数）</li>
+<li>节点的深度：根节点到这个节点的边的个数</li>
+<li>节点的层数：节点的深度 + 1</li>
+<li>数的高度：根节点的高度</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/971c2ca40796454592851a667dc3044f.png" alt="在这里插入图片描述"></p>
+<p><em><strong>二叉树</strong></em></p>
+<ul>
+<li>二叉树：每个节点最多有两个子节点，分别是左子节点和右子节点
+<ul>
+<li>二叉树并不要求每个节点都有两个子节点，有的节点只有左子节点，有的节点只有右子节点</li>
+</ul>
+</li>
+<li>满二叉树：叶子节点全都在最底层，除了叶子节点之外，每个节点都有左右两个子节点</li>
+<li>完全二叉树：叶子节点都在最底下两层，最后一层的叶子节点都靠左排列，除了最后一层，其他层的节点个数都要达到最大</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/43fc6f31faf042ae91eeb575270d9bf9.png" alt="在这里插入图片描述"></p>
+<p><strong>二叉树的存储方法</strong></p>
+<ul>
+<li>链式存储法</li>
+<li>数组存储法</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/2b4efa2e15604b90b2e2a9a48e69244c.png" alt="在这里插入图片描述"></p>
+<p><em><strong>二叉树的遍历</strong></em></p>
+<p>二叉树遍历的时间复杂度是 O(n)。</p>
+<ul>
+<li>前序遍历（根节点在前）：根节点-&gt;左子树-&gt;右子树</li>
+<li>中序遍历（根节点在中）：左子树-&gt;根节点-&gt;右子树
+<ul>
+<li>中序遍历时，输出的是顺序序列。所以二叉树又叫二叉排序树。</li>
+</ul>
+</li>
+<li>后续遍历（根节点在后）：左子树-&gt;右子树-&gt;根节点</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/fabad457fe5d4bfbb4fd9c0429895d73.png" alt="在这里插入图片描述"></p>
+<p>伪代码如下：</p>
+<pre><code class="language-c">// 前序遍历
+void preOrder(Node* root) {
+  if (root == null) return;
+  print root // 此处为伪代码，表示打印 root 节点
+  preOrder(root-&gt;left);
+  preOrder(root-&gt;right);
+}
+
+// 中序遍历
+void inOrder(Node* root) {
+  if (root == null) return;
+  inOrder(root-&gt;left);
+  print root // 此处为伪代码，表示打印 root 节点
+  inOrder(root-&gt;right);
+}
+
+// 后续遍历
+void postOrder(Node* root) {
+  if (root == null) return;
+  postOrder(root-&gt;left);
+  postOrder(root-&gt;right);
+  print root // 此处为伪代码，表示打印 root 节点
+}
+</code></pre>
+<p><em><strong>二叉查找树</strong></em></p>
+<p>二叉查找树最大的特点就是，支持动态数据集合的快速插入、删除、查找操作。对于任意一个节点：</p>
+<ul>
+<li>其左子树中的每个节点的值，都要小于这个节点的值</li>
+<li>而右子树节点的值都大于这个节点的值</li>
+</ul>
+<p>二叉查找树的查找过程：</p>
+<p><img src="https://img-blog.csdnimg.cn/fb991b45c67f4ac5abce5537658febd6.png" alt="在这里插入图片描述"></p>
+<h4 id="5红黑树">5，红黑树</h4>
+<p><em><strong>平衡二叉树</strong></em></p>
+<p>二叉查找树在极端情况下，时间复杂度会退化到O(n)，所以出现了<strong>平衡二叉树</strong>。</p>
+<ul>
+<li>平衡二叉树中任意一个节点的左右子树的高度相差不能大于1。</li>
+<li>完全二叉树、满二叉树其实都是平衡二叉树，非完全二叉树也有可能是平衡二叉树。</li>
+<li>AVL 树是一种高度平衡的二叉树，红黑树并不是严格意义上的平衡树。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/0ab5804b01a54fc48a662e530608b4f3.png" alt="在这里插入图片描述"></p>
+<p><em><strong>红黑树</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/906572876a294af8808b9f4886ef3450.png" alt="在这里插入图片描述"></p>
+<p>红黑树是一颗二叉搜索树，它在每个节点上增加了一个存储位来表示节点的颜色，可以是黑或红。</p>
+<p>通过对任何一条从根到叶子的简单路径上各个节点的颜色进行约束，红黑树确保没有一条路径会比其他路径长出 2 倍，因而是近似平衡。</p>
+<p>树中每个节点包含 5 个属性：color，key，left，right，p。</p>
+<p><strong>红黑树的定义：</strong></p>
+<ul>
+<li>红黑树中的每个节点都有颜色，红色或黑色</li>
+<li>根节点是黑色</li>
+<li>每个叶子节点是黑色的空节点（NIL），叶节点不存储数据</li>
+<li>任何相邻的节点不能同时为红色（可同时为黑色），红色节点是被黑色节点隔开的</li>
+<li>每个节点，从该节点到其所有后代叶节点的路径，都包含相同数目的黑色节点</li>
+</ul>
+<p><strong>红黑树的优点：</strong></p>
+<ul>
+<li>红黑树避免了极端情况下性能退化的问题，因为它是一颗近似平衡的树。</li>
+<li>红黑树不像 AVL 树那样是严格的平衡树，避免了插入，删除操作时对树进行过多的平衡操作。</li>
+<li>综合来说，红黑树的各项性能都是比较优越的，也是比较稳定的。</li>
+</ul>
+<h4 id="6堆">6，堆</h4>
+<p><em><strong>什么是堆 ？</strong></em></p>
+<ul>
+<li><strong>堆是一棵完全二叉树</strong>：除了最后一层，其它层的节点个数都是满的，最后一层的节点都靠左排列</li>
+<li>堆中的每个节点的值都必须大于等于（或小于等于）其子树中每个节点的值
+<ul>
+<li>大顶堆：堆中的每个节点的值都大于等于其子树中每个节点的值</li>
+<li>小顶堆：堆中的每个节点的值都小于等于其子树中每个节点的值</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/e240970b82f9493184ce024040952c19.png" alt="在这里插入图片描述"></p>
+<p><strong>用数组存储堆</strong></p>
+<p>堆可以用数组来实现。</p>
+<p><img src="https://img-blog.csdnimg.cn/88c3d31950934ae2a77963597ed1784d.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>注：文中图片引自《数据结构与算法》</p>
+</blockquote>
+
+  </div>
+</article>
+        </div>
+        
+
+  <span id="/algorithm/" class="leancloud_visitors" data-flag-title="算法笔记">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
