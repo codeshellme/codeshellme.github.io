@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 这 5 篇文章是我在学习 MySQL 的过程中，总结的笔记： 第一篇 MySQL 学">
 <meta itemprop="datePublished" content="2021-11-12T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2021-11-12T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="8406">
+<meta itemprop="wordCount" content="8488">
 
 
 
@@ -159,7 +159,7 @@
         <div class="post-category">
             <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"> 学习笔记 </a>
             </div>
-          <span class="more-meta"> 8406 字 </span>
+          <span class="more-meta"> 8488 字 </span>
           <span class="more-meta"> 阅读约需 17 分钟 </span>
         
 
@@ -385,6 +385,13 @@ SELECT * FROM test;
 <p><img src="https://img-blog.csdnimg.cn/bf656bebd11d48249e982d52a98b7950.png" alt="在这里插入图片描述"></p>
 <h4 id="242不可重复读">24.2，不可重复读</h4>
 <p><img src="https://img-blog.csdnimg.cn/7b84d8c583a049a08c897fb761b9d1ce.png" alt="在这里插入图片描述"></p>
+<p>一道面试题：</p>
+<p><img src="https://img-blog.csdnimg.cn/f8bf5d721eab401689f47d6201a00082.png" alt="在这里插入图片描述"></p>
+<p>在 MySQL 的默认隔离级别下（可重复读），上面的两个 age 分别是 3 和 5。</p>
+<p>原因如下：</p>
+<blockquote>
+<p><strong>隔离级别针对的是select 读操作，所有的 update 操作都是读最新的值，不受隔离级别影响</strong>。</p>
+</blockquote>
 <h4 id="243幻读">24.3，幻读</h4>
 <p>看以下场景：</p>
 <p><img src="https://img-blog.csdnimg.cn/01103bc9e84c48b79aeafb4e8d93d29f.png" alt="在这里插入图片描述"></p>
