@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>快速搭建 ElasticSearch - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 本文介绍 ES 的安装方法，并导入一组电影数据，可供" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/05/es-build/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="快速搭建 ElasticSearch" />
+<meta property="og:description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 本文介绍 ES 的安装方法，并导入一组电影数据，可供" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/05/es-build/" />
+<meta property="article:published_time" content="2022-05-29T22:39:52+08:00" />
+<meta property="article:modified_time" content="2022-05-29T22:45:52+08:00" />
+<meta itemprop="name" content="快速搭建 ElasticSearch">
+<meta itemprop="description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 本文介绍 ES 的安装方法，并导入一组电影数据，可供">
+<meta itemprop="datePublished" content="2022-05-29T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-05-29T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="2267">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="快速搭建 ElasticSearch"/>
+<meta name="twitter:description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 本文介绍 ES 的安装方法，并导入一组电影数据，可供"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">快速搭建 ElasticSearch</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-05-29 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 2267 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1安装-es">1，安装 ES</a></li>
+        <li><a href="#2安装-kibana">2，安装 Kibana</a></li>
+        <li><a href="#3获取电影数据">3，获取电影数据</a></li>
+        <li><a href="#4创建-movies-索引">4，创建 movies 索引</a></li>
+        <li><a href="#5导入-movies-数据">5，导入 movies 数据</a></li>
+        <li><a href="#6使用-dev-tools">6，使用 Dev-Tools</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://www.elastic.co/cn/elasticsearch/">ElasticSearch</a> 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了<strong>实时搜索</strong>与<strong>聚合分析</strong>两大功能。</p>
+<p>本文介绍 ES 的安装方法，并导入一组电影数据，可供练习 ES 使用。</p>
+<h3 id="1安装-es">1，安装 ES</h3>
+<p>进入<a href="https://www.elastic.co/cn/downloads/elasticsearch">ES 官网下载页面</a>，下载 ES 安装包。</p>
+<p><img src="https://img-blog.csdnimg.cn/96334537a2a34708a6ecb895602c4587.png" alt="在这里插入图片描述"></p>
+<p>我这里选择的是 Linux 系统版本，下载完成之后，得到如下安装包：</p>
+<pre><code class="language-shell">elasticsearch-8.4.2-linux-x86_64.tar.gz
+</code></pre>
+<p>使用 tar 命令解压，得到解压缩后的目录 <code>/elasticsearch-8.4.2</code>：</p>
+<pre><code class="language-shell">&gt; tar -xzf elasticsearch-8.4.2-linux-x86_64.tar.gz
+&gt; ls
+elasticsearch-8.4.2
+</code></pre>
+<p>因为我们本次搭建的 ES 是为了学习使用，一般搭建在自己的电脑上，我这里关闭了 ES 的安全模式，这需要改变配置文件（<code>config/elasticsearch.yml</code>）中的几个配置值：</p>
+<p><img src="https://img-blog.csdnimg.cn/6e25e5de943a43a69143aa625b7ad0b6.png" alt="在这里插入图片描述"></p>
+<p>然后使用如下命令启动 ES：</p>
+<pre><code class="language-shell">./elasticsearch
+</code></pre>
+<p>使用浏览器访问地址 <a href="http://localhost:9200/">http://localhost:9200</a>（ES 的默认端口是 9200），如果出现如下结果，则说明启动成功：</p>
+<pre><code class="language-shell">{
+  &quot;name&quot; : &quot;lenove&quot;,
+  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,
+  &quot;cluster_uuid&quot; : &quot;j47FJULJQm-irccpoT_OZw&quot;,
+  &quot;version&quot; : {
+    &quot;number&quot; : &quot;8.4.2&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;tar&quot;,
+    &quot;build_hash&quot; : &quot;89f8c6d8429db93b816403ee75e5c270b43a940a&quot;,
+    &quot;build_date&quot; : &quot;2022-09-14T16:26:04.382547801Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;9.3.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;7.17.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;7.0.0&quot;
+  },
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+}
+</code></pre>
+<h3 id="2安装-kibana">2，安装 Kibana</h3>
+<p>这里安装 Kibana，主要使用它的 <strong>Dev-Tools</strong> 来写 ES 的 DSL 语句。</p>
+<p>首先进入 <a href="https://www.elastic.co/cn/downloads/kibana">Kibana 下载页面</a>，下载 Kibana：</p>
+<p><img src="https://img-blog.csdnimg.cn/7072fc2758a145b8ae6bfa1f52a4d1c4.png" alt="在这里插入图片描述"></p>
+<p>下载完成后，得到如下安装包：</p>
+<pre><code class="language-shell">kibana-8.4.2-linux-x86_64.tar.gz
+</code></pre>
+<p>使用 tar 命令解压即可：</p>
+<pre><code class="language-shell">&gt; tar -xzf kibana-8.4.2-linux-x86_64.tar.gz
+&gt; ls
+kibana-8.4.2
+</code></pre>
+<p>使用如下命令启动 Kibana：</p>
+<pre><code class="language-shell">./kibana
+</code></pre>
+<p>注意，在启动 Kibana 之前，要先启动 ES，Kibana 会自动连接上已启动的 ES。</p>
+<p>启动完成后，访问地址 <a href="http://localhost:5601/app/dev_tools">http://localhost:5601/app/dev_tools</a>（Kibana 的端口默认是 5601），可进入如下页面：</p>
+<p><img src="https://img-blog.csdnimg.cn/fe16c1fc0b0d4758bc53c2478f22fe82.png" alt="在这里插入图片描述"></p>
+<p>到目前为止，ES 和 Kibana 都已安装，下面我们来导入一组数据。</p>
+<h3 id="3获取电影数据">3，获取电影数据</h3>
+<p>我在<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/es/movies.txt">这里</a>准备了200 多条电影数据，每条电影数据包含多个字段，比如：</p>
+<pre><code class="language-json">{
+    &quot;publish_time&quot;: &quot;1994-09-10&quot;,
+    &quot;movie_time&quot;: &quot;142&quot;,
+    &quot;other_name&quot;: &quot;月黑高飞(港) / 刺激1995(台) / 地狱诺言 / 铁窗岁月 / 消香克的救赎&quot;,
+    &quot;year&quot;: &quot;1994&quot;,
+    &quot;classifications&quot;: &quot;剧情/犯罪&quot;,
+    &quot;score&quot;: &quot;9.7&quot;,
+    &quot;language&quot;: &quot;英语&quot;,
+    &quot;title&quot;: &quot;肖申克的救赎 / The Shawshank Redemption / 月黑高飞(港)  /  刺激1995(台)&quot;,
+    &quot;introduction&quot;: &quot;一场谋杀案使银行家安迪（蒂姆•罗宾斯 Tim Robbins 饰）蒙冤入狱，谋杀妻子及其情人的指控将囚禁他终生。在肖申克监狱的首次现身就让监狱“大哥”瑞德（摩根•弗里曼 Morgan Freeman 饰）对他另眼相看。瑞德帮助他搞到一把石锤和一幅女明星海报，两人渐成患难 之交。很快，安迪在监狱里大显其才，担当监狱图书管理员，并利用自己的金融知识帮助监狱官避税，引起了典狱长的注意，被招致麾下帮助典狱长洗黑钱。偶然一次，他得知一名新入狱的小偷能够作证帮他洗脱谋杀罪。燃起一丝希望的安迪找到了典狱长，希望他能帮自己翻案。阴险伪善的狱长假装答应安迪，背后却派人杀死小偷，让他唯一能合法出狱的希望泯灭。沮丧的安迪并没有绝望，在一个电闪雷鸣的风雨夜，一场暗藏几十年的越狱计划让他自我救赎，重获自由！老朋友瑞德在他的鼓舞和帮助下，也勇敢地奔向自由。本片获得1995年奥...&quot;,
+    &quot;country&quot;: &quot;美国&quot;,
+    &quot;directors&quot;: &quot;弗兰克·德拉邦特&quot;,
+    &quot;writers&quot;: &quot;弗兰克·德拉邦特 / 斯蒂芬·金&quot;,
+    &quot;actors&quot;: &quot;蒂姆·罗宾斯 / 摩根·弗里曼 / 鲍勃·冈顿 / 威廉姆·赛德勒 / 克兰西·布朗 / 吉尔·贝罗斯 / 马克·罗斯顿 / 詹姆斯·惠特摩 / 杰弗里·德曼 / 拉里·布兰登伯格 / 尼尔·吉恩托利 / 布赖恩·利比 / 大卫·普罗瓦尔 / 约瑟夫·劳格诺 / 祖德·塞克利拉 / 保罗·麦克兰尼 / 芮妮·布莱恩 / 阿方索·弗里曼 / V·J·福斯特 / 弗兰克·梅德拉诺 / 马克·迈尔斯 / 尼尔·萨默斯 / 耐德·巴拉米 / 布赖恩·戴拉特 / 唐·麦克马纳斯&quot;,
+    &quot;img_url&quot;: &quot;https://img2.doubanio.com/view/photo/s_ratio_poster/public/p480747492.webp&quot;
+}
+</code></pre>
+<p>每个字段的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>含义</th>
+<th>字段名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>publish_time</td>
+<td>发布时间</td>
+<td>title</td>
+<td>电影名称</td>
+</tr>
+<tr>
+<td>movie_time</td>
+<td>电影时长</td>
+<td>introduction</td>
+<td>电影简介</td>
+</tr>
+<tr>
+<td>other_name</td>
+<td>电影别名</td>
+<td>country</td>
+<td>发行国家</td>
+</tr>
+<tr>
+<td>year</td>
+<td>发布年份</td>
+<td>directors</td>
+<td>导演</td>
+</tr>
+<tr>
+<td>classifications</td>
+<td>电影分类</td>
+<td>writers</td>
+<td>编剧</td>
+</tr>
+<tr>
+<td>score</td>
+<td>电影评分</td>
+<td>actors</td>
+<td>主演</td>
+</tr>
+<tr>
+<td>language</td>
+<td>语言</td>
+<td>img_url</td>
+<td>封面地址</td>
+</tr>
+</tbody>
+</table>
+<p>其中的字段 <code>other_name</code>、<code>classifications</code>、<code>title</code>、<code>writers</code>、<code>actors</code> 都是用斜杠分割。</p>
+<p>将上面的数据保存本地，文件名命名为 <code>movies.txt</code>。</p>
+<p>使用如下 Python 程序预处理数据：</p>
+<pre><code class="language-python">import json
+
+def read_file(file_name):
+    f = open(file_name)
+    lines = f.readlines()
+
+    for line in lines:
+        try:
+            line = json.loads(line)
+        except Exception as e:
+            continue
+
+        yield line
+
+def transform_data(data):
+    other_name = data['other_name']
+    classifications = data['classifications']
+    title = data['title']
+    writers = data['writers']
+    actors = data['actors']
+
+    # 转成数组
+    other_name = [i.strip() for i in other_name.split('/')]
+    classifications = [i.strip() for i in classifications.split('/')]
+    title = [i.strip() for i in title.split('/')]
+    writers = [i.strip() for i in writers.split('/')]
+    actors = [i.strip() for i in actors.split('/')]
+
+    data['other_name'] = other_name
+    data['classifications'] = classifications
+    data['title'] = title
+    data['writers'] = writers
+    data['actors'] = actors
+
+if __name__== &quot;__main__&quot;:
+    index = {&quot;index&quot;:{&quot;_index&quot;:&quot;movies&quot;}} 
+
+    for data in read_file('./movies.txt'):
+        transform_data(data)
+        
+        print(json.dumps(index))
+        print(json.dumps(data, ensure_ascii=False))
+</code></pre>
+<p>经过 Python 处理的数据，我放在了<a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/es/movies_es.json">这里</a>。</p>
+<h3 id="4创建-movies-索引">4，创建 movies 索引</h3>
+<p>我们将创建如下结构的 <strong>movies</strong> 索引：</p>
+<pre><code class="language-json">PUT movies
+{
+	&quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;publish_time&quot; : {
+          &quot;type&quot; : &quot;date&quot;
+        },
+        &quot;movie_time&quot; : {
+          &quot;type&quot; : &quot;integer&quot;
+        },
+        &quot;other_name&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;year&quot; : {
+          &quot;type&quot; : &quot;integer&quot;
+        },
+        &quot;classifications&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;score&quot; : {
+          &quot;type&quot; : &quot;float&quot;
+        },
+        &quot;language&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;title&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;introduction&quot; : {
+          &quot;type&quot; : &quot;text&quot;
+        },
+        &quot;country&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;directors&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;writers&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;actors&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        },
+        &quot;img_url&quot; : {
+          &quot;type&quot; : &quot;keyword&quot;
+        }
+      }
+    }
+}
+</code></pre>
+<p>将上面的 mapping 复制到 Kibana 的 Dev-Tools 中，然后执行 <code>PUT movies</code>  请求即可，到此 <strong>movies</strong> 索引就构建成功。</p>
+<h3 id="5导入-movies-数据">5，导入 movies 数据</h3>
+<p>得到 <a href="https://github.com/codeshellme/codeshellme.github.io/blob/master/somecode/es/movies_es.json">movies 数据</a>后，将数据放入文件<code>movies.json</code>中，然后执行下面命令将数据导入 ES 中：</p>
+<pre><code class="language-shell">curl -s -XPOST &quot;localhost:9200/_bulk?pretty&quot; -H  &quot;Content-Type: application/json&quot; --data-binary &quot;@movies.json&quot;
+</code></pre>
+<p>到此，我们就有了 movies 索引，可以使用 Dev-Tools 对其进行数据分析。</p>
+<h3 id="6使用-dev-tools">6，使用 Dev-Tools</h3>
+<p>下面我写了一些 ES DSL 语句对数据进行分析，你可以将这些语句复制到 Dev-Tools 中，然后执行每个请求，实际感受下 ES 分析数据的能力。</p>
+<pre><code class="language-json">GET /_cluster/health            // 查看集群健康状态
+GET /_cat/nodes?v	        // 查看集群节点信息
+GET /_cat/indices?v	        // 查看索引信息
+
+HEAD movies                     // 判断是否存在 movies 索引
+
+GET movies			// 查看索引的 mappings 和 settings 信息
+
+GET movies/_search	        // 查看索引中的数据
+{ 
+  &quot;size&quot;: 300,
+  &quot;_source&quot;: [&quot;title&quot;, &quot;publish_time&quot;], 
+  &quot;query&quot;:{
+    &quot;match_all&quot;:{}
+  }
+}
+
+POST movies/_search		// 桶聚合分析
+{
+    &quot;size&quot;: 0,
+    &quot;aggs&quot;: {
+        &quot;my_agg&quot;: {	
+            &quot;terms&quot;: {
+                &quot;field&quot;:&quot;year&quot;,
+                &quot;size&quot;: 1000, 
+                &quot;min_doc_count&quot;: 10
+            }
+        } 
+    }
+}
+
+POST movies/_search		// histogram 聚合分析
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;year_histrogram&quot;: {   
+      &quot;histogram&quot;: {        
+        &quot;field&quot;:&quot;year&quot;,
+        &quot;interval&quot;:10,     
+        &quot;extended_bounds&quot;:{
+          &quot;min&quot;:1920,
+          &quot;max&quot;:2022
+        }
+      }
+    }
+  }
+}
+
+POST movies/_search		// date_histogram 聚合分析
+{
+  &quot;size&quot;: 13,
+  &quot;_source&quot;: [&quot;publish_time&quot;, &quot;movie_time&quot;], 
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;publish_time&quot;: {
+        &quot;gte&quot;: &quot;2009-06-01&quot;,
+        &quot;lte&quot;: &quot;2010-01-01&quot;
+      }
+    }
+  }, 
+  &quot;aggs&quot;: {
+    &quot;publish_time_histrogram&quot;: {   
+      &quot;date_histogram&quot;: {        
+        &quot;field&quot;:&quot;publish_time&quot;,    
+        &quot;calendar_interval&quot;: &quot;year&quot;,     
+        &quot;format&quot;: &quot;yyyy-MM-dd&quot;,
+        &quot;min_doc_count&quot;: 3,
+        &quot;extended_bounds&quot;:{
+          &quot;min&quot;:&quot;2009-01-01&quot;,
+          &quot;max&quot;:&quot;2010-01-01&quot;
+        }
+      },
+      &quot;aggs&quot;: {
+        &quot;total_time&quot;: {
+          &quot;sum&quot;: {
+            &quot;field&quot;: &quot;movie_time&quot;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>更多的 ES 命令可以参考 <a href="/2022/03/es-es-cmds">ElasticSearch 命令参考</a>。</p>
+<p>（本节完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-05-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/05/git-cmds/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Git 命令参考</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/05/go-grpc/">
+            <span class="next-text nav-default">gPRC入门指南</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/05/es-build/" class="leancloud_visitors" data-flag-title="快速搭建 ElasticSearch">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

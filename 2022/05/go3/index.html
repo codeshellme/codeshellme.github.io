@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go学习笔记3-Go并发与网络 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="13，Go 错误处理 1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/05/go3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go学习笔记3-Go并发与网络" />
+<meta property="og:description" content="13，Go 错误处理 1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/05/go3/" />
+<meta property="article:published_time" content="2022-05-10T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-05-10T22:42:52+08:00" />
+<meta itemprop="name" content="Go学习笔记3-Go并发与网络">
+<meta itemprop="description" content="13，Go 错误处理 1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错">
+<meta itemprop="datePublished" content="2022-05-10T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-05-10T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="10045">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go学习笔记3-Go并发与网络"/>
+<meta name="twitter:description" content="13，Go 错误处理 1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go学习笔记3-Go并发与网络</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-05-10 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 10045 字 </span>
+          <span class="more-meta"> 阅读约需 21 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#13go-错误处理">13，Go 错误处理</a></li>
+        <li><a href="#14go-并发">14，Go 并发</a></li>
+        <li><a href="#15go-共享内存">15，Go 共享内存</a></li>
+        <li><a href="#16go-socket-编程">16，Go Socket 编程</a></li>
+        <li><a href="#17strings-包">17，strings 包</a></li>
+        <li><a href="#18bytes-包">18，bytes 包</a></li>
+        <li><a href="#19io-包">19，io 包</a></li>
+        <li><a href="#20os-包">20，os 包</a></li>
+        <li><a href="#21go-优秀项目">21，Go 优秀项目</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="13go-错误处理">13，Go 错误处理</h3>
+<h4 id="1error-接口">1，error 接口</h4>
+<p>error 接口是 Go 原生内置的类型，它的定义如下：</p>
+<pre><code class="language-go">// $GOROOT/src/builtin/builtin.go
+type error interface {
+    Error() string
+}
+</code></pre>
+<p>任何实现了 error 的 Error 方法的类型的实例，都可以作为错误值赋值给 error 接口变量。</p>
+<p>Go 中有两个常用的函数可生成 error 类型变量：</p>
+<ul>
+<li><code>errors.New</code></li>
+<li><code>fmt.Errorf</code></li>
+</ul>
+<p>使用示例：</p>
+<pre><code class="language-go">func doSomething(...) error {
+    ... ...
+    return errors.New(&quot;some error occurred&quot;)
+}
+</code></pre>
+<p>判断错误的最常用方式：</p>
+<pre><code class="language-go">err := doSomething()
+if err != nil {
+    // 不关心err变量底层错误值所携带的具体上下文信息
+    // 执行简单错误处理逻辑并返回
+    ... ...
+    return err
+}
+</code></pre>
+<p>上面的方式，调用者并不关心具体的错误信息。</p>
+<p>通过下面的方式可以针对不同的错误信息，做出不同的处理逻辑。</p>
+<pre><code class="language-go">data, err := b.Peek(1)
+if err != nil {
+    switch err.Error() {
+    case &quot;bufio: negative count&quot;:
+        // ... ...
+        return
+    case &quot;bufio: buffer full&quot;:
+        // ... ...
+        return
+    case &quot;bufio: invalid use of UnreadByte&quot;:
+        // ... ...
+        return
+    default:
+        // ... ...
+        return
+    }
+}
+</code></pre>
+<p>但是上面的方式严重依赖错误信息，一旦错误信息发生改变，调用者就得跟着改变。</p>
+<p>Go 1.13 及后续版本，建议使用的错误判断方法：</p>
+<ul>
+<li><code>errors.Is</code> 方法去检视某个错误值是否就是某个预期错误值</li>
+<li><code>errors.As</code> 方法去检视某个错误值是否是某自定义错误类型的实例</li>
+</ul>
+<p>对于 <code>errors.Is</code> 方法，如果 error 类型变量的底层错误值是一个包装错误（Wrapped Error），<code>errors.Is</code> 方法会沿着该包装错误所在错误链（Error Chain)，与链上所有被包装的错误（Wrapped Error）进行比较，直至找到一个匹配的错误为止。</p>
+<p>例子：</p>
+<pre><code class="language-go">var ErrSentinel = errors.New(&quot;the underlying sentinel error&quot;)
+
+func main() {
+
+  // 用 %w 来包装错误
+  err1 := fmt.Errorf(&quot;wrap sentinel: %w&quot;, ErrSentinel)
+  err2 := fmt.Errorf(&quot;wrap err1: %w&quot;, err1)
+  
+  println(err2 == ErrSentinel)      // false
+  
+  if errors.Is(err2, ErrSentinel) { // true
+    println(&quot;err2 is ErrSentinel&quot;)
+    return
+  }
+
+  println(&quot;err2 is not ErrSentinel&quot;)
+}
+</code></pre>
+<p>对于 <code>errors.As</code> 方法，使用模式：</p>
+<pre><code class="language-go">
+// 类似 if e, ok := err.(*MyError); ok { … }
+var e *MyError
+if errors.As(err, &amp;e) {
+    // 如果err类型为*MyError，变量e将被设置为对应的错误值
+}
+</code></pre>
+<p>如果 error 类型变量的动态错误值是一个包装错误，<code>errors.As</code> 函数会沿着该包装错误所在错误链，与链上所有被包装的错误的类型进行比较，直至找到一个匹配的错误类型，就像 <code>errors.Is</code> 函数那样。</p>
+<pre><code class="language-go">type MyError struct {
+    e string
+}
+
+func (e *MyError) Error() string {
+    return e.e
+}
+
+func main() {
+    var err = &amp;MyError{&quot;MyError error demo&quot;}
+    err1 := fmt.Errorf(&quot;wrap err: %w&quot;, err)
+    err2 := fmt.Errorf(&quot;wrap err1: %w&quot;, err1)
+    
+    var e *MyError
+    
+    if errors.As(err2, &amp;e) { // true
+        println(&quot;MyError is on the chain of err2&quot;)
+
+        // 要特别注意这里,并不是将 err2 赋给了 e
+        // 而是将 err2 链上匹配上的值 err 赋给了 e
+        // 因此 err == e
+        println(e == err)    // true              
+        return                             
+    }                           
+               
+    println(&quot;MyError is not on the chain of err2&quot;)
+} 
+</code></pre>
+<h4 id="2panic-异常">2，panic 异常</h4>
+<p>panic 指的是 Go 程序在运行时出现的一个异常情况。如果异常出现了，但没有被捕获并恢复，Go 程序的执行就会被终止。</p>
+<p>panic 主要有两类来源：</p>
+<ul>
+<li>来自 Go 运行时</li>
+<li>通过 panic 函数主动触发</li>
+</ul>
+<p>当函数 F 调用 panic 函数时，函数 F 的执行将停止。不过，函数 F 中已进行求值的 deferred 函数都会得到正常执行，执行完这些 deferred 函数后，函数 F 才会把控制权返还给其调用者。</p>
+<blockquote>
+<p>在 Go 标准库中，大多数 panic 的使用都是充当类似断言的作用的。
+在 Go 中，作为 API 函数的作者，你一定不要将 panic 当作错误返回给 API 调用者。</p>
+</blockquote>
+<p>一个例子：</p>
+<pre><code class="language-go">func foo() {
+    println(&quot;call foo&quot;)
+    bar()
+    println(&quot;exit foo&quot;)
+}
+
+func bar() {
+    println(&quot;call bar&quot;)
+    panic(&quot;panic occurs in bar&quot;)
+    zoo()
+    println(&quot;exit bar&quot;)
+}
+
+func zoo() {
+    println(&quot;call zoo&quot;)
+    println(&quot;exit zoo&quot;)
+}
+
+func main() {
+    println(&quot;call main&quot;)
+    foo()
+    println(&quot;exit main&quot;)
+}
+</code></pre>
+<p>其输出结果如下：</p>
+<pre><code class="language-shell">call main
+call foo
+call bar
+panic: panic occurs in bar
+</code></pre>
+<p>在整个程序中，都没有对 panic 异常进行捕捉，所以在遇到 panic 异常后，程序就退出了。</p>
+<p>在 Go 中使用 recover 函数对 panic 异常进行捕捉。</p>
+<pre><code class="language-go">// 在一个 defer 匿名函数中调用 recover 函数对 panic 进行捕捉
+func bar() {
+    defer func() {
+        if e := recover(); e != nil {
+            fmt.Println(&quot;recover the panic:&quot;, e)
+        }
+    }()
+
+    println(&quot;call bar&quot;)
+    panic(&quot;panic occurs in bar&quot;)
+    zoo()
+    println(&quot;exit bar&quot;)
+}
+</code></pre>
+<ul>
+<li>recover 是 Go 内置的专门用于恢复 panic 的函数，它必须被放在一个 defer 函数中才能生效</li>
+<li>如果 recover 捕捉到 panic，它就会返回以 panic 的具体内容为错误上下文信息的错误值
+<ul>
+<li>实际过程是，在 bar 中遇到 panic 后，bar 函数被异常终止</li>
+<li>在 bar 退出时，要执行 defer 函数，此时 defer 函数中的 recover  捕获到了一个 pnic 异常</li>
+<li>并且 recover 阻止了异常继续向上抛</li>
+<li>此时，从 foo 函数的视角来看，bar 函数与正常返回没有什么差别。foo 函数依旧继续向下执行。</li>
+</ul>
+</li>
+<li>如果没有 panic 发生，那么 recover 将返回 nil</li>
+<li>而且，如果 panic 被 recover 捕捉到，panic 引发的 panicking 过程就会停止</li>
+</ul>
+<p>捕捉异常后的程序运行结果：</p>
+<pre><code class="language-shell">call main
+call foo
+call bar
+recover the panic: panic occurs in bar
+exit foo
+exit main
+</code></pre>
+<p><strong>将 panic 作为断言方式使用：</strong></p>
+<pre><code class="language-go">// $GOROOT/src/encoding/json/encode.go
+func (w *reflectWithString) resolve() error {
+    ... ...
+    switch w.k.Kind() {
+    case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+        w.ks = strconv.FormatInt(w.k.Int(), 10)
+        return nil
+    case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+        w.ks = strconv.FormatUint(w.k.Uint(), 10)
+        return nil
+    }
+    
+    // 正常情况下，程序不会走到这里
+    // 如果走到了这里，说明出现了问题
+    // 相当于 assert 的作用
+    panic(&quot;unexpected map key type&quot;)
+}
+</code></pre>
+<p><strong>注意，Go 中 panic 并不同于 Java，Python 中的 raise 异常，所以不要将 panic 像 Exception 一样使用。</strong> 就是，作为 Go API 函数的作者，一定不要将 panic 当作错误返回给 API 调用者。</p>
+<h4 id="3defer-函数">3，defer 函数</h4>
+<p>defer 是 Go 语言提供的一种延迟调用机制，defer 的运作离不开函数。</p>
+<ul>
+<li>在 Go 中，只有在函数（和方法）内部才能使用 defer；</li>
+<li>defer 关键字后面只能接函数（或方法），这些函数被称为 deferred 函数。</li>
+<li>defer 将它们注册到其所在 Goroutine 中，用于存放 deferred 函数的栈数据结构中，这些 deferred 函数将在执行 defer 的函数退出前，按后进先出（LIFO）的顺序被程序调度执行。</li>
+<li>defer 关键字是在注册函数时对函数的参数进行求值的。</li>
+</ul>
+<p>无论是执行到函数体尾部返回，还是在某个错误处理分支显式 return，又或是出现 panic，已经存储到 deferred 函数栈中的函数，都会被调度执行。所以说，deferred 函数是一个可以在任何情况下为函数进行收尾工作的好“伙伴”。</p>
+<p>使用 defer 的一个示例：</p>
+<pre><code class="language-go">func doSomething() error {
+    var mu sync.Mutex
+    mu.Lock()
+    defer mu.Unlock()
+
+    r1, err := OpenResource1()
+    if err != nil {
+        return err
+    }
+    defer r1.Close()
+
+    r2, err := OpenResource2()
+    if err != nil {
+        return err
+    }
+    defer r2.Close()
+
+    r3, err := OpenResource3()
+    if err != nil {
+        return err
+    }
+    defer r3.Close()
+
+    // 使用r1，r2, r3
+    return doWithResources() 
+}
+</code></pre>
+<p>对于自定义的函数或方法，defer 可以给与无条件的支持，但是对于有返回值的自定义函数或方法，<strong>返回值会在 deferred 函数被调度执行的时候被自动丢弃</strong>。</p>
+<p><strong>不是所有的内置函数都能作为 deffered 函数</strong></p>
+<ul>
+<li>append、cap、len、make、new、imag 等内置函数都是不能直接作为 deferred 函数的</li>
+<li>而 close、copy、delete、print、recover 等内置函数则可以直接被 defer 设置为 deferred 函数</li>
+</ul>
+<p>对于那些不能直接作为 deferred 函数的内置函数，我们可以使用一个包裹它的匿名函数来间接满足要求，以 append 为例是这样的：</p>
+<pre><code class="language-go">defer func() {
+  _ = append(sl, 11)
+}()
+</code></pre>
+<h3 id="14go-并发">14，Go 并发</h3>
+<p>Go 语言<strong>原生支持并发</strong>，<strong>Go 并发</strong>这个词，它包含两方面内容：</p>
+<ul>
+<li>一个是并发的概念</li>
+<li>一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、channel、select 这些 Go 并发的语法特性</li>
+</ul>
+<h4 id="1goroutine">1，goroutine</h4>
+<p>goroutine 是由 Go 运行时（runtime）负责调度的、轻量的用户级线程，为并发程序设计提供原生支持。</p>
+<ul>
+<li>资源占用小，每个 goroutine 的初始栈大小仅为 2k；
+<ul>
+<li>一个 Go 程序中可以创建成千上万个并发的 Goroutine</li>
+</ul>
+</li>
+<li>由 Go 运行时而不是操作系统调度，goroutine 上下文切换在用户层完成，开销更小；
+<ul>
+<li>操作系统眼中只有线程，它甚至不知道有一种叫 Goroutine 的事物存在。所以，Goroutine 的调度全要靠 Go 自己完成</li>
+<li>在操作系统层面，线程竞争的“CPU”资源是真实的物理 CPU</li>
+<li>Goroutine 们要竞争的“CPU”资源就是操作系统线程，Goroutine 调度器的任务是将 Goroutine 按照一定算法放到不同的操作系统线程中去执行。</li>
+</ul>
+</li>
+<li>在语言层面而不是通过标准库提供。goroutine 由go关键字创建，一退出就会被回收或销毁，开发体验更佳；</li>
+<li>语言内置 channel 作为 goroutine 间通信原语，为并发设计提供了强大支撑。</li>
+</ul>
+<p>Go 语言通过 <code>go关键字+函数/方法</code> 的方式创建一个 goroutine。创建后，新 goroutine 将拥有独立的代码执行流，并与创建它的 goroutine 一起被 Go 运行时调度。</p>
+<p>多数情况下，我们不需要考虑对 goroutine 的退出进行控制：goroutine 的执行函数的返回，就意味着 goroutine 退出。</p>
+<p>如果 main goroutine 退出了，那么也意味着整个应用程序的退出。</p>
+<p>此外，你还要注意的是，goroutine 执行的函数或方法即便有返回值，Go 也会忽略这些返回值。所以，如果你要获取 goroutine 执行后的返回值，你需要另行考虑其他方法，比如通过 goroutine 间的通信来实现。</p>
+<h4 id="2channel">2，channel</h4>
+<p>channel 既可以用来实现 Goroutine 间的通信，还可以实现 Goroutine 间的同步。</p>
+<p>channel 是用于 Goroutine 间通信的，所以绝大多数对 channel 的读写都被分别放在了不同的 Goroutine 中。</p>
+<p>Go 在语法层面将并发原语 channel 作为一等公民对待，使得我们可以像使用普通变量那样使用 channel，比如：</p>
+<ul>
+<li>定义 channel 类型变量</li>
+<li>给 channel 变量赋值</li>
+<li>将 channel 作为参数传递给函数 / 方法</li>
+<li>将 channel 作为返回值从函数 / 方法中返回</li>
+<li>甚至将 channel 发送到其他 channel 中</li>
+</ul>
+<p>channel 也是一种复合数据类型，在声明一个 channel 类型变量时，必须给出其具体的元素类型：</p>
+<pre><code class="language-go">// 声明一个元素为 int 类型的 channel 类型变量 ch
+var ch chan int
+</code></pre>
+<p>如果 channel 类型变量在声明时没有被赋予初值，那么它的默认值为 <strong>nil</strong>。</p>
+<p>为 channel 类型变量赋初值的唯一方法就是使用 make 函数：</p>
+<pre><code class="language-go">ch1 := make(chan int)       // 无缓冲 channel
+ch2 := make(chan int, 5)    // 有缓冲 channel，缓冲区长度是 5
+</code></pre>
+<p>上面两种类型的变量关于发送（send）与接收（receive）的特性是不同的。</p>
+<p>Go 提供了<code>&lt;-</code> 操作符用于对 channel 类型变量进行发送与接收操作：</p>
+<pre><code class="language-go">ch1 &lt;- 13    // 将整型字面值13发送到无缓冲channel类型变量ch1中
+n := &lt;- ch1  // 从无缓冲channel类型变量ch1中接收一个整型值存储到整型变量n中
+ch2 &lt;- 17    // 将整型字面值17发送到带缓冲channel类型变量ch2中
+m := &lt;- ch2  // 从带缓冲channel类型变量ch2中接收一个整型值存储到整型变量m中
+</code></pre>
+<p>无缓冲 channel 的运行时层实现不带有缓冲区，所以 Goroutine 对无缓冲 channel 的接收和发送操作是同步的。也就是说，对同一个无缓冲 channel，只有对它进行接收操作的 Goroutine 和对它进行发送操作的 Goroutine 都存在的情况下，通信才能得以进行，否则单方面的操作会让对应的 Goroutine 陷入挂起状态，比如下面示例代码：</p>
+<pre><code class="language-go">// 这里创建了一个无缓冲的 channel 类型变量 ch1，对 ch1 的读写都放在了一个 Goroutine 中
+func main() {
+    ch1 := make(chan int)
+    ch1 &lt;- 13 // fatal error: all goroutines are asleep - deadlock!
+    n := &lt;-ch1
+    println(n)
+}
+</code></pre>
+<p>因此上面代码要进行如下改进：</p>
+<pre><code class="language-go">func main() {
+    ch1 := make(chan int)
+    go func() {
+        ch1 &lt;- 13 // 将发送操作放入一个新goroutine中执行
+    }()
+    n := &lt;-ch1
+    println(n)
+}
+</code></pre>
+<p>带缓冲 channel 的运行时层实现带有缓冲区，因此，对带缓冲 channel 的发送操作在缓冲区未满、接收操作在缓冲区非空的情况下是异步的（发送或接收不需要阻塞等待）。</p>
+<p>示例：</p>
+<pre><code class="language-go">ch2 := make(chan int, 1)
+n := &lt;-ch2 // 由于此时ch2的缓冲区中无数据，因此对其进行接收操作将导致goroutine挂起
+
+ch3 := make(chan int, 1)
+ch3 &lt;- 17  // 向ch3发送一个整型数17
+ch3 &lt;- 27  // 由于此时ch3中缓冲区已满，再向ch3发送数据也将导致goroutine挂起
+</code></pre>
+<p>我们还可以声明只发送 channel 类型（send-only）和只接收 channel 类型（recv-only）：</p>
+<pre><code class="language-go">ch1 := make(chan&lt;- int, 1) // 只发送channel类型
+ch2 := make(&lt;-chan int, 1) // 只接收channel类型
+
+&lt;-ch1       // invalid operation: &lt;-ch1 (receive from send-only type chan&lt;- int)
+ch2 &lt;- 13   // invalid operation: ch2 &lt;- 13 (send to receive-only type &lt;-chan int)
+</code></pre>
+<p>试图从一个只发送 channel 类型变量中接收数据，或者向一个只接收 channel 类型发送数据，都会导致编译错误。</p>
+<p>通常只发送 channel 类型和只接收 channel 类型，会被用作函数的参数类型或返回值，用于限制对 channel 内的操作，或者是明确可对 channel 进行的操作的类型。</p>
+<p>例如下面生产者和消费者的例子：</p>
+<pre><code class="language-go">func produce(ch chan&lt;- int) {
+    for i := 0; i &lt; 10; i++ {
+        ch &lt;- i + 1
+        time.Sleep(time.Second)
+    }
+    close(ch)
+}
+
+func consume(ch &lt;-chan int) {
+    for n := range ch {
+        println(n)
+    }
+}
+
+func main() {
+    ch := make(chan int, 5)
+    var wg sync.WaitGroup
+    wg.Add(2)
+    go func() {
+        produce(ch)
+        wg.Done()
+    }()
+
+    go func() {
+        consume(ch)
+        wg.Done()
+    }()
+
+    wg.Wait()
+}
+</code></pre>
+<p>在这个例子中：</p>
+<ul>
+<li>我们启动了两个 Goroutine，分别代表生产者（produce）与消费者（consume）。</li>
+<li>生产者只能向 channel 中发送数据，我们使用chan&lt;- int作为 produce 函数的参数类型；</li>
+<li>消费者只能从 channel 中接收数据，我们使用&lt;-chan int作为 consume 函数的参数类型。</li>
+<li>在消费者函数 consume 中，我们使用了 for range 循环语句来从 channel 中接收数据，for range 会阻塞在对 channel 的接收操作上，直到 channel 中有数据可接收或 channel 被关闭循环，才会继续向下执行。</li>
+<li>channel 被关闭后，for range 循环也就结束了。
+<ul>
+<li>channel 关闭后，所有等待从这个 channel 接收数据的操作都将返回。</li>
+<li>从一个已关闭的 channel 接收数据将永远不会被阻塞，并可得到对应类型的零值</li>
+<li>channel一旦没有人引用了，就会被gc掉，不关闭也ok。但是如果有goroutine一直在读channel，那么channel一直存在，不会关闭。直到程序退出。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-go">n := &lt;- ch      // 当ch被关闭后，n将被赋值为ch元素类型的零值
+
+m, ok := &lt;-ch   // 当ch被关闭后，m将被赋值为ch元素类型的零值, ok值为false
+
+for v := range ch { // 当ch被关闭后，for range循环结束
+    ... ...
+}
+</code></pre>
+<p>channel 的一个使用惯例，那就是<strong>发送端负责关闭 channel</strong>。</p>
+<p>一旦向一个已经关闭的 channel 执行发送操作，这个操作就会引发 panic，比如：</p>
+<pre><code class="language-go">ch := make(chan int, 5)
+close(ch)
+ch &lt;- 13 // panic: send on closed channel
+</code></pre>
+<h4 id="3无缓冲-channel-的惯用法">3，无缓冲 channel 的惯用法</h4>
+<p>无缓冲 channel 兼具通信和同步特性，在并发程序中应用颇为广泛。</p>
+<ul>
+<li>第一种用法：用作信号传递</li>
+<li>第二种用法：用于替代锁机制</li>
+</ul>
+<p><strong>第一种用法：用作信号传递</strong></p>
+<p>无缓冲 channel 用作信号传递的时候，有两种情况，分别是 1 对 1 通知信号和 1 对 n 通知信号。</p>
+<p><strong>第二种用法：用于替代锁机制</strong></p>
+<p>无缓冲 channel 具有同步特性，这让它在某些场合可以替代锁，让我们的程序更加清晰，可读性也更好。</p>
+<h4 id="4有缓冲-channel-的惯用法">4，有缓冲 channel 的惯用法</h4>
+<p>带缓冲的 channel 与无缓冲的 channel 的最大不同之处，就在于它的异步性。也就是说，对一个带缓冲 channel，在缓冲区未满的情况下，对它进行发送操作的 Goroutine 不会阻塞挂起；在缓冲区有数据的情况下，对它进行接收操作的 Goroutine 也不会阻塞挂起。</p>
+<ul>
+<li>第一种用法：用作消息队列
+<ul>
+<li>无论是 1 收 1 发还是多收多发，带缓冲 channel 的收发性能都要好于无缓冲 channel；</li>
+<li>对于带缓冲 channel 而言，发送与接收的 Goroutine 数量越多，收发性能会有所下降；</li>
+<li>对于带缓冲 channel 而言，选择适当容量会在一定程度上提升收发性能。</li>
+</ul>
+</li>
+<li>第二种用法：用作计数信号量</li>
+<li>len(channel) 的应用
+<ul>
+<li>当 ch 为无缓冲 channel 时，len(ch) 总是返回 0；</li>
+<li>当 ch 为带缓冲 channel 时，len(ch) 返回当前 channel ch 中尚未被读取的元素个数。</li>
+</ul>
+</li>
+</ul>
+<p>那我们是否可以使用 len 函数来实现带缓冲 channel 的“判满”、“判有”和“判空”逻辑呢？</p>
+<pre><code class="language-go">var ch chan T = make(chan T, capacity)
+
+// 判空
+if len(ch) == 0 {
+    // 此时channel ch空了?
+}
+
+// 判有
+if len(ch) &gt; 0 {
+    // 此时channel ch中有数据?
+}
+
+// 判满
+if len(ch) == cap(ch) {
+    // 此时channel ch满了?
+}
+</code></pre>
+<p>channel 原语用于多个 Goroutine 间的通信，一旦多个 Goroutine 共同对 channel 进行收发操作，len(channel) 就会在多个 Goroutine 间形成“竞态”。</p>
+<p>单纯地依靠 len(channel) 来判断 channel 中元素状态，是不能保证在后续对 channel 的收发时 channel 状态是不变的。</p>
+<h4 id="5nil-channel">5，nil channel</h4>
+<p>如果一个 channel 类型变量的值为 nil，我们称它为 nil channel，对 nil channel 的读写都会发生阻塞。</p>
+<pre><code class="language-go">func main() {
+  var c chan int
+  &lt;-c //阻塞
+}
+
+或者：
+
+func main() {
+  var c chan int
+  c&lt;-1  //阻塞
+}
+</code></pre>
+<h4 id="6select">6，select</h4>
+<p>当涉及同时对多个 channel 进行操作时，我们会结合另外一个原语 select，一起使用。</p>
+<p>通过 select，我们可以同时在多个 channel 上进行发送 / 接收操作：</p>
+<pre><code class="language-go">select {
+case x := &lt;-ch1:     // 从channel ch1接收数据
+  ... ...
+
+case y, ok := &lt;-ch2: // 从channel ch2接收数据，并根据ok值判断ch2是否已经关闭
+  ... ...
+
+case ch3 &lt;- z:       // 将z值发送到channel ch3中:
+  ... ...
+
+default:             // 当上面case中的channel通信均无法实施时，执行该默认分支
+}
+</code></pre>
+<p>当 select 语句中没有 default 分支，而且所有 case 中的 channel 操作都阻塞了的时候，整个 select 语句都将被阻塞，直到某一个 case 上的 channel 变成可发送，或者某个 case 上的 channel 变成可接收，select 语句才可以继续进行下去。</p>
+<h3 id="15go-共享内存">15，Go 共享内存</h3>
+<p>Go 语言之父 Rob Pike 还有一句经典名言：“不要通过共享内存来通信，应该通过通信来共享内存”。这就奠定了 Go 应用并发设计的主流风格：使用 channel 进行不同 Goroutine 间的通信。</p>
+<p>一般情况下，建议优先使用 channel 并发模型进行并发程序设计。</p>
+<p>不过，Go 也并没有彻底放弃基于共享内存的并发模型，而是在提供 CSP 并发模型原语的同时，还通过标准库的：</p>
+<ul>
+<li><strong>sync</strong> 包，提供了针对传统的、基于共享内存并发模型的低级同步原语，包括：
+<ul>
+<li>互斥锁（sync.Mutex）</li>
+<li>读写锁（sync.RWMutex）：适合应用在具有一定并发量且读多写少的场合</li>
+<li>条件变量（sync.Cond）</li>
+</ul>
+</li>
+<li>并通过 <strong>atomic</strong> 包提供了原子操作原语等</li>
+</ul>
+<p>Mutex 的使用示例：</p>
+<pre><code class="language-go">var mu sync.Mutex
+
+mu.Lock()       // 加锁
+doSomething()
+mu.Unlock()     // 解锁
+</code></pre>
+<p>RWMutex 的使用示例：</p>
+<pre><code class="language-go">var rwmu sync.RWMutex
+
+rwmu.RLock()    //加读锁
+readSomething()
+rwmu.RUnlock()  //解读锁
+
+rwmu.Lock()     //加写锁
+changeSomething()
+rwmu.Unlock()   //解写锁
+</code></pre>
+<p>其实，面向 CSP 并发模型的 channel 原语和面向传统共享内存并发模型的 sync 包提供的原语，已经能够满足 Go 语言应用并发设计中 99.9% 的并发同步需求了。而剩余那 0.1% 的需求，我们可以使用 Go 标准库提供的 atomic 包来实现。</p>
+<h3 id="16go-socket-编程">16，Go Socket 编程</h3>
+<p>Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。</p>
+<p>但这种方式是 Go 模拟出来，是为了让开发者使用起来更加简单易懂，对应的、真实的底层操作系统 Socket，<strong>实际上是非阻塞的</strong>。</p>
+<p>Go 没有使用基于线程的并发模型，而是使用了开销更小的 Goroutine 作为基本执行单元，这让<strong>每个 Goroutine 处理一个 TCP 连接成为可能</strong>，并且在高并发下依旧表现出色。</p>
+<blockquote>
+<p>虽然目前主流 socket 网络编程模型是 I/O 多路复用模型，但考虑到这个模型在使用时的体验较差，Go 语言将这种复杂性隐藏到运行时层，并结合 Goroutine 的轻量级特性，在用户层提供了基于 I/O 阻塞模型的 Go socket 网络编程模型，这一模型就大大简化了编程难度。</p>
+</blockquote>
+<h4 id="1server-端">1，Server 端</h4>
+<p>Go Server 端编程套路模板：</p>
+<pre><code class="language-go">func handleConn(c net.Conn) {
+    defer c.Close()
+    for {
+        // read from the connection
+        // ... ...
+        // write to the connection
+        //... ...
+    }
+}
+
+func main() {
+    l, err := net.Listen(&quot;tcp&quot;, &quot;:8888&quot;)
+    if err != nil {
+        fmt.Println(&quot;listen error:&quot;, err)
+        return
+    }
+
+    for {
+        c, err := l.Accept()
+        if err != nil {
+            fmt.Println(&quot;accept error:&quot;, err)
+            break
+        }
+        // start a new goroutine to handle
+        // the new connection.
+        go handleConn(c)
+    }
+}
+</code></pre>
+<h4 id="2client-端">2，Client 端</h4>
+<p>Go Client 端与 Server 端建立连接的两种方式：</p>
+<pre><code class="language-go">conn, err := net.Dial(&quot;tcp&quot;, &quot;localhost:8888&quot;)
+
+// 带有超时机制的建连
+conn, err := net.DialTimeout(&quot;tcp&quot;, &quot;localhost:8888&quot;, 2 * time.Second)
+</code></pre>
+<p>net.Dial 函数的第一个参数的可选值，共九个：</p>
+<ul>
+<li>&ldquo;tcp&rdquo;：代表 TCP 协议，其基于的 IP 协议的版本根据参数address的值自适应。</li>
+<li>&ldquo;tcp4&rdquo;：代表基于 IP 协议第四版的 TCP 协议。</li>
+<li>&ldquo;tcp6&rdquo;：代表基于 IP 协议第六版的 TCP 协议。</li>
+<li>&ldquo;udp&rdquo;：代表 UDP 协议，其基于的 IP 协议的版本根据参数address的值自适应。</li>
+<li>&ldquo;udp4&rdquo;：代表基于 IP 协议第四版的 UDP 协议。</li>
+<li>&ldquo;udp6&rdquo;：代表基于 IP 协议第六版的 UDP 协议。</li>
+<li>&ldquo;unix&rdquo;：代表 Unix 通信域下的一种内部 socket 协议，以 SOCK_STREAM 为 socket 类型。</li>
+<li>&ldquo;unixgram&rdquo;：代表 Unix 通信域下的一种内部 socket 协议，以 SOCK_DGRAM 为 socket 类型。</li>
+<li>&ldquo;unixpacket&rdquo;：代表 Unix 通信域下的一种内部 socket 协议，以 SOCK_SEQPACKET 为 socket 类型。</li>
+</ul>
+<h4 id="3socket-读操作">3，Socket 读操作</h4>
+<p>从 Socket 读数据的三种情况：</p>
+<ul>
+<li><strong>Socket 中无数据</strong>：如果没有设置超时时间，那么读操作会一直阻塞
+<ul>
+<li>SetReadDeadline 方法可以设置超时时间，SetReadDeadline 方法接受一个绝对时间作为超时的 deadline。</li>
+<li>一旦通过这个方法设置了某个 socket 的 Read deadline，当发生超时后，如果我们<strong>不重新设置 Deadline</strong>，那么后面与这个 socket 有关的所有读操作，都会返回超时失败错误。</li>
+<li><code>SetReadDeadline（time.Time{}）</code>可用于取消超时时间</li>
+</ul>
+</li>
+<li><strong>Socket 中有部分数据</strong>：Socket 中有部分数据就绪，且数据数量小于一次读操作期望读出的数据长度
+<ul>
+<li>读操作将会成功读出这部分数据，并返回，而不是等待期望长度数据全部读取后，再返回</li>
+</ul>
+</li>
+<li><strong>Socket 中有足够数据</strong>：成功读出期望的数据，并返回
+<ul>
+<li>剩下的数据会在下一次读取时获取</li>
+</ul>
+</li>
+</ul>
+<h4 id="4socket-写操作">4，Socket 写操作</h4>
+<p>当 Write 调用的返回值 n 的值，与预期要写入的数据长度相等，且 err = nil 时，我们就执行了一次成功的 Socket 写操作，这是我们在调用 Write 时遇到的最常见的情形。</p>
+<p>其它情况还有：</p>
+<ul>
+<li>写阻塞</li>
+<li>写入部分数据</li>
+<li>写入超时
+<ul>
+<li>SetWriteDeadline 方法用于设置写超时时间</li>
+</ul>
+</li>
+</ul>
+<h4 id="5关闭-socket">5，关闭 Socket</h4>
+<p>当客户端主动关闭了 Socket，那么服务端的Read调用将会读到什么呢？这里要分“有数据关闭”和“无数据关闭”两种情况。</p>
+<ul>
+<li>有数据关闭：指在客户端关闭连接时，Socket 中还有服务端尚未读取的数据
+<ul>
+<li>在这种情况下，服务端的 Read 会成功将剩余数据读取出来，</li>
+<li>最后一次 Read 操作将得到io.EOF错误码，表示客户端已经断开了连接。</li>
+</ul>
+</li>
+<li>无数据关闭
+<ul>
+<li>服务端调用的 Read 方法将直接返回io.EOF。</li>
+</ul>
+</li>
+</ul>
+<h3 id="17strings-包">17，strings 包</h3>
+<h4 id="1string-类型">1，string 类型</h4>
+<p>在 Go 语言中，string 类型的值是不可变的。在进行字符串拼接的时候，Go 语言会把所有被拼接的字符串依次拷贝到一个<strong>崭新且足够大的连续内存空间中</strong>，并把持有相应指针值的 string 值作为结果返回。</p>
+<p>因此，当程序中<strong>存在过多的字符串拼接操作的时候</strong>，会对内存的分配产生非常大的压力。</p>
+<h4 id="2stringsbuilder">2，strings.Builder</h4>
+<p>与 string 相比，Builder 的优势主要体现在<strong>字符串拼接</strong>方面。与 string 一样，Builder 的底层也是一个 byte 类型的切片（字节切片），Builder 会按需扩容，不必每次拼接都需要拷贝。</p>
+<blockquote>
+<p>使用 StringBuffer 或是 StringBuild 来拼接字符串，会比使用 + 或 += 性能高三到四个数量级。</p>
+</blockquote>
+<p>当一个 Builder 中的空间够用时，其不会发生扩容，当不够用时，其会自动进行扩容。发生扩容时，会产生新的更大的内存空间，并将旧空间中的数据拷贝到新空间。</p>
+<p>Builder 对象中的方法：</p>
+<ul>
+<li>Write</li>
+<li>WriteByte</li>
+<li>WriteRune</li>
+<li>WriteString</li>
+<li>Grow：用于扩容</li>
+<li>Reset：重置容器，其中的内容将被丢弃</li>
+</ul>
+<h4 id="3stringsreader">3，strings.Reader</h4>
+<p>strings.Reader 类型是为了<strong>高效读取字符串</strong>而存在的。</p>
+<p>Reader 对象中的方法：</p>
+<ul>
+<li>ReadByte</li>
+<li>ReadRune</li>
+<li>ReadAt</li>
+<li>Seek</li>
+</ul>
+<h4 id="4其它方法">4，其它方法</h4>
+<p>Go 的 <strong>strings</strong> 包中有很多字符串相关操作函数：</p>
+<ul>
+<li><code>strings.Split</code>：字符串分割</li>
+<li><code>strings.Join</code>：字符串连接</li>
+<li><code>strings.Count</code>：计数</li>
+<li><code>strings.Compare</code>：字符串比较</li>
+<li><code>strings.Contains</code>：是否包含</li>
+<li><code>strings.HasPrefix</code>：是否包含前缀</li>
+<li><code>strings.HasSuffix</code>：是否包含后缀</li>
+<li><code>strings.Index</code>：某字符的位置，不存在返回 -1</li>
+<li><code>strings.LastIndex</code></li>
+<li><code>strings.Repeat</code>：重复字符串几次</li>
+<li><code>strings.Replace</code>：字符串替换</li>
+<li><code>strings.Split</code>：字符串分割</li>
+<li><code>strings.Trim：</code>字符串去除某字符</li>
+<li><code>strings.TrimLeft</code></li>
+<li><code>strings.TrimRight</code></li>
+<li><code>strings.TrimSpace</code>：去除首尾空格</li>
+<li><code>strings.ToLower</code>：转小写</li>
+<li><code>strings.ToUpper</code>：转大写</li>
+<li><code>strings.Title</code>：首字母转大写</li>
+<li><code>strings.Fields</code>：字符串变数组，将字符串以空白字符分割</li>
+</ul>
+<h3 id="18bytes-包">18，bytes 包</h3>
+<p>strings 包主要面向的是 Unicode 字符和经过 UTF-8 编码的字符串，而 bytes 包面对的则主要是字节和字节切片。</p>
+<p>在内部，bytes.Buffer 类型同样是使用字节切片作为内容容器的。</p>
+<p>bytes.Buffer 类型的用途主要是作为字节序列的缓冲区，bytes.Buffer 是集读、写功能于一身的数据类型。</p>
+<h3 id="19io-包">19，io 包</h3>
+<p><img src="https://img-blog.csdnimg.cn/35f3fd33b5cc40e8807f0e8aaa4e7928.png" alt="在这里插入图片描述"></p>
+<h3 id="20os-包">20，os 包</h3>
+<ul>
+<li>os.File：代表操作系统中的文件</li>
+<li>os.Create：根据给定的路径创建一个新的文件</li>
+<li>os.NewFile：它并不是创建一个新的文件，而是依据一个已经存在的文件的描述符，来新建一个包装了该文件的 File 值。</li>
+<li>os.Open：打开一个文件并返回包装了该文件的 File 值</li>
+<li>os.OpenFile：它其实是 os.Create 函数和 os.Open 函数的底层支持，它最为灵活。</li>
+</ul>
+<p>模式值有：</p>
+<ul>
+<li>os.O_RDONLY：只读</li>
+<li>os.O_WRONLY：只写</li>
+<li>os.O_RDWR：读写</li>
+<li>os.O_APPEND：当向文件中写入内容时，把新内容追加到现有内容的后边</li>
+<li>os.O_CREATE：当给定路径上的文件不存在时，创建一个新文件</li>
+<li>os.O_EXCL：与 os.O_CREATE 一同使用，表示在给定的路径上不能有已存在的文件</li>
+<li>os.O_SYNC：在打开的文件之上实施同步 I/O。它会保证读写的内容总会与硬盘上的数据保持同步</li>
+<li>os.O_TRUNC：如果文件已存在，并且是常规的文件，那么就先清空其中已经存在的任何内容</li>
+</ul>
+<h3 id="21go-优秀项目">21，Go 优秀项目</h3>
+<p><strong>开发框架</strong></p>
+<ul>
+<li>Web 框架
+<ul>
+<li><a href="https://github.com/gin-gonic/gin">gin</a></li>
+<li>beego</li>
+<li>martini</li>
+<li>revel</li>
+<li>echo</li>
+<li>iris</li>
+<li>negroni</li>
+<li>gorilla：mux、websocket</li>
+<li>buffalo</li>
+<li>goproxy</li>
+<li>go-restful</li>
+<li>graphql</li>
+</ul>
+</li>
+<li>路由：httprouter</li>
+<li>微服务：go-kit/kit、go-micro、goa、kite</li>
+<li>RPC：<strong>grpc-go</strong>、grpc-gateway、rpcx</li>
+<li>数据库
+<ul>
+<li><strong>mysql</strong></li>
+<li>gorm</li>
+<li>sqlx</li>
+<li>gorp</li>
+<li>xorm</li>
+<li><strong>redigo</strong></li>
+<li><strong>redis</strong></li>
+<li>mgo</li>
+<li><strong>elastic</strong></li>
+</ul>
+</li>
+<li>命令行：cobra、urfave/cli、promptui、fatih/color</li>
+<li>日志：logrus、zap</li>
+<li>网页解析：goquery</li>
+<li>文件、文本分析
+<ul>
+<li>blackfriday</li>
+<li>xlsx</li>
+<li>gofpdf</li>
+<li>go-yaml/yaml</li>
+<li>SurntSushi/toml</li>
+</ul>
+</li>
+<li>序列化
+<ul>
+<li>golang/protobuf</li>
+<li>gogo/protobuf</li>
+<li>gopacket</li>
+<li>gjson</li>
+<li>ffjson</li>
+<li>go-simplejson</li>
+<li>structs</li>
+<li>go-spew</li>
+</ul>
+</li>
+<li>高级数据结构：go-datastructures、gods</li>
+<li>单元测试：testify</li>
+<li>错误处理：pkg/errors</li>
+<li>任务管理：robfig/cron</li>
+<li>嵌入式设备：gobot</li>
+<li>文本搜索：bleve</li>
+<li>分布式计算：netstack、protoactor-go</li>
+</ul>
+<p><strong>数据分析</strong></p>
+<ul>
+<li>机器学习：golearn、prose、hybridgroup/gocv</li>
+<li>数据处理：pachyderm、gonum</li>
+</ul>
+<p><strong>云计算</strong></p>
+<ul>
+<li>容器技术
+<ul>
+<li>moby</li>
+<li>kubernetes</li>
+<li>rkt</li>
+<li>gvisor</li>
+<li>rancher</li>
+<li>runc</li>
+<li>distribution</li>
+</ul>
+</li>
+<li>注册服务：registrator、harbor</li>
+<li>访问框架：go-cloud、go-github</li>
+</ul>
+<p><strong>中间件</strong></p>
+<ul>
+<li>反向代理：traefik、frp</li>
+<li>消息队列：nsq、gnatsd、jocko、centrifugo</li>
+<li>服务发现：consul、consul-template、istio</li>
+<li>KV 存储：etcd、bolt、badger</li>
+<li>负载均衡：seesaw、fabio</li>
+</ul>
+<p><strong>独立服务</strong></p>
+<ul>
+<li>CI/CD：gogs、gitea</li>
+<li>Web 服务器：caddy</li>
+<li>监控系统：prometheus</li>
+<li>数据库：
+<ul>
+<li>influxdb</li>
+<li>cockroach</li>
+<li>tidb</li>
+<li>cayley</li>
+<li>noms</li>
+<li>vitess</li>
+<li>dgraph</li>
+<li>kingshard</li>
+<li>ledisdo</li>
+<li>goleveldb</li>
+</ul>
+</li>
+<li>对象存储服务器：minio</li>
+<li>消息服务器：centrifugo、gorush</li>
+<li>集群管理：nomad、gala</li>
+<li>数据采集软件：pholcus、ferret</li>
+<li>应用系统：goim</li>
+</ul>
+<p><strong>系统工具</strong></p>
+<ul>
+<li>同步工具：syncthing、oklog</li>
+<li>流量重放：goreplay/gor</li>
+<li>负载测试：vegeta、boom、k6、ney</li>
+<li>系统监控：telegraf、gopsutil</li>
+<li>任务管理：realize</li>
+<li>扫描渗透：vuls、gitleaks</li>
+<li>Web 交互：gotty、wuzz</li>
+<li>HTTP 客户端：httpstat、bat</li>
+<li>配置管理：confd</li>
+</ul>
+<p><strong>Go 程序辅助工具</strong></p>
+<ul>
+<li>程序调试：delve</li>
+<li>程序监控：termui、go-metrics、checkup、gops</li>
+<li>程序分析：uber/go-torch</li>
+<li>依赖管理：dep、glide、godep、govendor、gb</li>
+<li>程序测试：ginkgo、goss、go-fuzz、goconvey</li>
+<li>文档生成：go-swagger</li>
+<li>程序发布：goreleaser</li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-05-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/05/go-grpc/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">gPRC入门指南</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/04/go2/">
+            <span class="next-text nav-default">Go学习笔记2-Go方法与接口</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/05/go3/" class="leancloud_visitors" data-flag-title="Go学习笔记3-Go并发与网络">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

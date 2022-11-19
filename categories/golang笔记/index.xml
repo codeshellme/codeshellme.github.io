@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang笔记 on 码农充电站</title>
+    <link>https://codeshellme.github.io/categories/golang%E7%AC%94%E8%AE%B0/</link>
+    <description>Recent content in Golang笔记 on 码农充电站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>@码农充电站</copyright>
+    <lastBuildDate>Fri, 20 May 2022 22:38:52 +0800</lastBuildDate>
+    
+	<atom:link href="https://codeshellme.github.io/categories/golang%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gPRC入门指南</title>
+      <link>https://codeshellme.github.io/2022/05/go-grpc/</link>
+      <pubDate>Fri, 20 May 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/05/go-grpc/</guid>
+      <description>1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能</description>
+    </item>
+    
+    <item>
+      <title>Go学习笔记3-Go并发与网络</title>
+      <link>https://codeshellme.github.io/2022/05/go3/</link>
+      <pubDate>Tue, 10 May 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/05/go3/</guid>
+      <description>13，Go 错误处理 1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错</description>
+    </item>
+    
+    <item>
+      <title>Go学习笔记2-Go方法与接口</title>
+      <link>https://codeshellme.github.io/2022/04/go2/</link>
+      <pubDate>Sun, 10 Apr 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/04/go2/</guid>
+      <description>9，Go 函数 函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以</description>
+    </item>
+    
+    <item>
+      <title>Go学习笔记1-Go基础</title>
+      <link>https://codeshellme.github.io/2022/04/go1/</link>
+      <pubDate>Fri, 01 Apr 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/04/go1/</guid>
+      <description>0，Go 学习资料 Go 语言官网：有两个地址 https://golang.google.cn/ https://go.dev/ Go 语言 Wiki Go 语言规范文档 Go 语言开发工具 Go 语言命令文档 Go 语言内存模型 Go 程序诊断 Effective Go Go 语言中文网 Tony Bai 改善</description>
+    </item>
+    
+  </channel>
+</rss>

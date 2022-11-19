@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Git 命令参考 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="学习资料： Git 官方手册-中文版 Git 官方手册-英文版 1，git config 1，用户名和邮件 配置用户名和邮件： # 添加配置 git config --global user.name &#39;Your name&#39; git config --global user.email &#39;Your email&#39; # 查看配置 git config" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/05/git-cmds/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Git 命令参考" />
+<meta property="og:description" content="学习资料： Git 官方手册-中文版 Git 官方手册-英文版 1，git config 1，用户名和邮件 配置用户名和邮件： # 添加配置 git config --global user.name &#39;Your name&#39; git config --global user.email &#39;Your email&#39; # 查看配置 git config" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/05/git-cmds/" />
+<meta property="article:published_time" content="2022-05-31T22:39:52+08:00" />
+<meta property="article:modified_time" content="2022-05-31T22:45:52+08:00" />
+<meta itemprop="name" content="Git 命令参考">
+<meta itemprop="description" content="学习资料： Git 官方手册-中文版 Git 官方手册-英文版 1，git config 1，用户名和邮件 配置用户名和邮件： # 添加配置 git config --global user.name &#39;Your name&#39; git config --global user.email &#39;Your email&#39; # 查看配置 git config">
+<meta itemprop="datePublished" content="2022-05-31T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-05-31T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="2204">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Git 命令参考"/>
+<meta name="twitter:description" content="学习资料： Git 官方手册-中文版 Git 官方手册-英文版 1，git config 1，用户名和邮件 配置用户名和邮件： # 添加配置 git config --global user.name &#39;Your name&#39; git config --global user.email &#39;Your email&#39; # 查看配置 git config"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Git 命令参考</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-05-31 </span>
+        <div class="post-category">
+            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%85%A5%E9%97%A8/"> 技术入门 </a>
+            </div>
+          <span class="more-meta"> 2204 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1git-config">1，git config</a></li>
+        <li><a href="#2git-init--clone">2，git init &amp; clone</a></li>
+        <li><a href="#3git-add">3，git add</a></li>
+        <li><a href="#4git-commit">4，git commit</a></li>
+        <li><a href="#5git-status">5，git status</a></li>
+        <li><a href="#6git-diff">6，git diff</a></li>
+        <li><a href="#7git-rm--mv">7，git rm &amp; mv</a></li>
+        <li><a href="#9git-log">9，git log</a></li>
+        <li><a href="#10git-remote">10，git remote</a></li>
+        <li><a href="#11git-pull--push">11，git pull &amp; push</a></li>
+        <li><a href="#12git-branch--checkout">12，git branch &amp; checkout</a></li>
+        <li><a href="#13git-stash">13，git stash</a></li>
+        <li><a href="#14git-禁令">14，git 禁令</a></li>
+        <li><a href="#15git-工作流">15，git 工作流</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><strong>学习资料：</strong></p>
+<ul>
+<li><a href="https://git-scm.com/book/zh/v2">Git 官方手册-中文版</a></li>
+<li><a href="https://git-scm.com/book/en/v2">Git 官方手册-英文版</a></li>
+</ul>
+<h3 id="1git-config">1，git config</h3>
+<h4 id="1用户名和邮件">1，用户名和邮件</h4>
+<p>配置用户名和邮件：</p>
+<pre><code class="language-shell"># 添加配置
+git config --global user.name 'Your name'
+git config --global user.email 'Your email'
+
+# 查看配置
+git config --list --global
+</code></pre>
+<h4 id="2git-别名">2，git 别名</h4>
+<pre><code class="language-shell">git config --global alias.st status
+git config --global alias.ci commit 
+git config --global alias.co checkout
+git config --global alias.br branch
+</code></pre>
+<p><code>git config --global</code> 的配置都会放在 <code>~/.gitconfig</code> 文件中，如下：</p>
+<pre><code class="language-json">[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	
+[user]
+	email = myemail@qq.com
+	name = myname
+</code></pre>
+<h4 id="3git-ssh-免密登录">3，git ssh 免密登录</h4>
+<p>首先，查看 <code>~/.ssh</code> 目录中是否有了公钥和私钥：</p>
+<pre><code class="language-shell">&gt; ls ~/.ssh
+————————————————————————————
+    id_rsa		# 私钥
+    id_ras.pub  # 公钥
+</code></pre>
+<p>如果没有则生成 ssh 文件，如果已有则忽略生成 ssh 步骤：</p>
+<pre><code class="language-shell">&gt; ssh-keygen -t rsa -b 2048 	# 然后一路回车即可
+</code></pre>
+<p>把生成的公钥 id_ras.pub 中的内容粘贴到远程 git 管理平台中。</p>
+<p><code>账户 &gt; Your Profile/Settings &gt; Edit Profile &gt; SSH Keys &gt; New SSH Key</code></p>
+<h3 id="2git-init--clone">2，git init &amp; clone</h3>
+<p>创建 git 仓库有两种方式：</p>
+<ul>
+<li>用 git init 初始化一个目录</li>
+<li>从远程仓库克隆一个 git 项目</li>
+</ul>
+<pre><code class="language-shell"># 在某个目录下执行，将该目录初始化为一个 git 项目
+git init
+
+# 克隆远程仓库
+git clone &lt;url&gt;
+</code></pre>
+<h3 id="3git-add">3，git add</h3>
+<p>将指定内容放入<strong>暂存区</strong>：</p>
+<pre><code class="language-shell">git add &lt;file&gt;
+git add .
+</code></pre>
+<p>撤销：</p>
+<pre><code class="language-shell">git reset HEAD &lt;file&gt;	# 取消对 &lt;file&gt; 的暂存，就是将其状态改为未暂存状态，相当于没有执行 git add &lt;file&gt;
+	                # 这样，在执行 git commit 时，就不会包含该文件
+	
+git checkout -- &lt;file&gt;  # &lt;file&gt; 文件已发生改变，但还没有被放入暂存区（可使用 git add &lt;file&gt; 将其放入暂存区）
+			# git checkout -- &lt;file&gt; 的含义是将目前对 &lt;file&gt; 的修改还原/撤销到未修改之前
+</code></pre>
+<h3 id="4git-commit">4，git commit</h3>
+<pre><code class="language-shell">git commit 			# 将暂存区内容，提交到本地仓库
+git commit -a			# 将暂存和未暂存的内容，一并提交
+git commit -m 			# 添加提交信息
+
+# 使用一次新的 commit，替代上一次提交
+# 如果代码没有变化，则修改最近一次的提交信息
+git commit --amend	-m [message]
+</code></pre>
+<p>回滚：</p>
+<pre><code class="language-shell">git reset --hard &lt;commit_id&gt;    # 将 git 版本回退到 commit_id 版本
+				# 要慎用，它会将 commit_id 版本之后提交的所有提交记录全部删除，一点信息不留
+
+git revert		        # 将指定的提交（普通提交 / merge提交）撤销掉，比 reset 更安全
+</code></pre>
+<p><strong>git commit message 规范：</strong></p>
+<ul>
+<li><strong>feat</strong>：新功能、新特性</li>
+<li><strong>fix</strong>：修补 bug</li>
+<li><strong>docs</strong>：文档修改</li>
+<li><strong>style</strong>：代码格式修改（不影响代码运行的变动）</li>
+<li><strong>refactor</strong>：代码重构（即不是新增功能，也不是修改bug）</li>
+<li><strong>perf</strong>：优化相关，比如提升性能、体验</li>
+<li><strong>test</strong>：增加测试</li>
+<li><strong>chore</strong>：构建过程或辅助工具的变动</li>
+<li><strong>revert</strong>：回滚代码</li>
+</ul>
+<h3 id="5git-status">5，git status</h3>
+<pre><code class="language-shell">git status			# 查看当前状态
+git status -s			# 用简洁的方式，查看当前状态
+
+#########################
+M README			# 已被修改的文件，还没有被加入暂存区
+MM Rakefile			# 修改过的文件，已被加入暂存区，然后又被修改了
+A  lib/git.rb			# 新被加入到暂存区的文件
+?? LICENSE.txt			# 未被跟踪的文件	
+</code></pre>
+<h3 id="6git-diff">6，git diff</h3>
+<pre><code class="language-shell"># 查看未暂存的修改 --- 当前做的哪些更新尚未暂存？
+git diff
+
+# 只查看一个文件的不同
+git diff &lt;file&gt;
+	
+# 查看已暂存的修改 --- 有哪些更新已暂存并准备好下次提交？
+git diff --staged/cached	# 这条命令将比对已暂存文件与最后一次提交的文件差异
+</code></pre>
+<h3 id="7git-rm--mv">7，git rm &amp; mv</h3>
+<pre><code class="language-shell">git rm &lt;file&gt;			# 将 &lt;file&gt; 移出版本管理，并从磁盘删除本地文件
+git rm --cached &lt;file&gt;	        # 将 &lt;file&gt; 移出版本管理，但不删除本地文件 
+
+git mv &lt;from&gt; &lt;to&gt;		# 文件重命名
+</code></pre>
+<h3 id="9git-log">9，git log</h3>
+<pre><code class="language-shell">git log 			# 按时间先后顺序列出所有的提交，最近的更新排在最上面
+git log &lt;file&gt;			# 只查看一个文件的提交日志
+git log -p / --patch -n         # 显示每次提交所引入的差异，n 表示只显示最近的 n 次
+git log --stat			# 查看每次提交的简略统计信息
+	
+# 使用不同于默认格式的方式展示提交历史
+git log --pretty=oneline	# 会将每个提交放在一行显示，在浏览大量的提交时非常有用
+                 short
+                 full
+                 fuller
+git log --pretty=format		# 定制化输出
+	
+# 当 oneline 或 format 与 --graph 结合使用时，可显示分支的合并历史，比如：
+git log --pretty=format:&quot;%h %s&quot; --graph [--all]	# --all 表示所有分支
+</code></pre>
+<h3 id="10git-remote">10，git remote</h3>
+<pre><code class="language-shell"># 查看远程仓库
+git remote -v
+
+# 添加远程仓库
+git remote add &lt;shortname&gt; &lt;url&gt;	# 添加一个新的远程 Git 仓库，同时指定一个方便使用的简写
+git remote rm  &lt;shortname&gt;		# 删除与远程仓库的联系
+
+# 拉取远程仓库
+git fetch &lt;shortname&gt; &lt;branch&gt;		# 将远程的&lt;branch&gt;分支的最新内容拉到本地（并不进行合并操作）
+git fetch &lt;shortname&gt;                   # 将远程的所有分支的最新内容拉到本地
+</code></pre>
+<h3 id="11git-pull--push">11，git pull &amp; push</h3>
+<pre><code class="language-shell">git pull origin &lt;branch&gt;    # 从远程拉取 &lt;branch&gt;，并将其合并到本地的当前所在分支
+git push origin &lt;branch&gt;    # 将本地分支 &lt;branch&gt; 推送到远程
+</code></pre>
+<h3 id="12git-branch--checkout">12，git branch &amp; checkout</h3>
+<pre><code class="language-shell">git branch              # 查看所有本地分支
+git branch -r           # 查看所有远程分支
+git branch -a           # 查看所有本地分支和远程分支
+
+git branch      &lt;new_branch&gt;    # 从当前分支创建一个新分支
+git checkout    &lt;branch&gt;        # 切换分支
+git checkout -b &lt;new_branch&gt;    # 从当前分支创建分支，并切换到新分支
+
+git checkout    &lt;branch&gt; origin/&lt;branch&gt;	# 将远程的 &lt;branch&gt; 分支迁到本地
+git checkout -b &lt;branch&gt; origin/&lt;branch&gt;	# 将远程的 &lt;branch&gt; 分支迁到本地，并切换到新分支
+
+git branch   -d &lt;branch&gt;        # 删除本地分支
+
+git merge       &lt;branch&gt;        # 将 &lt;branch&gt; 合并到当前分支
+</code></pre>
+<h3 id="13git-stash">13，git stash</h3>
+<p>这样一个场景：</p>
+<ol>
+<li>你正在当前本地分支（my_branch）上做开发</li>
+<li>突然来了一个紧急任务，你需要去处理，那就要切到一个新的分支上去处理</li>
+<li>如果当前工作区有还未提交的文件，这时候是无法切换到新的分支的</li>
+<li>此时你有两种方式：
+<ol>
+<li>第一种：将当前工作区内容提交后，切换到新分支去处理问题</li>
+<li>第二种：将当前工作区的内容暂存，切换到新分支去处理问题</li>
+</ol>
+</li>
+<li>在新分支上处理完问题之后，切换到之前分支（my_branch）继续开发</li>
+</ol>
+<p>第 4 步的第一种方式无须讲解，你就会处理。来看下第 4 步的第二种方式如何处理？</p>
+<p>这时候需要用到 git stash 命令：</p>
+<pre><code class="language-shell"># 执行 stash 命令
+# 该命令会将你当前工作区的内容暂存起来（暂存到一个栈中）
+# 以让你你能切换到别的分支去处理问题
+git stash
+
+# 查看 stash 中的信息
+git stash list
+
+# 当你切换到别的分支，处理完紧急任务后，你又回到了之前的分支
+# 此时想恢复 stash 中的内容，使用下面命令，然后就可以在之前的基础上继续开发了
+git stash pop
+</code></pre>
+<h3 id="14git-禁令">14，git 禁令</h3>
+<p>在团队合作中以下命令最好禁止使用：</p>
+<pre><code class="language-shell"># 当向远程 push 时，有时候会因为自己的版本比较落后（不是 fast-forwards），而 push 失败
+# 如果用 push -f 则会强制将自己的版本 push 到远端
+# 这样的话就会将远程比较新的更新给覆盖掉
+# 所以 push -f 最好禁止使用
+git push -f
+</code></pre>
+<h3 id="15git-工作流">15，git 工作流</h3>
+<h4 id="1主干开发">1，主干开发</h4>
+<p><img src="https://img-blog.csdnimg.cn/1c34dc5eb2a94bcca478d10aaa943fca.png" alt="在这里插入图片描述"></p>
+<h4 id="2github-flow">2，github flow</h4>
+<p><img src="https://img-blog.csdnimg.cn/6f18030870864f4dbc5a9d3fb5281f7d.png" alt="在这里插入图片描述"></p>
+<h4 id="2git-flow">2，git flow</h4>
+<p><img src="https://img-blog.csdnimg.cn/4ff3654935bd4378bb738f1f35e46737.png" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-05-31
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/2022/05/es-build/">
+            <span class="next-text nav-default">快速搭建 ElasticSearch</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/05/git-cmds/" class="leancloud_visitors" data-flag-title="Git 命令参考">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

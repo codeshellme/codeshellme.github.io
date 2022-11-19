@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go学习笔记2-Go方法与接口 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="9，Go 函数 函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/04/go2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go学习笔记2-Go方法与接口" />
+<meta property="og:description" content="9，Go 函数 函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/04/go2/" />
+<meta property="article:published_time" content="2022-04-10T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-04-10T22:42:52+08:00" />
+<meta itemprop="name" content="Go学习笔记2-Go方法与接口">
+<meta itemprop="description" content="9，Go 函数 函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以">
+<meta itemprop="datePublished" content="2022-04-10T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-04-10T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="9700">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go学习笔记2-Go方法与接口"/>
+<meta name="twitter:description" content="9，Go 函数 函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go学习笔记2-Go方法与接口</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-04-10 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 9700 字 </span>
+          <span class="more-meta"> 阅读约需 20 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#9go-函数">9，Go 函数</a></li>
+        <li><a href="#10go-方法">10，Go 方法</a></li>
+        <li><a href="#11go-中的继承类型嵌入">11，Go 中的“继承”：类型嵌入</a></li>
+        <li><a href="#12go-接口类型">12，Go 接口类型</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="9go-函数">9，Go 函数</h3>
+<p>函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以作为返回值从函数返回。</p>
+<h4 id="1函数的定义">1，函数的定义</h4>
+<p>Go 函数样式：</p>
+<p><img src="https://img-blog.csdnimg.cn/e9682720f7994acab27214bea8d17776.png" alt="在这里插入图片描述"></p>
+<p>函数的变量声明形式：</p>
+<p><img src="https://img-blog.csdnimg.cn/8ec5a7ace69547d8826d9d0494696dce.png" alt="在这里插入图片描述"></p>
+<p>在 Go 语言中，每个函数声明所定义的函数，仅仅是对应的函数类型的一个实例，即函数也是变量，函数名就是变量名，等号后边就是对应的函数的类型。</p>
+<p>比如上面函数的类型就是：</p>
+<pre><code class="language-go">func(io.Writer, string, ...interface{}) (int, error)
+</code></pre>
+<p><code>...</code> 是 Go 中的<strong>变长参数</strong>，<strong>变长参数是通过切片来实现的。所以，在函数体中，就可以使用切片支持的所有操作来操作变长参数</strong>。</p>
+<p>Go 语言支持函数多返回值：</p>
+<pre><code class="language-go">func foo()                       // 无返回值
+func foo() error                 // 仅有一个返回值
+func foo() (int, string, error)  // 有 2 或 2 个以上返回值
+func foo() func()                // 函数的返回值类型是一个函数
+func foo(func())                 // 函数的参数类型是一个函数
+</code></pre>
+<p>函数返回值可以声明变量名，这种带有名字的返回值被称为<strong>具名返回值</strong>，其可以像函数体中声明的局部变量一样在函数体内使用。</p>
+<p>Go 标准库以及大多数项目代码中的函数，都选择了使用普通的非具名返回值形式。但在一些特定场景下，具名返回值也会得到应用。</p>
+<p>比如，当函数的返回值个数较多时，每次显式使用 return 语句时都会接一长串返回值，这时，我们用具名返回值可以让函数实现的可读性更好一些。</p>
+<p><strong>基于函数自定义类型</strong></p>
+<pre><code class="language-go">// $GOROOT/src/net/http/server.go
+type HandlerFunc func(ResponseWriter, *Request)
+
+// $GOROOT/src/sort/genzfunc.go
+type visitFunc func(ast.Node) ast.Visitor
+</code></pre>
+<h4 id="2设计健壮函数的三原则">2，设计健壮函数的三原则</h4>
+<ul>
+<li>不要相信任何外部输入的参数：对输入做合法性校验</li>
+<li>不要忽略任何一个错误：判断每一个调用的返回值</li>
+<li>不要假定异常不会发生：对可能发生异常的地方做异常处理</li>
+</ul>
+<h4 id="3fmtprint-函数">3，fmt.Print 函数</h4>
+<p>format 分类：</p>
+<table>
+<thead>
+<tr>
+<th align="left">format</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>一般类型</strong></td>
+</tr>
+<tr>
+<td align="left"><code>%v</code></td>
+<td align="left">值的默认格式，输出结构体</td>
+</tr>
+<tr>
+<td align="left"><code>%+v</code></td>
+<td align="left">输出结构体显示字段名</td>
+</tr>
+<tr>
+<td align="left"><code>%#v</code></td>
+<td align="left">输出结构体源代码片段</td>
+</tr>
+<tr>
+<td align="left"><code>%T</code></td>
+<td align="left">输出值的类型</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>布尔类型</strong></td>
+</tr>
+<tr>
+<td align="left"><code>%t</code></td>
+<td align="left">输出布尔类型值</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>整数类型</strong></td>
+</tr>
+<tr>
+<td align="left"><code>%b</code></td>
+<td align="left">输出标准的二进制格式化</td>
+</tr>
+<tr>
+<td align="left"><code>%c</code></td>
+<td align="left">输出对应的unicode码的一个字符</td>
+</tr>
+<tr>
+<td align="left"><code>%d</code></td>
+<td align="left">输出标准的十进制格式化</td>
+</tr>
+<tr>
+<td align="left"><code>%o</code></td>
+<td align="left">输出标准的八进制格式化</td>
+</tr>
+<tr>
+<td align="left"><code>%q</code></td>
+<td align="left">要输出的值是双引号输出就是双引号字符串；另外一种是自转义的 unicode 单引号字符</td>
+</tr>
+<tr>
+<td align="left"><code>%x</code></td>
+<td align="left">输出十六进制编码，字母形式为小写 a-f</td>
+</tr>
+<tr>
+<td align="left"><code>%X</code></td>
+<td align="left">输出十六进制编码，字母形式为大写 A-F</td>
+</tr>
+<tr>
+<td align="left"><code>%U</code></td>
+<td align="left">输出Unicode格式</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>浮点数与复数</strong></td>
+</tr>
+<tr>
+<td align="left"><code>%b</code></td>
+<td align="left">无小数部分、二进制指数的科学计数法</td>
+</tr>
+<tr>
+<td align="left"><code>%e</code></td>
+<td align="left">科学计数法（小写e）</td>
+</tr>
+<tr>
+<td align="left"><code>%E</code></td>
+<td align="left">科学计数法（小写E）</td>
+</tr>
+<tr>
+<td align="left"><code>%f</code></td>
+<td align="left">十进制小数</td>
+</tr>
+<tr>
+<td align="left"><code>%F</code></td>
+<td align="left">和 %f 一样</td>
+</tr>
+<tr>
+<td align="left"><code>%g</code></td>
+<td align="left">根据实际情况采用%e或%f格式（以获得更简洁、准确的输出）</td>
+</tr>
+<tr>
+<td align="left"><code>%G</code></td>
+<td align="left">根据实际情况采用%E或%F格式（以获得更简洁、准确的输出）</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>字符串和 []byte</strong></td>
+</tr>
+<tr>
+<td align="left"><code>%s</code></td>
+<td align="left">输出字符串</td>
+</tr>
+<tr>
+<td align="left"><code>%q</code></td>
+<td align="left">源代码中那样带有双引号的输出</td>
+</tr>
+<tr>
+<td align="left"><code>%x</code></td>
+<td align="left">每个字节用两字符十六进制数表示（使用a-f）</td>
+</tr>
+<tr>
+<td align="left"><code>%X</code></td>
+<td align="left">每个字节用两字符十六进制数表示（使用A-F）</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><strong>指针</strong></td>
+</tr>
+<tr>
+<td align="left"><code>%p</code></td>
+<td align="left">输出十六进制，并加上前导的 0x</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10go-方法">10，Go 方法</h3>
+<p>Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要。</p>
+<p>Go 语言中的方法的本质就是，<strong>一个以方法的 receiver 参数作为第一个参数的普通函数</strong>。</p>
+<h4 id="1go-方法的定义">1，Go 方法的定义</h4>
+<p>Go 方法的形式，比函数多了一个 <strong>receiver</strong> ：</p>
+<p><img src="https://img-blog.csdnimg.cn/9a7ae4c6212840869549c45b11ccf5d1.png" alt="在这里插入图片描述"></p>
+<p><strong>receiver</strong> 参数也是方法与类型之间的纽带，也是方法与函数的最大不同。</p>
+<p>Go 中的方法必须是归属于一个类型的，而 receiver 参数的类型就是这个方法归属的类型。</p>
+<p><strong>注意 ListenAndServeTLS 是 *Server 类型的方法，而不是 Server 类型的方法。</strong></p>
+<p>方法的一般声明形式：</p>
+<pre><code class="language-go">func (t *T或T) MethodName(参数列表) (返回值列表) {
+    // 方法体
+}
+</code></pre>
+<ul>
+<li>无论 receiver 参数的类型为 *T 还是 T，我们都将 T 叫做 t 的基类型</li>
+<li>如果 t 的类型为 T，那么说这个方法是类型 T 的一个方法</li>
+<li>如果 t 的类型为 *T，那么就说这个方法是类型 *T 的一个方法</li>
+<li>receiver 参数的基类型本身不能为指针类型或接口类型</li>
+<li>每个方法只能有一个 receiver 参数
+<ul>
+<li>Go 不支持在方法的 receiver 部分放置包含多个 receiver 参数的参数列表，或者变长 receiver 参数</li>
+</ul>
+</li>
+<li>方法声明要与 receiver 参数的基类型声明放在同一个包内
+<ul>
+<li>我们无法为原生类型（诸如 int、float64、map 等）添加方法</li>
+<li>不能跨越 Go 包为其他包的类型声明新方法</li>
+</ul>
+</li>
+</ul>
+<p>Go 方法的调用形式：</p>
+<pre><code class="language-go">type T struct{}
+
+func (t T) M(n int) {
+}
+
+func main() {
+    var t T
+    t.M(1) // 通过类型T的变量实例调用方法M
+
+    p := &amp;T{}
+    p.M(2) // 通过类型*T的变量实例调用方法M
+}
+</code></pre>
+<p>我们可以将方法作为右值，赋值给一个函数类型的变量，比如下：</p>
+<pre><code class="language-go">type T struct { 
+    a int
+}
+
+func (t T) Get() int {  
+    return t.a 
+}
+
+func (t *T) Set(a int) int { 
+    t.a = a 
+    return t.a 
+}
+
+func main() {
+    var t T
+    f1 := (*T).Set // f1的类型，也是*T类型Set方法的类型：func (t *T, int)int
+    f2 := T.Get    // f2的类型，也是T类型Get方法的类型：func(t T)int
+    
+    fmt.Printf(&quot;the type of f1 is %T\n&quot;, f1) // the type of f1 is func(*main.T, int) int
+    fmt.Printf(&quot;the type of f2 is %T\n&quot;, f2) // the type of f2 is func(main.T) int
+    
+    f1(&amp;t, 3)
+    fmt.Println(f2(t)) // 3
+}
+</code></pre>
+<h4 id="2receiver-参数的类型问题">2，receiver 参数的类型问题</h4>
+<p>来看下面例子中的两个 Go 方法，以及它们等价转换后的函数：</p>
+<pre><code class="language-go">func (t T) M1() &lt;=&gt; F1(t T)
+func (t *T) M2() &lt;=&gt; F2(t *T)
+</code></pre>
+<ul>
+<li>M1 方法是 receiver 参数类型为 T 的一类方法的代表
+<ul>
+<li>T 类型实例的 receiver 参数以<strong>值传递</strong>方式传递到 M1 方法体中</li>
+<li>实际上是 <strong>T 类型实例的副本</strong>，M1 方法体中对副本的任何修改操作，都不会影响到原 T 类型实例</li>
+</ul>
+</li>
+<li>M2 方法是 receiver 参数类型为 *T 的另一类
+<ul>
+<li>*T 类型实例的 receiver 参数以值传递方式传递到 M2 方法体中</li>
+<li>实际上是 <strong>T 类型实例的地址</strong>，M2 方法体通过该地址可以对原 T 类型实例进行任何修改操作</li>
+</ul>
+</li>
+</ul>
+<p>一个示例：</p>
+<pre><code class="language-go">package main
+  
+type T struct {
+    a int
+}
+
+func (t T) M1() {
+    t.a = 10
+}
+
+func (t *T) M2() {
+    t.a = 11
+}
+
+func main() {
+    var t T
+    println(t.a) // 0
+
+    t.M1()
+    println(t.a) // 0
+
+    p := &amp;t
+    p.M2()
+    println(t.a) // 11
+}
+</code></pre>
+<p>选择 receiver 参数类型的原则：</p>
+<ol>
+<li>如果 Go 方法要把对 receiver 参数代表的类型实例的修改，反映到原类型实例上，那么我们应该选择 *T 作为 receiver 参数的类型。</li>
+<li>如果我们不需要在方法中对类型实例进行修改呢？这个时候我们是为 receiver 参数选择 T 类型还是 *T 类型呢？
+<ol>
+<li>一般情况下，我们会为 receiver 参数选择 T 类型，这样可以减少外部修改类型实例内部状态的“渠道”</li>
+<li>如果 receiver 参数类型的 size 较大，以值拷贝形式传入就会导致较大的性能开销，这时我们选择 *T 作为 receiver 类型可能更好些</li>
+</ol>
+</li>
+<li>T 类型是否要实现某一接口
+<ol>
+<li>如果 T 类型需要实现某一接口的全部方法，那么我们就需要使用 T 作为 receiver 参数的类型来满足接口类型方法集合中的所有方法。</li>
+<li>如果 T 类型不需要实现某一接口，那么我们就可以参考原则一和原则二来为 receiver 参数选择类型了。</li>
+</ol>
+</li>
+</ol>
+<p><strong>无论是 T 类型实例，还是 *T 类型实例，都既可以调用 receiver 为 T 类型的方法，也可以调用 receiver 为 *T 类型的方法 。这都是 Go 编译器在背后做的转换，当 Go 发现类型不一致时，会自动转换。</strong></p>
+<p>示例如下：</p>
+<pre><code class="language-go">  type T struct {
+      a int
+  }
+  
+  func (t T) M1() {
+      t.a = 10
+  }
+ 
+ func (t *T) M2() {
+     t.a = 11
+ }
+ 
+ func main() {
+     var t1 T
+     println(t1.a) // 0
+     t1.M1()
+     println(t1.a) // 0
+     t1.M2()
+     println(t1.a) // 11
+ 
+     var t2 = &amp;T{}
+     println(t2.a) // 0
+     t2.M1()
+     println(t2.a) // 0
+     t2.M2()
+     println(t2.a) // 11
+ }
+</code></pre>
+<h4 id="3一个思考题">3，一个思考题</h4>
+<p>第一个：</p>
+<pre><code class="language-go">type field struct {
+    name string
+}
+
+func (p *field) print() {
+    fmt.Println(p.name)
+}
+
+func main() {
+    data1 := []*field{{&quot;one&quot;}, {&quot;two&quot;}, {&quot;three&quot;}}
+    for _, v := range data1 {
+        go v.print()
+    }
+
+    data2 := []field{{&quot;four&quot;}, {&quot;five&quot;}, {&quot;six&quot;}}
+    for _, v := range data2 {
+        go v.print()
+    }
+
+    time.Sleep(3 * time.Second)
+}
+
+// 其结果是
+one
+two
+three
+six
+six
+six
+</code></pre>
+<p>第二个：</p>
+<pre><code class="language-go">type field struct {
+    name string
+}
+
+func (p field) print() {
+    fmt.Println(p.name)
+}
+
+func main() {
+    data1 := []*field{{&quot;one&quot;}, {&quot;two&quot;}, {&quot;three&quot;}}
+    for _, v := range data1 {
+        go v.print()
+    }
+
+    data2 := []field{{&quot;four&quot;}, {&quot;five&quot;}, {&quot;six&quot;}}
+    for _, v := range data2 {
+        go v.print()
+    }
+
+    time.Sleep(3 * time.Second)
+}
+// 其结果是
+one
+two
+three
+four
+five
+six
+</code></pre>
+<h4 id="4方法集合">4，方法集合</h4>
+<p>Go 中任何一个类型都有属于自己的方法集合，或者说方法集合是 Go 类型的一个“属性”。</p>
+<p><strong>方法集合是用来判断一个类型是否实现了某接口类型的唯一手段。</strong></p>
+<p>但不是所有类型都有自己的方法，比如 int 类型就没有。所以，对于没有定义方法的 Go 类型，我们称其拥有空方法集合。</p>
+<p>方法集合可以分两种来讨论：</p>
+<ul>
+<li>接口类型</li>
+<li>非接口类型</li>
+</ul>
+<p>接口类型相对特殊，它只会列出代表接口的方法列表，不会具体定义某个方法，它的方法集合就是它的方法列表中的所有方法。</p>
+<p>函数 <code>dumpMethodSet</code>，用于输出一个非接口类型的方法集合：</p>
+<pre><code class="language-go">func dumpMethodSet(i interface{}) {
+    dynTyp := reflect.TypeOf(i)
+
+    if dynTyp == nil {
+        fmt.Printf(&quot;there is no dynamic type\n&quot;)
+        return
+    }
+
+    n := dynTyp.NumMethod()
+    if n == 0 {
+        fmt.Printf(&quot;%s's method set is empty!\n&quot;, dynTyp)
+        return
+    }
+
+    fmt.Printf(&quot;%s's method set:\n&quot;, dynTyp)
+    for j := 0; j &lt; n; j++ {
+        fmt.Println(&quot;-&quot;, dynTyp.Method(j).Name)
+    }
+    fmt.Printf(&quot;\n&quot;)
+}
+</code></pre>
+<p>再看下面代码：</p>
+<pre><code class="language-go">type T struct{}
+
+func (T) M1() {}
+func (T) M2() {}
+
+func (*T) M3() {}
+func (*T) M4() {}
+
+func main() {
+    var n int
+    dumpMethodSet(n)
+    dumpMethodSet(&amp;n)
+
+    var t T
+    dumpMethodSet(t)
+    dumpMethodSet(&amp;t)
+}
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-go">int's method set is empty!
+*int's method set is empty!
+main.T's method set:
+- M1
+- M2
+
+*main.T's method set:
+- M1  // 初学者不容易理解的地方
+- M2  // 初学者不容易理解的地方
+- M3
+- M4
+</code></pre>
+<p><strong>Go 语言规定，*T 类型的方法集合包含所有以 *T 为 receiver 参数类型的方法，以及所有以 T 为 receiver 参数类型的方法。</strong></p>
+<p><strong>方法集合决定接口实现</strong>的含义就是：如果某类型 T 的方法集合与某接口类型的方法集合相同，或者类型 T 的方法集合是接口类型 I 方法集合的超集，那么我们就说这个类型 T 实现了接口 I。或者说，<strong>方法集合这个概念在 Go 语言中的主要用途，就是用来判断某个类型是否实现了某个接口</strong>。</p>
+<p><em><strong><code>... method has pointer receiver 问题</code></strong></em></p>
+<p>看代码：</p>
+<pre><code class="language-go">type QuackableAnimal interface {
+	Quack()
+}
+
+type Duck struct{}
+
+// d 的类型是 Duck
+func (d Duck) Quack() {
+}
+
+func AnimalQuackInForest(a QuackableAnimal) {
+}
+
+func main() {
+	AnimalQuackInForest(Duck{})	    // 传  T 类型没问题
+	AnimalQuackInForest(&amp;Duck{})        // 传 *T 类型没问题
+}
+</code></pre>
+<p>查看方法集：</p>
+<pre><code class="language-go">dumpMethodSet(Duck{})
+dumpMethodSet(&amp;Duck{})
+
+// 输出如下
+main.Duck's method set:
+- Quack
+*main.Duck's method set:
+- Quack
+</code></pre>
+<p>再看代码：</p>
+<pre><code class="language-go">type QuackableAnimal interface {
+  Quack()
+}
+
+type Duck struct{}
+
+// d 的类型是 *Duck
+func (d *Duck) Quack() {
+}
+
+func AnimalQuackInForest(a QuackableAnimal) {
+}
+
+func main() {
+  AnimalQuackInForest(Duck{})	// 传  T 类型有问题，编译异常：Quack method has pointer receiver
+  AnimalQuackInForest(&amp;Duck{})	// 传 *T 类型没问题
+}
+</code></pre>
+<p>此时 <code>AnimalQuackInForest(Duck{})</code> 出问题的原因是，Duck 类型没有实现 QuackableAnimal  接口。</p>
+<p>通过 <code>dumpMethodSet(Duck{})</code> 查看 Duck 的方法集，可知 Duck 的方法集为空。</p>
+<pre><code class="language-go">dumpMethodSet(Duck{})
+dumpMethodSet(&amp;Duck{})
+
+// 输出如下
+main.Duck's method set is empty!
+*main.Duck's method set:
+- Quack
+</code></pre>
+<h3 id="11go-中的继承类型嵌入">11，Go 中的“继承”：类型嵌入</h3>
+<p>类型嵌入指的就是在一个类型的定义中嵌入了其他类型。Go 语言支持两种类型嵌入：</p>
+<ul>
+<li>接口类型的类型嵌入</li>
+<li>结构体类型的类型嵌入</li>
+</ul>
+<p><strong>接口类型只能嵌入接口类型，而结构体类型对嵌入类型的要求就比较宽泛了，可以是任意自定义类型或接口类型。</strong></p>
+<h4 id="1接口类型的类型嵌入">1，接口类型的类型嵌入</h4>
+<p><strong>接口类型声明了由一个方法集合代表的接口</strong>，比如下面接口类型 E：</p>
+<pre><code class="language-go">type E interface {
+    M1()
+    M2()
+}
+</code></pre>
+<p>如果某个类型实现了方法 M1 和 M2，我们就说这个类型实现了 E 所代表的接口。</p>
+<p>再定义另外一个接口类型 I，它的方法集合中包含了三个方法 M1、M2 和 M3，如下面代码：</p>
+<pre><code class="language-go">type I interface {
+    M1()
+    M2()
+    M3()
+}
+</code></pre>
+<p>我们看到接口类型 I 方法集合中的 M1 和 M2，与接口类型 E 的方法集合中的方法完全相同。在这种情况下，我们可以用接口类型 E 替代上面接口类型 I 定义中 M1 和 M2，如下面代码：</p>
+<pre><code class="language-go">type I interface {
+    E
+    M3()
+}
+</code></pre>
+<p>像这种在一个接口类型（I）定义中，嵌入另外一个接口类型（E）的方式，就是我们说的<strong>接口类型的类型嵌入</strong>。</p>
+<p>而且，这个带有类型嵌入的接口类型 I 的定义与上面那个包含 M1、M2 和 M3 的接口类型 I 的定义，是等价的。</p>
+<p>通过在接口类型中嵌入其他接口类型可以实现接口的组合，这也是 Go 语言中基于已有接口类型构建新接口类型的惯用法。</p>
+<p>接口类型的类型嵌入比较简单，我们只要把握好它的语义，也就是“<strong>方法集合并入</strong>”就可以了。</p>
+<h4 id="2结构体类型的类型嵌入">2，结构体类型的类型嵌入</h4>
+<p>常规的结构体类型：</p>
+<pre><code class="language-go">type S struct {
+    A int
+    b string
+    c T
+    p *P
+    _ [10]int8
+    F func()
+}
+</code></pre>
+<p>结构体类型 S 中的每个字段（field）都有唯一的名字与对应的类型，即便是使用空标识符占位的字段，它的类型也是明确的。</p>
+<p><strong>带有嵌入字段的结构体</strong>定义，看下面代码中的 <strong>S1</strong>：</p>
+<pre><code class="language-go">type T1 int
+type t2 struct{
+    n int
+    m int
+}
+
+type I interface {
+    M1()
+}
+
+type S1 struct {
+    T1
+    *t2
+    I            
+    a int
+    b string
+}
+</code></pre>
+<ul>
+<li>标识符 T1 表示字段名为 T1，它的类型为自定义类型 T1；</li>
+<li>标识符 t2 表示字段名为 t2，它的类型为自定义结构体类型 t2 的指针类型；</li>
+<li>标识符 I 表示字段名为 I，它的类型为接口类型 I。</li>
+<li>如果嵌入类型的名字是首字母大写的，那么也就说明这个嵌入字段是可导出的。</li>
+<li>如果结构体使用从其他包导入的类型作为嵌入字段，比如 pkg.T，那么这个嵌入字段的字段名就是 T，代表的类型为 pkg.T。</li>
+</ul>
+<p>这种以某个类型名、类型的指针类型名或接口类型名，直接作为结构体字段的方式就叫做<strong>结构体的类型嵌入</strong>，这些字段也被叫做<strong>嵌入字段</strong>。</p>
+<p>嵌入字段的使用的确可以帮我们在 Go 中实现方法的“<strong>继承</strong>”。</p>
+<p>类型嵌入这种看似“继承”的机制，实际上是一种组合的思想。更具体点，它是一种组合中的代理（delegate）模式，如下图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/bcfcfa8b5b19422f8eb928220fc3631f.png" alt="在这里插入图片描述"></p>
+<p><strong>结构体类型的方法集合，包含嵌入的接口类型的方法集合。</strong> 也就是说，<strong>当结构体类型中嵌入了接口类型时</strong>，接口类型中的方法都会并入到结构体类型中。</p>
+<p><strong>在结构体类型中嵌入结构体类型</strong>，为 Gopher 们提供了一种“实现继承”的手段，外部的结构体类型 T 可以“继承”嵌入的结构体类型的所有方法的实现。</p>
+<p>当通过结构体类型 S 的变量 s 调用 Read 方法时，Go 发现结构体类型 S 自身并没有定义 Read 方法，于是 Go 会查看 S 的嵌入字段对应的类型是否定义了 Read 方法。这个时候，Reader 字段就被找了出来，之后 s.Read 的调用就被转换为 s.Reader.Read 调用。</p>
+<p>这样一来，嵌入字段 Reader 的 Read 方法就被提升为 S 的方法，放入了类型 S 的方法集合。</p>
+<p>当结构体嵌入的多个接口类型的方法集合存在交集时，Go 编译器会报错。</p>
+<p>嵌入了其他类型的结构体类型本身是一个代理，在调用其实例所代理的方法时，Go 会首先查看结构体自身是否实现了该方法。</p>
+<ul>
+<li>如果实现了，Go 就会优先使用结构体自己实现的方法。</li>
+<li>如果没有实现，那么 Go 就会查找结构体中的嵌入字段的方法集合中，是否包含了这个方法。
+<ul>
+<li>如果多个嵌入字段的方法集合中都包含这个方法，那么我们就说方法集合存在交集。</li>
+<li>这个时候，Go 编译器就会因无法确定究竟使用哪个方法而报错。（有点类似 C++ 多重继承出现的问题）</li>
+</ul>
+</li>
+</ul>
+<p>一个示例：</p>
+<pre><code class="language-go">  type E1 interface {
+      M1()
+      M2()
+      M3()
+  }
+  
+  type E2 interface {
+     M1()
+     M2()
+     M4()
+ }
+ 
+ type T struct {
+     E1
+     E2
+ }
+ 
+ func main() {
+     t := T{}
+     t.M1()
+     t.M2()
+ }
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-shell">main.go:22:3: ambiguous selector t.M1
+main.go:23:3: ambiguous selector t.M2
+</code></pre>
+<p>这个问题有两种解决办法</p>
+<ul>
+<li>一是，我们可以消除 E1 和 E2 方法集合存在交集的情况。</li>
+<li>二是为 T 增加 M1 和 M2 方法的实现，这样的话，编译器便会直接选择 T 自己实现的 M1 和 M2，不会陷入两难境地。</li>
+</ul>
+<p>如下：</p>
+<pre><code class="language-go">... ...
+type T struct {
+    E1
+    E2
+}
+
+func (T) M1() { println(&quot;T's M1&quot;) }
+func (T) M2() { println(&quot;T's M2&quot;) }
+
+func main() {
+    t := T{}
+    t.M1() // T's M1
+    t.M2() // T's M2
+}
+</code></pre>
+<h4 id="3type-定义新类型时的方法集合">3，type 定义新类型时的方法集合</h4>
+<p>分两种情况：</p>
+<ul>
+<li><strong>type NewT OldT</strong>：定义新的类型
+<ul>
+<li>如果 OldT 是接口类型，NewT 的方法集合与 OldT 的方法集合是一致的</li>
+<li>如果 OldT 是非接口类型，那么 NewT 不会继承 OldT 的任意一个方法，NewT 的方法集合是空集合</li>
+</ul>
+</li>
+<li><strong>type NewT = OldT</strong>：类型别名
+<ul>
+<li>无论 OldT 是接口类型还是非接口类型，NewT 都与 OldT 拥有完全相同的方法集合</li>
+<li>实际上 NewT 与 OldT 是完全等价的</li>
+</ul>
+</li>
+</ul>
+<h4 id="4一个思考题">4，一个思考题</h4>
+<p>下面带有类型嵌入的结构体 S1 与不带类型嵌入的结构体 S2 是否是等价的，如不等价，区别在哪里？</p>
+<pre><code class="language-go">type T1 int
+type t2 struct{
+    n int
+    m int
+}
+
+type I interface {
+    M1()
+}
+
+type S1 struct {
+    T1
+    *t2
+    I
+    a int
+    b string
+}
+
+type S2 struct { 
+    T1 T1
+    t2 *t2
+    I  I
+    a  int
+    b  string
+}
+</code></pre>
+<ul>
+<li>S1 是类型嵌入的，拥有“继承”能力</li>
+<li>S2 并不是类型嵌入的，只是普通的结构体组合，所以没有对应接口的方法集合（并不存在“继承”的能力）</li>
+</ul>
+<h3 id="12go-接口类型">12，Go 接口类型</h3>
+<p>接口本质上是一种抽象，它的功能是解耦。尽管接口不是 Go 独有的，但专注于接口是编写强大而灵活的 Go 代码的关键。</p>
+<p>Go 中的接口是<strong>非入侵性</strong>的，实现这不需要依赖（implement）接口定义，只需要实现接口中的方法即可。</p>
+<p>Go 中的接口类型是由 type 和 interface 关键字定义的一组<strong>方法集合</strong>。在 Go 接口类型的方法集合中放入首字母小写的非导出方法也是合法的（很少使用）。</p>
+<p>示例：</p>
+<pre><code class="language-go">type MyInterface interface {
+    M1(int) error
+    M2(io.Writer, ...string)
+}
+</code></pre>
+<h4 id="1空接口">1，空接口</h4>
+<p>如果一个接口类型定义中没有一个方法，那么它的方法集合就为空，称为<strong>空接口</strong>。</p>
+<pre><code class="language-go">type EmptyInterface interface {
+
+}
+</code></pre>
+<p>通常不需要自己显式定义这类空接口类型，使用 <code>interface{}</code> 这个类型字面值作为所有空接口类型的代表就可以。</p>
+<p>这些类型为接口类型的变量被称为<strong>接口类型变量</strong>，如果没有被显式赋予初值，接口类型变量的默认值为 <code>nil</code>。</p>
+<pre><code class="language-go">var err error   // err 是一个 error 接口类型的实例变量
+var r io.Reader // r 是一个 io.Reader 接口类型的实例变量
+</code></pre>
+<p><strong>如果一个类型 T 的方法集合是某接口类型 I 的方法集合的等价集合或超集，我们就说类型 T 实现了接口类型 I，那么类型 T 的变量就可以作为合法的右值赋值给接口类型 I 的变量。</strong></p>
+<p>如果一个变量的类型是空接口类型，由于空接口类型的方法集合为空，这就意味着任何类型都实现了空接口的方法集合，<strong>所以我们可以将任何类型的值作为右值，赋值给空接口类型的变量</strong>，比如：</p>
+<pre><code class="language-go">var i interface{} = 15 // ok
+i = &quot;hello, golang&quot;    // ok
+
+type T struct{}
+var t T
+
+i = t  // ok
+i = &amp;t // ok
+</code></pre>
+<p>空接口类型的这一可接受任意类型变量值作为右值的特性，让他成为 Go 加入泛型语法之前唯一一种具有“泛型”能力的语法元素，包括 Go 标准库在内的一些通用数据结构与算法的实现，都使用了空类型interface{} 作为数据元素的类型，这样我们就无需为每种支持的元素类型单独做一份代码拷贝了。</p>
+<p>go1.18 增加了 <code>any</code> 关键字，用以替代现在的 <code>interface{}</code> 空接口类型：<code>type any = interface{}</code>，实际上是 <code>interface{}</code> 的别名。</p>
+<p><em><strong>尽量避免使用空接口作为函数参数类型</strong></em></p>
+<p>我们要<strong>尽量避免使用空接口作为函数参数类型</strong>。一旦使用空接口作为函数参数类型，你将失去编译器为你提供的类型安全保护屏障。尽可能地抽象出带有一定行为契约的接口，并将它作为函数参数类型，尽量不要使用可以“逃过”编译器类型安全检查的空接口类型（interface{}）。</p>
+<p>Go 标准库以空接口 interface{} 为参数类型的方法和函数少之甚少，但也有少量，主要有两类：</p>
+<ul>
+<li>容器算法类，比如：container 下的 heap、list 和 ring 包、sort 包、sync.Map 等；</li>
+<li>格式化 / 日志类，比如：fmt 包、log 包等。</li>
+</ul>
+<p>这些使用interface{}作为参数类型的函数或方法都有一个共同特点，就是它们面对的都是未知类型的数据，所以在这里使用具有“泛型”能力的interface{}类型。</p>
+<p>我们也可以理解为是在 Go 语言尚未支持泛型的这个阶段的权宜之计。等 Go 泛型落地后，很多场合下 interface{}就可以被泛型替代了。</p>
+<h4 id="2类型断言">2，类型断言</h4>
+<p>通过接口类型变量“还原”它的右值的类型与值信息，这个过程被称为<strong>类型断言</strong>。</p>
+<p>语法如下：</p>
+<pre><code class="language-go">// 其中 i 是某一个接口类型变量
+// 如果 T 是一个非接口类型且 T 是想要还原的类型
+// 那么这句代码的含义就是断言存储在接口类型变量 i 中的值的类型为 T
+v, ok := i.(T) 
+</code></pre>
+<ul>
+<li>如果接口类型变量 i 之前被赋予的值确为 T 类型的值，变量 ok 的值将为 true，变量 v 的类型为 T，它的值会是之前变量 i 的右值</li>
+<li>如果 i 之前被赋予的值不是 T 类型的值，变量 ok 的值为 false，变量 v 的类型还是那个要还原的类型，但它的值是类型 T 的零值</li>
+</ul>
+<pre><code class="language-go">// 如果 T 是一个接口类型，那么类型断言的语义就会变成：
+// 断言 i 的值实现了接口类型 T。
+v, ok := i.(T) 
+</code></pre>
+<ul>
+<li>如果断言成功，变量 v 的类型为 i 的值的类型，而并非接口类型 T</li>
+<li>如果断言失败，v 的类型信息为接口类型 T，它的值为 nil</li>
+</ul>
+<p><em><strong>不推荐的断言语法</strong></em></p>
+<pre><code class="language-go">// Go 也支持这种断言语法
+v := i.(T)
+</code></pre>
+<p>在这种形式下：</p>
+<ul>
+<li>如果接口变量 i 之前被赋予的值不是 T 类型的值，那么这个语句将抛出 panic。</li>
+<li>如果变量 i 被赋予的值是 T 类型的值，那么变量 v 的类型为 T，它的值就会是之前变量 i 的右值。</li>
+</ul>
+<p>由于可能出现 panic，所以<strong>不推荐使用这种类型断言的语法形式</strong>。</p>
+<p>非接口类型断言示例：</p>
+<pre><code class="language-go">var a int64 = 13
+var i interface{} = a
+
+v1, ok := i.(int64) 
+fmt.Printf(&quot;v1=%d, the type of v1 is %T, ok=%t\n&quot;, v1, v1, ok) // v1=13, the type of v1 is int64, ok=true
+
+v2, ok := i.(string)
+fmt.Printf(&quot;v2=%s, the type of v2 is %T, ok=%t\n&quot;, v2, v2, ok) // v2=, the type of v2 is string, ok=false
+
+v3 := i.(int64) 
+fmt.Printf(&quot;v3=%d, the type of v3 is %T\n&quot;, v3, v3) // v3=13, the type of v3 is int64
+
+v4 := i.([]int) // panic: interface conversion: interface {} is int64, not []int
+fmt.Printf(&quot;the type of v4 is %T\n&quot;, v4) 
+</code></pre>
+<p>接口类型断言示例：</p>
+<pre><code class="language-go">type MyInterface interface {
+    M1()
+}
+
+type T int
+               
+func (T) M1() {
+    println(&quot;T's M1&quot;)
+}              
+               
+func main() {  
+    var t T    
+    var i interface{} = t
+    
+    v1, ok := i.(MyInterface)
+    if !ok {   
+        panic(&quot;the value of i is not MyInterface&quot;)
+    }          
+    
+    v1.M1()    
+    fmt.Printf(&quot;the type of v1 is %T\n&quot;, v1) // the type of v1 is main.T
+               
+    i = int64(13)
+    v2, ok := i.(MyInterface)
+    fmt.Printf(&quot;the type of v2 is %T\n&quot;, v2) // the type of v2 is &lt;nil&gt;
+    // v2 = 13 //  cannot use 1 (type int) as type MyInterface in assignment: int does not implement MyInterface (missing M1   method) 
+}
+</code></pre>
+<h4 id="3尽量定义小接口">3，尽量定义小接口</h4>
+<p>Go 中接口的特点：</p>
+<ul>
+<li><strong>隐式契约，无需签署，自动生效</strong>
+<ul>
+<li>Go 语言中接口类型与它的实现者之间的关系是隐式的，不需要像其他语言（比如 Java）那样要求实现者显式放置“implements”进行修饰</li>
+<li>实现者只需要实现接口方法集合中的全部方法便算是遵守了契约，并立即生效了</li>
+</ul>
+</li>
+<li><strong>更倾向于“小接口”</strong>
+<ul>
+<li>Go 语言之父 Rob Pike 曾说“<strong>接口越大，抽象程度越弱</strong>”</li>
+<li>如果契约太繁杂就会束缚了手脚，缺少了灵活性</li>
+<li>尽量定义小接口，即方法个数在 1~3 个之间的接口</li>
+</ul>
+</li>
+</ul>
+<p>如下示例：</p>
+<pre><code class="language-go">// $GOROOT/src/builtin/builtin.go
+type error interface {
+    Error() string
+}
+
+// $GOROOT/src/io/io.go
+type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+
+// $GOROOT/src/net/http/server.go
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+
+type ResponseWriter interface {
+    Header() Header
+    Write([]byte) (int, error)
+    WriteHeader(int)
+}
+</code></pre>
+<h4 id="4接口的动静兼备特性">4，接口的动静兼备特性</h4>
+<p>接口是 Go 这门静态语言中唯一“动静兼备”的语法特性。</p>
+<p>接口类型变量在程序运行时可以被赋值为不同的动态类型变量，每次赋值后，接口类型变量中存储的动态类型信息都会发生变化。</p>
+<p>接口的<strong>静态特性</strong>体现在接口类型变量具有静态类型，比如 <code>var err error</code> 中变量 err 的静态类型为 error。拥有静态类型，那就意味着编译器会在编译阶段对所有接口类型变量的赋值操作进行类型检查，编译器会<strong>检查右值的类型是否实现了该接口方法集合中的所有方法</strong>。如果不满足，就会报错。</p>
+<pre><code class="language-go">var err error = 1
+// cannot use 1 (type int) as type error in assignment: int does not implement error (missing Error method)
+</code></pre>
+<p>接口的<strong>动态特性</strong>，就体现在接口类型变量在运行时还存储了右值的真实类型信息，这个右值的真实类型被称为接口类型变量的动态类型。</p>
+<p>接口类型变量在程序运行时可以被赋值为不同的动态类型变量，每次赋值后，接口类型变量中存储的动态类型信息都会发生变化。</p>
+<p><strong>Go 中的鸭子类型：</strong></p>
+<pre><code class="language-go">// 一个接口
+type QuackableAnimal interface {
+    Quack()
+}
+
+// 一个 Duck 类型，并实现了 Quack 方法
+type Duck struct{}
+func (Duck) Quack() {
+    println(&quot;duck quack!&quot;)
+}
+
+// 一个 Dog 类型，并实现了 Quack 方法
+type Dog struct{}
+func (Dog) Quack() {
+    println(&quot;dog quack!&quot;)
+}
+
+// 一个 Bird 类型，并实现了 Quack 方法
+type Bird struct{}
+func (Bird) Quack() {
+    println(&quot;bird quack!&quot;)
+}                         
+
+// 该函数的参数类型使用的是接口类型                          
+func AnimalQuackInForest(a QuackableAnimal) {
+    a.Quack()             
+}                         
+                          
+func main() {             
+    animals := []QuackableAnimal{new(Duck), new(Dog), new(Bird)}
+    for _, animal := range animals {
+        AnimalQuackInForest(animal)
+    }  
+}
+</code></pre>
+<h4 id="5接口类型的内部表示">5，接口类型的内部表示</h4>
+<p><strong>接口类型的内部表示</strong></p>
+<p>接口类型“动静兼备”的特性也决定了它的变量的内部表示绝不像一个静态类型变量（如 int、float64）那样简单。</p>
+<p>Go 接口类型的内部表示源码：</p>
+<pre><code class="language-go">// $GOROOT/src/runtime/runtime2.go
+type iface struct {
+    tab  *itab
+    data unsafe.Pointer
+}
+
+type eface struct {
+    _type *_type
+    data  unsafe.Pointer
+}
+</code></pre>
+<p>在运行时层面，接口类型变量有两种内部表示：iface和eface，这两种表示分别用于不同的<strong>接口类型变量</strong>：</p>
+<ul>
+<li>eface 用于表示没有方法的空接口类型变量，也就是 interface{} 类型的变量
+<ul>
+<li>eface 表示的空接口类型并没有方法列表，因此它的第一个指针字段指向一个_type 类型结构，这个结构为该接口类型变量的动态类型的信息</li>
+<li>创建 eface 时，一般会为 data 重新分配新内存空间，将动态类型变量的值复制到这块内存空间，并将 data 指针指向这块内存空间。因此我们多数情况下看到的 data 指针值都是不同的。</li>
+</ul>
+</li>
+<li>iface 用于表示其余拥有方法的接口 interface 类型变量
+<ul>
+<li>iface 除了要存储动态类型信息之外，还要存储接口本身的信息（接口的类型信息、方法列表信息等）以及动态类型所实现的方法的信息，因此 iface 的第一个字段指向一个itab类型结构。</li>
+</ul>
+</li>
+</ul>
+<p>每个接口类型变量在运行时的表示都是由两部分组成的，针对不同接口类型，可以简化记作：</p>
+<ul>
+<li>eface(_type, data)</li>
+<li>iface(tab, data)</li>
+</ul>
+<p>其中的 tab 和 _type 可以统一看作是动态类型的类型信息。</p>
+<p><strong>要判断两个接口类型变量是否相同，需要判断 _type/tab （指向的值）是否相同</strong>，以及 data 指针<strong>指向的内存空间</strong>所<strong>存储的数据值</strong>是否相同（这里要注意不是 data 指针的值相同）。</p>
+<p>在 Go 语言中，将任意类型赋值给一个接口类型变量是一个<strong>装箱操作</strong>，装箱实际就是创建一个 eface 或 iface 的过程。</p>
+<p>一个用 eface 表示的空接口类型变量的例子：</p>
+<pre><code class="language-go">type T struct {
+    n int
+    s string
+}
+
+func main() {
+    var t = T {
+        n: 17,
+        s: &quot;hello, interface&quot;,
+    }
+    
+    var ei interface{} = t // Go运行时使用eface结构表示ei
+}
+</code></pre>
+<ul>
+<li>ei 是一个空接口类型</li>
+<li>所以 ei 的类型是 eface</li>
+</ul>
+<p>一个用 iface 表示的非空接口类型变量的例子：</p>
+<pre><code class="language-go">type T struct {
+    n int
+    s string
+}
+
+func (T) M1() {}
+func (T) M2() {}
+
+type NonEmptyInterface interface {
+    M1()
+    M2()
+}
+
+func main() {
+    var t = T{
+        n: 18,
+        s: &quot;hello, interface&quot;,
+    }
+    var i NonEmptyInterface = t
+}
+</code></pre>
+<ul>
+<li>NonEmptyInterface 是一个非空接口</li>
+<li>i 是非空接口变量</li>
+<li>所以 i 的类型是 iface</li>
+</ul>
+<p>Go 语言提供了 <code>println</code> 预定义函数，可以用来输出 eface 或 iface 的两个指针字段的值。</p>
+<p><strong>未赋初值的接口类型变量的值为 nil</strong>：</p>
+<pre><code class="language-go">func printNilInterface() {
+  // nil接口变量
+  var i interface{}     // 空接口类型
+  var err error         // 非空接口类型
+  
+  println(i)		// (0x0,0x0)
+  println(err)		// (0x0,0x0)
+  
+  println(&quot;i = nil:&quot;, i == nil)		// true
+  println(&quot;err = nil:&quot;, err == nil)     // true
+  println(&quot;i = err:&quot;, i == err)         // true
+}
+</code></pre>
+<p>无论是空接口类型还是非空接口类型变量，一旦变量值为 nil，那么它们内部表示均为<code>(0x0,0x0)</code>，也就是类型信息、数据值信息均为空。</p>
+<p><strong>空接口类型变量的内部表示例子</strong></p>
+<pre><code class="language-go">func printEmptyInterface() {
+    var eif1 interface{}    // 空接口类型
+    var eif2 interface{}    // 空接口类型
+    var n, m int = 17, 18
+
+    eif1 = n
+    eif2 = m
+
+    println(&quot;eif1:&quot;, eif1)  // eif1: (0x10ac580,0xc00007ef48)
+    println(&quot;eif2:&quot;, eif2)  // eif2: (0x10ac580,0xc00007ef40)
+    println(&quot;eif1 = eif2:&quot;, eif1 == eif2) // false，类型相同，但值不相同，所以为 false
+
+    eif2 = 17
+    println(&quot;eif1:&quot;, eif1)  // eif1: (0x10ac580,0xc00007ef48)
+    println(&quot;eif2:&quot;, eif2)  // eif2: (0x10ac580,0x10eb3d0)
+    println(&quot;eif1 = eif2:&quot;, eif1 == eif2) // true，类型相同，值也相同
+                                          // 0xc00007ef48 和 0x10eb3d0是值的地址，而不是值
+
+    eif2 = int64(17)
+    println(&quot;eif1:&quot;, eif1)  // eif1: (0x10ac580,0xc00007ef48)
+    println(&quot;eif2:&quot;, eif2)  // eif2: (0x10ac640,0x10eb3d8)
+    println(&quot;eif1 = eif2:&quot;, eif1 == eif2) // false，值相同，但类型不同，所以为 false
+}
+</code></pre>
+<p>Go 在创建 eface 时一般会为 data 重新分配新内存空间，将动态类型变量的值复制到这块内存空间，并将 data 指针指向这块内存空间。因此<strong>我们多数情况下看到的 data 指针值都是不同的</strong>（即使指针指向的内容是相同的）。</p>
+<p><strong>非空接口类型变量例子</strong></p>
+<pre><code class="language-go">type T int
+
+func (t T) Error() string { 
+    return &quot;bad error&quot;
+}
+
+func printNonEmptyInterface() { 
+    var err1 error      // 非空接口类型
+    var err2 error      // 非空接口类型
+    
+    err1 = (*T)(nil)
+    println(&quot;err1:&quot;, err1)  // err1: (0x10ed120,0x0)
+    println(&quot;err1 = nil:&quot;, err1 == nil) // err1 = nil: false
+
+    err1 = T(5)
+    err2 = T(6)
+    println(&quot;err1:&quot;, err1)  // err1: (0x10ed1a0,0x10eb310)
+    println(&quot;err2:&quot;, err2)  // err2: (0x10ed1a0,0x10eb318)
+    println(&quot;err1 = err2:&quot;, err1 == err2) // err1 = err2: false 类型相同，值不同
+
+    err2 = fmt.Errorf(&quot;%d\n&quot;, 5)
+    println(&quot;err1:&quot;, err1)  // err1: (0x10ed1a0,0x10eb310)
+    println(&quot;err2:&quot;, err2)  // err2: (0x10ed0c0,0xc000010050)
+    println(&quot;err1 = err2:&quot;, err1 == err2) // err1 = err2: false 值相同，但类型不同
+}   
+</code></pre>
+<p><strong>空接口类型变量与非空接口类型变量的等值比较</strong></p>
+<pre><code class="language-go">func printEmptyInterfaceAndNonEmptyInterface() {
+  var eif interface{} = T(5)
+  var err error = T(5)
+  println(&quot;eif:&quot;, eif) // eif: (0x10b3b00,0x10eb4d0)
+  println(&quot;err:&quot;, err) // err: (0x10ed380,0x10eb4d8)
+  println(&quot;eif = err:&quot;, eif == err) // eif = err: true
+  // 虽然 0x10b3b00 与 0x10ed380 不相等，但是它表示的只是地址，其地址指向的值是相等的
+
+  err = T(6)
+  println(&quot;eif:&quot;, eif) // eif: (0x10b3b00,0x10eb4d0)
+  println(&quot;err:&quot;, err) // err: (0x10ed380,0x10eb4e0)
+  println(&quot;eif = err:&quot;, eif == err) // eif = err: false
+}
+</code></pre>
+<ul>
+<li>Go 在进行等值比较时，类型比较使用的是 eface 的 _type 和 iface 的 tab._type</li>
+<li>因此在这个例子中，当 eif 和 err 都被赋值为T(5)时，两者之间是划等号的</li>
+</ul>
+<p><strong>所以我们进行接口等值比较是一定要注意：</strong></p>
+<ul>
+<li>println 输出的 _type 和 tab 相等时，那么指向的值一定相等</li>
+<li>println 输出的 _type 和 tab 不等时，那么指向的值不一定不相等</li>
+<li>println 输出的 data 值，一般都是不等的，即使指向的值是相等的</li>
+</ul>
+<h4 id="6为什么-nil-error-值--nil">6，为什么 nil error 值 != nil</h4>
+<p>一段 Go 代码：</p>
+<pre><code class="language-go">type MyError struct {
+    error
+}
+
+func returnsError() error {
+    var p *MyError = nil
+    return p
+}
+
+func main() {
+    err := returnsError()
+    if err != nil {
+        // 代码走到这里，因为 err 类型信息与 nil 的类型信息不一样
+        // 用 println 打一下 err 和 nil 就行
+        fmt.Printf(&quot;err != nil, err:%#v %T\n&quot;, err, err)
+        println(err)
+    } else {
+        fmt.Printf(&quot;err == nil, err:%#v %T\n&quot;, err, err)
+        println(err)
+    }
+}
+</code></pre>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-04-10
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/05/go3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go学习笔记3-Go并发与网络</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/04/go1/">
+            <span class="next-text nav-default">Go学习笔记1-Go基础</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/04/go2/" class="leancloud_visitors" data-flag-title="Go学习笔记2-Go方法与接口">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

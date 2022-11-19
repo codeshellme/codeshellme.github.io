@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ElasticSearch命令参考 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 0，ES 与关系型数据库类比 ElasticSearch 关系型数据库 索引 表" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/03/es-es-cmds/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="ElasticSearch命令参考" />
+<meta property="og:description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 0，ES 与关系型数据库类比 ElasticSearch 关系型数据库 索引 表" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/03/es-es-cmds/" />
+<meta property="article:published_time" content="2022-03-29T22:39:52+08:00" />
+<meta property="article:modified_time" content="2022-03-29T22:45:52+08:00" />
+<meta itemprop="name" content="ElasticSearch命令参考">
+<meta itemprop="description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 0，ES 与关系型数据库类比 ElasticSearch 关系型数据库 索引 表">
+<meta itemprop="datePublished" content="2022-03-29T22:39:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-03-29T22:45:52&#43;08:00" />
+<meta itemprop="wordCount" content="8980">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ElasticSearch命令参考"/>
+<meta name="twitter:description" content="ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 0，ES 与关系型数据库类比 ElasticSearch 关系型数据库 索引 表"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法笔记</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ElasticSearch命令参考</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-03-29 </span>
+        <div class="post-category">
+            <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
+            </div>
+          <span class="more-meta"> 8980 字 </span>
+          <span class="more-meta"> 阅读约需 18 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0es-与关系型数据库类比">0，ES 与关系型数据库类比</a></li>
+        <li><a href="#1查看集群信息">1，查看集群信息</a></li>
+        <li><a href="#2查看索引信息">2，查看索引信息</a></li>
+        <li><a href="#3创建索引">3，创建索引</a></li>
+        <li><a href="#4文档相关操作">4，文档相关操作</a></li>
+        <li><a href="#5批量操作">5，批量操作</a></li>
+        <li><a href="#6常见错误码">6，常见错误码</a></li>
+        <li><a href="#7数据类型">7，数据类型</a></li>
+        <li><a href="#8文档的高级查询">8，文档的高级查询</a></li>
+        <li><a href="#9聚合操作">9，聚合操作</a></li>
+        <li><a href="#10搜索建议">10，搜索建议</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://www.elastic.co/cn/elasticsearch/">ElasticSearch</a> 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了<strong>实时搜索</strong>与<strong>聚合分析</strong>两大功能。</p>
+<h3 id="0es-与关系型数据库类比">0，ES 与关系型数据库类比</h3>
+<table>
+<thead>
+<tr>
+<th align="left">ElasticSearch</th>
+<th align="left">关系型数据库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">索引</td>
+<td align="left">表</td>
+</tr>
+<tr>
+<td align="left">文档</td>
+<td align="left">行</td>
+</tr>
+<tr>
+<td align="left">字段</td>
+<td align="left">列</td>
+</tr>
+<tr>
+<td align="left">Mapping / 映射</td>
+<td align="left">表定义</td>
+</tr>
+<tr>
+<td align="left">DSL</td>
+<td align="left">SQL</td>
+</tr>
+</tbody>
+</table>
+<p>ES 与关系型数据库的区别：</p>
+<table>
+<thead>
+<tr>
+<th align="left">区别</th>
+<th align="left">ElasticSearch</th>
+<th align="left">关系型数据库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">索引方式</td>
+<td align="left">倒排索引</td>
+<td align="left">B-Tree 结构</td>
+</tr>
+<tr>
+<td align="left">事务支持</td>
+<td align="left">不支持</td>
+<td align="left">支持</td>
+</tr>
+<tr>
+<td align="left">扩展方式</td>
+<td align="left">天生支持分片，易扩展</td>
+<td align="left">需借助第三方组件进行分库分表，不易使用</td>
+</tr>
+<tr>
+<td align="left">查询速度</td>
+<td align="left">为搜索而生，具有实时性</td>
+<td align="left">随着数据量的增大，搜索变慢</td>
+</tr>
+</tbody>
+</table>
+<p>Mapping 的特点：</p>
+<ul>
+<li>用于定义文档中字段的类型</li>
+<li>文档中某字段的类型一旦确定就不能更改，因为 ES 会根据相应的类型，去建立索引信息</li>
+<li>字段的类型虽然不能更改，但是 Mapping 中可以增加字段</li>
+</ul>
+<h3 id="1查看集群信息">1，查看集群信息</h3>
+<pre><code class="language-shell">#  查看 ES 集群信息
+&gt; curl http://localhost:9200/ 
+
+# 查看索引 mappings 
+&gt; curl -XGET host:port/$index_name/_mappings?pretty
+
+# 查看索引 settings
+&gt; curl -XGET host:port/$index_name/_settings?pretty 
+
+# 查看 ES 中安装的插件
+&gt; elasticsearch-plugin list
+
+# 安装插件
+&gt; elasticsearch-plugin install analysis-icu
+</code></pre>
+<ul>
+<li><code>GET /_cat/plugins?v</code> 查看 ES 中的插件</li>
+<li><code>GET /_cluster/health</code> 查看集群的健康状态</li>
+<li><code>GET /_cat/nodes?v</code> 查看所有的节点</li>
+</ul>
+<h3 id="2查看索引信息">2，查看索引信息</h3>
+<ul>
+<li><code>GET /_cat/indices?v</code> 查看所有的索引信息</li>
+<li><code>GET /_cat/indices?v&amp;health=green</code> 查看状态为 green 的索引</li>
+<li><code>GET /_cat/indices?v&amp;s=docs.count:desc</code> 按照文档个数排序</li>
+<li><code>GET /_cat/indices?v&amp;h=i,tm&amp;s=tm:desc</code> 查看索引使用的内存大小</li>
+<li><code>GET /_cat/indices/index_prefix*?v&amp;s=index</code>  查看所有的索引名以 <strong>index_prefix</strong> 为前缀的索引</li>
+<li><code>GET /_cat/indices/index_prefix*?pri&amp;v&amp;h=health,index,pri,rep,docs.count,mt</code> 查看指定索引的指定信息</li>
+</ul>
+<h3 id="3创建索引">3，创建索引</h3>
+<p>每个索引都可以定义自己的 Mappings 和 Settings：</p>
+<ul>
+<li>Mappings：用于设置文档字段的类型。</li>
+<li>Settings：用于设置不同的数据分布。</li>
+</ul>
+<h4 id="1创建索引">1，创建索引</h4>
+<p>索引操作：</p>
+<ul>
+<li><code>PUT $index_name</code> 创建索引
+<ul>
+<li>可加入 Mappings 和 Settings 信息（也可不加，采用默认设置）</li>
+<li>不可重复创建，否则会报错</li>
+<li><code>PUT $index_name/_mapping</code> 创建索引，只有 mapping 信息</li>
+<li><code>PUT $index_name/_settings</code> 创建索引，只有 settings 信息</li>
+</ul>
+</li>
+<li><code>HEAD $index_name</code>：查看索引是否存在，通过 http 响应的状态码查看
+<ul>
+<li>状态码 200：表示索引存在</li>
+<li>状态码 404：表示索引不存在</li>
+</ul>
+</li>
+<li><code>GET $index_name</code> 查看指定索引相关信息（Mappings 和 Settings）
+<ul>
+<li><code>GET $index_name/_mapping</code> 只查看 mapping</li>
+<li><code>GET $index_name/_settings</code> 只查看 settings</li>
+</ul>
+</li>
+<li><code>DELETE $index_name</code> 删除整个索引，<strong>要谨慎使用!</strong>
+<ul>
+<li>当删除的 index_name 存在时，会删除整个索引内容</li>
+<li>当删除的 index_name 不存在时，ES 会返回 <strong>404</strong> 错误</li>
+</ul>
+</li>
+<li><code>POST $index_name/_close</code> 关闭索引
+<ul>
+<li>索引被关闭后，将不再能被使用，直到被打开</li>
+</ul>
+</li>
+<li><code>POST $index_name/_open</code> 打开索引</li>
+</ul>
+<p>创建索引：</p>
+<pre><code class="language-shell">PUT $index_name
+{
+  &quot;mappings&quot;:{
+    &quot;properties&quot;:{
+      &quot;col_1&quot;:{
+        &quot;type&quot;:&quot;text&quot;
+      },
+      &quot;col_2&quot;:{
+        &quot;type&quot;:&quot;keyword&quot;
+      },
+      ...
+    }
+  },
+  &quot;settings&quot;:{
+    &quot;number_of_shards&quot;:5,	# 主分片数，不可更改
+    &quot;number_of_replicas&quot;:2	# 副本分片数，默认为 0
+  }
+}
+</code></pre>
+<p>虽然 ES 可以自动推断字段的数据类型，但最好还是自定义 mapping，因为，ES 自推断的类型，有可能并不是你想要的。</p>
+<p><strong>增加索引字段</strong></p>
+<p>虽然索引中的字段的类型是不能改变的，但是可以为索引增加字段。</p>
+<pre><code class="language-shell"># 为索引增加字段 col_3，类型为 keyword
+POST $index_name/_mapping 
+{
+  &quot;properties&quot;: {
+    &quot;col_3&quot;: {
+      &quot;type&quot;:&quot;keyword&quot;
+    }
+  }
+}
+</code></pre>
+<p>其实字段类型是否能够修改，分两种情况：</p>
+<ul>
+<li>对于新增字段
+<ul>
+<li>如果 <code>mappings._doc.dynamic</code> 为 <code>ture</code>，当有新字段写入时，Mappings 会自动更新。</li>
+<li>如果 <code>mappings._doc.dynamic</code> 为 <code>false</code>，当有新字段写入时，Mappings 不会更新；新增字段不会建立倒排索引，但是信息会出现在 <code>_source</code> 中。</li>
+<li>如果 <code>mappings._doc.dynamic</code> 为 <code>strict</code>，当有新字段写入时，写入失败。</li>
+</ul>
+</li>
+<li>对于已有字段
+<ul>
+<li>字段的类型不允许再修改。因为如果修改了，会导致已有的信息无法被搜索</li>
+<li>如果希望修改字段类型，需要 <code>Reindex</code> 重建索引</li>
+</ul>
+</li>
+</ul>
+<p><code>dynamic</code> 有 3 种取值，使用下面 API 可以修改 <code>dynamic</code> 的值：</p>
+<pre><code class="language-shell">PUT $index_name/_mapping
+{
+  &quot;dynamic&quot;: false/true/strict
+}
+</code></pre>
+<h4 id="2重建索引">2，重建索引</h4>
+<p>有时候我们需要重建索引，比如以下情况：</p>
+<ul>
+<li>索引的 mappings 发生改变：比如字段类型或者分词器等发生更改。</li>
+<li>索引的 settings 发生改变：比如索引的主分片数发生更改。</li>
+<li>集群内或集群间需要做数据迁移。</li>
+</ul>
+<p>ES 中提供两种重建 API：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html">Update by query</a>：在现有索引上重建索引
+<ul>
+<li>改变现有 mappings 时，使用该操作</li>
+</ul>
+</li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html">Reindex</a>：在其它索引上重建索引
+<ul>
+<li>先创建一个新的索引 mappings</li>
+<li>再使用 Reindex 迁移数据</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-shell"># Reindex API
+POST _reindex
+{
+  &quot;source&quot;: { # 指定原有索引
+    &quot;index&quot;: &quot;blogs&quot;
+  },
+  &quot;dest&quot;: {   # 指定目标索引
+    &quot;index&quot;: &quot;blogs_new&quot;
+  }
+}
+</code></pre>
+<h3 id="4文档相关操作">4，文档相关操作</h3>
+<p><strong>文档的删除与更新：</strong></p>
+<ul>
+<li>ES 中文档的删除操作不会马上将其删除，而是会将其标记到 del 文件中，在后期合适的时候（比如 Merge 阶段）会真正的删除。</li>
+<li>ES 中的文档是不可变更的，更新操作会将旧的文档标记为删除，同时增加一个新的字段，并且文档的 version 加 1。</li>
+</ul>
+<h4 id="1查看文档">1，查看文档</h4>
+<ul>
+<li><code>GET $index_name/_count</code> 查看索引中的文档数量</li>
+<li><code>POST $index_name/_search</code> 查看指定索引的前10条文档
+<ul>
+<li>POST Body 是 <code>{}</code></li>
+</ul>
+</li>
+<li><code>GET $index_name/_doc/$id</code> 获取指定索引中的指定文档</li>
+</ul>
+<p><strong>查询性能分析</strong>：</p>
+<pre><code class="language-shell">GET /$index_name/_search
+{
+  &quot;profile&quot;:&quot;true&quot;,	# 开启性能分析
+  &quot;query&quot;: {
+    ...
+  }
+}
+</code></pre>
+<p><strong>评分分析</strong>（对某个文档的匹配详情分析）：</p>
+<pre><code class="language-shell">GET /$index_name/_explain/$doc_id
+{
+  &quot;query&quot;: {
+    ...
+  }
+}
+</code></pre>
+<h4 id="2写入文档">2，写入文档</h4>
+<ul>
+<li><code>POST $index_name/_doc</code> <strong>不指定 ID 写入文档</strong>
+<ul>
+<li>总是会插入新的文档，文档数加 1</li>
+</ul>
+</li>
+<li><code>PUT $index_name/_doc/$id?op_type=XXX</code> <strong>指定 ID 写入文档</strong>
+<ul>
+<li><code>op_type=create</code>
+<ul>
+<li>相当于 <code>PUT $index_name/_create/$id</code></li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1</li>
+<li>当 id 存在时，报错，不会插入新文档</li>
+</ul>
+</li>
+<li><code>op_type=index</code>
+<ul>
+<li>相当于 <code>POST/PUT $index_name/_doc/$id</code></li>
+<li>当 id 不存在时，会插入新的文档，文档数加 1</li>
+<li>当 id 存在时，会覆盖之前的，并且 version 会加 1，文档数不增加</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3更新文档">3，更新文档</h4>
+<ul>
+<li>
+<p><code>POST $index_name/_update/$id</code> 更新指定文档的内容。更新的内容要放在 doc 字段中，否则会报错</p>
+<ul>
+<li>当 id 不存在时：报错，不更新任何内容</li>
+<li>当 id 存在时：
+<ul>
+<li>如果更新的字段与原来的相同，则不做任何操作</li>
+<li>如果更新的字段与原来的不同，则更新原有内容，并且 version 会加 1</li>
+</ul>
+</li>
+<li>实际上 ES 中的文档是不可变更的，更新操作会将旧的文档标记为删除，同时增加一个新的字段，并且文档的 version 加 1</li>
+</ul>
+</li>
+<li>
+<p><code>POST $index_name/_update_by_query</code> 根据条件更新文档</p>
+</li>
+</ul>
+<p>条件更新的语法：</p>
+<pre><code class="language-shell">POST $index_name/_update_by_query
+{
+  &quot;query&quot;:{	# 更新条件
+    ...
+  },
+  &quot;script&quot;:{	# 更新操作
+    ...
+  }
+}
+</code></pre>
+<p><strong>upsert 操作</strong>，表示 update 与 insert</p>
+<ul>
+<li>当目标文件存在时，则进行更新操作，否则进行插入操作。</li>
+</ul>
+<p>格式如下：</p>
+<pre><code class="language-shell">POST /$index_name/_update/$id
+{
+  &quot;doc&quot;:{		# $id 存在时，进行更新操作
+    &quot;col_1&quot;:&quot;xxx&quot;,
+    &quot;col_2&quot;:&quot;yyy&quot;
+  },
+  &quot;upsert&quot; {		# $id 不存在时，进行插入操作
+    &quot;col_1&quot;:&quot;mmm&quot;,
+    &quot;col_2&quot;:&quot;nnn&quot;
+  }
+}
+</code></pre>
+<h4 id="4删除文档">4，删除文档</h4>
+<ul>
+<li><code>DELETE $index_name/_doc/$id</code> 删除指定文档
+<ul>
+<li>当删除的 id 存在时，会删除该文档</li>
+<li>当删除的 id 不存在时，ES 会返回 <strong>not_found</strong></li>
+</ul>
+</li>
+<li><code>POST $index_name/_delete_by_query</code> 根据条件删除文档</li>
+</ul>
+<p>条件删除格式如下：</p>
+<pre><code class="language-shell">POST $index_name/_delete_by_query
+{
+  &quot;query&quot;:{	# 更新条件
+    ...
+  }
+}
+</code></pre>
+<h4 id="5并发控制">5，并发控制</h4>
+<p>同一个资源在多并发处理的时候，会发生冲突的问题。</p>
+<p>传统数据库（比如 MySQL）会采用锁的方式，在更新数据的时候对数据进行加锁，来防止冲突。</p>
+<p>而 ES 并没有锁，而是将并发问题交给了用户处理。</p>
+<p>在 ES 中可以采用两种方式：</p>
+<ul>
+<li>内部版本控制（ES 自带的 version）：在 URI 中使用 <strong>if_seq_no</strong> 和 <strong>if_primary_term</strong></li>
+<li>外部版本控制（由用户指定 version）：在 URI 中使用 <strong>version</strong> 和 <strong>version_type=external</strong></li>
+</ul>
+<h3 id="5批量操作">5，批量操作</h3>
+<ul>
+<li>Bulk 批量操作</li>
+<li>Mget 批量读取</li>
+<li>Msearch 批量查询</li>
+</ul>
+<p>注意在使用批量操作时，数据量不宜过大，避免出现性能问题，<strong>建议在 5~15M</strong>。</p>
+<h4 id="1bulk-操作">1，Bulk 操作</h4>
+<p>批量操作指的是，在一次 API 调用中，对<strong>不同的索引</strong>进行<strong>多次操作</strong>。</p>
+<ul>
+<li>
+<p>每次操作互不影响，即使某个操作出错，也不影响其他操作。</p>
+</li>
+<li>
+<p>返回的结果中包含了所有操作的执行结果。</p>
+</li>
+</ul>
+<p>Bulk 操作支持 <code>Index，Create，Update，Delete</code>，使用 <strong>POST</strong> 方法：</p>
+<pre><code class="language-shell">POST /_bulk
+</code></pre>
+<p>一般请求体的内容写在文件中，文件名以 <code>.json</code> 结尾。</p>
+<p><strong>批量写入的格式</strong>：</p>
+<pre><code class="language-shell">{&quot;index&quot;:{&quot;_index&quot;:&quot;$index_name&quot;, &quot;_id&quot;:&quot;1&quot;}}	# 索引名称及 id
+{...}				                # 索引内容
+{&quot;index&quot;:{&quot;_index&quot;:&quot;$index_name&quot;, &quot;_id&quot;:&quot;2&quot;}}	# 索引名称及 id
+{...}						# 索引内容
+</code></pre>
+<p>如果没有写 <code>_id</code> 字段，则 <code>_id</code> 由 ES 自动生成。</p>
+<p><strong>批量更新的格式</strong>：</p>
+<pre><code class="language-shell">{&quot;update&quot;:{&quot;_index&quot;:&quot;$index_name&quot;, &quot;_id&quot;:&quot;1&quot;}}	# 索引名称及 id
+{&quot;doc&quot;:{...}}				        # 索引内容
+{&quot;update&quot;:{&quot;_index&quot;:&quot;$index_name&quot;, &quot;_id&quot;:&quot;2&quot;}}	# 索引名称及 id
+{&quot;doc&quot;:{...}}					# 索引内容
+</code></pre>
+<p><strong>批量删除的格式</strong>：</p>
+<pre><code class="language-shell">{&quot;delete&quot;:{&quot;_index&quot;:&quot;$index_name&quot;, &quot;_id&quot;:&quot;1&quot;}}	# 索引名称及 id
+{&quot;delete&quot;:{&quot;_index&quot;:&quot;$index_name&quot;, &quot;_id&quot;:&quot;2&quot;}}	# 索引名称及 id
+</code></pre>
+<p>注意，批量 <code>update</code> 和 <code>delete</code> 时，必须指定 <code>_id</code> 字段。</p>
+<p>一般使用 <code>curl</code> 命令写入：</p>
+<pre><code class="language-shell"># movies.json 是文件名
+curl -s -XPOST &quot;host:port/_bulk?pretty&quot; -H &quot;Content-Type: application/json&quot; --data-binary &quot;@movies.json&quot;
+</code></pre>
+<h4 id="2mget-读取">2，Mget 读取</h4>
+<p>Mget 一次读取多个文档的内容，设计思想类似 Bulk 操作。</p>
+<p>语法格式如下：</p>
+<pre><code class="language-shell">GET _mget
+{
+    &quot;docs&quot; : [
+        {&quot;_index&quot; : &quot;$index_name1&quot;, &quot;_id&quot; : &quot;1&quot;},
+        {&quot;_index&quot; : &quot;$index_name2&quot;, &quot;_id&quot; : &quot;2&quot;}
+    ]
+}
+
+# 也可以在 URI 中指定索引
+GET $index_name/_mget
+{
+    &quot;docs&quot; : [
+        {&quot;_id&quot; : &quot;1&quot;},
+        {&quot;_id&quot; : &quot;2&quot;}
+    ]
+}
+
+# 用 _source 字段设置返回内容
+GET _mget
+{
+    &quot;docs&quot; : [
+        {&quot;_index&quot; : &quot;$index_name1&quot;, &quot;_id&quot; : &quot;1&quot;},
+        {&quot;_index&quot; : &quot;$index_name2&quot;, &quot;_id&quot; : &quot;2&quot;, &quot;_source&quot; : [&quot;f1&quot;, &quot;f2&quot;]}
+    ]
+}
+</code></pre>
+<h4 id="3msearch-查询">3，Msearch 查询</h4>
+<p>格式如下：</p>
+<pre><code class="language-shell">POST $index_name1/_msearch
+{} # 索引名称，不写的话就是 URI 中的索引
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:1}
+{&quot;index&quot; : &quot;index_name2&quot;} # 改变了索引名称
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:2}
+
+# URI 中也可以不写索引名称，此时请求体里必须写索引名称
+POST _msearch
+{&quot;index&quot; : &quot;index_name1&quot;} # 索引名称
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:1}
+{&quot;index&quot; : &quot;index_name2&quot;} # 索引名称
+{&quot;query&quot; : {&quot;match_all&quot; : {}},&quot;size&quot;:2}
+</code></pre>
+<h3 id="6常见错误码">6，常见错误码</h3>
+<p>当我们的请求发生错误的时候，ES 会返回相应的错误码，常见的错误码如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">错误码</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">429</td>
+<td align="left">集群过于繁忙</td>
+</tr>
+<tr>
+<td align="left">4XX</td>
+<td align="left">请求格式错误</td>
+</tr>
+<tr>
+<td align="left">500</td>
+<td align="left">集群内部错误</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7数据类型">7，数据类型</h3>
+<h4 id="1简单类型">1，简单类型</h4>
+<ul>
+<li><strong>keyword</strong>：是不进行切分的字符串类型，主要用于对文档的过滤，排序，聚合
+<ul>
+<li>经常用于描述姓名，产品类型，用户 ID，URL，状态码等</li>
+<li>查询这种类型，一般使用 term 查询</li>
+<li>注意：对 keyword 类型使用 match 查询，是不会命中文档的</li>
+</ul>
+</li>
+<li><strong>text</strong>：可进行分割的字符串类型
+<ul>
+<li>如果希望某字段可以进行<strong>模糊查询</strong>（match），则可使用该类型</li>
+<li>对该类型的查询，一般使用 match 查询（先进行分词，再匹配）</li>
+</ul>
+</li>
+<li><strong>数值类型</strong>：一般用于对文档进行过滤，排序，聚合
+<ul>
+<li>long，interger，short，byte</li>
+<li>double，float</li>
+<li>half_float，scaled_float，unsigned_long</li>
+<li>对于这类数据类型，一般使用 term，range 查询</li>
+</ul>
+</li>
+<li><strong>boolean</strong>：有 true 和 false 两种值
+<ul>
+<li>该类型一般使用 term 查询</li>
+</ul>
+</li>
+<li><strong>date</strong>：日期类型
+<ul>
+<li>ES 中可用如下三种形式表示 date 类型
+<ul>
+<li>格式化的日期字符串</li>
+<li>秒级别的整型（从 1970.1.1 到现在）</li>
+<li>毫秒级的长整型（从 1970.1.1 到现在）</li>
+</ul>
+</li>
+<li>ES 中 date 的默认格式是 <code>strict_date_option_time || epoch_millis</code>
+<ul>
+<li><strong>strict_date_option_time</strong> 支持的格式有：
+<ul>
+<li>yyyy-MM-dd，yyyyMMdd</li>
+<li>yyyyMMddHHmmss，yyyy-MM-ddTHH:mm:ss</li>
+<li>yyyy-MM-ddTHH:mm:ss.SSS，yyyy-MM-ddTHH:mm:ss.SSSZ</li>
+<li>等</li>
+</ul>
+</li>
+<li><strong>epoch_millis</strong> 表示 1970.1.1 到现在的毫秒数</li>
+</ul>
+</li>
+<li>在写入数据时用什么格式，在查询时就用什么格式</li>
+<li>一般使用 range 查询对 date 类型进行搜索</li>
+</ul>
+</li>
+</ul>
+<p>注意，date 类型默认不支持我们常用的 <code>yyyy-MM-dd HH:mm:ss</code> 格式，如果需要使用该格式，则需要在 mapping 中定义：</p>
+<pre><code class="language-shell">{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;create_time&quot;: {
+        &quot;type&quot;:&quot;date&quot;,	                # 日期类型
+        &quot;format&quot;: &quot;yyyy-MM-dd HH:mm:ss&quot;	# 指定格式
+      }
+    }
+  }
+}
+</code></pre>
+<p>对 date 类型定义好了格式，就需要使用相应的格式进行写入和查询。</p>
+<p><strong>精确值与全文本</strong></p>
+<p>ES 中有精确值（Exact Values）与全文本（Full Text）之分，上面说到的数据类型，text 类型属于全文本类型，除了 text 之外，其它都是精确值。</p>
+<ul>
+<li>对于精确值，ES 在建立索引和进行搜索时，都不会对文本进行分词分析
+<ul>
+<li>term，terms，range，exists，bool 查询都属于精确值匹配</li>
+</ul>
+</li>
+<li>对于全文本，ES 在建立索引和进行搜索时，都会对文本进行分词分析
+<ul>
+<li>全文本类型适用于 match 查询</li>
+</ul>
+</li>
+</ul>
+<h4 id="2复杂类型">2，复杂类型</h4>
+<ul>
+<li><strong>数组类型</strong>：没有特殊的定义方式
+<ul>
+<li>在写入时用中括号 <code>[]</code> 括起来就行，它在 mapping 中显示的还是元素的类型，而没有数组类型</li>
+<li>ES 中的空数组称为 <strong>missing field</strong></li>
+<li>写入空数组时，将字段值置为 <code>[]</code> 就行，例如 <code>&quot;col_name&quot;:[]</code></li>
+<li>对于数组类型的查询规则，遵循其元素的查询规则</li>
+</ul>
+</li>
+<li><strong>对象类型</strong>：和数组一样，对象类型也没有特殊的定义方式
+<ul>
+<li>在写入文档时，直接写入对象格式就行，ES 会自动将其转化为对象类型</li>
+<li>对于对象类型的查询规则，遵循其元素的查询规则</li>
+</ul>
+</li>
+<li><strong>geo_point</strong>：地理类型</li>
+</ul>
+<h4 id="3多字段">3，多字段</h4>
+<p>有时，对于同一个字段，需要有不同的索引方式，这时候就需要用到<strong>多字段</strong>。</p>
+<p>比如下面的 mapping：</p>
+<pre><code class="language-shell">{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;col_name&quot;: {		# 自定义字段名称
+        &quot;type&quot;: &quot;text&quot;,         # 字段类型
+        &quot;fields&quot;: {		# ES 关键字，用于定义多字段
+          &quot;col_name_keyword&quot;: {	# 自定义多字段名称
+            &quot;type&quot;: &quot;keyword&quot;	# 字段类型
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>对于上面的 mapping，ES 在建立索引时，会将 <strong>col_name</strong> 字段建立两份索引，分别是 <strong>text</strong> 类型和 <strong>keyword</strong> 类型。</p>
+<h4 id="4nested-嵌套对象">4，nested 嵌套对象</h4>
+<p>直接上案例。</p>
+<p>一个 movies 索引，其中 actors 是一个对象格式：</p>
+<pre><code class="language-json">DELETE my_movies
+
+PUT my_movies
+{
+   &quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;actors&quot; : {
+          &quot;properties&quot; : {
+            &quot;first_name&quot; : { &quot;type&quot; : &quot;keyword&quot; },
+            &quot;last_name&quot; : { &quot;type&quot; : &quot;keyword&quot; }
+          }
+        },
+        &quot;title&quot; : {
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fields&quot; : {
+            &quot;keyword&quot; : { &quot;type&quot; : &quot;keyword&quot;, &quot;ignore_above&quot; : 256 }
+          }
+        }
+      }
+   }
+}
+</code></pre>
+<p>写入一条电影信息，注意 actors 写入的是数组：</p>
+<pre><code class="language-json">POST my_movies/_doc/1
+{
+  &quot;title&quot;:&quot;Speed&quot;,
+  &quot;actors&quot;:[
+    { &quot;first_name&quot;:&quot;Keanu&quot;, &quot;last_name&quot;:&quot;Reeves&quot; },
+    { &quot;first_name&quot;:&quot;Dennis&quot;, &quot;last_name&quot;:&quot;Hopper&quot; }
+  ]
+}
+</code></pre>
+<p>查询电影：</p>
+<pre><code class="language-json">POST my_movies/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        {&quot;match&quot;: {&quot;actors.first_name&quot;: &quot;Keanu&quot;}},
+        {&quot;match&quot;: {&quot;actors.last_name&quot;: &quot;Hopper&quot;}}
+      ]
+    }
+  }
+}
+</code></pre>
+<p>这条查询语句<strong>居然</strong>查出了 <strong>_id</strong> 为 1 的文档。</p>
+<p>那么问题出现了，我们查询的条件是 <strong>first_name</strong> 是 <strong>Keanu</strong>，并且 <strong>last_name</strong> 是 <strong>Hopper</strong>；显然 <strong>_id</strong> 为 1 的文档，并不满足这样的条件，那问什么能将其查询出来呢？</p>
+<p>实际上 ES 在存储数组的时候，会将 <strong>_id</strong> 为 1 的文档，存成下面的样子：</p>
+<pre><code class="language-json">{
+  &quot;title&quot;: &quot;Speed&quot;,
+  &quot;actors.first_name&quot;: [&quot;Keanu&quot;, &quot;Dennis&quot;],
+  &quot;actors.last_name&quot;: [&quot;Reeves&quot;, &quot;Hopper&quot;]
+}
+</code></pre>
+<p>因此，我们的查询语句就搜索出了 <strong>_id</strong> 为 1 的文档。</p>
+<p>那么如何解决这个问题呢（让那个查询语句查不出 <strong>_id</strong> 为 1 的文档）？</p>
+<p>这时可以使用 <strong>nested 嵌套对象</strong>。</p>
+<ul>
+<li><strong>nested 数据类型</strong>，使得对象数组中的对象是一个整体。</li>
+</ul>
+<p>使用方式如下：</p>
+<pre><code class="language-json">DELETE my_movies
+
+# 创建 Nested 对象 Mapping
+PUT my_movies
+{
+   &quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;actors&quot; : {
+          &quot;type&quot;: &quot;nested&quot;,	# nested 类型
+          &quot;properties&quot; : {
+            &quot;first_name&quot; : {&quot;type&quot; : &quot;keyword&quot;},
+            &quot;last_name&quot; : {&quot;type&quot; : &quot;keyword&quot;}
+          }},
+        &quot;title&quot; : {
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fields&quot; : {&quot;keyword&quot;:{&quot;type&quot;:&quot;keyword&quot;,&quot;ignore_above&quot;:256}}
+        }
+      }
+   }
+}
+</code></pre>
+<p>然后写入文档，之后用下面的查询方式查询：</p>
+<pre><code class="language-json"># Nested 查询
+POST my_movies/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must&quot;: [
+        { &quot;match&quot;: {&quot;title&quot;: &quot;Speed&quot;}},
+        { &quot;nested&quot;: {		# 指定 nested 查询
+            &quot;path&quot;: &quot;actors&quot;,	# 指定 nested 类型的字段名称
+            &quot;query&quot;: {		# 普通的 query 语句
+              &quot;bool&quot;: {
+                &quot;must&quot;: [
+                  {&quot;match&quot;: { &quot;actors.first_name&quot;: &quot;Keanu&quot; }},
+                  {&quot;match&quot;: { &quot;actors.last_name&quot;: &quot;Hopper&quot; }}
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+<p>这样的查询语句时查不出我们刚写入的文档的（要的就是这个效果）。</p>
+<p><em><strong>nested 嵌套对象的聚合分析</strong></em></p>
+<p>格式如下：</p>
+<pre><code class="language-json"># Nested Aggregation
+POST my_movies/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;actors_aggs&quot;: {		# 自定义聚合名称
+      &quot;nested&quot;: {		# 指定是 nested 类型聚合
+        &quot;path&quot;: &quot;actors&quot;	# 指定 nested 类型的字段名
+      },
+      &quot;aggs&quot;: {			# es 关键字，指定具体的聚合
+        &quot;actor_name&quot;: {		# 自定义聚合名称
+          &quot;terms&quot;: {		# 指定 terms 聚合
+            &quot;field&quot;: &quot;actors.first_name&quot;	# 指定聚合的字段
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>注意，对 nested 嵌套对象进行普通的聚合是不起作用的：</p>
+<pre><code class="language-json"># 普通 aggregation 不工作
+POST my_movies/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;actors_aggs&quot;: {
+      &quot;terms&quot;: {
+        &quot;field&quot;: &quot;actors.first_name&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="8文档的高级查询">8，文档的高级查询</h3>
+<p><em><strong>指定查询范围</strong></em></p>
+<p>通过 URI 可以指定在哪些索引中进行查询，有下面几种格式：</p>
+<ul>
+<li><code>/_search</code>：在所有的索引中进行搜索。</li>
+<li><code>/$index_name/_search</code>：在 index_name 索引中进行搜索。</li>
+<li><code>/$index1,$index2/_search</code>：在 index1 和 index2 索引中进行搜索。</li>
+<li><code>/$index*/_search</code>：在所有的以 index 为前缀的索引中进行搜索。</li>
+</ul>
+<p>ES 提供了丰富的查询功能：</p>
+<ul>
+<li>进行完全匹配的 term 查询（不进行分词）</li>
+<li>按照范围匹配的 range 查询（不进行分词）</li>
+<li>进行分词匹配的 match 查询（进行分词）</li>
+</ul>
+<p>一个查询模板：</p>
+<pre><code class="language-shell">GET /$index_name/_search
+{	
+  &quot;query&quot;: {		# 查询条件
+  ...
+  },
+  &quot;_source&quot;: [...],	# 指定返回的字段
+  &quot;sort&quot;:[		# 排序方式
+    {&quot;col_name&quot;: {&quot;order&quot;: &quot;desc&quot;}},
+    ...
+  ],
+  &quot;from&quot;: 0,		# 起始 id
+  &quot;size&quot;: 10		# 页大小
+}
+</code></pre>
+<p>为了不给 ES 造成较大负担，ES 使用 <code>max_result_window</code> 规定 <code>from + size</code> 的最大值，默认情况下为 10000。</p>
+<p>修改该属性的方法（一般无需修改）：</p>
+<pre><code class="language-shell">PUT /$index_name/_settings
+{
+  &quot;index&quot;: {
+    &quot;max_result_window&quot;: 20000
+  }
+}
+</code></pre>
+<p>为了解决深度分页问题，ES 有两种解决方案：<strong>Search After</strong> 和 <strong>Scroll</strong>。</p>
+<p>不同分页方式的使用场景：</p>
+<ul>
+<li>普通查询（不使用分页）：需要实时获取顶部的部分文档。</li>
+<li>From-Size（普通分页）：适用于非深度分页。</li>
+<li>Search After：需要深度分页时使用。</li>
+<li>Scroll：需要全部文档，比如导出全部数据。</li>
+</ul>
+<h4 id="1match_all-查询">1，match_all 查询</h4>
+<p>查看索引的所有文档：</p>
+<pre><code class="language-shell"># 默认返回前 10 行
+GET $index_name/_search
+{    
+    &quot;query&quot;:{
+        &quot;match_all&quot;:{}
+    }
+}
+</code></pre>
+<p>match_all 查询不会对文档进行打分，每个文档均为 1.0 分。</p>
+<h4 id="2term-查询">2，term 查询</h4>
+<p>term 查询是<strong>结构化精准查询</strong>的主要查询方式，用于查询待查字段和查询值<strong>是否完全匹配</strong>，格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {		# term 查询
+      &quot;col_name&quot;: {	# 字段名称
+        &quot;value&quot;: &quot;$xxx&quot;	# 要匹配的值
+      }
+    }
+  }
+}
+</code></pre>
+<p>term 查询还有一种简写形式：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {		  # term 查询
+      &quot;col_name&quot;: &quot;$xxx&quot;   # key:value 形式
+    }
+  }
+}
+</code></pre>
+<p>term 查询一般针对的数据类型有：</p>
+<ul>
+<li>keyword 类型</li>
+<li>数值类型</li>
+<li>布尔类型</li>
+<li>日期类型：要使用 mapping 定义的时间格式</li>
+<li>数组类型</li>
+</ul>
+<h4 id="3terms-查询">3，terms 查询</h4>
+<p>terms 是 term 的扩展形式，用于查询一个或多个值与待查字段是否完全匹配，格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;terms&quot;: {		# terms 查询
+      &quot;col_name&quot;: [	# 字段名称，是一个数组
+        &quot;$xxx&quot;,		# 要匹配的值
+        &quot;$yyy&quot;,
+        &quot;$zzz&quot;,
+        ...
+      ]
+    }
+  }
+}
+</code></pre>
+<p>terms 查询一般针对的数据类型有：</p>
+<ul>
+<li>keyword 类型</li>
+<li>数值类型</li>
+<li>布尔类型</li>
+<li>日期类型：要使用 mapping 定义的时间格式</li>
+<li>数组类型</li>
+</ul>
+<h4 id="4range-查询">4，range 查询</h4>
+<p>range 表示范围查询，比较符号有：</p>
+<ul>
+<li><strong>gt</strong>：大于</li>
+<li><strong>lt</strong>：小于</li>
+<li><strong>gte</strong>：大于等于</li>
+<li><strong>lte</strong>：小于等于</li>
+</ul>
+<p>格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;:{
+    &quot;range&quot;: {
+      &quot;$col_name&quot;: {
+          # 一个或多个比较符号
+          &quot;gte&quot;: 300,   # 这里 300 加与不加双引号是一样的
+          &quot;lte&quot;: 500
+      }
+    }
+  }
+}
+</code></pre>
+<p>range 查询一般针对的数据类型有：</p>
+<ul>
+<li>数值类型</li>
+<li>日期类型：要使用 mapping 定义的时间格式</li>
+</ul>
+<p>对于日期类型，ES 内置了几个常用的符号：</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">y</td>
+<td align="left">年</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="left">月</td>
+</tr>
+<tr>
+<td align="left">w</td>
+<td align="left">周</td>
+</tr>
+<tr>
+<td align="left">d</td>
+<td align="left">天</td>
+</tr>
+<tr>
+<td align="left">H / h</td>
+<td align="left">时</td>
+</tr>
+<tr>
+<td align="left">m</td>
+<td align="left">分</td>
+</tr>
+<tr>
+<td align="left">s</td>
+<td align="left">秒</td>
+</tr>
+<tr>
+<td align="left">now</td>
+<td align="left">现在</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<pre><code class="language-shell">POST $index_name/_search
+{
+  &quot;query&quot; : {
+    &quot;range&quot; : {
+      &quot;$col_name&quot; : {      # 字段名称
+        &quot;gte&quot; : &quot;now-10y&quot;  # 10年之前
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="5exists-查询">5，exists 查询</h4>
+<p>exists 用于查找某个字段<strong>不为空</strong>的文档，下列情况都表示<strong>不为空</strong>：</p>
+<ul>
+<li>值存在，且不是 <code>null</code></li>
+<li>值不是空数组 <code>[]</code></li>
+<li>值是数组，但不是 <code>[null]</code></li>
+</ul>
+<p>格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;:{
+    &quot;exists&quot;: {     # 查询 col_name 字段不为空的文档
+      &quot;field&quot;: &quot;$col_name&quot;
+    }
+  }
+}
+</code></pre>
+<p>搜索不存在某个字段的文档，需要使用布尔查询。</p>
+<p>如下：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {       # 布尔查询
+      &quot;must_not&quot;: { # 不存在
+        &quot;exists&quot;: { # 不存在 $field_name 字段的文档
+          &quot;field&quot;: &quot;$field_name&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="6bool-查询">6，bool 查询</h4>
+<p>布尔类型支持四种子查询：</p>
+<ul>
+<li><strong>must</strong>：必须匹配，相当于逻辑与（and）</li>
+<li><strong>should</strong>：可以匹配，相当于逻辑或（or）</li>
+<li><strong>must not</strong>：必须不匹配，相当于逻辑非（not）</li>
+<li><strong>filter</strong>：必须匹配过滤条件，不进行打分计算
+<ul>
+<li>相当于不打分的 must</li>
+</ul>
+</li>
+</ul>
+<p>这四种子查询都包含一个数组，可以把其他的 term 级别的查询及 bool 查询放入其中。</p>
+<p>格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;bool&quot;: {
+      &quot;must/should/must_not/filter&quot;: [
+        {&quot;term&quot;:{}},
+        {&quot;terms&quot;:{}},
+        {&quot;range&quot;:{}},
+        {&quot;exists&quot;:{}},
+        {&quot;bool&quot;:{}},
+        ...
+      ]
+    }
+  }
+}
+</code></pre>
+<h4 id="7match-查询">7，match 查询</h4>
+<p>match 查询表示<strong>全文搜索</strong>，主要针对 <strong>text</strong> 类型，比如一段对话，商品介绍等。</p>
+<p>不同于结构化查询，全文搜索会对查询词进行分析（分词），然后再进行查询。</p>
+<ul>
+<li><strong>结构化查询</strong>关注的是数据是否匹配，一般用于<strong>精确匹配</strong></li>
+<li><strong>全文搜索</strong>关注的是匹配的程度（算分），用于<strong>模糊匹配</strong></li>
+</ul>
+<p>格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;:{		# 先对 $xxx 进行分词，在去字段中匹配
+      &quot;col_name&quot;: &quot;$xxx&quot;
+    }
+  }
+}
+</code></pre>
+<p><strong>operator 属性</strong></p>
+<ul>
+<li>该属性决定文档按照分词后的词集合进行“与”还是“或”匹配</li>
+<li>比如分词时分成了 A 和 B</li>
+<li>operator 用于控制查询时 A 和 B之间的关系</li>
+<li>其取值有 <code>and</code>（与关系） 和 <code>or</code>（或关系）
+<ul>
+<li>A and B 表示包含 A 和 B，它们之间没有先后顺序</li>
+<li>A or B 表示包含 A 或包含 B，它们之间没有先后顺序</li>
+</ul>
+</li>
+<li>默认为 <code>or</code></li>
+</ul>
+<p><strong>minimum_should_match 属性</strong></p>
+<ul>
+<li>operator 与关系对于搜索要求过于苛刻，或关系又比较宽松</li>
+<li>此时可以使用 minimum_should_match 来控制最小匹配度</li>
+</ul>
+<p>语法如下：</p>
+<pre><code class="language-shell">POST index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;$field_name&quot;: {
+        &quot;query&quot;: &quot;$xxx&quot;,
+        &quot;operator&quot;: &quot;or&quot;,
+        &quot;minimum_should_match&quot;: 80%
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="8multi_match-查询">8，multi_match 查询</h4>
+<p>multi_match 表示在多个字段中进行 match。</p>
+<p>格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;multi_match&quot;:{
+      &quot;query&quot;: &quot;$xxx&quot;,
+      &quot;fields&quot;: [		# 在哪些字段中进行匹配
+        &quot;col_1&quot;,
+        &quot;col_2&quot;,
+        ...
+      ]
+    }
+  }
+}
+</code></pre>
+<h4 id="9match_phrase-查询">9，match_phrase 查询</h4>
+<p>match_phrase 用于搜索确切的短语或邻近的词语。</p>
+<pre><code class="language-shell"># 此时表示的含义是
+# one 与 love 紧邻，且 one 在 love 前面
+# slop 表示 one 与 love 之间可以有几个字符，默认为 1
+POST $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;match_phrase&quot;: {
+      &quot;$field_name&quot;:{
+        &quot;query&quot;: &quot;one love&quot;,
+        &quot;slop&quot; : 1
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="10constant-score-查询">10，constant score 查询</h4>
+<p>默认的查询都会计算算分，<strong>constant score</strong> 称为不计分查询，所有分数都是 1。<strong>boots</strong> 属性用于改变分值。</p>
+<p>语法如下：</p>
+<pre><code class="language-shell">POST $index_name/_search
+{
+  &quot;query&quot;: {
+    &quot;constant_score&quot;: {        # constant_score 查询，固定写法
+      &quot;boost&quot;: 2.0,	       # 改变分值，默认为 1
+      &quot;filter&quot;: {              # 固定写法
+        &quot;term&quot;: {              # constant_score 包装一个 term 查询，就没有了算分
+          &quot;avaliable&quot;: true
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="11function-score-查询">11，function score 查询</h4>
+<p>function score 暂略。</p>
+<h3 id="9聚合操作">9，聚合操作</h3>
+<p>聚合操作是 ES 提供的第二项重要功能，其使用 <strong>aggs</strong> 子句。</p>
+<h4 id="1统计指标">1，统计指标</h4>
+<p>常见的统计指标包含以下：</p>
+<ul>
+<li><strong>avg</strong>：平均值</li>
+<li><strong>max</strong>：最大值</li>
+<li><strong>min</strong>：最小值</li>
+<li><strong>sum</strong>：求和</li>
+<li><strong>stats</strong>：同时计算上面 4 种指标
+<ul>
+<li>另外还会返回 <strong>count</strong>，表示参与计算的文档数量</li>
+<li>值为<strong>空值</strong>的字段不会参与计算</li>
+</ul>
+</li>
+<li><strong>value_count</strong>：专门用于统计字段<strong>非空值</strong>的数量
+<ul>
+<li><strong>注意</strong>：如果进行聚合的字段是数组类型，则 value_count 统计的是符合条件的所有文档中该字段数组中非空元素个数的总和，而不是数组的个数总和</li>
+</ul>
+</li>
+<li><strong>cardinality</strong>：去重统计，类似 MySQL 中的 distinct</li>
+</ul>
+<p>格式如下：</p>
+<pre><code class="language-shell">GET $index_name/_search 
+{
+  &quot;size&quot;: 0,	# 聚合操作，size 一般设为 0，表示不需要返回文档信息
+  &quot;aggs&quot;: {	# 聚合操作
+    &quot;my_agg&quot;: {	# 自定义聚合名称
+      &quot;avg/max/min/sum/stats/value_count&quot;: {
+        &quot;field&quot;: &quot;$col_name&quot;,	# 要进行聚合的字段
+        &quot;missing&quot;: 100		# 当字段为空时，用该值替代，不写该属性时，默认为 0
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>对于空值的处理</strong></p>
+<ul>
+<li>索引中，会有部分文档，其某些字段可能缺失，或为<strong>空值</strong></li>
+<li>可以使用 <strong>missing</strong> 来补充空值</li>
+</ul>
+<p>多个统计指标示例：</p>
+<pre><code class="language-shell"># 多个 Metric 聚合，找到最低最高和平均工资
+POST $index_name/_search
+{
+  &quot;size&quot;: 0,               # size 为 0
+  &quot;aggs&quot;: {
+    &quot;max_salary&quot;: {        # 自定义聚合名称
+      &quot;max&quot;: {             # 聚合类型
+        &quot;field&quot;: &quot;$salary&quot; # 聚合字段
+      }
+    },
+    &quot;min_salary&quot;: {        # 自定义聚合名称
+      &quot;min&quot;: {             # 聚合类型
+        &quot;field&quot;: &quot;$salary&quot; # 聚合字段
+      }
+    },
+    &quot;avg_salary&quot;: {        # 自定义聚合名称
+      &quot;avg&quot;: {             # 聚合类型
+        &quot;field&quot;: &quot;$salary&quot; # 聚合字段
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="2桶聚合">2，桶聚合</h4>
+<p>ES 中的桶聚合相当于 MySQL 中的 <strong>Group By</strong> 语句，将同一类的数据放入同一个“桶”中。</p>
+<p>桶聚合可分为：</p>
+<ul>
+<li>单维度桶聚合</li>
+<li>多维度桶聚合</li>
+</ul>
+<p><em><strong>单维度桶聚合</strong></em></p>
+<p>单维度桶聚合有：</p>
+<ul>
+<li><strong>terms 桶聚合</strong>：按照字段的实际完整值进行匹配分组，适用于能够精确匹配的数据类型，比如：
+<ul>
+<li>keyword 类型</li>
+<li>bool 类型</li>
+<li>keyword 数组类型</li>
+<li>text 类型不适合 terms 桶聚合</li>
+</ul>
+</li>
+<li><strong>ranges 桶聚合</strong>：针对的是数值类型，表示按照数值范围进行分组，使用到两个关键字：
+<ul>
+<li><strong>from</strong>：起始数值</li>
+<li><strong>to</strong>：终止数值</li>
+<li>范围是 [from, to)，包含 from，不包含 to</li>
+</ul>
+</li>
+<li><strong>histogram 直方图桶聚合</strong> ：用于区间分桶</li>
+<li><strong>date_histogram 直方图桶聚合</strong> ：用于时间区间分桶</li>
+</ul>
+<p><strong>terms 聚合示例：</strong></p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;my_agg&quot;: {	        # 自定义聚合名称
+      &quot;terms&quot;: {
+        &quot;field&quot;:&quot;$col_name&quot;	# 按照 $col_name 字段进行聚合
+				# 相当于 MySQL 中的以字段进行 group by 分组
+      }
+    }
+  }
+}
+</code></pre>
+<p>默认情况下，进行桶聚合时如果不指定<strong>统计指标</strong>，则聚合的是文档计数，该值以 doc_count 为 key 存储在每一个 bucket 返回值中。</p>
+<p><strong>ranges 聚合示例：</strong></p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;my_agg&quot;: {                 # 自定义聚合名称
+      &quot;range&quot;: {
+        &quot;field&quot;:&quot;$col_name&quot;,	# 聚合的字段
+        &quot;ranges&quot;:[		# 指定多个范围
+          { &quot;to&quot;: 200	},  	# from 默认为 0 
+          { &quot;from&quot;: 200, &quot;to&quot;: 500 },
+          { 
+            &quot;from&quot;: 500, 	# to 默认为该字段最大值
+            &quot;key&quot;:&quot;可以使用 key 自定义名称&quot;, 	# 如果没有定义 key，ES 会自动生成
+          }			
+        ]
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>histogram 桶聚合示例：</strong></p>
+<pre><code class="language-shell"># Salary Histogram
+POST $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;salary_histrogram&quot;: {   # 自定义聚合名称
+      &quot;histogram&quot;: {         # histogram 聚合
+        &quot;field&quot;:&quot;$salary&quot;,   # 聚合的字段
+        &quot;interval&quot;:5000,     # 区间值
+        &quot;extended_bounds&quot;:{  # 最大最小范围
+          &quot;min&quot;:0,
+          &quot;max&quot;:100000
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>date_histogram 桶聚合示例：</strong></p>
+<pre><code class="language-shell">POST $movies/_search
+{
+  &quot;size&quot;: 0,
+  &quot;query&quot;: {
+    &quot;range&quot;: {
+      &quot;$publish_time&quot;: {
+        &quot;gte&quot;: &quot;2009-06-01&quot;,
+        &quot;lte&quot;: &quot;2010-01-01&quot;
+      }
+    }
+  }, 
+  &quot;aggs&quot;: {
+    &quot;$publish_time_histrogram&quot;: {   	# 自定义聚合名称
+      &quot;date_histogram&quot;: {        	# date_histogram
+        &quot;field&quot;:&quot;$publish_time&quot;,    	# 聚合字段
+        &quot;calendar_interval&quot;: &quot;year&quot;,    # 聚合间隔 
+        &quot;format&quot;: &quot;yyyy-MM-dd&quot;,		# 时间格式
+        &quot;min_doc_count&quot;: 3,		# 最小数量
+        &quot;extended_bounds&quot;:{		# 最大最小范围
+          &quot;min&quot;:&quot;2009-01-01&quot;,
+          &quot;max&quot;:&quot;2010-01-01&quot;
+        }
+      },
+      &quot;aggs&quot;: {				# 在 date_histogram 的基础上再进行指标聚合
+        &quot;$total_time&quot;: {
+          &quot;sum&quot;: {
+            &quot;field&quot;: &quot;$movie_time&quot;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>指定统计指标</strong>：在单维度桶聚合的基础上，指定统计指标</p>
+<pre><code class="language-shell"># 先以 $col_name1 字段进行桶聚合
+# 在其基础上，再对 $col_name2 字段进行聚合
+GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;my_agg1&quot;: {
+      &quot;terms&quot;: {	# 先进行桶聚合
+        &quot;field&quot;: &quot;$col_name1&quot;
+      },
+      &quot;aggs&quot;: {	        # 在桶聚合的基础上，再进行聚合
+        &quot;my_agg2&quot;: {
+          &quot;sum&quot; : {	# 求和
+            &quot;field&quot;: &quot;$col_name2&quot;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>多维度桶聚合</strong></p>
+<p>ES 支持多维度（多层）桶聚合，一层一层的嵌套，如果有统计指标的话，统计指标放在最内层。</p>
+<p>例如：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;my_level_1&quot;: {		# 第一层桶聚合
+      &quot;terms&quot;: {
+        &quot;field&quot;: &quot;$col_name1&quot;
+      },
+      &quot;aggs&quot;: {	
+        &quot;my_level_2&quot;: { 	# 第二次桶聚合，在第一层的基础上，再进行桶聚合
+          &quot;terms&quot;: {
+            &quot;field&quot;:&quot;$col_name2&quot;
+          },
+          &quot;aggs&quot;: {		# 最内层，指定统计指标
+            &quot;my_sum&quot; : {
+              &quot;sum&quot; : { 	# 求和
+                &quot;field&quot;: &quot;$col_name&quot;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="3先查询再聚合">3，先查询再聚合</h4>
+<p>上面介绍到的都是<strong>直接聚合</strong>的方式，也就是没有指定 query 子句，是对索引内的所有文档进行聚合。</p>
+<p>在加上 query 子句后，参加聚合的文档，必须先匹配 query 查询，才会进行聚合。</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;query&quot;: { 	# query 子句
+    ...
+  },
+  &quot;aggs&quot;: {	# 聚合子句
+    ...
+  }
+}
+</code></pre>
+<h4 id="4前过滤器">4，前过滤器</h4>
+<p>只有符合过滤器条件的文档才会进行聚合。</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;query&quot;: {        # query 子句
+    ...
+  },
+  &quot;aggs&quot;: {         # 聚合子句
+    &quot;my_agg&quot;: {
+      &quot;filter&quot;: {   # 前过滤器，与 query 子句语法一样
+        ...
+      },
+      &quot;aggs&quot;: {	    # 真正进行的聚合操作
+        ...
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="5聚合排序">5，聚合排序</h4>
+<p>可以使用 <strong>order</strong> 子句自定义排序方式，可选的排序方式有：</p>
+<ul>
+<li>按照<strong>文档数</strong>排序，使用 <strong>_count</strong> 关键字（默认排序方式）</li>
+<li>按照<strong>聚合指标</strong>排序，使用相应<strong>聚合名称</strong></li>
+<li>按照<strong>分组名称</strong>排序，使用 <strong>_key</strong> 关键字</li>
+</ul>
+<p><strong>_count 排序：</strong></p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;size&quot;: 0,
+  &quot;aggs&quot;: {
+    &quot;my_agg1&quot;: {
+      &quot;terms&quot;: {		# 先进行桶聚合
+        &quot;field&quot;: &quot;$col_name1&quot;,
+        &quot;order&quot;: {	        # order 子句
+          &quot;_count&quot;: &quot;asc&quot;	# 以 my_agg2 的结果进行正序排序
+        }
+      },
+      &quot;aggs&quot;: {		        # 在桶聚合的基础上，再进行聚合
+        &quot;my_agg2&quot;: {
+          &quot;sum&quot; : {	        # 求和
+            &quot;field&quot;: &quot;$col_name2&quot;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p><strong>order</strong> 中可以有多个指标：</p>
+<pre><code class="language-shell">&quot;order&quot;:[
+    {&quot;_count&quot;:&quot;asc&quot;}, # 先按照文档数排序
+    {&quot;_key&quot;:&quot;desc&quot;}   # 如果文档数相同，再按照 key 排序
+]
+</code></pre>
+<p><strong>以聚合名称排序：</strong></p>
+<pre><code class="language-shell">&quot;order&quot;: {	    # order 子句
+  &quot;my_aggs&quot;: &quot;asc&quot;  # my_aggs 是自定义聚合名称
+}
+</code></pre>
+<p><strong>以分组的组名排序：</strong> 也就是引用 buckets 结果中的 key</p>
+<pre><code class="language-shell">&quot;order&quot;: {	# order 子句
+  &quot;_key&quot;: &quot;asc&quot;
+}
+</code></pre>
+<h4 id="6其它属性">6，其它属性</h4>
+<p>桶聚合的其它常用属性还有：</p>
+<ul>
+<li><strong>size</strong>：返回的桶的数量，默认是 10</li>
+<li><strong>min_doc_count</strong>：返回的桶的最小文档数，默认是 1</li>
+</ul>
+<pre><code class="language-shell">&quot;aggs&quot;: {
+  &quot;my_aggs&quot;: {	
+    &quot;terms&quot;: {
+      &quot;field&quot;:&quot;$col_name&quot;,
+      &quot;size&quot;: 1000, 
+      &quot;min_doc_count&quot;: 10
+    }
+  }
+}
+</code></pre>
+<h3 id="10搜索建议">10，搜索建议</h3>
+<p>搜索建议就是在用户输入搜索关键词的过程中，系统进行自动补全提示。</p>
+<p>在搜索时，用户每输入一个字符，前端就需要向后端发送一次查询请求对匹配项进行查询，因此对后端的响应速度要求很高。</p>
+<p>如下是百度的搜索建议：</p>
+<p><img src="https://img-blog.csdnimg.cn/29d910052e814eb6a01e61c7625b348f.png" alt="在这里插入图片描述"></p>
+<p>ES 中提供的搜索建议功能，使用的索引结构不是倒排索引，而是在内存中构建的 FST，这种数据结构对内存的使用较多，一定要注意。</p>
+<p>在 ES 中，要想使用搜索建议，对应的字段类型需要定义为 <strong>completion</strong> 类型。</p>
+<pre><code class="language-shell">PUT $index_name
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;$field_name&quot;: {          # 字段名称
+        &quot;type&quot;: &quot;completion&quot;    # 字段类型
+      }
+    }
+  }
+}
+</code></pre>
+<p>使用时，是这样使用的：</p>
+<pre><code class="language-shell">GET $index_name/_search
+{
+  &quot;suggest&quot;: {
+    &quot;my_suggest&quot;: {		# 自定义建议名称
+      &quot;prefix&quot;: &quot;$用户的输入词&quot;,
+      &quot;completion&quot;: {
+        &quot;field&quot;:&quot;$field_name&quot;
+      }
+    }
+  }
+}
+</code></pre>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-03-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/04/go1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go学习笔记1-Go基础</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/03/jvm3/">
+            <span class="next-text nav-default">Java排查JVM问题（进程反应缓慢、僵死、CPU 占用过高、内存等问题）</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/03/es-es-cmds/" class="leancloud_visitors" data-flag-title="ElasticSearch命令参考">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

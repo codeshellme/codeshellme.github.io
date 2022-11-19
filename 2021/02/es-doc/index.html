@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 本节介绍 ES 文档，索引及其基本操作。 1，ES 中的文档 在 ES">
 <meta itemprop="datePublished" content="2021-02-20T22:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2021-02-20T22:42:52&#43;08:00" />
-<meta itemprop="wordCount" content="5740">
+<meta itemprop="wordCount" content="5873">
 
 
 
@@ -83,8 +83,10 @@
         <li class="mobile-menu-item">首页</li>
       </a><a href="/python-learn/">
         <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
       </a><a href="/ml/">
-        <li class="mobile-menu-item">机器学习</li>
+        <li class="mobile-menu-item">ML</li>
       </a><a href="/dp/">
         <li class="mobile-menu-item">设计模式</li>
       </a><a href="/es/">
@@ -123,7 +125,9 @@
       </li><li class="menu-item">
         <a class="menu-item-link" href="/python-learn/">Python</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/ml/">机器学习</a>
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
       </li><li class="menu-item">
         <a class="menu-item-link" href="/dp/">设计模式</a>
       </li><li class="menu-item">
@@ -159,7 +163,7 @@
         <div class="post-category">
             <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
             </div>
-          <span class="more-meta"> 5740 字 </span>
+          <span class="more-meta"> 5873 字 </span>
           <span class="more-meta"> 阅读约需 12 分钟 </span>
         
 
@@ -252,16 +256,25 @@
 <p>更多关于元数据的信息，可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/mapping-fields.html">这里</a>。</p>
 <h4 id="12文档的删除与更新">1.2，文档的删除与更新</h4>
 <p>ES 中文档的<strong>删除操作不会马上将其删除</strong>，而是会将其标记到 <strong>del</strong> 文件中，在后期合适的时候（比如 Merge 阶段）会真正的删除。</p>
-<p><strong>ES 中的文档是不可变更的</strong>，<strong>更新操作</strong>会将旧的文档标记为删除，同时增加一个新的字段，并且文档的 version 加 1。</p>
+<p><strong>ES 中的文档是不可变更的</strong>，文档是用户可操作的最小单位，<strong>更新操作</strong>会将旧的文档标记为删除，同时增加一个新的字段，并且文档的 version 加 1。</p>
 <h4 id="13文档中的字段数">1.3，文档中的字段数</h4>
-<p>在 ES 中，一个文档默认最多可以有 <strong>1000</strong> 个字段，可以通过 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings">index.mapping.total_fields.limit</a> 进行设置。</p>
+<p>在 ES 中，一个文档可以包含一个或多个字段，每个字段都有其类型。</p>
+<p>一个文档默认最多可以有 <strong>1000</strong> 个字段，可以通过 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings">index.mapping.total_fields.limit</a> 进行设置。</p>
 <p>注意在设计 ES 中的数据结构时，不要使文档的字段数过多，这样会使得 mapping 很大，增加集群的负担。</p>
+<p>索引，文档，字段之间的关系如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/aa9822ae76b54079a042c496b8bc1bd3.png" alt="在这里插入图片描述"></p>
 <h3 id="2es-中的索引">2，ES 中的索引</h3>
 <p>ES 中的文档都会存储在某个<strong>索引</strong>（Index）中，索引是文档的容器，是一类文档的集合，相当于关系型数据库中的表的概念。</p>
 <p>ES 中可以创建很多不同的索引，表示不同的文档集合。</p>
 <p>每个索引都可以定义自己的 <strong>Mappings</strong> 和 <strong>Settings</strong>：</p>
 <ul>
-<li><code>Mappings</code>：用于设置文档字段的类型。</li>
+<li><code>Mappings</code>：用于设置文档字段的类型。
+<ul>
+<li>相当于文档的数据结构，文档中字段的类型一旦设定有就不可更改</li>
+<li>因为 ES 会根据字段的类型建立索引结构，这种结构不可更改</li>
+<li>如果某字段没有定义数据类型，ES 也可自动推断</li>
+</ul>
+</li>
 <li><code>Settings</code>：用于设置不同的数据分布。</li>
 </ul>
 <p>对于索引的一些参数设置，有些参数可以动态修改，有些参数在索引创建后不能修改，可参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.10/index-modules.html">这里</a>。</p>

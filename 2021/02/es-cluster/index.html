@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 1，ES 的分布式架构 ES 是一个分布式的集群，具有高可用性">
 <meta itemprop="datePublished" content="2021-02-25T22:39:52&#43;08:00" />
 <meta itemprop="dateModified" content="2021-02-25T22:45:52&#43;08:00" />
-<meta itemprop="wordCount" content="3279">
+<meta itemprop="wordCount" content="3283">
 
 
 
@@ -83,8 +83,10 @@
         <li class="mobile-menu-item">首页</li>
       </a><a href="/python-learn/">
         <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
       </a><a href="/ml/">
-        <li class="mobile-menu-item">机器学习</li>
+        <li class="mobile-menu-item">ML</li>
       </a><a href="/dp/">
         <li class="mobile-menu-item">设计模式</li>
       </a><a href="/es/">
@@ -123,7 +125,9 @@
       </li><li class="menu-item">
         <a class="menu-item-link" href="/python-learn/">Python</a>
       </li><li class="menu-item">
-        <a class="menu-item-link" href="/ml/">机器学习</a>
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
       </li><li class="menu-item">
         <a class="menu-item-link" href="/dp/">设计模式</a>
       </li><li class="menu-item">
@@ -159,7 +163,7 @@
         <div class="post-category">
             <a href="/categories/es-%E7%AC%94%E8%AE%B0/"> ES 笔记 </a>
             </div>
-          <span class="more-meta"> 3279 字 </span>
+          <span class="more-meta"> 3283 字 </span>
           <span class="more-meta"> 阅读约需 7 分钟 </span>
         
 
@@ -311,7 +315,7 @@
 <p>其中蓝色框为主分片，白色框为副本分片。</p>
 <p><strong>ES 在分配主副分片时，会将副本分片与主分片应该在不同的节点上</strong>。</p>
 <p>主分片和副本分片分别分布到不同的数据节点上，这样的话，如果有某个数据节点宕机，也不会影响整个系统的使用。</p>
-<p><strong>ES 7.0 开始，默认的主分片数为 1，默认的副本分片数为 0。在生产环境中，副本分片数至少为 1。</strong></p>
+<p><strong>ES 7.0 开始，一个索引的默认主分片数为 1，默认的副本分片数为 0。在生产环境中，副本分片数至少为 1。</strong></p>
 <h4 id="51生产环境如何设置分片数">5.1，生产环境如何设置分片数</h4>
 <p>分片数设置不合理引发的问题：</p>
 <p><img src="https://img-blog.csdnimg.cn/20210119221658276.png?" alt="在这里插入图片描述"></p>

@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Mon, 01 Mar 2021 22:39:52 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 29 May 2022 22:39:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/categories/es-%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>快速搭建 ElasticSearch</title>
+      <link>https://codeshellme.github.io/2022/05/es-build/</link>
+      <pubDate>Sun, 29 May 2022 22:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/05/es-build/</guid>
+      <description>ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 本文介绍 ES 的安装方法，并导入一组电影数据，可供</description>
+    </item>
+    
+    <item>
+      <title>ElasticSearch命令参考</title>
+      <link>https://codeshellme.github.io/2022/03/es-es-cmds/</link>
+      <pubDate>Tue, 29 Mar 2022 22:39:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/03/es-es-cmds/</guid>
+      <description>ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 0，ES 与关系型数据库类比 ElasticSearch 关系型数据库 索引 表</description>
+    </item>
     
     <item>
       <title>Logstash-Beats入门</title>
