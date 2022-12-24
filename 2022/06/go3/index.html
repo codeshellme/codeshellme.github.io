@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记3-Go数据类型 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="1，基本数据类型 布尔类型 bool，默认值 FALSE 字符串类型 string，默认 &amp;quot;&amp;quot; 字符串类型是不可变的，提高了字符串的并发安全性和存储利用率 其底层存储" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go3/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记3-Go数据类型" />
+<meta property="og:description" content="1，基本数据类型 布尔类型 bool，默认值 FALSE 字符串类型 string，默认 &quot;&quot; 字符串类型是不可变的，提高了字符串的并发安全性和存储利用率 其底层存储" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go3/" />
+<meta property="article:published_time" content="2022-06-05T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-05T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记3-Go数据类型">
+<meta itemprop="description" content="1，基本数据类型 布尔类型 bool，默认值 FALSE 字符串类型 string，默认 &quot;&quot; 字符串类型是不可变的，提高了字符串的并发安全性和存储利用率 其底层存储">
+<meta itemprop="datePublished" content="2022-06-05T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-05T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="5917">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记3-Go数据类型"/>
+<meta name="twitter:description" content="1，基本数据类型 布尔类型 bool，默认值 FALSE 字符串类型 string，默认 &quot;&quot; 字符串类型是不可变的，提高了字符串的并发安全性和存储利用率 其底层存储"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记3-Go数据类型</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-05 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 5917 字 </span>
+          <span class="more-meta"> 阅读约需 12 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1基本数据类型">1，基本数据类型</a></li>
+        <li><a href="#2数组">2，数组</a></li>
+        <li><a href="#3切片">3，切片</a></li>
+        <li><a href="#4map">4，map</a></li>
+        <li><a href="#5type">5，type</a></li>
+        <li><a href="#6struct">6，struct</a></li>
+        <li><a href="#7复杂类型的比较">7，复杂类型的比较</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="1基本数据类型">1，基本数据类型</h3>
+<ul>
+<li>布尔类型 <code>bool</code>，默认值 <code>FALSE</code></li>
+<li>字符串类型 <code>string</code>，默认 <code>&quot;&quot;</code>
+<ul>
+<li>字符串类型是不可变的，提高了字符串的并发安全性和存储利用率</li>
+<li>其底层存储的是 byte 类型数组</li>
+<li>len() 函数可以返回其包含的 byte 数，一个英文字母是 1 个 byte，一个汉字是 3 个 byte</li>
+<li>可以将 string 转为 rune 类型的数组 <code>[]rune(s)</code>，<code>s</code> 是 string 类型的变量</li>
+<li>Go 的 <strong>strings</strong> 包中有很多字符串相关操作函数</li>
+<li>Go 的 <strong>strconv</strong> 包中有很多字符串转换函数，比如：
+<ul>
+<li><code>strconv.Itoa</code>：将数字转成字符串</li>
+<li><code>strconv.Atoi</code>：将字符串转成数字</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>整数类型，默认值是 <code>0</code>
+<ul>
+<li><code>byte</code></li>
+<li><code>rune</code>：字符类型，存储的是 Unicode 字符
+<ul>
+<li>其本质上是 <code>int32</code> 的别名；<code>type rune = int32</code></li>
+<li>len() 函数可以返回其包含的字符数，一个英文字母和一个汉字的长度都是 1 个字符</li>
+</ul>
+</li>
+<li><code>int/uint</code>：在 32 位机器上占 32 位，在 64 位机器上占 64 位
+<ul>
+<li>这两个是<strong>平台相关</strong>的：在编写有移植性要求的代码时，不要依赖这些类型的长度</li>
+</ul>
+</li>
+<li><code>int8/uint8</code>：占 8 位，1 个字节（<strong>平台无关</strong>）
+<ul>
+<li>取值范围：<code>[-128, 127]/[0, 255]</code></li>
+</ul>
+</li>
+<li><code>int16/uint16</code>：占 16 位，2 个字节（<strong>平台无关</strong>）
+<ul>
+<li>取值范围：<code>[-32768, 32767]/[0, 65535]</code></li>
+</ul>
+</li>
+<li><code>int32/uint32</code>：占 32 位，4 个字节（<strong>平台无关</strong>）
+<ul>
+<li>取值范围：<code>[-2147483648, 2147483647]/[0, 4294967295]</code></li>
+</ul>
+</li>
+<li><code>int64/uint64</code>：占 64 位，8 个字节（<strong>平台无关</strong>）
+<ul>
+<li>取值范围：<code>[-9223372036854775808, 9223372036854775807]/[0, 18446744073709551615]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>浮点数类型：默认值是 <code>0.0</code>
+<ul>
+<li><code>float32</code></li>
+<li><code>float64</code></li>
+</ul>
+</li>
+<li>复数类型
+<ul>
+<li><code>complex64</code></li>
+<li><code>complex128</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>高级数据类型</strong>：默认值是 <code>nil</code></p>
+<ul>
+<li>数组 <code>array</code>：是一个有着固定长度的、一组同类型数据组成
+<ul>
+<li>数组的下标从 0 开始，不能为负值，且不能超出数组长度范围</li>
+<li>数组的缺点：固定的元素个数，以及传值机制下导致的开销较大</li>
+<li>切片可以弥补数组的这两个缺点</li>
+</ul>
+</li>
+<li>切片 <code>slice</code></li>
+<li>字典 <code>map</code></li>
+<li>通道 <code>channel</code></li>
+<li>结构体 <code>struct</code></li>
+<li>接口 <code>interface</code></li>
+<li>指针（<code>*Xxx，unsafe.Pointer，uintptr</code>）</li>
+<li>函数 <code>function</code></li>
+</ul>
+<blockquote>
+<p>注意：Go 中并没有 Set 类型，可以用 <code>map[key_type]bool</code>来实现它。</p>
+</blockquote>
+<p>整数溢出问题：</p>
+<pre><code class="language-go">var s int8 = 127
+s += 1 // 预期128，实际结果-128
+
+var u uint8 = 1
+u -= 2 // 预期-1，实际结果255
+</code></pre>
+<p>字符串类型是不可变的：</p>
+<pre><code class="language-go">var s string = &quot;hello&quot;
+s[0] = 'k'   // 错误：字符串的内容是不可改变的
+s = &quot;gopher&quot; // ok
+</code></pre>
+<h3 id="2数组">2，数组</h3>
+<p>Go 中的数组结构：</p>
+<p><img src="https://img-blog.csdnimg.cn/39f37fb546824b85a7ecb25fd8a73f8d.png" alt="在这里插入图片描述"></p>
+<p>数组的定义：</p>
+<pre><code class="language-go">// N 必须是整型数字面值或常量表达式，其值必须是确定的
+var arr [N]T
+
+// a 与 b 是不同的类型
+var a [3]int	// 如果不进行显示初始化，那么值就是 0 值
+var b [5]int
+
+len(a)           // len 函数用于计算数组的长度
+unsafe.Sizeof(a) // 用于计算 a 所占空间大小
+
+// 显示初始化数组的三种方式
+var arr2 = [6]int {
+    11, 12, 13, 14, 15, 16,
+} // [11 12 13 14 15 16]
+
+var arr3 = [...]int { // 可以将 N 用 ... 替代，Go 会自己推算长度
+    21, 22, 23,
+} // [21 22 23]
+fmt.Printf(&quot;%T\n&quot;, arr3) // [3]int
+
+var arr4 = [...]int{
+    99: 39, // 将第100个元素(下标值为99)的值赋值为39，其余元素值均为0
+}
+fmt.Printf(&quot;%T\n&quot;, arr4) // [100]int
+</code></pre>
+<p>Go 值传递的机制让数组在各个函数间传递起来比较“笨重”，开销较大，且开销随数组长度的增加而增加。为了解决这个问题，Go 引入了切片这一不定长同构数据类型。</p>
+<p><strong>数组的遍历</strong></p>
+<pre><code class="language-go">// 方法 1
+for i := 0; i &lt; len(arr); i++ {
+    // arr[i]
+}
+
+// 方法 2 
+for index, value := range arr {
+
+}
+
+// index 可省略
+for _, value := range arr {
+
+}
+</code></pre>
+<p>数组的截取：</p>
+<ul>
+<li>语法：<code>arr[i, j]</code>，包含开始索引 <code>i</code>，不包含结束索引 <code>j</code></li>
+<li>注意 <code>i, j</code> 不能是负数</li>
+</ul>
+<pre><code class="language-go">arr := [...]{1, 2, 3, 4, 5}
+
+arr[1:2]	// 2
+arr[1:3]	// 2, 3
+arr[1:len(arr)]	// 2,3,4,5
+arr[1:]		// 2,3,4,5
+arr[:3]		// 1,2,3
+arr[:]		// 1,2,3,4,5
+</code></pre>
+<h3 id="3切片">3，切片</h3>
+<p>切片可以提供比指针更为强大的功能，比如下标访问、边界溢出校验、动态扩容等。而且，指针本身在 Go 语言中的功能也受到的限制，比如不支持指针算术运算。</p>
+<p>Go 中的切片类型：</p>
+<pre><code class="language-go">type slice struct {
+    array unsafe.Pointer
+    len   int
+    cap   int
+}
+</code></pre>
+<ul>
+<li>array: 是指向底层数组的指针</li>
+<li>len: 是切片的长度，即切片中当前元素的个数
+<ul>
+<li>当访问下标大于等于 len 时的元素时，会报数组越界</li>
+</ul>
+</li>
+<li>cap: 是底层数组的长度，也是切片的最大容量，cap 值永远大于等于 len 值</li>
+</ul>
+<p>切片的定义：</p>
+<pre><code class="language-go">// 与数组的不同是，切片不需要显示的长度，但切片也有长度
+// 切片的长度是变化的，可以用 len() 函数计算切片的长度
+var n = []int{1, 2, 3, 4, 5}
+
+// 使用 append 函数向切片中添加元素
+n = append(n, 6) // 切片变为[1 2 3 4 5 6]
+</code></pre>
+<p>切片的底层是一个数组，其结构如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/3d47662efe564006b23e9b54518bdf75.png" alt="在这里插入图片描述"></p>
+<p>创建切片的其它方式：</p>
+<p>1，通过 <code>make</code> 函数，创建切片，并指定底层数组的长度。</p>
+<pre><code class="language-go">sl := make([]byte, 6, 10) // 其中10为cap值，即底层数组长度，6为切片的初始长度
+                          // 切片中前 6 个元素的值是 byte 类型的零值，未初始化的元素不能访问
+
+// 如果没有在 make 中指定 cap 参数，那么底层数组长度 cap 就等于 len
+sl := make([]byte, 6)     // cap = len = 6
+</code></pre>
+<p>2，采用 <code>array[low : high : max]</code> 语法基于一个已存在的数组创建切片，这种方式被称为<strong>数组的切片化</strong>。</p>
+<blockquote>
+<p>我们在进行数组切片化的时候，通常省略 max，而 max 的默认值为数组的长度。</p>
+</blockquote>
+<pre><code class="language-go">arr := [10]int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+sl := arr[3:7:9]
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/9ff3a11064ff4540928904263ac3498f.png" alt="在这里插入图片描述"></p>
+<p>基于数组创建的切片：</p>
+<ul>
+<li>它的起始元素从 low 所标识的下标值开始</li>
+<li>切片的长度（len）是 high - low</li>
+<li>它的容量是 max - low</li>
+</ul>
+<p>由于切片 sl 的底层数组就是数组 arr，对切片 sl 中元素的修改将直接影响数组 arr 变量。比如，将切片的第一个元素加 10，那么数组 arr 的第四个元素将变为 14：</p>
+<pre><code class="language-go">sl[0] += 10
+fmt.Println(&quot;arr[3] =&quot;, arr[3]) // 14
+</code></pre>
+<p>切片好比打开了一个访问与修改数组的“窗口”，通过这个窗口，我们可以直接操作底层数组中的部分元素。</p>
+<p>这类似于操作文件之前打开的“文件描述符”，通过文件描述符我们可以对底层的真实文件进行相关操作。</p>
+<p>可以说，<strong>切片之于数组就像是文件描述符之于文件</strong>。</p>
+<p>针对一个已存在的数组，可以建立多个操作数组的切片，这些切片共享同一底层数组，切片对底层数组的操作也同样会反映到其他切片中。</p>
+<p>下面是为数组 arr 建立的两个切片的内存表示：</p>
+<p><img src="https://img-blog.csdnimg.cn/a6408b65c4d64db9bb00134baf96105a.png" alt="在这里插入图片描述"></p>
+<p><strong>切片的动态扩容</strong></p>
+<p>“动态扩容”指的是，当通过 append 操作向切片追加数据的时候，如果这时切片的 len 值和 cap 值是相等的，也就是说切片底层数组已经没有空闲空间再来存储追加的值了，Go 运行时就会对这个切片做扩容操作，来保证切片始终能存储下追加的新值。</p>
+<p>动态扩容时，会新建一个更大的数组，append 会把旧数组中的数据拷贝到新数组中，之后新数组便成为了切片的底层数组，旧数组会被垃圾回收掉。</p>
+<blockquote>
+<p>如果在 for-loop 里对某个 slice 使用 append()，请先把 slice的容量很扩充到位，这样可以避免内存重新分享以及系统自动按2的N次方幂进行扩展但又用不到，从而浪费内存。</p>
+</blockquote>
+<p>正因为 append 会动态扩容，并创建新的内存空间，所以 append 的正确使用姿势是：</p>
+<pre><code class="language-go">sl = append(s1, item)	// 要接收返回值
+</code></pre>
+<p>错误的使用姿势：</p>
+<pre><code class="language-go">append(s1, item)	// 不接收返回值是错误的
+</code></pre>
+<p><strong>基于数组的切片的动态扩容问题</strong></p>
+<p>基于一个已有数组建立的切片，一旦追加的数据操作触碰到切片的容量上限（也是数组容量的上界)，切片就会和原数组<strong>解除“绑定”</strong>，此时，会新创建一个底层数组，并将切片的元素拷贝到新数组中，后续对切片的任何修改都不会反映到原数组中了。</p>
+<p><strong>切片的遍历</strong></p>
+<pre><code class="language-go">// 方法 1
+for i := 0; i &lt; len(slice); i++ {
+    //slice[i]
+}
+
+// 方法 2
+for index, value := range slice {
+
+}
+
+// index 可省略
+for _, value := range slice {
+
+}
+</code></pre>
+<p><strong>一道思考题</strong></p>
+<p>下面两个切片的区别：</p>
+<pre><code class="language-go">var s1 []int		// len(s1) == cap(s1) == 0
+var s2 = []int{}	// len(s2) == cap(s2) == 0
+println(s1 == nil)	// true
+println(s2 == nil)	// false
+</code></pre>
+<ul>
+<li>s1是声明，还没初始化，是nil值，底层没有分配内存空间
+<ul>
+<li>这意味着针对 s1 做操作的时候同时初始化</li>
+<li>例如sl1 = append(sl1, 1)，这个语句的操作就是先初始化一个长度为1的空间，然后把 “1”填入这个空间中</li>
+</ul>
+</li>
+<li>s2初始化了，不是nil值，底层分配了内存空间，有地址
+<ul>
+<li>例如，sl2 = append(sl2, 2)，这个语句就是直接将“2”这个值填入到已初始化的空间中</li>
+</ul>
+</li>
+<li>go官方推荐使用 var sl1 []int</li>
+<li>在 goland 开发时，第二种声明方式会出现黄色下划线，提示需要改动</li>
+</ul>
+<h3 id="4map">4，map</h3>
+<p>Go 中 map 的定义方式：</p>
+<pre><code class="language-go">// 包含了 key 类型和 value 类型
+map[key_type]value_type
+</code></pre>
+<p>如果两个 map 类型的 key 元素类型相同，value 元素类型也相同，那么我们可以说它们是同一个 map 类型，否则就是不同的 map 类型。</p>
+<pre><code class="language-go">map[string]string // key 与 value元素的类型相同
+map[int]string    // key 与 value元素的类型不同
+</code></pre>
+<p>map 类型对 value 的类型没有限制，但对 key 的类型却有严格要求，因为 map 类型要保证 key 的唯一性。Go 语言中要求，key 的类型必须支持<code>==</code>和<code>!=</code>两种比较操作符。</p>
+<p>在 Go 语言中，函数类型、map 类型自身，以及切片只支持与 nil 的比较，而不支持同类型两个变量的比较。如下所示：</p>
+<pre><code class="language-go">s1 := make([]int, 1)
+s2 := make([]int, 2)
+
+f1 := func() {}
+f2 := func() {}
+
+m1 := make(map[int]string)
+m2 := make(map[int]string)
+
+println(s1 == s2) // 错误：invalid operation: s1 == s2 (slice can only be compared to nil)
+println(f1 == f2) // 错误：invalid operation: f1 == f2 (func can only be compared to nil)
+println(m1 == m2) // 错误：invalid operation: m1 == m2 (map can only be compared to nil)
+</code></pre>
+<blockquote>
+<p>因此，一定要注意：函数类型、map 类型自身，以及切片类型是不能作为 map 的 key 类型的。</p>
+</blockquote>
+<p><strong>map 的声明</strong></p>
+<p>如下：</p>
+<pre><code class="language-go">var m map[string]int // 一个 map[string]int 类型的变量
+</code></pre>
+<p>和切片类型变量一样，如果我们没有显式地赋予 map 变量初值，map 类型变量的默认值为 nil。</p>
+<p>初值为零值 nil 的切片类型变量，可以借助内置的 append 的函数进行操作，这种在 Go 语言中被称为“<strong>零值可用</strong>”。</p>
+<p>但 map 类型，因为它内部实现的复杂性，<strong>无法“零值可用”</strong>。所以，如果我们对处于零值状态的 map 变量直接进行操作，就会导致运行时异常（<strong>panic</strong>），从而导致程序进程异常退出：</p>
+<pre><code class="language-go">var m map[string]int // m = nil
+m[&quot;key&quot;] = 1         // 发生运行时异常：panic: assignment to entry in nil map
+</code></pre>
+<p><strong>所以，必须对 map 类型变量进行显式初始化后才能使用。</strong></p>
+<p><strong>map 的声明初始化</strong></p>
+<p>和切片一样，为 map 类型变量显式赋值有两种方式：</p>
+<ul>
+<li>使用复合字面值</li>
+<li>使用 make 函数</li>
+</ul>
+<p><strong>使用复合字面值</strong></p>
+<pre><code class="language-go">// 这里，显式初始化了 map 类型变量 m
+// 此时 m 中没有任何键值对，但 m 也不等同于初值为 nil 的 map 变量
+// 这时对 m 进行键值对的插入操作，不会引发运行时异常
+m := map[int]string{}	// 空 map
+
+m1 := map[int]string{1:&quot;a&quot;, 2:&quot;b&quot;}	// 非空 map
+</code></pre>
+<p><strong>使用 make 函数</strong></p>
+<p>通过 make 函数，可以指定 map 的初始容量，但无法进行具体的键值对赋值：</p>
+<pre><code class="language-go">m1 := make(map[int]string)    // 未指定初始容量
+m2 := make(map[int]string, 8) // 指定初始容量为 8
+</code></pre>
+<p>map 类型的容量不会受限于它的初始容量值，当其中的键值对数量超过初始容量后，Go 运行时会自动增加 map 类型的容量，保证后续键值对的正常插入。</p>
+<p><strong>map 的插入操作</strong></p>
+<pre><code class="language-go">// map 的插入操作
+m := make(map[int]string)
+m[1] = &quot;value1&quot;
+m[2] = &quot;value2&quot;
+m[3] = &quot;value3&quot;
+m[1] = &quot;value5&quot;   // 会覆盖原来的 value1
+
+len(m)		  // len 函数可以计算 map 的长度
+                  // cap 函数不能用于 map 类型
+</code></pre>
+<p><strong>获取 map 中的值</strong></p>
+<pre><code class="language-go">m := make(map[string]int)
+
+// 获取 map 中的值
+// 如果 key1 存在与 map 中，则返回其对应的 value
+// 如果 key1 不存在，也不会报错，会返回 value 元素的 0 值
+v := m[&quot;key1&quot;]		
+
+// 下面方法可判断 key1 是否存在于 map 中
+// 返回的 ok 是一个布尔类型
+v, ok := m[&quot;key1&quot;]
+if !ok {
+    // &quot;key1&quot;不在map中
+}
+// &quot;key1&quot;在map中，v将被赋予&quot;key1&quot;键对应的value		
+
+// 如果不关心某个键对应的 value，而只关心某个键是否在于 map 中
+// 我们可以使用空标识符替代变量 v，忽略可能返回的 value
+_, ok := m[&quot;key1&quot;]
+</code></pre>
+<p><strong>map 的删除操作</strong></p>
+<pre><code class="language-go">// 使用 delete 函数进行删除
+delete(m, &quot;key1&quot;) 
+</code></pre>
+<p><strong>map 的遍历操作</strong></p>
+<pre><code class="language-go">// 使用 range 进行遍历
+for k, v := range m { 
+  fmt.Printf(&quot;[%d, %d] &quot;, k, v)    
+}
+
+// 如果不关心值，也可以这样
+for k, _ := range m { 
+  // 使用k
+}
+
+// 只遍历 key
+for k := range m {
+  // 使用k
+}
+
+// 只关心 value
+for _, v := range m {
+  // 使用v
+}
+</code></pre>
+<p><strong>对同一 map 做多次遍历的时候，每次遍历元素的次序都不相同</strong>。这是 Go 语言 map 类型的一个重要特点，所以一定要记住：<strong>程序逻辑千万不要依赖遍历 map 所得到的的元素次序</strong>。</p>
+<p>如果 map 中的 key 或 value 的数据长度大于一定数值，那么运行时不会在 map 中直接存储数据，而是<strong>会存储 key 或 value 数据的指针</strong>。目前 Go 运行时定义的最大 key 和 value 的长度是这样的：</p>
+<pre><code class="language-go">// $GOROOT/src/runtime/map.go
+const (
+    maxKeySize  = 128
+    maxElemSize = 128
+)
+</code></pre>
+<p><strong>map 与并发</strong></p>
+<p>map 实例不是并发写安全的，也不支持并发读写。如果对 map 实例进行并发读写，程序运行时就会抛出异常。</p>
+<pre><code class="language-shell">fatal error: concurrent map iteration and map write
+</code></pre>
+<blockquote>
+<p>这里的并发读写，指的是同时进行读和写，会出现异常
+如果只是并发读，则不会发生异常
+Go 1.9 版本中引入了支持并发写安全的 sync.Map 类型</p>
+</blockquote>
+<h3 id="5type">5，type</h3>
+<p>type 用于创建自定义数值类型。</p>
+<p>本质上相同的两个类型，它们的变量可以通过显式转型进行相互赋值，相反，如果本质上是不同的两个类型，它们的变量间连显式转型都不可能，更不要说相互赋值了。</p>
+<p>第一种：</p>
+<pre><code class="language-go">// MyInt 的底层类型是 init32
+// 它的数值性质与 int32 完全相同
+// 但它们仍然是完全不同的两种类型
+type MyInt int32
+
+var m int = 5
+var n int32 = 6
+var a MyInt = m // 错误：在赋值中不能将m（int类型）作为MyInt类型使用
+var a MyInt = n // 错误：在赋值中不能将n（int32类型）作为MyInt类型使用
+
+// 需要经过显示转换
+var a MyInt = MyInt(m) // ok
+var a MyInt = MyInt(n) // ok
+</code></pre>
+<p>类型定义也支持通过 type 块的方式进行：</p>
+<pre><code class="language-go">type (
+   T1 int
+   T2 T1
+   T3 string
+)
+</code></pre>
+<p>第二种方式，类型别名（并没有定义出新的类型，而只是一个别名）：</p>
+<pre><code class="language-go">// MyInt 与 int32 完全等价，所以这个时候两种类型就是同一种类型
+type MyInt = int32
+
+var n int32 = 6
+var a MyInt = n // ok
+</code></pre>
+<h3 id="6struct">6，struct</h3>
+<p>定义一个结构体 <code>Book</code>：</p>
+<pre><code class="language-go">type Book struct {
+     Title string              // 书名
+     Pages int                 // 书的页数
+     Indexes map[string]int    // 书的索引
+}
+</code></pre>
+<p><strong>空结构体</strong></p>
+<p>一个空结构体，是没有包含任何字段的结构体：</p>
+<pre><code class="language-go">type Empty struct{} // Empty是一个不包含任何字段的空结构体类型
+</code></pre>
+<p>空结构体的大小是 0：</p>
+<pre><code class="language-go">var s Empty
+println(unsafe.Sizeof(s)) // 0
+</code></pre>
+<p>基于空结构体类型内存零开销这样的特性，在 Go 开发中会经常使用空结构体类型元素，作为一种“事件”信息进行 Goroutine 之间的通信，如下：</p>
+<pre><code class="language-go">var c = make(chan Empty) // 声明一个元素类型为Empty的channel
+c&lt;-Empty{}               // 向channel写入一个“事件”
+</code></pre>
+<p>这种以空结构体为元素类建立的 channel，是目前能实现的、内存占用最小的 Goroutine 间通信方式。</p>
+<p>来看下面这种代码：</p>
+<pre><code class="language-go">// 自定义了 Person 类型
+type Person struct {
+    Name string
+    Phone string
+    Addr string
+}
+
+// 自定义了 Book 类型
+type Book struct {
+    Title string
+    Author Person	// Person 类型为 Book 类型的内部元素
+    ... ...
+}
+
+// 访问 Book 结构体字段 Author 中的 Phone 字段
+var book Book 
+println(book.Author.Phone)
+</code></pre>
+<p>Go 还提供了以下方式来定义 Book：</p>
+<pre><code class="language-go">type Book struct {
+    Title string
+    Person	// 只有类型，而没有变量名
+    ... ...
+}
+</code></pre>
+<p>以这种方式定义的结构体字段，叫做<strong>嵌入字段</strong>。我们也可以将这种字段称为<strong>匿名字段</strong>，或者把类型名看作是这个字段的名字。</p>
+<p>如果我们要访问 Person 中的 Phone 字段，我们可以通过下面两种方式进行：</p>
+<pre><code class="language-go">var book Book 
+println(book.Person.Phone) // 将类型名当作嵌入字段的名字
+println(book.Phone)        // 支持直接访问嵌入字段所属类型中字段
+</code></pre>
+<p><strong>结构体类型变量的声明</strong></p>
+<pre><code class="language-go">type Book struct {
+    ...
+}
+
+// 四种声明方式
+var book Book           // 普通的声明方式，book为零值结构体变量
+var book = Book{}	// Go 自推断类型
+book := Book{}		// 短变量声明
+
+// 也可以使用 new 函数来创建结构体对象，但这种方式很少使用
+// 注意：new 返回的是指针类型
+book := new(Book)
+</code></pre>
+<p>Go 结构体类型由若干个字段组成，当这个结构体的各个字段的值都是零值时，我们就说这个结构体类型变量处于<strong>零值状态</strong>。</p>
+<p><strong>用复合字面值初始化结构体变量</strong></p>
+<pre><code class="language-go">type Book struct {
+    Title string              // 书名
+    Pages int                 // 书的页数
+    Indexes map[string]int    // 书的索引
+}
+
+// 按照结构体中变量的顺序初始化
+var book = Book{&quot;The Go Programming Language&quot;, 700, make(map[string]int)}
+</code></pre>
+<p>事实上，Go 语言并不推荐我们按字段顺序对一个结构体类型变量进行显式初始化，而是推荐使用<code>field:value</code>的形式：</p>
+<pre><code class="language-go">// 这种初始化方式，使得字段可以以任意次序出现
+// 未显式出现在字面值中的字段（比如 F5）将采用它对应类型的零值
+var t = T{
+    F2: &quot;hello&quot;,
+    F1: 11,
+    F4: 14,
+}
+</code></pre>
+<p><strong>结构体中的内存对齐问题（跟 C语言一样）</strong></p>
+<p>由于内存对齐的要求，结构体类型各个相邻字段间可能存在“填充物”，结构体的尾部同样可能被 Go 编译器填充额外的字节，满足结构体整体对齐的约束。</p>
+<p>正是因为这点，我们在定义结构体时，<strong>一定要合理安排字段顺序，要让结构体类型对内存空间的占用最小</strong>。</p>
+<p>比如下面例子：</p>
+<pre><code class="language-go">type T struct {
+    b byte
+    i int64
+    u uint16
+}
+</code></pre>
+<p>该类型 T 的内存布局是这样的：</p>
+<p><img src="https://img-blog.csdnimg.cn/ea7347ed959f4a99912b46b662cdab51.png" alt="在这里插入图片描述"></p>
+<p>不同的排序顺序，导致了最终占用内存大小的不同：</p>
+<pre><code class="language-go">type T struct {
+    b byte
+    i int64
+    u uint16
+}
+
+type S struct {
+    b byte
+    u uint16
+    i int64
+}
+
+func main() {
+    var t T
+    println(unsafe.Sizeof(t)) // 24
+    var s S
+    println(unsafe.Sizeof(s)) // 16
+}
+</code></pre>
+<h3 id="7复杂类型的比较">7，复杂类型的比较</h3>
+<p>复杂类型的比较可称为深度比较（不同于浅比较），需要用到 <code>reflect.DeepEqual()</code>，示例：</p>
+<pre><code class="language-go">import (
+    &quot;fmt&quot;
+    &quot;reflect&quot;
+)
+
+func main() {
+    m1 := map[string]string{&quot;one&quot;: &quot;a&quot;,&quot;two&quot;: &quot;b&quot;}
+    m2 := map[string]string{&quot;two&quot;: &quot;b&quot;, &quot;one&quot;: &quot;a&quot;}
+    fmt.Println(&quot;m1 == m2:&quot;,reflect.DeepEqual(m1, m2))
+    //prints: m1 == m2: true
+
+    s1 := []int{1, 2, 3}
+    s2 := []int{1, 2, 3}
+    fmt.Println(&quot;s1 == s2:&quot;,reflect.DeepEqual(s1, s2))
+    //prints: s1 == s2: true
+}
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-05
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记4-Go控制语句</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go2/">
+            <span class="next-text nav-default">Go 学习笔记2-Go项目管理</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go3/" class="leancloud_visitors" data-flag-title="Go 学习笔记3-Go数据类型">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记2-Go项目管理 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="1，Go 环境变量 GOROOT：包含 GO 语言的安装根目录的路径 Go 1.10 版本引入默认的 GOROOT，开发者无须设置 GOPATH：包含若干个工作区目录的" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记2-Go项目管理" />
+<meta property="og:description" content="1，Go 环境变量 GOROOT：包含 GO 语言的安装根目录的路径 Go 1.10 版本引入默认的 GOROOT，开发者无须设置 GOPATH：包含若干个工作区目录的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go2/" />
+<meta property="article:published_time" content="2022-06-03T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-03T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记2-Go项目管理">
+<meta itemprop="description" content="1，Go 环境变量 GOROOT：包含 GO 语言的安装根目录的路径 Go 1.10 版本引入默认的 GOROOT，开发者无须设置 GOPATH：包含若干个工作区目录的">
+<meta itemprop="datePublished" content="2022-06-03T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-03T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="1635">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记2-Go项目管理"/>
+<meta name="twitter:description" content="1，Go 环境变量 GOROOT：包含 GO 语言的安装根目录的路径 Go 1.10 版本引入默认的 GOROOT，开发者无须设置 GOPATH：包含若干个工作区目录的"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记2-Go项目管理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-03 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 1635 字 </span>
+          <span class="more-meta"> 阅读约需 4 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1go-环境变量">1，Go 环境变量</a></li>
+        <li><a href="#2go-常用命令">2，Go 常用命令</a></li>
+        <li><a href="#3go-module-模式">3，Go Module 模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="1go-环境变量">1，Go 环境变量</h3>
+<ul>
+<li><strong>GOROOT</strong>：包含 GO 语言的安装根目录的路径
+<ul>
+<li>Go 1.10 版本引入默认的 GOROOT，开发者无须设置</li>
+</ul>
+</li>
+<li><strong>GOPATH</strong>：包含若干个工作区目录的路径
+<ul>
+<li>在有了 Go Moudle 后，该变量可能会被移除</li>
+</ul>
+</li>
+<li><strong>GOBIN</strong>：包含用于放置 GO 程序生成的可执行文件的目录路径</li>
+<li><strong>GO111MODULE</strong>：指示当前项目的构建模式，是 GOPATH 还是 Go Moudle
+<ul>
+<li>在 Go1.16 版本 Go Module 默认开启，该变量值默认为 on</li>
+</ul>
+</li>
+<li><strong>GOARCH</strong>：用于指示 Go 编译器生成代码所针对的平台 CPU 架构
+<ul>
+<li>主要值是 AMD64、Arm 等，默认值是本机 CPU 架构</li>
+</ul>
+</li>
+<li><strong>GOOS</strong>：用于指示 Go 编译器生成代码所针对的操作系统
+<ul>
+<li>主要值是 Linux、Darwin、Windows等，默认值是本机操作系统</li>
+</ul>
+</li>
+<li><strong>GOCACHE</strong>：用于指示存储构建结果缓存的路径，这些缓存可能会被后续的构建所使用
+<ul>
+<li>在不同的操作系统上，GOCACHE 有不同的默认值</li>
+<li>在 Linux 中，其值为 <code>$HOME/.cache/go-build</code></li>
+</ul>
+</li>
+<li><strong>GOMODCACHE</strong>：用于指示存放 Go Module 的路径
+<ul>
+<li>在不同的操作系统上，GOMODCACHE 有不同的默认值</li>
+<li>在 Linux 中，其值为 <code>$HOME/go/pkg/mod</code></li>
+</ul>
+</li>
+<li><strong>GOPROXY</strong>：用来配置 Go Module proxy 服务
+<ul>
+<li>其默认值是 <code>https://proxy.golang.org,direct</code></li>
+<li>在国内，可设置为 <code>https://goproxy.cn,direct</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="2go-常用命令">2，Go 常用命令</h3>
+<pre><code class="language-shell">0，go fmt              // 格式化代码
+1，go run main.go      // 运行 go 程序
+2，go build main.go    // 编译构建项目
+3，go install          // 将可执行程序安装在当前工作区的 bin 目录，或 GOBIN 包含的目录
+4，go env              // 查看 go 配置项
+5，go help environment // 查看 go 配置项详细信息
+6，go mod init         // 初始化 go module
+7，go mod tidy         // 添加相关依赖
+8，go list -m -versions github.com/sirupsen/logrus // 查看某个依赖的所有版本
+9，go get github.com/go-redis/redis/v7             // 获取依赖
+10，go list -m all     // 查看当前 module 的所有依赖
+</code></pre>
+<h3 id="3go-module-模式">3，Go Module 模式</h3>
+<p>一个 Go Module 是一个 Go 包的集合。module 是有版本的，所以 module 下的包也就有了版本属性。这个 module 与这些包会组成一个独立的版本单元，它们一起打版本、发布和分发。</p>
+<p>每个 go.mod 文件会定义唯一一个 module，所以 Go Module 与 go.mod 是一一对应的。</p>
+<h4 id="1go-module-创建项目的步骤">1，Go Module 创建项目的步骤</h4>
+<ol>
+<li>通过 go mod init 创建 go.mod 文件，将当前项目变为一个 Go Module</li>
+<li>通过 go mod tidy 命令自动更新当前 module 的依赖信息</li>
+<li>执行 go build，执行新 module 的构建</li>
+</ol>
+<p>在 <code>~/go_test</code> 目录下，创建文件 <code>main.go</code>：</p>
+<pre><code class="language-go">package main
+
+import &quot;github.com/sirupsen/logrus&quot;
+
+func main() {
+  logrus.Println(&quot;hello, go module&quot;)
+}
+</code></pre>
+<p>依次执行命令：</p>
+<pre><code class="language-shell">$ go mod init go_test
+go: creating new go.mod: module go_test
+go: to add module requirements and sums:
+	go mod tidy
+
+$ go mod tidy
+go: finding module for package github.com/sirupsen/logrus
+go: found github.com/sirupsen/logrus in github.com/sirupsen/logrus v1.9.0
+
+$ go build
+$ ls
+go.mod  go.sum  go_test  main.go
+$ ./go_test
+INFO[0000] hello, go module
+</code></pre>
+<ul>
+<li>go.mod 中的 go directive，不是指你当前使用的 Go 版本，而是指你的代码所需的 Go 的最低版本</li>
+</ul>
+<h4 id="2为当前-module-添加依赖">2，为当前 module 添加依赖</h4>
+<p>假如现在我们要在项目中使用 <code>github.com/google/uuid</code> 包：</p>
+<pre><code class="language-go">package main
+
+import (
+  &quot;github.com/google/uuid&quot;
+  &quot;github.com/sirupsen/logrus&quot;
+)
+
+func main() {
+  logrus.Println(&quot;hello, go module&quot;)
+  logrus.Println(uuid.NewString())
+}
+</code></pre>
+<p>此时如果直接使用 <code>go build</code> 则会出现错误：</p>
+<pre><code class="language-shell">$ go build
+main.go:4:2: no required module provides package github.com/google/uuid; to add it:
+  go get github.com/google/uuid
+</code></pre>
+<p>此时可以根据提示使用 <code>go get</code>：</p>
+<pre><code class="language-shell">$ go get github.com/google/uuid
+go: downloading github.com/google/uuid v1.3.0
+go get: added github.com/google/uuid v1.3.0
+</code></pre>
+<p>除了使用 <code>go get</code>，也可以使用 <code>go mod tidy</code>，前者需要一个个的添加，而后者则不需要，当依赖较多的时候，使用后者更合适。</p>
+<h4 id="3使用指定版本的依赖">3，使用指定版本的依赖</h4>
+<p>一般一个依赖会有非常多的发布版本，比如 logrus ：</p>
+<pre><code class="language-shell">$ go list -m -versions github.com/sirupsen/logrus
+github.com/sirupsen/logrus v0.1.0 v0.1.1 v0.2.0 v0.3.0 v0.4.0 v0.4.1 v0.5.0 v0.5.1 v0.6.0 v0.6.1 v0.6.2 v0.6.3 v0.6.4 v0.6.5 v0.6.6 v0.7.0 v0.7.1 v0.7.2 v0.7.3 v0.8.0 v0.8.1 v0.8.2 v0.8.3 v0.8.4 v0.8.5 v0.8.6 v0.8.7 v0.9.0 v0.10.0 v0.11.0 v0.11.1 v0.11.2 v0.11.3 v0.11.4 v0.11.5 v1.0.0 v1.0.1 v1.0.3 v1.0.4 v1.0.5 v1.0.6 v1.1.0 v1.1.1 v1.2.0 v1.3.0 v1.4.0 v1.4.1 v1.4.2 v1.5.0 v1.6.0 v1.7.0 v1.7.1 v1.8.0 v1.8.1 v1.9.0
+</code></pre>
+<p>如果要使用某个特定版本的 logrus，则使用下面命令：</p>
+<pre><code class="language-shell">$ go get github.com/sirupsen/logrus@v1.7.0
+go: downloading github.com/sirupsen/logrus v1.7.0
+go get: downgraded github.com/sirupsen/logrus v1.8.1 =&gt; v1.7.0
+</code></pre>
+<p>可以看到 <code>go get</code> 命令下载了 logrus v1.7.0 版本，并将 go.mod 中对 logrus 的依赖改为 v1.7.0。</p>
+<h4 id="4使用版本号大于-1-的依赖">4，使用版本号大于 1 的依赖</h4>
+<p>在 Go Module 构建模式下，当依赖的主版本号为 0 或 1 的时候，我们在 Go 源码中导入依赖包，不需要在包的导入路径上增加版本号，也就是：</p>
+<pre><code class="language-go">import github.com/user/repo/v0 等价于 import github.com/user/repo
+import github.com/user/repo/v1 等价于 import github.com/user/repo
+</code></pre>
+<p>当我们需要使用版本大于 1 的依赖时，需要类似下面的导入：</p>
+<pre><code class="language-go">import &quot;github.com/go-redis/redis/v7&quot; 
+</code></pre>
+<p>然后再使用 go get 获取相应版本的依赖：</p>
+<pre><code class="language-shell">$ go get github.com/go-redis/redis/v7
+go: downloading github.com/go-redis/redis/v7 v7.4.1
+go: downloading github.com/go-redis/redis v6.15.9+incompatible
+go get: added github.com/go-redis/redis/v7 v7.4.1
+</code></pre>
+<h4 id="5从项目中删除一个依赖">5，从项目中删除一个依赖</h4>
+<p>从项目中删除依赖：</p>
+<ol>
+<li>从代码中删除指定的 import</li>
+<li>执行 go mod tidy</li>
+<li>执行 go build</li>
+</ol>
+<h4 id="6go-module-项目典型布局">6，Go Module 项目典型布局</h4>
+<pre><code class="language-shell">project-name
+├── cmd/
+│   ├── app1/
+│   │   └── main.go
+│   └── app2/
+│       └── main.go
+├── go.mod
+├── go.sum
+├── internal/
+│   ├── pkga/
+│   │   └── pkg_a.go
+│   └── pkgb/
+│       └── pkg_b.go
+├── pkg1/
+│   └── pkg1.go
+├── pkg2/
+    └── pkg2.go
+</code></pre>
+<ul>
+<li>cmd 目录：存放项目要编译构建的可执行文件所对应的 main 包的源码文件</li>
+<li>pkgN 目录：每个项目下的非 main 包都平铺在项目的根目录下，每个目录对应一个 Go 包</li>
+<li>internal 目录：存放仅项目内部引用的 Go 包，这些包无法被项目之外引用</li>
+</ul>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-03
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go3/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记3-Go数据类型</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go1/">
+            <span class="next-text nav-default">Go 学习笔记1-Go基础</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go2/" class="leancloud_visitors" data-flag-title="Go 学习笔记2-Go项目管理">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

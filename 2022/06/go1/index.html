@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记1-Go基础 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Go 语言不是面向对象语言。 Go 语言的三位创始人： （从左到右分别是 Robert Griesemer、Rob Pike 和 Ken Thompson） Go 语言历史年表 时间 事件 200" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记1-Go基础" />
+<meta property="og:description" content="Go 语言不是面向对象语言。 Go 语言的三位创始人： （从左到右分别是 Robert Griesemer、Rob Pike 和 Ken Thompson） Go 语言历史年表 时间 事件 200" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go1/" />
+<meta property="article:published_time" content="2022-06-01T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-01T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记1-Go基础">
+<meta itemprop="description" content="Go 语言不是面向对象语言。 Go 语言的三位创始人： （从左到右分别是 Robert Griesemer、Rob Pike 和 Ken Thompson） Go 语言历史年表 时间 事件 200">
+<meta itemprop="datePublished" content="2022-06-01T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-01T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="1196">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记1-Go基础"/>
+<meta name="twitter:description" content="Go 语言不是面向对象语言。 Go 语言的三位创始人： （从左到右分别是 Robert Griesemer、Rob Pike 和 Ken Thompson） Go 语言历史年表 时间 事件 200"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记1-Go基础</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-01 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 1196 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1go-下载">1，Go 下载</a></li>
+        <li><a href="#2go-代码的执行顺序">2，Go 代码的执行顺序</a></li>
+        <li><a href="#3go-常量与变量">3，Go 常量与变量</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Go 语言不是面向对象语言。</p>
+<p>Go 语言的三位创始人：</p>
+<p><img src="https://img-blog.csdnimg.cn/99c7a06e011a468a8ba5d74b2f41ead7.png" alt="在这里插入图片描述"></p>
+<p><em>（从左到右分别是 Robert Griesemer、Rob Pike 和 Ken Thompson）</em></p>
+<p><strong>Go 语言历史年表</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">时间</th>
+<th align="left">事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">2007年9月</td>
+<td align="left">三位创始人进行了一次讨论会</td>
+</tr>
+<tr>
+<td align="left">2008年</td>
+<td align="left">肯·汤普森实现了第一版 Go 编译器</td>
+</tr>
+<tr>
+<td align="left">2009年11月10日</td>
+<td align="left">谷歌宣布开源 Go 语言，这一天为 Go 诞生日</td>
+</tr>
+<tr>
+<td align="left">2012年3月</td>
+<td align="left">Go 1.0 发布，并宣布 Go 编译器永远兼容旧代码</td>
+</tr>
+<tr>
+<td align="left">2014年</td>
+<td align="left">Go 1.4 发布，最后一个编译器和运行时由 C 语言实现的版本</td>
+</tr>
+<tr>
+<td align="left">2015年</td>
+<td align="left">Go 1.5 发布，实现自举，大幅降低 GC 延迟</td>
+</tr>
+<tr>
+<td align="left">2018年</td>
+<td align="left">Go 1.11 发布，引入新的包管理机制：go module</td>
+</tr>
+<tr>
+<td align="left">2021年</td>
+<td align="left">Go 1.16 发布，go module 称为默认包管理机制</td>
+</tr>
+<tr>
+<td align="left">2022年3月</td>
+<td align="left">Go 1.18 发布，支持泛型</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如今，Go 语言基本每年发布两个版本，一般在 2 月和 8 月。</p>
+</blockquote>
+<h3 id="1go-下载">1，Go 下载</h3>
+<p>去<a href="https://golang.google.cn/dl/">下载页面</a>下载：</p>
+<p><img src="https://img-blog.csdnimg.cn/2dd53e697698498287d524e51cf2dea6.png" alt="在这里插入图片描述"></p>
+<p>解压后得到名为 go 的目录：</p>
+<ul>
+<li>Linux：放在 <code>/usr/local/</code> 目录下
+<ul>
+<li>在 <code>$HOME/.profile</code> 文件末尾添加 <code>export PATH=$PATH:/usr/local/go/bin</code></li>
+<li>然后执行 <code>source ~/.profile</code></li>
+<li>最后执行 <code>go version</code> 查看是否安装成功</li>
+</ul>
+</li>
+<li>Window：可放在 <code>C:\</code> 盘</li>
+</ul>
+<p>对于 Ubuntu 中卸载自带（<code>apt-get install</code>） Go 的方式：</p>
+<pre><code class="language-shell">sudo apt-get remove golang-go
+sudo apt-get remove --auto-remove golang-go
+</code></pre>
+<h4 id="vim-go-插件">Vim Go 插件</h4>
+<ul>
+<li><a href="https://github.com/fatih/vim-go">vim-go</a></li>
+<li><a href="https://github.com/neoclide/coc.nvim">coc.nvim 代码补全</a></li>
+<li><a href="https://github.com/golang/tools/tree/master/gopls">gopls 语言服务器</a></li>
+</ul>
+<h3 id="2go-代码的执行顺序">2，Go 代码的执行顺序</h3>
+<p>Go 程序的入口函数是 main.main，即 main 包中的 main 函数。</p>
+<pre><code class="language-go">package main
+
+func init() {
+
+}
+
+func main() {
+    // 用户层执行逻辑
+    ... ...
+}
+</code></pre>
+<ul>
+<li>main 函数是 Go 程序的入口函数</li>
+<li>init 函数与 main 函数都是无参数无返回值的函数</li>
+<li>init 函数比 main 函数先执行，一般用于包的初始化</li>
+<li>init 函数不能被开发者手工调用，只能被 Go 程序默认调用</li>
+<li>一个包中可以有多个同名的 init 函数，它们的执行顺序是根据其声明次序依次调用</li>
+</ul>
+<p><strong>Go 包的初始化次序如下：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/981d6bbcf6724eccaae842e51c77e45b.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>Go 会根据包的导入顺序依次的初始化每个包</li>
+<li>包的初始化过程中，采用<strong>深度优先</strong>原则</li>
+<li>每个包中，除了 import 之外，会按照“<strong>常量-&gt;变量-&gt;init函数</strong>”的顺序进行初始化</li>
+<li>如果某个包被多个包 import，那么该包只会被初始化一次</li>
+</ul>
+<h3 id="3go-常量与变量">3，Go 常量与变量</h3>
+<p>在 Go 语言中，常量和变量在使用之前，必须要先进行声明。</p>
+<p>Go 语言的变量可以分为两类：</p>
+<ul>
+<li>包级变量，是在包级别可见的变量。如果是导出变量（大写字母开头），那么这个包级变量也可以被视为全局变量</li>
+<li>局部变量，是 Go 函数或方法体内声明的变量，仅在函数或方法体内可见</li>
+</ul>
+<p>常量的声明方式</p>
+<pre><code class="language-go">const a = 1
+
+const Pi float64 = 3.14159265358979323846 // 单行常量声明
+
+// 以const代码块形式声明常量
+const (
+    size int64 = 4096
+    i, j, s = 13, 14, &quot;bar&quot; // 单行声明多个常量
+)
+
+iota // go 中的特殊常量，常用于枚举
+</code></pre>
+<p>变量的声明方式</p>
+<pre><code class="language-go">var a int	// 显示指定类型，不进行初始化，值为类型的默认值
+
+var a int = 3	// 显示指定类型，并进行初始化
+
+var a = 3	// 不显示指定类型，具体类型由 GO 自行推断
+                // 整型值的默认类型 int
+                // 浮点值的默认类型为 float64
+                // 复数值的默认类型为 complex128
+                // 布尔值的默认类型是 bool
+                // 字符值默认类型是 rune
+                // 字符串值的默认类型是 string 
+                
+a := 3          // 短变量声明，只允许出现在函数内部
+
+// 变量声明块
+var (
+    a int = 128
+    b int8 = 6
+    s string = &quot;hello&quot;
+    c rune = 'A'
+    t bool = true
+)
+
+// 一行中声明多个变量
+var a, b, c int = 5, 6, 7
+
+var (
+    a, b, c int = 5, 6, 7
+    c, d, e rune = 'C', 'D', 'E'
+) 
+
+// 声明多个不同类型的变量
+var a, b, c = 12, 'A', &quot;hello&quot;
+a, b, c := 12, 'A', &quot;hello&quot;		// 短变量声明方式
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-01
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记2-Go项目管理</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/05/git-cmds/">
+            <span class="next-text nav-default">Git 命令参考</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go1/" class="leancloud_visitors" data-flag-title="Go 学习笔记1-Go基础">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

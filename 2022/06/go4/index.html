@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记4-Go控制语句 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="1，if 语句 if boolean_expression { } if boolean_expression { } else { } // 多分支 if boolean_expression1 { } else if boolean_expression2 { } else if boolean_expressionN { } else { } Go 支持在 if 后的布尔表达式前，进行一些变量的声明，在 if 布尔表达式前" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记4-Go控制语句" />
+<meta property="og:description" content="1，if 语句 if boolean_expression { } if boolean_expression { } else { } // 多分支 if boolean_expression1 { } else if boolean_expression2 { } else if boolean_expressionN { } else { } Go 支持在 if 后的布尔表达式前，进行一些变量的声明，在 if 布尔表达式前" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go4/" />
+<meta property="article:published_time" content="2022-06-07T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-07T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记4-Go控制语句">
+<meta itemprop="description" content="1，if 语句 if boolean_expression { } if boolean_expression { } else { } // 多分支 if boolean_expression1 { } else if boolean_expression2 { } else if boolean_expressionN { } else { } Go 支持在 if 后的布尔表达式前，进行一些变量的声明，在 if 布尔表达式前">
+<meta itemprop="datePublished" content="2022-06-07T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-07T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="1501">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记4-Go控制语句"/>
+<meta name="twitter:description" content="1，if 语句 if boolean_expression { } if boolean_expression { } else { } // 多分支 if boolean_expression1 { } else if boolean_expression2 { } else if boolean_expressionN { } else { } Go 支持在 if 后的布尔表达式前，进行一些变量的声明，在 if 布尔表达式前"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记4-Go控制语句</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-07 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 1501 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1if-语句">1，if 语句</a></li>
+        <li><a href="#2for-循环">2，for 循环</a></li>
+        <li><a href="#3for-range-语句">3，for-range 语句</a></li>
+        <li><a href="#4continue-与-break-语句">4，continue 与 break 语句</a></li>
+        <li><a href="#5switch-case-语句">5，switch-case 语句</a></li>
+        <li><a href="#6type-switch-语句">6，type-switch 语句</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="1if-语句">1，if 语句</h3>
+<pre><code class="language-go">if boolean_expression {
+    
+}
+
+if boolean_expression {
+  
+} else {
+  
+}
+
+// 多分支
+if boolean_expression1 {
+ 
+} else if boolean_expression2 {
+  
+} else if boolean_expressionN {
+  
+} else {
+  
+}
+</code></pre>
+<p>Go 支持在 if 后的布尔表达式前，进行一些变量的声明，在 if 布尔表达式前声明的变量，叫它 if 语句的<strong>自用变量</strong>。顾名思义，这些变量只可以在 if 语句的代码块范围内使用，比如下面代码中的变量 a、b 和 c：</p>
+<pre><code class="language-go">func main() {
+    // 中间要用分号隔开
+    if a, c := f(), h(); a &gt; 0 {
+        println(a)
+    } else if b := f(); b &gt; 0 {
+        println(a, b)
+    } else {
+        println(a, b, c)
+    }
+}
+</code></pre>
+<h3 id="2for-循环">2，for 循环</h3>
+<p>Go 中的 for 循环有多种写法：</p>
+<pre><code class="language-go">var sum int
+for i := 0; i &lt; 10; i++ {
+    sum += i
+}
+println(sum)
+
+
+for i := 0; i &lt; 10; {
+    i++
+}  
+
+
+i := 0
+for ; i &lt; 10; {
+    println(i)
+    i++
+}  
+
+
+i := 0
+for i &lt; 10 {
+    println(i)
+    i++
+}  
+
+
+// 无限循环，死循环的三种种形式
+for { 	// 最简洁，推荐使用
+   // 循环体代码
+}
+
+for true {
+   // 循环体代码
+}
+
+for ; ; {
+   // 循环体代码
+}
+</code></pre>
+<h3 id="3for-range-语句">3，for-range 语句</h3>
+<pre><code class="language-go">// 对于一个切片，用 for 循环遍历
+var sl = []int{1, 2, 3, 4, 5}
+for i := 0; i &lt; len(sl); i++ {
+    fmt.Printf(&quot;sl[%d] = %d\n&quot;, i, sl[i])
+}
+
+// 等价的 for-range 遍历方法
+for i, v := range sl {
+    fmt.Printf(&quot;sl[%d] = %d\n&quot;, i, v)
+}
+
+// for-range 的几个变种
+// 只遍历下标值
+for i := range sl {	
+  // ... 
+}
+
+// 只遍历值，忽略下标
+for _, v := range sl {
+  // ... 
+}
+
+// 既不关心下标，也不关心值
+for range sl {
+  // ... 
+}
+</code></pre>
+<p><strong>遍历 string 类型：</strong></p>
+<pre><code class="language-go">var s = &quot;中国人&quot;
+for i, v := range s {
+    fmt.Printf(&quot;%d %s 0x%x\n&quot;, i, string(v), v)
+}
+
+// 结果如下
+0 中 0x4e2d
+3 国 0x56fd
+6 人 0x4eba
+</code></pre>
+<p><strong>for-range 与 channel</strong></p>
+<p>当 channel 类型变量作为 for range 语句的迭代对象时，for range 会尝试从 channel 中读取数据：</p>
+<pre><code class="language-go">var c = make(chan int)
+for v := range c {
+   // ... 
+}
+</code></pre>
+<ul>
+<li>for range 每次从 channel 中读取一个元素后，会把它赋值给循环变量 v，并进入循环体</li>
+<li>当 channel 中没有数据可读的时候，for range 循环会阻塞在对 channel 的读操作上</li>
+<li>直到 channel 关闭时，for range 循环才会结束，这也是 for range 循环与 channel 配合时隐含的循环判断条件</li>
+</ul>
+<p><strong>for range 与 Goroutine 的坑</strong></p>
+<p>比如下面代码：</p>
+<pre><code class="language-go">func main() {
+    var m = []int{1, 2, 3, 4, 5}  
+             
+    for i, v := range m {
+        go func() {
+            time.Sleep(time.Second * 3)
+            fmt.Println(i, v)
+        }()
+    }
+
+    time.Sleep(time.Second * 10)
+}
+
+// 其实际输出是
+4 5
+4 5
+4 5
+4 5
+4 5
+
+//
+func main() {
+    var m = []int{1, 2, 3, 4, 5}
+
+    for i, v := range m {
+        go func(i, v int) {
+            time.Sleep(time.Second * 3)
+            fmt.Println(i, v)
+        }(i, v)
+    }
+
+    time.Sleep(time.Second * 10)
+}
+
+// 输出的结果如下（具体的结果依赖于 CPU 调度）
+0 1
+1 2
+2 3
+3 4
+4 5
+</code></pre>
+<h3 id="4continue-与-break-语句">4，continue 与 break 语句</h3>
+<p>Go 语言提供了 continue 语句和 break 语句。</p>
+<p>Go 语言中的 continue 在 C 语言 continue 语义的基础上<strong>又增加</strong>了对 label 的支持。</p>
+<p>带 label 的 continue 语句，通常出现于嵌套循环语句中，被用于跳转到外层循环并继续执行外层循环语句的下一个迭代，比如：</p>
+<pre><code class="language-go">func main() {
+    var sl = [][]int{
+        {1, 34, 26, 35, 78},
+        {3, 45, 13, 24, 99},
+        {101, 13, 38, 7, 127},
+        {54, 27, 40, 83, 81},
+    }
+
+outerloop:
+    for i := 0; i &lt; len(sl); i++ {
+        for j := 0; j &lt; len(sl[i]); j++ {
+            if sl[i][j] == 13 {
+                fmt.Printf(&quot;found 13 at [%d, %d]\n&quot;, i, j)
+                continue outerloop
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="5switch-case-语句">5，switch-case 语句</h3>
+<pre><code class="language-go">func readByExtBySwitch(ext string) {
+    switch ext {
+    case &quot;json&quot;:
+        println(&quot;read json file&quot;)
+    case &quot;jpg&quot;, &quot;jpeg&quot;, &quot;png&quot;, &quot;gif&quot;:
+        println(&quot;read image file&quot;)
+    case &quot;txt&quot;, &quot;md&quot;:
+        println(&quot;read text file&quot;)
+    case &quot;yml&quot;, &quot;yaml&quot;:
+        println(&quot;read yaml file&quot;)
+    case &quot;ini&quot;:
+        println(&quot;read ini file&quot;)
+    default:
+        println(&quot;unsupported file extension:&quot;, ext)
+    }
+}
+</code></pre>
+<p>如果 switch 表达式匹配到了某个 case 表达式，那么程序就会执行这个 case 对应的代码分支。这个分支后面的 case 表达式将不会再得到求值机会，即便后面的 case 表达式求值后也能与 switch 表达式匹配上，Go 也不会继续去对这些表达式进行求值了。</p>
+<p>无论 default 分支出现在什么位置，它都只会在所有 case 都没有匹配上的情况下才会被执行的。</p>
+<p>只要类型支持比较操作，都可以作为 switch 语句中的表达式类型。比如整型、布尔类型、字符串类型、复数类型、元素类型都是可比较类型的数组类型，甚至字段类型都是可比较类型的结构体类型，也可以。</p>
+<h3 id="6type-switch-语句">6，type-switch 语句</h3>
+<p>Go 语言的 switch 语句还支持求值结果为类型信息的表达式，也就是 type switch 语句。</p>
+<pre><code class="language-go">func main() {
+    // x 必须是一个接口类型变量
+    // 通过x.(type)，可以获得变量 x 的动态类型信息
+    var x interface{} = 13
+    switch x.(type) {
+    case nil:
+        println(&quot;x is nil&quot;)
+    case int:
+        println(&quot;the type of x is int&quot;)
+    case string:
+        println(&quot;the type of x is string&quot;)
+    case bool:
+        println(&quot;the type of x is string&quot;)
+    default:
+        println(&quot;don't support the type&quot;)
+    }
+}
+</code></pre>
+<p>通过x.(type)，我们除了可以获得变量 x 的动态类型信息之外，也能获得其动态类型对应的值信息：</p>
+<pre><code class="language-go">func main() {
+    var x interface{} = 13
+     
+    // v 存储的是变量 x 的动态类型对应的值信息
+    switch v := x.(type) {
+    case nil:
+        println(&quot;v is nil&quot;)
+    case int:
+        println(&quot;the type of v is int, v =&quot;, v)
+    case string:
+        println(&quot;the type of v is string, v =&quot;, v)
+    case bool:
+        println(&quot;the type of v is bool, v =&quot;, v)
+    default:
+        println(&quot;don't support the type&quot;)
+    }
+}
+
+// 输出结果如下
+the type of v is int, v = 13
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-07
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go5/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记5-Go函数</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go3/">
+            <span class="next-text nav-default">Go 学习笔记3-Go数据类型</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go4/" class="leancloud_visitors" data-flag-title="Go 学习笔记4-Go控制语句">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

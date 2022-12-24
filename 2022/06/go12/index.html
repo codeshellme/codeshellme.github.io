@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记12-Go Socket编程 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。 但这种方式是 Go 模拟出来，是为了" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go12/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记12-Go Socket编程" />
+<meta property="og:description" content="Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。 但这种方式是 Go 模拟出来，是为了" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go12/" />
+<meta property="article:published_time" content="2022-06-23T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-23T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记12-Go Socket编程">
+<meta itemprop="description" content="Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。 但这种方式是 Go 模拟出来，是为了">
+<meta itemprop="datePublished" content="2022-06-23T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-23T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="1454">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记12-Go Socket编程"/>
+<meta name="twitter:description" content="Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。 但这种方式是 Go 模拟出来，是为了"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记12-Go Socket编程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-23 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 1454 字 </span>
+          <span class="more-meta"> 阅读约需 3 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1server-端">1，Server 端</a></li>
+        <li><a href="#2client-端">2，Client 端</a></li>
+        <li><a href="#3socket-读操作">3，Socket 读操作</a></li>
+        <li><a href="#4socket-写操作">4，Socket 写操作</a></li>
+        <li><a href="#5关闭-socket">5，关闭 Socket</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。</p>
+<p>但这种方式是 Go 模拟出来，是为了让开发者使用起来更加简单易懂，对应的、真实的底层操作系统 Socket，<strong>实际上是非阻塞的</strong>。</p>
+<p>Go 没有使用基于线程的并发模型，而是使用了开销更小的 Goroutine 作为基本执行单元，这让<strong>每个 Goroutine 处理一个 TCP 连接成为可能</strong>，并且在高并发下依旧表现出色。</p>
+<blockquote>
+<p>虽然目前主流 socket 网络编程模型是 I/O 多路复用模型，但考虑到这个模型在使用时的体验较差，Go 语言将这种复杂性隐藏到运行时层，并结合 Goroutine 的轻量级特性，在用户层提供了基于 I/O 阻塞模型的 Go socket 网络编程模型，这一模型就大大简化了编程难度。</p>
+</blockquote>
+<h3 id="1server-端">1，Server 端</h3>
+<p>Go Server 端编程套路模板：</p>
+<pre><code class="language-go">func handleConn(c net.Conn) {
+    defer c.Close()
+    for {
+        // read from the connection
+        // ... ...
+        // write to the connection
+        //... ...
+    }
+}
+
+func main() {
+    l, err := net.Listen(&quot;tcp&quot;, &quot;:8888&quot;)
+    if err != nil {
+        fmt.Println(&quot;listen error:&quot;, err)
+        return
+    }
+
+    for {
+        c, err := l.Accept()
+        if err != nil {
+            fmt.Println(&quot;accept error:&quot;, err)
+            break
+        }
+        // start a new goroutine to handle
+        // the new connection.
+        go handleConn(c)
+    }
+}
+</code></pre>
+<h3 id="2client-端">2，Client 端</h3>
+<p>Go Client 端与 Server 端建立连接的两种方式：</p>
+<pre><code class="language-go">conn, err := net.Dial(&quot;tcp&quot;, &quot;localhost:8888&quot;)
+
+// 带有超时机制的建连
+conn, err := net.DialTimeout(&quot;tcp&quot;, &quot;localhost:8888&quot;, 2 * time.Second)
+</code></pre>
+<p>net.Dial 函数的第一个参数的可选值，共九个：</p>
+<ul>
+<li>&ldquo;tcp&rdquo;：代表 TCP 协议，其基于的 IP 协议的版本根据参数address的值自适应。</li>
+<li>&ldquo;tcp4&rdquo;：代表基于 IP 协议第四版的 TCP 协议。</li>
+<li>&ldquo;tcp6&rdquo;：代表基于 IP 协议第六版的 TCP 协议。</li>
+<li>&ldquo;udp&rdquo;：代表 UDP 协议，其基于的 IP 协议的版本根据参数address的值自适应。</li>
+<li>&ldquo;udp4&rdquo;：代表基于 IP 协议第四版的 UDP 协议。</li>
+<li>&ldquo;udp6&rdquo;：代表基于 IP 协议第六版的 UDP 协议。</li>
+<li>&ldquo;unix&rdquo;：代表 Unix 通信域下的一种内部 socket 协议，以 SOCK_STREAM 为 socket 类型。</li>
+<li>&ldquo;unixgram&rdquo;：代表 Unix 通信域下的一种内部 socket 协议，以 SOCK_DGRAM 为 socket 类型。</li>
+<li>&ldquo;unixpacket&rdquo;：代表 Unix 通信域下的一种内部 socket 协议，以 SOCK_SEQPACKET 为 socket 类型。</li>
+</ul>
+<h3 id="3socket-读操作">3，Socket 读操作</h3>
+<p>从 Socket 读数据的三种情况：</p>
+<ul>
+<li><strong>Socket 中无数据</strong>：如果没有设置超时时间，那么读操作会一直阻塞
+<ul>
+<li>SetReadDeadline 方法可以设置超时时间，SetReadDeadline 方法接受一个绝对时间作为超时的 deadline。</li>
+<li>一旦通过这个方法设置了某个 socket 的 Read deadline，当发生超时后，如果我们<strong>不重新设置 Deadline</strong>，那么后面与这个 socket 有关的所有读操作，都会返回超时失败错误。</li>
+<li><code>SetReadDeadline（time.Time{}）</code>可用于取消超时时间</li>
+</ul>
+</li>
+<li><strong>Socket 中有部分数据</strong>：Socket 中有部分数据就绪，且数据数量小于一次读操作期望读出的数据长度
+<ul>
+<li>读操作将会成功读出这部分数据，并返回，而不是等待期望长度数据全部读取后，再返回</li>
+</ul>
+</li>
+<li><strong>Socket 中有足够数据</strong>：成功读出期望的数据，并返回
+<ul>
+<li>剩下的数据会在下一次读取时获取</li>
+</ul>
+</li>
+</ul>
+<h3 id="4socket-写操作">4，Socket 写操作</h3>
+<p>当 Write 调用的返回值 n 的值，与预期要写入的数据长度相等，且 err = nil 时，我们就执行了一次成功的 Socket 写操作，这是我们在调用 Write 时遇到的最常见的情形。</p>
+<p>其它情况还有：</p>
+<ul>
+<li>写阻塞</li>
+<li>写入部分数据</li>
+<li>写入超时
+<ul>
+<li>SetWriteDeadline 方法用于设置写超时时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="5关闭-socket">5，关闭 Socket</h3>
+<p>当客户端主动关闭了 Socket，那么服务端的Read调用将会读到什么呢？这里要分“有数据关闭”和“无数据关闭”两种情况。</p>
+<ul>
+<li>有数据关闭：指在客户端关闭连接时，Socket 中还有服务端尚未读取的数据
+<ul>
+<li>在这种情况下，服务端的 Read 会成功将剩余数据读取出来，</li>
+<li>最后一次 Read 操作将得到io.EOF错误码，表示客户端已经断开了连接。</li>
+</ul>
+</li>
+<li>无数据关闭
+<ul>
+<li>服务端调用的 Read 方法将直接返回io.EOF。</li>
+</ul>
+</li>
+</ul>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-23
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go13/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记13-Go常用包</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go11/">
+            <span class="next-text nav-default">Go 学习笔记11-Go共享内存</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go12/" class="leancloud_visitors" data-flag-title="Go 学习笔记12-Go Socket编程">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

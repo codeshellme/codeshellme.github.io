@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记14-gPRC入门指南 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go-grpc/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记14-gPRC入门指南" />
+<meta property="og:description" content="1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go-grpc/" />
+<meta property="article:published_time" content="2022-06-27T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-27T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记14-gPRC入门指南">
+<meta itemprop="description" content="1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能">
+<meta itemprop="datePublished" content="2022-06-27T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-27T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="2488">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记14-gPRC入门指南"/>
+<meta name="twitter:description" content="1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记14-gPRC入门指南</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-27 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 2488 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1grpc-简介">1，gRPC 简介</a></li>
+        <li><a href="#2protobuf-简介">2，protobuf 简介</a></li>
+        <li><a href="#3protoc-安装">3，protoc 安装</a></li>
+        <li><a href="#4protoc-gen-go-安装">4，protoc-gen-go 安装</a></li>
+        <li><a href="#5使用-protobuf">5，使用 protobuf</a></li>
+        <li><a href="#6grpc-示例">6，gRPC 示例</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="1grpc-简介">1，gRPC 简介</h3>
+<p>RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。</p>
+<p>gRPC 是由 google 开源的一个高性能、通用的 RPC 框架，基于 <a href="https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md">HTTP/2</a> 协议标准，同时支持大多数流行的编程语言。</p>
+<p>gRPC 官方地址：</p>
+<ul>
+<li><a href="https://grpc.io/">https://grpc.io/</a></li>
+<li><a href="https://github.com/grpc/grpc">https://github.com/grpc/grpc</a></li>
+</ul>
+<h3 id="2protobuf-简介">2，protobuf 简介</h3>
+<p>gRPC 默认使用 protobuf 协议进行数据序列化，protobuf 是 Google 开源的一套数据结构，适合高性能的数据传输场景；</p>
+<p>protobuf 与 JSON，XML 相比，具有以下优点：</p>
+<ul>
+<li>在定义上，更加简单明了，并且减少了二义性。</li>
+<li>数据量更小：是另外两者的 1/10 到 1/3。</li>
+<li>速度更快：序列化、反序列化的速度更快。</li>
+<li>生成了更易使用的数据访问类。</li>
+</ul>
+<p><a href="https://developers.google.com/protocol-buffers/docs/proto3">protobuf 数据类型与 golang 的对应关系</a>如下：</p>
+<table>
+<thead>
+<tr>
+<th>.proto Type</th>
+<th>go Type</th>
+<th>.proto Type</th>
+<th>go Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>double</td>
+<td>float64</td>
+<td>fixed32</td>
+<td>uint32</td>
+</tr>
+<tr>
+<td>float</td>
+<td>float32</td>
+<td>fixed64</td>
+<td>uint64</td>
+</tr>
+<tr>
+<td>int32</td>
+<td>int32</td>
+<td>sfixed32</td>
+<td>int32</td>
+</tr>
+<tr>
+<td>int64</td>
+<td>int64</td>
+<td>sfixed64</td>
+<td>int64</td>
+</tr>
+<tr>
+<td>uint32</td>
+<td>uint32</td>
+<td>bool</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>uint64</td>
+<td>uint64</td>
+<td>string</td>
+<td>string</td>
+</tr>
+<tr>
+<td>sint32</td>
+<td>int32</td>
+<td>bytes</td>
+<td>[]byte</td>
+</tr>
+<tr>
+<td>sint64</td>
+<td>int64</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em><strong>gPRC 调用模型如下：</strong></em></p>
+<p><img src="https://img-blog.csdnimg.cn/6e8a7f9cfd7c4e0b8a1d70f45d037f6e.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>客户端在程序中调用某方法，发起 RPC 调用。请求信息使用 Protobuf 进行对象序列化。</li>
+<li>服务端接收请求后，对请求进行解码，并进行业务处理后返回。响应信息使用 Protobuf 进行对象序列化。</li>
+<li>客户端接收到服务端的响应后，对响应信息进行解码，并将解码后的信息返回给调用者。</li>
+</ul>
+<h3 id="3protoc-安装">3，protoc 安装</h3>
+<p>protoc 是 protobuf 的编译器，用来编译 <code>.proto</code> 文件（转化成对应语言的代码文件），其下载地址是 <a href="https://github.com/protocolbuffers/protobuf/releases">https://github.com/protocolbuffers/protobuf/releases</a> 。</p>
+<p><img src="https://img-blog.csdnimg.cn/4ad8ddd1c7434723b9ad1f99a3307d3b.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>注：我这里使用的是 Linux 系统，下载的是 proto3 版本。</p>
+</blockquote>
+<p>下载到 <code>protobuf-all-3.20.3.tar.gz</code> 包后，使用下面命令进行解压，编译，安装：</p>
+<pre><code class="language-shell">&gt; tar -xzf protobuf-all-3.20.3.tar.gz	# 解压
+&gt; cd ./protobuf-3.20.3
+&gt; ./configure
+&gt; make									# 编译，此过程可能会比较慢
+&gt; make install							# 安装，需要 root 权限
+&gt; ldconfig								# 系统重新加载动态链接库，需要 root 权限
+</code></pre>
+<p>检查是否安装成功：</p>
+<pre><code class="language-shell">&gt; protoc --version
+————————————————————
+libprotoc 3.20.3
+</code></pre>
+<h3 id="4protoc-gen-go-安装">4，protoc-gen-go 安装</h3>
+<p>针对不同的语言，还需要安装运行时的 protoc 插件，Go 语言对应的是 <strong>protoc-gen-go</strong>，当使用 <strong>protoc</strong> 时，会自动调用 protoc-gen-go。</p>
+<p>安装方法如下：</p>
+<pre><code class="language-shell"># 需要在 go 项目目录中执行
+&gt; go get github.com/golang/protobuf/protoc-gen-go
+</code></pre>
+<h3 id="5使用-protobuf">5，使用 protobuf</h3>
+<h4 id="1创建-go-项目">1，创建 go 项目</h4>
+<p>查看 go 版本：</p>
+<pre><code class="language-shell">&gt; go version
+go version go1.19 linux/amd64
+</code></pre>
+<p>创建一个 go 项目：</p>
+<pre><code class="language-shell">&gt; mkdir hello-protobuf
+&gt; cd ./hello-protobuf
+&gt; go mod init github.com/hello-protobuf	# 使用 Go Module 管理项目，生成 go.mod 文件
+</code></pre>
+<p>下载 <strong>protoc-gen-go</strong>：</p>
+<pre><code class="language-shell">&gt; go get github.com/golang/protobuf/protoc-gen-go
+</code></pre>
+<p>如果无法下载，则可以更换代理地址：</p>
+<pre><code class="language-shell">go env -w GOPROXY=https://goproxy.cn
+</code></pre>
+<p>安装 <strong>protoc-gen-go</strong>：</p>
+<pre><code class="language-shell">&gt; go install github.com/golang/protobuf/protoc-gen-go
+</code></pre>
+<p>最后，将 protoc-gen-go 放在系统目录中：</p>
+<pre><code class="language-shell">&gt; cp protoc-gen-go /usr/local/go/bin/
+</code></pre>
+<blockquote>
+<p>注意：protoc-gen-go 在 <code>$GOPATH/bin</code> 目录中</p>
+</blockquote>
+<h4 id="2创建-proto-文件">2，创建 .proto 文件</h4>
+<p>例如我们现在要传输用户信息，包括 name 和 age 两个字段。</p>
+<p>创建 <code>user.proto</code> 文件如下：</p>
+<pre><code class="language-go">syntax = &quot;proto3&quot;;
+
+// 这是一行注释
+
+option go_package=&quot;./helloworld&quot;;
+
+package helloworld;
+
+message User {
+	string name = 1;
+	int32 age = 2;
+}
+</code></pre>
+<p>其中：</p>
+<ul>
+<li><strong>syntax</strong>：声明 protobuf 的版本，如果不声明，则默认是 proto2。
+<ul>
+<li>要与 <strong>protoc</strong> 编译器的版本一致。</li>
+</ul>
+</li>
+<li><strong>option go_package</strong>：定义生成的 <code>.pb.go</code> 文件的路径，一般跟 <strong>package</strong> 包名一致。</li>
+<li><strong>package</strong>：包名。</li>
+<li><strong>message</strong>：定义消息结构。
+<ul>
+<li>一个 proto 文件中可定义 1 个或多个 message</li>
+</ul>
+</li>
+<li><strong>注释</strong>：以 <code>//</code> 开头。</li>
+<li><strong>标识号</strong>：在消息定义中，每个字段都有一个唯一的标识号。
+<ul>
+<li>标识号是 [0, 2^29 - 1] 范围内的整数</li>
+<li>示例中的 1 和 2 就是标识号</li>
+</ul>
+</li>
+<li><strong>结尾符号</strong>：要以分号 <code>;</code> 结尾。</li>
+</ul>
+<h4 id="3生成-pdgo-文件">3，生成 .pd.go 文件</h4>
+<p>执行如下命令，生成 <code>.pd.go</code> 文件：</p>
+<pre><code class="language-shell">&gt; protoc --go_out=. user.proto
+</code></pre>
+<ul>
+<li><code>--go_out</code> 用于指定输出目录，它会加载 <strong>protoc-gen-go</strong> 程序。</li>
+</ul>
+<h4 id="4序列化与反序列化">4，序列化与反序列化</h4>
+<p>创建 main.go 文件：</p>
+<pre><code class="language-go">package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/golang/protobuf/proto&quot;
+	&quot;github.com/hello-protobuf/helloworld&quot;
+)
+
+func main() {
+	user := &amp;helloworld.User{
+		Name: &quot;lucy&quot;,
+		Age:  18,
+	}
+
+	// 序列化
+	s_user, err := proto.Marshal(user)
+	if err != nil {
+		panic(err)
+	}
+
+	// 反序列化
+	newUser := &amp;helloworld.User{}
+	err = proto.Unmarshal(s_user, newUser)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(newUser)
+}
+</code></pre>
+<p>执行 go 程序：</p>
+<pre><code class="language-shell">&gt; go run main.go
+——————————————————————
+name:&quot;lucy&quot;  age:18
+</code></pre>
+<p>来看下现在的目录结构：</p>
+<pre><code class="language-shell">&gt; tree hello-protobuf/
+————————————————————————
+hello-protobuf/
+├── go.mod
+├── go.sum
+├── helloworld
+│   └── user.pb.go
+├── main.go
+└── user.proto
+</code></pre>
+<h4 id="5optional-与-repeated-修饰词">5，optional 与 repeated 修饰词</h4>
+<p>例如下面定义：</p>
+<pre><code class="language-go">message User {
+	string name = 1;
+	int32 age = 2;
+	optional string password = 3;
+	repeated string addres = 4;
+}
+</code></pre>
+<p>生成的 protobuf 结构如下：</p>
+<pre><code class="language-go">type User struct {
+	Name     string   `protobuf:&quot;bytes,1,opt,name=name,proto3&quot; json:&quot;name,omitempty&quot;`
+	Age      int32    `protobuf:&quot;varint,2,opt,name=age,proto3&quot; json:&quot;age,omitempty&quot;`
+	Password *string  `protobuf:&quot;bytes,3,opt,name=password,proto3,oneof&quot; json:&quot;password,omitempty&quot;`
+	Addres   []string `protobuf:&quot;bytes,4,rep,name=addres,proto3&quot; json:&quot;addres,omitempty&quot;`
+}
+</code></pre>
+<ul>
+<li><strong>optional</strong>：表示是一个可选字段
+<ul>
+<li>对于发送方，在发送消息时，可以有选择性的设置或者不设置该字段的值</li>
+<li>对于接收方，如果能够识别可选字段就进行相应的处理，如果无法识别，则忽略该字段，消息中的其它字段正常处理</li>
+</ul>
+</li>
+<li><strong>repeated</strong>：表示可以包含 0~N 个元素，可看作是数组</li>
+</ul>
+<h4 id="6oneof-修饰词">6，oneof 修饰词</h4>
+<p><strong>oneof</strong> 表示只设置多个字段中的一个字段。</p>
+<p>示例：</p>
+<pre><code class="language-go">message User {
+    oneof sex {
+        string man = 1;
+        string woman = 2;
+    }
+}
+</code></pre>
+<p>编译后生成的类型如下：</p>
+<pre><code class="language-go">type User struct {
+	// Types that are assignable to Sex:
+	//
+	//	*User_Man
+	//	*User_Woman
+	Sex isUser_Sex `protobuf_oneof:&quot;sex&quot;`
+}
+</code></pre>
+<h4 id="7enum-与-map-类型">7，enum 与 map 类型</h4>
+<p>枚举类型，用于限定传入的字段值必须是预定义中的值。</p>
+<p><strong>enum 类型：</strong></p>
+<pre><code class="language-go">enum Sex {
+    man = 0;	// 必须从 0 开始
+    woman = 1;
+}
+
+message User {
+    Sex sex = 1;
+}
+</code></pre>
+<p><strong>map 类型：</strong></p>
+<pre><code class="language-go">message Hello {
+	map&lt;string, string&gt; names = 1;
+}
+</code></pre>
+<h4 id="8嵌套类型">8，嵌套类型</h4>
+<p>message 可以嵌套，称为嵌套类型，嵌套类型可以定义比较复杂的结构体。</p>
+<p>嵌套有两种模式：</p>
+<ul>
+<li>内部嵌套</li>
+<li>外部嵌套（推荐使用）</li>
+</ul>
+<p>内部嵌套示例：</p>
+<pre><code class="language-go">message Hello {
+	// World 在 Hello 内部
+	message World {
+		string name = 1;
+	}
+
+	World world = 1;
+}
+</code></pre>
+<ul>
+<li>外部若想使用内部的 World，语法为 <code>Hello.World</code></li>
+</ul>
+<p>外部嵌套示例：</p>
+<pre><code class="language-go">// World 在 Hello 外部
+message World {
+	string name = 1;
+}
+
+message Hello {
+	World world = 1;
+}
+</code></pre>
+<h4 id="9service-定义服务">9，service 定义服务</h4>
+<p>要想将消息类型用在 RPC 这种，需要使用 <strong>service</strong> 关键字来定义 RPC 接口。</p>
+<p>示例：</p>
+<pre><code class="language-go">// The greeter service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+</code></pre>
+<ul>
+<li><strong>service</strong> 用于定义 RPC 服务
+<ul>
+<li><strong>Greeter</strong> 为 RPC 服务的名称</li>
+</ul>
+</li>
+<li><strong>rpc</strong> 是修饰方法的关键字</li>
+<li><strong>SayHello</strong> 是 RPC 方法名称
+<ul>
+<li><strong>HelloRequest</strong> 是入参类型</li>
+<li><strong>HelloReply</strong> 是返回值类型</li>
+</ul>
+</li>
+</ul>
+<h3 id="6grpc-示例">6，gRPC 示例</h3>
+<p>这里的 gRPC Golang 版示例来自官网：</p>
+<ul>
+<li><a href="https://grpc.io/docs/languages/go/quickstart/">https://grpc.io/docs/languages/go/quickstart/</a></li>
+</ul>
+<p>下载示例代码：</p>
+<pre><code class="language-shell">&gt; git clone -b v1.49.0 --depth 1 https://github.com/grpc/grpc-go.git
+&gt; cd grpc-go/examples/helloworld
+</code></pre>
+<p>下文中对官方示例做了一些简化。</p>
+<h4 id="1创建一个-go-项目">1，创建一个 go 项目</h4>
+<pre><code class="language-shell">&gt; mkdir hello-grpc
+&gt; cd ./hello-grpc
+&gt; go mod init github.com/hello-grpc	# 使用 Go Module 管理项目，生成 go.mod 文件
+</code></pre>
+<h4 id="2helloworldproto-文件">2，helloworld.proto 文件</h4>
+<pre><code class="language-go">syntax = &quot;proto3&quot;;
+
+option go_package = &quot;./helloworld&quot;;
+
+package helloworld;
+
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
+</code></pre>
+<p>编译 proto 文件：</p>
+<pre><code class="language-shell">&gt; protoc --go_out=plugins=grpc:. helloworld.proto
+</code></pre>
+<p>看下当前的目录结构：</p>
+<pre><code class="language-shell">&gt; tree hello-grpc
+————————————————————————————
+hello-grpc
+├── go.mod
+├── go.sum
+├── helloworld
+│   └── helloworld.pb.go
+└── helloworld.proto
+</code></pre>
+<h4 id="3grpc_servergo-文件">3，grpc_server.go 文件</h4>
+<pre><code class="language-go">package main
+
+import (
+    &quot;context&quot;
+    &quot;log&quot;
+    &quot;net&quot;
+
+    pb &quot;github.com/hello-grpc/helloworld&quot;
+    &quot;google.golang.org/grpc&quot;
+)
+
+// 定义一个类型
+type GreeterServerImp struct {
+}
+
+// 实现 GreeterServer 接口中的 SayHello 方法
+func (s *GreeterServerImp) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+    log.Printf(&quot;GreeterServerImp Received: %v&quot;, in.GetName())
+    return &amp;pb.HelloReply{Message: &quot;Hello &quot; + in.GetName()}, nil
+}
+
+func main() {
+
+    s := grpc.NewServer()
+    pb.RegisterGreeterServer(s, &amp;GreeterServerImp{})
+
+    lis, err := net.Listen(&quot;tcp&quot;, &quot;:8888&quot;)
+    if err != nil {
+        log.Fatalf(&quot;failed to listen: %v&quot;, err)
+    }
+
+    log.Printf(&quot;server listening at %v&quot;, lis.Addr())
+
+    if err := s.Serve(lis); err != nil {
+        log.Fatalf(&quot;failed to serve: %v&quot;, err)
+    }
+}
+</code></pre>
+<h4 id="4grpc_clientgo-文件">4，grpc_client.go 文件</h4>
+<pre><code class="language-go">package main
+
+import (
+    &quot;context&quot;
+    &quot;log&quot;
+    &quot;time&quot;
+
+    pb &quot;github.com/hello-grpc/helloworld&quot;
+    &quot;google.golang.org/grpc&quot;
+    &quot;google.golang.org/grpc/credentials/insecure&quot;
+)
+
+func main() {
+
+    conn, err := grpc.Dial(&quot;localhost:8888&quot;, grpc.WithTransportCredentials(insecure.NewCredentials()))
+    if err != nil {
+        log.Fatalf(&quot;did not connect: %v&quot;, err)
+    }
+    defer conn.Close()
+
+    c := pb.NewGreeterClient(conn)
+
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+    defer cancel()
+
+    r, err := c.SayHello(ctx, &amp;pb.HelloRequest{Name: &quot;world&quot;})
+    if err != nil {
+        log.Fatalf(&quot;could not greet: %v&quot;, err)
+    }
+
+    log.Printf(&quot;Greeting: %s&quot;, r.GetMessage())
+}
+</code></pre>
+<h4 id="5运行程序">5，运行程序</h4>
+<p>运行服务端程序：</p>
+<pre><code class="language-shell">&gt; go run grcp_server.go
+</code></pre>
+<p>运行客户端程序：</p>
+<pre><code class="language-shell">&gt; go run grcp_client.go
+—————————————————————————————————————————
+2022/10/07 17:42:03 Greeting: Hello world
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go15/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记15-Go学习资料及优秀项目</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go13/">
+            <span class="next-text nav-default">Go 学习笔记13-Go常用包</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go-grpc/" class="leancloud_visitors" data-flag-title="Go 学习笔记14-gPRC入门指南">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -7,10 +7,145 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>@码农充电站</copyright>
-    <lastBuildDate>Tue, 31 May 2022 22:39:52 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jun 2022 22:38:52 +0800</lastBuildDate>
     
 	<atom:link href="https://codeshellme.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Go 学习笔记15-Go学习资料及优秀项目</title>
+      <link>https://codeshellme.github.io/2022/06/go15/</link>
+      <pubDate>Wed, 29 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go15/</guid>
+      <description>1，Go 学习资料 Go 语言官网：有两个地址 https://golang.google.cn/ https://go.dev/ Go 语言 Wiki Go 语言规范文档 Go 语言开发工具 Go 语言命令文档 Go 语言内存模型 Go 程序诊断 Effective Go Go 语言中文网 Tony Bai 改善</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记14-gPRC入门指南</title>
+      <link>https://codeshellme.github.io/2022/06/go-grpc/</link>
+      <pubDate>Mon, 27 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go-grpc/</guid>
+      <description>1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记13-Go常用包</title>
+      <link>https://codeshellme.github.io/2022/06/go13/</link>
+      <pubDate>Sat, 25 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go13/</guid>
+      <description>1，strings 包 1，string 类型 在 Go 语言中，string 类型的值是不可变的。在进行字符串拼接的时候，Go 语言会把所有被拼接的字符串依</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记12-Go Socket编程</title>
+      <link>https://codeshellme.github.io/2022/06/go12/</link>
+      <pubDate>Thu, 23 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go12/</guid>
+      <description>Go 为开发人员提供了阻塞 I/O 模型，Gopher 只需在 Goroutine 中以最简单、最易用的“阻塞 I/O 模型”的方式，进行 Socket 操作就可以。 但这种方式是 Go 模拟出来，是为了</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记11-Go共享内存</title>
+      <link>https://codeshellme.github.io/2022/06/go11/</link>
+      <pubDate>Tue, 21 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go11/</guid>
+      <description>Go 语言之父 Rob Pike 还有一句经典名言：“不要通过共享内存来通信，应该通过通信来共享内存”。这就奠定了 Go 应用并发设计的主流风格：使用 channel 进行不同 Goroutine 间的</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记10-Go并发</title>
+      <link>https://codeshellme.github.io/2022/06/go10/</link>
+      <pubDate>Sun, 19 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go10/</guid>
+      <description>Go 语言原生支持并发，Go 并发这个词，它包含两方面内容： 一个是并发的概念 一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、c</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记9-Go错误处理</title>
+      <link>https://codeshellme.github.io/2022/06/go9/</link>
+      <pubDate>Fri, 17 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go9/</guid>
+      <description>1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错误值赋值给 error 接口变</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记8-Go接口</title>
+      <link>https://codeshellme.github.io/2022/06/go8/</link>
+      <pubDate>Wed, 15 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go8/</guid>
+      <description>接口本质上是一种抽象，它的功能是解耦。尽管接口不是 Go 独有的，但专注于接口是编写强大而灵活的 Go 代码的关键。 Go 中的接口是非入侵性的，实现这不需要</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记7-Go继承：类型嵌入</title>
+      <link>https://codeshellme.github.io/2022/06/go7/</link>
+      <pubDate>Mon, 13 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go7/</guid>
+      <description>类型嵌入指的就是在一个类型的定义中嵌入了其他类型。Go 语言支持两种类型嵌入： 接口类型的类型嵌入 结构体类型的类型嵌入 接口类型只能嵌入接口类型，</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记6-Go方法</title>
+      <link>https://codeshellme.github.io/2022/06/go6/</link>
+      <pubDate>Sat, 11 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go6/</guid>
+      <description>Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记5-Go函数</title>
+      <link>https://codeshellme.github.io/2022/06/go5/</link>
+      <pubDate>Thu, 09 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go5/</guid>
+      <description>函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以作为返回值从</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记4-Go控制语句</title>
+      <link>https://codeshellme.github.io/2022/06/go4/</link>
+      <pubDate>Tue, 07 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go4/</guid>
+      <description>1，if 语句 if boolean_expression { } if boolean_expression { } else { } // 多分支 if boolean_expression1 { } else if boolean_expression2 { } else if boolean_expressionN { } else { } Go 支持在 if 后的布尔表达式前，进行一些变量的声明，在 if 布尔表达式前</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记3-Go数据类型</title>
+      <link>https://codeshellme.github.io/2022/06/go3/</link>
+      <pubDate>Sun, 05 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go3/</guid>
+      <description>1，基本数据类型 布尔类型 bool，默认值 FALSE 字符串类型 string，默认 &amp;quot;&amp;quot; 字符串类型是不可变的，提高了字符串的并发安全性和存储利用率 其底层存储</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记2-Go项目管理</title>
+      <link>https://codeshellme.github.io/2022/06/go2/</link>
+      <pubDate>Fri, 03 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go2/</guid>
+      <description>1，Go 环境变量 GOROOT：包含 GO 语言的安装根目录的路径 Go 1.10 版本引入默认的 GOROOT，开发者无须设置 GOPATH：包含若干个工作区目录的</description>
+    </item>
+    
+    <item>
+      <title>Go 学习笔记1-Go基础</title>
+      <link>https://codeshellme.github.io/2022/06/go1/</link>
+      <pubDate>Wed, 01 Jun 2022 22:38:52 +0800</pubDate>
+      
+      <guid>https://codeshellme.github.io/2022/06/go1/</guid>
+      <description>Go 语言不是面向对象语言。 Go 语言的三位创始人： （从左到右分别是 Robert Griesemer、Rob Pike 和 Ken Thompson） Go 语言历史年表 时间 事件 200</description>
+    </item>
     
     <item>
       <title>Git 命令参考</title>
@@ -28,42 +163,6 @@
       
       <guid>https://codeshellme.github.io/2022/05/es-build/</guid>
       <description>ElasticSearch 是一款强大的、开源的、分布式的搜索与分析引擎，简称 ES，它提供了实时搜索与聚合分析两大功能。 本文介绍 ES 的安装方法，并导入一组电影数据，可供</description>
-    </item>
-    
-    <item>
-      <title>gPRC入门指南</title>
-      <link>https://codeshellme.github.io/2022/05/go-grpc/</link>
-      <pubDate>Fri, 20 May 2022 22:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/2022/05/go-grpc/</guid>
-      <description>1，gRPC 简介 RPC 是指远程过程调用，允许一台计算机上的程序调用另一台计算机上的程序，就像对本地函数进行调用一样方便。 gRPC 是由 google 开源的一个高性能</description>
-    </item>
-    
-    <item>
-      <title>Go学习笔记3-Go并发与网络</title>
-      <link>https://codeshellme.github.io/2022/05/go3/</link>
-      <pubDate>Tue, 10 May 2022 22:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/2022/05/go3/</guid>
-      <description>13，Go 错误处理 1，error 接口 error 接口是 Go 原生内置的类型，它的定义如下： // $GOROOT/src/builtin/builtin.go type error interface { Error() string } 任何实现了 error 的 Error 方法的类型的实例，都可以作为错</description>
-    </item>
-    
-    <item>
-      <title>Go学习笔记2-Go方法与接口</title>
-      <link>https://codeshellme.github.io/2022/04/go2/</link>
-      <pubDate>Sun, 10 Apr 2022 22:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/2022/04/go2/</guid>
-      <description>9，Go 函数 函数在 Go 语言中属于“一等公民”，拥有“一等公民”待遇的语法元素可以存储在变量中，可以作为参数传递给函数，可以在函数内部创建并可以</description>
-    </item>
-    
-    <item>
-      <title>Go学习笔记1-Go基础</title>
-      <link>https://codeshellme.github.io/2022/04/go1/</link>
-      <pubDate>Fri, 01 Apr 2022 22:38:52 +0800</pubDate>
-      
-      <guid>https://codeshellme.github.io/2022/04/go1/</guid>
-      <description>0，Go 学习资料 Go 语言官网：有两个地址 https://golang.google.cn/ https://go.dev/ Go 语言 Wiki Go 语言规范文档 Go 语言开发工具 Go 语言命令文档 Go 语言内存模型 Go 程序诊断 Effective Go Go 语言中文网 Tony Bai 改善</description>
     </item>
     
     <item>

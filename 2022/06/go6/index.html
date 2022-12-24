@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记6-Go方法 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go6/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记6-Go方法" />
+<meta property="og:description" content="Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go6/" />
+<meta property="article:published_time" content="2022-06-11T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-11T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记6-Go方法">
+<meta itemprop="description" content="Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要">
+<meta itemprop="datePublished" content="2022-06-11T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-11T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="2346">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记6-Go方法"/>
+<meta name="twitter:description" content="Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记6-Go方法</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-11 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 2346 字 </span>
+          <span class="more-meta"> 阅读约需 5 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1go-方法的定义">1，Go 方法的定义</a></li>
+        <li><a href="#2receiver-参数的类型问题">2，receiver 参数的类型问题</a></li>
+        <li><a href="#3一个思考题">3，一个思考题</a></li>
+        <li><a href="#4方法集合">4，方法集合</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Go 语言中的方法和面向对象中的方法并不是一样的。Go 引入方法这一元素，并不是要支持面向对象编程范式，而是 Go 践行组合设计哲学的一种实现层面的需要。</p>
+<p>Go 语言中的方法的本质就是，<strong>一个以方法的 receiver 参数作为第一个参数的普通函数</strong>。</p>
+<h3 id="1go-方法的定义">1，Go 方法的定义</h3>
+<p>Go 方法的形式，比函数多了一个 <strong>receiver</strong> ：</p>
+<p><img src="https://img-blog.csdnimg.cn/9a7ae4c6212840869549c45b11ccf5d1.png" alt="在这里插入图片描述"></p>
+<p><strong>receiver</strong> 参数也是方法与类型之间的纽带，也是方法与函数的最大不同。</p>
+<p>Go 中的方法必须是归属于一个类型的，而 receiver 参数的类型就是这个方法归属的类型。</p>
+<p><strong>注意 ListenAndServeTLS 是 *Server 类型的方法，而不是 Server 类型的方法。</strong></p>
+<p>方法的一般声明形式：</p>
+<pre><code class="language-go">func (t *T或T) MethodName(参数列表) (返回值列表) {
+    // 方法体
+}
+</code></pre>
+<ul>
+<li>无论 receiver 参数的类型为 *T 还是 T，我们都将 T 叫做 t 的基类型</li>
+<li>如果 t 的类型为 T，那么说这个方法是类型 T 的一个方法</li>
+<li>如果 t 的类型为 *T，那么就说这个方法是类型 *T 的一个方法</li>
+<li>receiver 参数的基类型本身不能为指针类型或接口类型</li>
+<li>每个方法只能有一个 receiver 参数
+<ul>
+<li>Go 不支持在方法的 receiver 部分放置包含多个 receiver 参数的参数列表，或者变长 receiver 参数</li>
+</ul>
+</li>
+<li>方法声明要与 receiver 参数的基类型声明放在同一个包内
+<ul>
+<li>我们无法为原生类型（诸如 int、float64、map 等）添加方法</li>
+<li>不能跨越 Go 包为其他包的类型声明新方法</li>
+</ul>
+</li>
+</ul>
+<p>Go 方法的调用形式：</p>
+<pre><code class="language-go">type T struct{}
+
+func (t T) M(n int) {
+}
+
+func main() {
+    var t T
+    t.M(1) // 通过类型T的变量实例调用方法M
+
+    p := &amp;T{}
+    p.M(2) // 通过类型*T的变量实例调用方法M
+}
+</code></pre>
+<p>我们可以将方法作为右值，赋值给一个函数类型的变量，比如下：</p>
+<pre><code class="language-go">type T struct { 
+    a int
+}
+
+func (t T) Get() int {  
+    return t.a 
+}
+
+func (t *T) Set(a int) int { 
+    t.a = a 
+    return t.a 
+}
+
+func main() {
+    var t T
+    f1 := (*T).Set // f1的类型，也是*T类型Set方法的类型：func (t *T, int)int
+    f2 := T.Get    // f2的类型，也是T类型Get方法的类型：func(t T)int
+    
+    fmt.Printf(&quot;the type of f1 is %T\n&quot;, f1) // the type of f1 is func(*main.T, int) int
+    fmt.Printf(&quot;the type of f2 is %T\n&quot;, f2) // the type of f2 is func(main.T) int
+    
+    f1(&amp;t, 3)
+    fmt.Println(f2(t)) // 3
+}
+</code></pre>
+<h3 id="2receiver-参数的类型问题">2，receiver 参数的类型问题</h3>
+<p>来看下面例子中的两个 Go 方法，以及它们等价转换后的函数：</p>
+<pre><code class="language-go">func (t T) M1() &lt;=&gt; F1(t T)
+func (t *T) M2() &lt;=&gt; F2(t *T)
+</code></pre>
+<ul>
+<li>M1 方法是 receiver 参数类型为 T 的一类方法的代表
+<ul>
+<li>T 类型实例的 receiver 参数以<strong>值传递</strong>方式传递到 M1 方法体中</li>
+<li>实际上是 <strong>T 类型实例的副本</strong>，M1 方法体中对副本的任何修改操作，都不会影响到原 T 类型实例</li>
+</ul>
+</li>
+<li>M2 方法是 receiver 参数类型为 *T 的另一类
+<ul>
+<li>*T 类型实例的 receiver 参数以值传递方式传递到 M2 方法体中</li>
+<li>实际上是 <strong>T 类型实例的地址</strong>，M2 方法体通过该地址可以对原 T 类型实例进行任何修改操作</li>
+</ul>
+</li>
+</ul>
+<p>一个示例：</p>
+<pre><code class="language-go">package main
+  
+type T struct {
+    a int
+}
+
+func (t T) M1() {
+    t.a = 10
+}
+
+func (t *T) M2() {
+    t.a = 11
+}
+
+func main() {
+    var t T
+    println(t.a) // 0
+
+    t.M1()
+    println(t.a) // 0
+
+    p := &amp;t
+    p.M2()
+    println(t.a) // 11
+}
+</code></pre>
+<p>选择 receiver 参数类型的原则：</p>
+<ol>
+<li>如果 Go 方法要把对 receiver 参数代表的类型实例的修改，反映到原类型实例上，那么我们应该选择 *T 作为 receiver 参数的类型。</li>
+<li>如果我们不需要在方法中对类型实例进行修改呢？这个时候我们是为 receiver 参数选择 T 类型还是 *T 类型呢？
+<ol>
+<li>一般情况下，我们会为 receiver 参数选择 T 类型，这样可以减少外部修改类型实例内部状态的“渠道”</li>
+<li>如果 receiver 参数类型的 size 较大，以值拷贝形式传入就会导致较大的性能开销，这时我们选择 *T 作为 receiver 类型可能更好些</li>
+</ol>
+</li>
+<li>T 类型是否要实现某一接口
+<ol>
+<li>如果 T 类型需要实现某一接口的全部方法，那么我们就需要使用 T 作为 receiver 参数的类型来满足接口类型方法集合中的所有方法。</li>
+<li>如果 T 类型不需要实现某一接口，那么我们就可以参考原则一和原则二来为 receiver 参数选择类型了。</li>
+</ol>
+</li>
+</ol>
+<p><strong>无论是 T 类型实例，还是 *T 类型实例，都既可以调用 receiver 为 T 类型的方法，也可以调用 receiver 为 *T 类型的方法 。这都是 Go 编译器在背后做的转换，当 Go 发现类型不一致时，会自动转换。</strong></p>
+<p>示例如下：</p>
+<pre><code class="language-go">  type T struct {
+      a int
+  }
+  
+  func (t T) M1() {
+      t.a = 10
+  }
+ 
+ func (t *T) M2() {
+     t.a = 11
+ }
+ 
+ func main() {
+     var t1 T
+     println(t1.a) // 0
+     t1.M1()
+     println(t1.a) // 0
+     t1.M2()
+     println(t1.a) // 11
+ 
+     var t2 = &amp;T{}
+     println(t2.a) // 0
+     t2.M1()
+     println(t2.a) // 0
+     t2.M2()
+     println(t2.a) // 11
+ }
+</code></pre>
+<h3 id="3一个思考题">3，一个思考题</h3>
+<p>第一个：</p>
+<pre><code class="language-go">type field struct {
+    name string
+}
+
+func (p *field) print() {
+    fmt.Println(p.name)
+}
+
+func main() {
+    data1 := []*field{{&quot;one&quot;}, {&quot;two&quot;}, {&quot;three&quot;}}
+    for _, v := range data1 {
+        go v.print()
+    }
+
+    data2 := []field{{&quot;four&quot;}, {&quot;five&quot;}, {&quot;six&quot;}}
+    for _, v := range data2 {
+        go v.print()
+    }
+
+    time.Sleep(3 * time.Second)
+}
+
+// 其结果是
+one
+two
+three
+six
+six
+six
+</code></pre>
+<p>第二个：</p>
+<pre><code class="language-go">type field struct {
+    name string
+}
+
+func (p field) print() {
+    fmt.Println(p.name)
+}
+
+func main() {
+    data1 := []*field{{&quot;one&quot;}, {&quot;two&quot;}, {&quot;three&quot;}}
+    for _, v := range data1 {
+        go v.print()
+    }
+
+    data2 := []field{{&quot;four&quot;}, {&quot;five&quot;}, {&quot;six&quot;}}
+    for _, v := range data2 {
+        go v.print()
+    }
+
+    time.Sleep(3 * time.Second)
+}
+// 其结果是
+one
+two
+three
+four
+five
+six
+</code></pre>
+<h3 id="4方法集合">4，方法集合</h3>
+<p>Go 中任何一个类型都有属于自己的方法集合，或者说方法集合是 Go 类型的一个“属性”。</p>
+<p><strong>方法集合是用来判断一个类型是否实现了某接口类型的唯一手段。</strong></p>
+<p>但不是所有类型都有自己的方法，比如 int 类型就没有。所以，对于没有定义方法的 Go 类型，我们称其拥有空方法集合。</p>
+<p>方法集合可以分两种来讨论：</p>
+<ul>
+<li>接口类型</li>
+<li>非接口类型</li>
+</ul>
+<p>接口类型相对特殊，它只会列出代表接口的方法列表，不会具体定义某个方法，它的方法集合就是它的方法列表中的所有方法。</p>
+<p>函数 <code>dumpMethodSet</code>，用于输出一个非接口类型的方法集合：</p>
+<pre><code class="language-go">func dumpMethodSet(i interface{}) {
+    dynTyp := reflect.TypeOf(i)
+
+    if dynTyp == nil {
+        fmt.Printf(&quot;there is no dynamic type\n&quot;)
+        return
+    }
+
+    n := dynTyp.NumMethod()
+    if n == 0 {
+        fmt.Printf(&quot;%s's method set is empty!\n&quot;, dynTyp)
+        return
+    }
+
+    fmt.Printf(&quot;%s's method set:\n&quot;, dynTyp)
+    for j := 0; j &lt; n; j++ {
+        fmt.Println(&quot;-&quot;, dynTyp.Method(j).Name)
+    }
+    fmt.Printf(&quot;\n&quot;)
+}
+</code></pre>
+<p>再看下面代码：</p>
+<pre><code class="language-go">type T struct{}
+
+func (T) M1() {}
+func (T) M2() {}
+
+func (*T) M3() {}
+func (*T) M4() {}
+
+func main() {
+    var n int
+    dumpMethodSet(n)
+    dumpMethodSet(&amp;n)
+
+    var t T
+    dumpMethodSet(t)
+    dumpMethodSet(&amp;t)
+}
+</code></pre>
+<p>输出如下：</p>
+<pre><code class="language-go">int's method set is empty!
+*int's method set is empty!
+main.T's method set:
+- M1
+- M2
+
+*main.T's method set:
+- M1  // 初学者不容易理解的地方
+- M2  // 初学者不容易理解的地方
+- M3
+- M4
+</code></pre>
+<p><strong>Go 语言规定，*T 类型的方法集合包含所有以 *T 为 receiver 参数类型的方法，以及所有以 T 为 receiver 参数类型的方法。</strong></p>
+<p><strong>方法集合决定接口实现</strong>的含义就是：如果某类型 T 的方法集合与某接口类型的方法集合相同，或者类型 T 的方法集合是接口类型 I 方法集合的超集，那么我们就说这个类型 T 实现了接口 I。或者说，<strong>方法集合这个概念在 Go 语言中的主要用途，就是用来判断某个类型是否实现了某个接口</strong>。</p>
+<p><em><strong><code>... method has pointer receiver 问题</code></strong></em></p>
+<p>看代码：</p>
+<pre><code class="language-go">type QuackableAnimal interface {
+	Quack()
+}
+
+type Duck struct{}
+
+// d 的类型是 Duck
+func (d Duck) Quack() {
+}
+
+func AnimalQuackInForest(a QuackableAnimal) {
+}
+
+func main() {
+	AnimalQuackInForest(Duck{})	    // 传  T 类型没问题
+	AnimalQuackInForest(&amp;Duck{})        // 传 *T 类型没问题
+}
+</code></pre>
+<p>查看方法集：</p>
+<pre><code class="language-go">dumpMethodSet(Duck{})
+dumpMethodSet(&amp;Duck{})
+
+// 输出如下
+main.Duck's method set:
+- Quack
+*main.Duck's method set:
+- Quack
+</code></pre>
+<p>再看代码：</p>
+<pre><code class="language-go">type QuackableAnimal interface {
+  Quack()
+}
+
+type Duck struct{}
+
+// d 的类型是 *Duck
+func (d *Duck) Quack() {
+}
+
+func AnimalQuackInForest(a QuackableAnimal) {
+}
+
+func main() {
+  AnimalQuackInForest(Duck{})	// 传  T 类型有问题，编译异常：Quack method has pointer receiver
+  AnimalQuackInForest(&amp;Duck{})	// 传 *T 类型没问题
+}
+</code></pre>
+<p>此时 <code>AnimalQuackInForest(Duck{})</code> 出问题的原因是，Duck 类型没有实现 QuackableAnimal  接口。</p>
+<p>通过 <code>dumpMethodSet(Duck{})</code> 查看 Duck 的方法集，可知 Duck 的方法集为空。</p>
+<pre><code class="language-go">dumpMethodSet(Duck{})
+dumpMethodSet(&amp;Duck{})
+
+// 输出如下
+main.Duck's method set is empty!
+*main.Duck's method set:
+- Quack
+</code></pre>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-11
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go7/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记7-Go继承：类型嵌入</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go5/">
+            <span class="next-text nav-default">Go 学习笔记5-Go函数</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go6/" class="leancloud_visitors" data-flag-title="Go 学习笔记6-Go方法">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

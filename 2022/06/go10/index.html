@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go 学习笔记10-Go并发 - 码农充电站</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="@码农加油站" /><meta name="description" content="Go 语言原生支持并发，Go 并发这个词，它包含两方面内容： 一个是并发的概念 一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、c" /><meta name="keywords" content="码农充电站, 编程, 编程语言, 编程教程, 编程入门" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.68.3 with theme even" />
+
+
+<link rel="canonical" href="https://codeshellme.github.io/2022/06/go10/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go 学习笔记10-Go并发" />
+<meta property="og:description" content="Go 语言原生支持并发，Go 并发这个词，它包含两方面内容： 一个是并发的概念 一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、c" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://codeshellme.github.io/2022/06/go10/" />
+<meta property="article:published_time" content="2022-06-19T22:38:52+08:00" />
+<meta property="article:modified_time" content="2022-06-19T22:42:52+08:00" />
+<meta itemprop="name" content="Go 学习笔记10-Go并发">
+<meta itemprop="description" content="Go 语言原生支持并发，Go 并发这个词，它包含两方面内容： 一个是并发的概念 一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、c">
+<meta itemprop="datePublished" content="2022-06-19T22:38:52&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-19T22:42:52&#43;08:00" />
+<meta itemprop="wordCount" content="3514">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go 学习笔记10-Go并发"/>
+<meta name="twitter:description" content="Go 语言原生支持并发，Go 并发这个词，它包含两方面内容： 一个是并发的概念 一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、c"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">码农充电站</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/python-learn/">
+        <li class="mobile-menu-item">Python</li>
+      </a><a href="/go/">
+        <li class="mobile-menu-item">Golang</li>
+      </a><a href="/ml/">
+        <li class="mobile-menu-item">ML</li>
+      </a><a href="/dp/">
+        <li class="mobile-menu-item">设计模式</li>
+      </a><a href="/es/">
+        <li class="mobile-menu-item">ES笔记</li>
+      </a><a href="/algorithm/">
+        <li class="mobile-menu-item">算法</li>
+      </a><a href="/learn-book/">
+        <li class="mobile-menu-item">学习笔记</li>
+      </a><a href="/book-manager/">
+        <li class="mobile-menu-item">BM</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">码农充电站</a>
+  
+  <div>
+      <h4 style="margin:0;">
+         专注编程技术分享 
+      </h4>
+  </div>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/python-learn/">Python</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/go/">Golang</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/ml/">ML</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/dp/">设计模式</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/es/">ES笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/algorithm/">算法</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/learn-book/">学习笔记</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/book-manager/">BM</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Go 学习笔记10-Go并发</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-06-19 </span>
+        <div class="post-category">
+            <a href="/categories/golang%E7%AC%94%E8%AE%B0/"> Golang笔记 </a>
+            </div>
+          <span class="more-meta"> 3514 字 </span>
+          <span class="more-meta"> 阅读约需 8 分钟 </span>
+        
+
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1goroutine">1，goroutine</a></li>
+        <li><a href="#2channel">2，channel</a></li>
+        <li><a href="#3无缓冲-channel-的惯用法">3，无缓冲 channel 的惯用法</a></li>
+        <li><a href="#4有缓冲-channel-的惯用法">4，有缓冲 channel 的惯用法</a></li>
+        <li><a href="#5nil-channel">5，nil channel</a></li>
+        <li><a href="#6select">6，select</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Go 语言<strong>原生支持并发</strong>，<strong>Go 并发</strong>这个词，它包含两方面内容：</p>
+<ul>
+<li>一个是并发的概念</li>
+<li>一个是 Go 针对并发设计给出的自身的实现方案，也就是 goroutine、channel、select 这些 Go 并发的语法特性</li>
+</ul>
+<h3 id="1goroutine">1，goroutine</h3>
+<p>goroutine 是由 Go 运行时（runtime）负责调度的、轻量的用户级线程，为并发程序设计提供原生支持。</p>
+<ul>
+<li>资源占用小，每个 goroutine 的初始栈大小仅为 2k；
+<ul>
+<li>一个 Go 程序中可以创建成千上万个并发的 Goroutine</li>
+</ul>
+</li>
+<li>由 Go 运行时而不是操作系统调度，goroutine 上下文切换在用户层完成，开销更小；
+<ul>
+<li>操作系统眼中只有线程，它甚至不知道有一种叫 Goroutine 的事物存在。所以，Goroutine 的调度全要靠 Go 自己完成</li>
+<li>在操作系统层面，线程竞争的“CPU”资源是真实的物理 CPU</li>
+<li>Goroutine 们要竞争的“CPU”资源就是操作系统线程，Goroutine 调度器的任务是将 Goroutine 按照一定算法放到不同的操作系统线程中去执行。</li>
+</ul>
+</li>
+<li>在语言层面而不是通过标准库提供。goroutine 由go关键字创建，一退出就会被回收或销毁，开发体验更佳；</li>
+<li>语言内置 channel 作为 goroutine 间通信原语，为并发设计提供了强大支撑。</li>
+</ul>
+<p>Go 语言通过 <code>go关键字+函数/方法</code> 的方式创建一个 goroutine。创建后，新 goroutine 将拥有独立的代码执行流，并与创建它的 goroutine 一起被 Go 运行时调度。</p>
+<p>多数情况下，我们不需要考虑对 goroutine 的退出进行控制：goroutine 的执行函数的返回，就意味着 goroutine 退出。</p>
+<p>如果 main goroutine 退出了，那么也意味着整个应用程序的退出。</p>
+<p>此外，你还要注意的是，goroutine 执行的函数或方法即便有返回值，Go 也会忽略这些返回值。所以，如果你要获取 goroutine 执行后的返回值，你需要另行考虑其他方法，比如通过 goroutine 间的通信来实现。</p>
+<h3 id="2channel">2，channel</h3>
+<p>channel 既可以用来实现 Goroutine 间的通信，还可以实现 Goroutine 间的同步。</p>
+<p>channel 是用于 Goroutine 间通信的，所以绝大多数对 channel 的读写都被分别放在了不同的 Goroutine 中。</p>
+<p>Go 在语法层面将并发原语 channel 作为一等公民对待，使得我们可以像使用普通变量那样使用 channel，比如：</p>
+<ul>
+<li>定义 channel 类型变量</li>
+<li>给 channel 变量赋值</li>
+<li>将 channel 作为参数传递给函数 / 方法</li>
+<li>将 channel 作为返回值从函数 / 方法中返回</li>
+<li>甚至将 channel 发送到其他 channel 中</li>
+</ul>
+<p>channel 也是一种复合数据类型，在声明一个 channel 类型变量时，必须给出其具体的元素类型：</p>
+<pre><code class="language-go">// 声明一个元素为 int 类型的 channel 类型变量 ch
+var ch chan int
+</code></pre>
+<p>如果 channel 类型变量在声明时没有被赋予初值，那么它的默认值为 <strong>nil</strong>。</p>
+<p>为 channel 类型变量赋初值的唯一方法就是使用 make 函数：</p>
+<pre><code class="language-go">ch1 := make(chan int)       // 无缓冲 channel
+ch2 := make(chan int, 5)    // 有缓冲 channel，缓冲区长度是 5
+</code></pre>
+<p>上面两种类型的变量关于发送（send）与接收（receive）的特性是不同的。</p>
+<p>Go 提供了<code>&lt;-</code> 操作符用于对 channel 类型变量进行发送与接收操作：</p>
+<pre><code class="language-go">ch1 &lt;- 13    // 将整型字面值13发送到无缓冲channel类型变量ch1中
+n := &lt;- ch1  // 从无缓冲channel类型变量ch1中接收一个整型值存储到整型变量n中
+ch2 &lt;- 17    // 将整型字面值17发送到带缓冲channel类型变量ch2中
+m := &lt;- ch2  // 从带缓冲channel类型变量ch2中接收一个整型值存储到整型变量m中
+</code></pre>
+<p>无缓冲 channel 的运行时层实现不带有缓冲区，所以 Goroutine 对无缓冲 channel 的接收和发送操作是同步的。也就是说，对同一个无缓冲 channel，只有对它进行接收操作的 Goroutine 和对它进行发送操作的 Goroutine 都存在的情况下，通信才能得以进行，否则单方面的操作会让对应的 Goroutine 陷入挂起状态，比如下面示例代码：</p>
+<pre><code class="language-go">// 这里创建了一个无缓冲的 channel 类型变量 ch1，对 ch1 的读写都放在了一个 Goroutine 中
+func main() {
+    ch1 := make(chan int)
+    ch1 &lt;- 13 // fatal error: all goroutines are asleep - deadlock!
+    n := &lt;-ch1
+    println(n)
+}
+</code></pre>
+<p>因此上面代码要进行如下改进：</p>
+<pre><code class="language-go">func main() {
+    ch1 := make(chan int)
+    go func() {
+        ch1 &lt;- 13 // 将发送操作放入一个新goroutine中执行
+    }()
+    n := &lt;-ch1
+    println(n)
+}
+</code></pre>
+<p>带缓冲 channel 的运行时层实现带有缓冲区，因此，对带缓冲 channel 的发送操作在缓冲区未满、接收操作在缓冲区非空的情况下是异步的（发送或接收不需要阻塞等待）。</p>
+<p>示例：</p>
+<pre><code class="language-go">ch2 := make(chan int, 1)
+n := &lt;-ch2 // 由于此时ch2的缓冲区中无数据，因此对其进行接收操作将导致goroutine挂起
+
+ch3 := make(chan int, 1)
+ch3 &lt;- 17  // 向ch3发送一个整型数17
+ch3 &lt;- 27  // 由于此时ch3中缓冲区已满，再向ch3发送数据也将导致goroutine挂起
+</code></pre>
+<p>我们还可以声明只发送 channel 类型（send-only）和只接收 channel 类型（recv-only）：</p>
+<pre><code class="language-go">ch1 := make(chan&lt;- int, 1) // 只发送channel类型
+ch2 := make(&lt;-chan int, 1) // 只接收channel类型
+
+&lt;-ch1       // invalid operation: &lt;-ch1 (receive from send-only type chan&lt;- int)
+ch2 &lt;- 13   // invalid operation: ch2 &lt;- 13 (send to receive-only type &lt;-chan int)
+</code></pre>
+<p>试图从一个只发送 channel 类型变量中接收数据，或者向一个只接收 channel 类型发送数据，都会导致编译错误。</p>
+<p>通常只发送 channel 类型和只接收 channel 类型，会被用作函数的参数类型或返回值，用于限制对 channel 内的操作，或者是明确可对 channel 进行的操作的类型。</p>
+<p>例如下面生产者和消费者的例子：</p>
+<pre><code class="language-go">func produce(ch chan&lt;- int) {
+    for i := 0; i &lt; 10; i++ {
+        ch &lt;- i + 1
+        time.Sleep(time.Second)
+    }
+    close(ch)
+}
+
+func consume(ch &lt;-chan int) {
+    for n := range ch {
+        println(n)
+    }
+}
+
+func main() {
+    ch := make(chan int, 5)
+    var wg sync.WaitGroup
+    wg.Add(2)
+    go func() {
+        produce(ch)
+        wg.Done()
+    }()
+
+    go func() {
+        consume(ch)
+        wg.Done()
+    }()
+
+    wg.Wait()
+}
+</code></pre>
+<p>在这个例子中：</p>
+<ul>
+<li>我们启动了两个 Goroutine，分别代表生产者（produce）与消费者（consume）。</li>
+<li>生产者只能向 channel 中发送数据，我们使用chan&lt;- int作为 produce 函数的参数类型；</li>
+<li>消费者只能从 channel 中接收数据，我们使用&lt;-chan int作为 consume 函数的参数类型。</li>
+<li>在消费者函数 consume 中，我们使用了 for range 循环语句来从 channel 中接收数据，for range 会阻塞在对 channel 的接收操作上，直到 channel 中有数据可接收或 channel 被关闭循环，才会继续向下执行。</li>
+<li>channel 被关闭后，for range 循环也就结束了。
+<ul>
+<li>channel 关闭后，所有等待从这个 channel 接收数据的操作都将返回。</li>
+<li>从一个已关闭的 channel 接收数据将永远不会被阻塞，并可得到对应类型的零值</li>
+<li>channel一旦没有人引用了，就会被gc掉，不关闭也ok。但是如果有goroutine一直在读channel，那么channel一直存在，不会关闭。直到程序退出。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-go">n := &lt;- ch      // 当ch被关闭后，n将被赋值为ch元素类型的零值
+
+m, ok := &lt;-ch   // 当ch被关闭后，m将被赋值为ch元素类型的零值, ok值为false
+
+for v := range ch { // 当ch被关闭后，for range循环结束
+    ... ...
+}
+</code></pre>
+<p>channel 的一个使用惯例，那就是<strong>发送端负责关闭 channel</strong>。</p>
+<p>一旦向一个已经关闭的 channel 执行发送操作，这个操作就会引发 panic，比如：</p>
+<pre><code class="language-go">ch := make(chan int, 5)
+close(ch)
+ch &lt;- 13 // panic: send on closed channel
+</code></pre>
+<h3 id="3无缓冲-channel-的惯用法">3，无缓冲 channel 的惯用法</h3>
+<p>无缓冲 channel 兼具通信和同步特性，在并发程序中应用颇为广泛。</p>
+<ul>
+<li>第一种用法：用作信号传递</li>
+<li>第二种用法：用于替代锁机制</li>
+</ul>
+<p><strong>第一种用法：用作信号传递</strong></p>
+<p>无缓冲 channel 用作信号传递的时候，有两种情况，分别是 1 对 1 通知信号和 1 对 n 通知信号。</p>
+<p><strong>第二种用法：用于替代锁机制</strong></p>
+<p>无缓冲 channel 具有同步特性，这让它在某些场合可以替代锁，让我们的程序更加清晰，可读性也更好。</p>
+<h3 id="4有缓冲-channel-的惯用法">4，有缓冲 channel 的惯用法</h3>
+<p>带缓冲的 channel 与无缓冲的 channel 的最大不同之处，就在于它的异步性。也就是说，对一个带缓冲 channel，在缓冲区未满的情况下，对它进行发送操作的 Goroutine 不会阻塞挂起；在缓冲区有数据的情况下，对它进行接收操作的 Goroutine 也不会阻塞挂起。</p>
+<ul>
+<li>第一种用法：用作消息队列
+<ul>
+<li>无论是 1 收 1 发还是多收多发，带缓冲 channel 的收发性能都要好于无缓冲 channel；</li>
+<li>对于带缓冲 channel 而言，发送与接收的 Goroutine 数量越多，收发性能会有所下降；</li>
+<li>对于带缓冲 channel 而言，选择适当容量会在一定程度上提升收发性能。</li>
+</ul>
+</li>
+<li>第二种用法：用作计数信号量</li>
+<li>len(channel) 的应用
+<ul>
+<li>当 ch 为无缓冲 channel 时，len(ch) 总是返回 0；</li>
+<li>当 ch 为带缓冲 channel 时，len(ch) 返回当前 channel ch 中尚未被读取的元素个数。</li>
+</ul>
+</li>
+</ul>
+<p>那我们是否可以使用 len 函数来实现带缓冲 channel 的“判满”、“判有”和“判空”逻辑呢？</p>
+<pre><code class="language-go">var ch chan T = make(chan T, capacity)
+
+// 判空
+if len(ch) == 0 {
+    // 此时channel ch空了?
+}
+
+// 判有
+if len(ch) &gt; 0 {
+    // 此时channel ch中有数据?
+}
+
+// 判满
+if len(ch) == cap(ch) {
+    // 此时channel ch满了?
+}
+</code></pre>
+<p>channel 原语用于多个 Goroutine 间的通信，一旦多个 Goroutine 共同对 channel 进行收发操作，len(channel) 就会在多个 Goroutine 间形成“竞态”。</p>
+<p>单纯地依靠 len(channel) 来判断 channel 中元素状态，是不能保证在后续对 channel 的收发时 channel 状态是不变的。</p>
+<h3 id="5nil-channel">5，nil channel</h3>
+<p>如果一个 channel 类型变量的值为 nil，我们称它为 nil channel，对 nil channel 的读写都会发生阻塞。</p>
+<pre><code class="language-go">func main() {
+  var c chan int
+  &lt;-c //阻塞
+}
+
+或者：
+
+func main() {
+  var c chan int
+  c&lt;-1  //阻塞
+}
+</code></pre>
+<h3 id="6select">6，select</h3>
+<p>当涉及同时对多个 channel 进行操作时，我们会结合另外一个原语 select，一起使用。</p>
+<p>通过 select，我们可以同时在多个 channel 上进行发送 / 接收操作：</p>
+<pre><code class="language-go">select {
+case x := &lt;-ch1:     // 从channel ch1接收数据
+  ... ...
+
+case y, ok := &lt;-ch2: // 从channel ch2接收数据，并根据ok值判断ch2是否已经关闭
+  ... ...
+
+case ch3 &lt;- z:       // 将z值发送到channel ch3中:
+  ... ...
+
+default:             // 当上面case中的channel通信均无法实施时，执行该默认分支
+}
+</code></pre>
+<p>当 select 语句中没有 default 分支，而且所有 case 中的 channel 操作都阻塞了的时候，整个 select 语句都将被阻塞，直到某一个 case 上的 channel 变成可发送，或者某个 case 上的 channel 变成可接收，select 语句才可以继续进行下去。</p>
+<p>（完。）</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">@码农加油站</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更改</span>
+    <span class="item-content">
+        2022-06-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/2022/06/go11/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go 学习笔记11-Go共享内存</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/2022/06/go9/">
+            <span class="next-text nav-default">Go 学习笔记9-Go错误处理</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  <span id="/2022/06/go10/" class="leancloud_visitors" data-flag-title="Go 学习笔记10-Go并发">
+		<span class="post-meta-item-text">文章阅读量 </span>
+		<span class="leancloud-visitors-count">0</span>
+		<p></p>
+	  </span>
+  <div id="vcomments"></div>
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'fUOjiUqCOnp6nC06GF1tTK2r-gzGzoHsz',
+        appKey: 'RXI3nw10URATKUAYINsDKAlc',
+        notify:  false ,
+        verify:  true ,
+        avatar:'robohash',
+        placeholder: '评论一下，说明你来过~',
+        visitor:  true 
+    });
+  </script>
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/codeshellme" class="iconfont icon-github" title="github"></a>
+      <a href="https://www.zhihu.com/people/la-la-la-56-33-75" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="https://blog.csdn.net/LUAOHAN" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="https://www.cnblogs.com/codeshell/" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="https://space.bilibili.com/516746464/" class="iconfont icon-bilibili" title="bilibili"></a>
+  
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      
+    
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2022
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">@码农充电站</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
