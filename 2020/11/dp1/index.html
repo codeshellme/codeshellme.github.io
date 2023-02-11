@@ -48,7 +48,7 @@
 <meta itemprop="description" content="公号：码农充电站pro 主页：https://codeshellme.github.io 如果有人问你，“什么样的代码是好代码”，你会怎样回答呢">
 <meta itemprop="datePublished" content="2020-11-12T21:38:52&#43;08:00" />
 <meta itemprop="dateModified" content="2020-11-12T21:41:52&#43;08:00" />
-<meta itemprop="wordCount" content="4183">
+<meta itemprop="wordCount" content="4245">
 
 
 
@@ -163,7 +163,7 @@
         <div class="post-category">
             <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"> 设计模式 </a>
             </div>
-          <span class="more-meta"> 4183 字 </span>
+          <span class="more-meta"> 4245 字 </span>
           <span class="more-meta"> 阅读约需 9 分钟 </span>
         
 
@@ -222,16 +222,20 @@
 </ul>
 <h4 id="11设计原则">1.1，设计原则</h4>
 <p>每种设计模式都遵守了一个或多个设计原则。常用的设计原则有以下几种：</p>
+<p><strong>SOLID:</strong></p>
 <ul>
-<li><strong>单一职责原则</strong>：一个类的职责要单一明确。</li>
-<li><strong>开闭原则</strong>：代码应该对扩展开发，对修改关闭（尽量减少对原有代码的<strong>修改</strong>）。</li>
-<li><strong>里式替换原则</strong>：能够使用父类对象的地方，也能使用子类。</li>
-<li><strong>接口隔离原则</strong>：接口的使用者不应该被强迫依赖它不需要的接口。</li>
-<li><strong>依赖倒置原则</strong>：高层模块不要依赖低层模块。高层模块和低层模块应该通过抽象来互相依赖。抽象不要依赖具体实现细节，具体实现细节依赖抽象。</li>
+<li><strong>单一职责原则(SRP)</strong>：一个类的职责要单一明确。</li>
+<li><strong>开闭原则(OCP)</strong>：代码应该对扩展开发，对修改关闭（尽量减少对原有代码的<strong>修改</strong>）。</li>
+<li><strong>里式替换原则(LSP)</strong>：能够使用父类对象的地方，也应该能使用子类。</li>
+<li><strong>接口隔离原则(ISP)</strong>：接口的使用者不应该被强迫依赖它不需要的接口(使用多个专门的接口比使用一个单一的总接口要好)。</li>
+<li><strong>依赖倒置原则(DIP)</strong>：高层模块不要依赖低层模块。高层模块和低层模块应该通过抽象来互相依赖。抽象不要依赖具体实现细节，具体实现细节依赖抽象。</li>
+</ul>
+<p><strong>其它:</strong></p>
+<ul>
 <li><strong>KISS 原则</strong>：尽量保持代码简单。</li>
 <li><strong>YAGNI 原则</strong>：不要编写当前用不到的功能/代码，不要做过度设计。但并不是不需要考虑代码的扩展性。</li>
 <li><strong>DRY 原则</strong>：避免重复性代码。</li>
-<li><strong>LOD 原则</strong>：最小知识原则，每个模块只关心与自己关系密切的模块的有限知识。</li>
+<li><strong>LOD(迪米特) 原则</strong>：最小知识原则，每个模块只关心与自己关系密切的模块的有限知识。</li>
 </ul>
 <p>另外在面向对象编程中，也有两个比较重要的编程原则：</p>
 <ul>
